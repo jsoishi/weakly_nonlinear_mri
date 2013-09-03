@@ -1,0 +1,109 @@
+\documentclass[11p]{paper}
+
+%%%%%%begin preamble
+\usepackage[hmargin=1in, vmargin=1in]{geometry} % Margins
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{times}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{pdfpages}
+
+%\usepackage{fontspec}
+%\setmainfont{TimesNewRoman}
+%\definetypeface[Serapion][rm][Xserif][Serapion Pro]
+%\setupbodyfont[Serapion, 12pt]
+
+%%%
+%%%%%% uncomment following 4 lines to adjust title size/shape and
+%%%%%% trailing space
+%% \usepackage{titling}
+%% %\pretitle{\noindent\Large\bfseries}
+%% \date{}
+%% \setlength{\droptitle}{-1in}
+%\posttitle{\\}
+
+\setcounter{tocdepth}{2}
+%% headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{Weakly Nonlinear MRI Notes}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+
+\newcommand{\Reyn}{\ensuremath{\mathrm{Re}}}
+\newcommand{\Rmag}{\ensuremath{\mathrm{Rm}}}
+\newcommand{\Rmagc}{\ensuremath{\mathrm{Rm}_\mathrm{crit}}}
+\newcommand{\Prandtl}{\ensuremath{\mathrm{Pm}}}
+\newcommand{\Lund}{\ensuremath{\mathrm{S}}}
+\newcommand{\Lundc}{\ensuremath{\mathrm{S}_\mathrm{crit}}}
+\newcommand{\yt}{\texttt{yt}}
+\newcommand{\enzo}{\texttt{Enzo}}
+\newcommand{\nosection}[1]{%
+  \refstepcounter{section}%
+  \addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}%
+  \markright{#1}}
+\newcommand{\shellcmd}[1]{\\\indent\indent\texttt{\footnotesize\$ #1}\\}
+
+%%%%%%end preamble
+
+\title{Some Notes on the Weakly Nonlinear MRI Project}
+\begin{document}
+\maketitle
+
+\section{Mathematical Basics}
+\label{sec:basics}
+
+Here are some really basic math stuff that might be useful to you.
+
+\section{Computational Basics}
+\label{sec:comp_basics}
+
+We'll be making a lot of use of Python, SymPy, the iPython notebook,
+and later, Dedalus 2.0. 
+
+\subsection{Software to install}
+\label{sec:software}
+
+\begin{itemize}
+\item Python3 (latest version)
+\item SymPy 
+\item ipython 1.0
+\item matplotlib 1.3.0
+\item mercurial (hg)
+\end{itemize}
+
+I know you use a Mac, which I don't, so I'm not an expert. If you
+haven't already, one way to do this is to install python3, and then
+install pip using the \texttt{get-pip.py} script described at
+\url{http://www.pip-installer.org/en/latest/installing.html}. Once you have pip installed, you can just do 
+\shellcmd{pip install sympy} 
+for example, and everything should just work.
+
+\subsection{Dedalus 2.0}
+\label{sec:dedalus2}
+
+Dedalus 2.0 isn't quite ready for us to use yet, and it's very likely
+a bunch of stuff will change between now and when we are ready, but if
+you're curious, it's here: \url{https://bitbucket.org/jsoishi/dedalus2}.
+
+\subsection{Version Control with Mercurial and Bitbucket}
+\label{sec:vc}
+
+In order to facilitate our collaboration, we'll be using the mercurial
+version control system. A great intro to is
+\url{http://hginit.com}. 
+
+Our shared repository will be hosted on \url{https://bitbucket.org},
+starting with this very document, which you can find here:
+\url{https://bitbucket.org/jsoishi/weakly_nonlinear_MRI/}
+
+
+
+\end{document}
