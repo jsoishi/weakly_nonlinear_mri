@@ -4,7 +4,7 @@
 \usepackage[hmargin=1in, vmargin=1in]{geometry} % Margins
 \usepackage{url}
 \usepackage{hyperref}
-\usepackage{times}
+%\usepackage{times}
 \usepackage{natbib}
 \usepackage{graphicx}
 \usepackage{amsmath}
@@ -57,10 +57,57 @@
 \begin{document}
 \maketitle
 
+\section{Overview of The Problem}
+\label{sec:overview}
+
+We want to construct an analytical understanding of the saturation of
+the MRI, complementary to the linear analysis of \citet{Pessah2010}.
+
+In order to understand saturation of the MRI, we need to consider the
+options available to it. 
+
 \section{Mathematical Basics}
 \label{sec:basics}
 
-Here are some really basic math stuff that might be useful to you.
+Here are some really basic math stuff that might be useful to
+you. First some notation. Derivatives are a fun one. You'll see the
+partial derivative of a function $f$ with respect to $x$, 
+\begin{equation*}
+  \label{eq:partial}
+  \frac{\partial f}{\partial x}
+\end{equation*}
+written as $\partial_x f$, or even $f_x$, especially in the applied
+math literature. I tend to use $\partial_x f$, because it's terse but
+not so terse I forget what it is I meant by it.
+
+In order to solve the equations of magnetohydrodyanmics (MHD), we'll
+need names for the velocity, density, magnetic, and pressure
+fields. Typically, the velocity vector is written as $\mathbf{v}$ or
+$\mathbf{u}$ (I tend to use the latter). The components of
+$\mathbf{u}$ are written either as $(u_x, u_y, u_z)$ (typical in the
+astrophysical literature) or $(u, v, w)$ (more common in geophysical
+fluid dynamics). Density is nearly always $\rho$. The magnetic field
+is usually $\mathbf{B}$ when a vector, with scalar components $(B_x,
+B_y, B_z)$ though you may (very rarely) see $(a, b, c)$. Obviously,
+you'd substitute the subscripts for $r, \theta, \phi$ in spherical and
+$r, \theta, z$ in cylindrical coordinates. Occasionally you will see
+the cylindrical radius written $\altrho$.
+
+In compressible gas dynamics, the sound speed is usually written as
+$c$ or $c_s$. There rarely is confusion with the speed of light, even
+in relativisitic (special or general) MHD. Of course, GR MHD is way
+beyond the scope of this project, but it brings from GR a lot of very
+interesting and rather different notation.
+
+There are a lot of ways to write the equations we need, and they go by
+a lot of names.
+
+Fundamentally, they are
+
+\begin{equation}
+  \label{eq:continuity}
+  \partial \rho
+\end{equation}
 
 \section{Computational Basics}
 \label{sec:comp_basics}
@@ -100,10 +147,42 @@ In order to facilitate our collaboration, we'll be using the mercurial
 version control system. A great intro to is
 \url{http://hginit.com}. 
 
-Our shared repository will be hosted on \url{https://bitbucket.org},
-starting with this very document, which you can find here:
-\url{https://bitbucket.org/jsoishi/weakly_nonlinear_MRI/}
+Our shared repository will be hosted on
+\url{https://bitbucket.org}. You'll need to first setup a bitbucket
+account. Just go to the site, create a username, and email it to
+me. I'll add you to the access list for our, which you can find here:
+\url{https://bitbucket.org/jsoishi/weakly_nonlinear_MRI/}. Until
+you've created a username and emailed me, I'll leave it public so you
+can see how it works without having to wait for me. However, after
+you've gotten your username, we'll make it private, so you don't have
+to worry about anyone seeing our mistakes (which we will make plenty
+of!). Of course, there is tremendous value in open science, so I
+typically open up my repositories after publication. I will encourage
+but not require you to do the same.
 
+\section{Roadmap}
+\label{sec:roadmap}
 
+Here's a very rough, and sure to change outline of the project as I
+see it now. 
 
+\begin{enumerate}
+\item Background reading
+\item Linearize the MHD equations in a shearing box
+\item Derive the linear conditions for the MRI with viscosity and resistivity
+\item Derive the Ginzburg-Landau equation from convection
+\item Derive the Ginzburg-Landau equation from the MHD equations in a
+  thin-gap Taylor-Couette flow (rederive \citet{2007PhRvL..98c4501U})
+\item Extend weakly nonlinear analysis to the wide gap case
+\end{enumerate}
+
+Once we get down to the bottom of the list, we can begin to understand
+
+\section{Annotated Bibliography}
+\label{sec:annotated_bib}
+
+Basics on the CGLE: ``The complex Ginzburg-Landau equation: an introduction,'' Garcia-Morales, V \& Krischner, K. \url{http://www.tandfonline.com/doi/pdf/10.1080/00107514.2011.642554}
+
+\bibliographystyle{apj}
+\bibliography{library}
 \end{document}
