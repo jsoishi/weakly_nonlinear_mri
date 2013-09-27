@@ -1,7 +1,7 @@
 \documentclass[11p]{paper}
 
 %%%%%%begin preamble
-\usepackage[hmargin=1in, vmargin=1in]{geometry} % Margins
+%\usepackage[hmargin=1in, vmargin=1in]{geometry} % Margins
 \usepackage{url}
 \usepackage{hyperref}
 %\usepackage{times}
@@ -70,8 +70,8 @@ options available to it.
 \label{sec:basics}
 
 Here are some really basic math stuff that might be useful to
-you. First some notation. Derivatives are a fun one. You'll see the
-partial derivative of a function $f$ with respect to $x$, 
+you. First some notation. You'll see the partial derivative of a
+function $f$ with respect to $x$,
 \begin{equation*}
   \label{eq:partial}
   \frac{\partial f}{\partial x}
@@ -91,24 +91,119 @@ is usually $\mathbf{B}$ when a vector, with scalar components $(B_x,
 B_y, B_z)$ though you may (very rarely) see $(a, b, c)$. Obviously,
 you'd substitute the subscripts for $r, \theta, \phi$ in spherical and
 $r, \theta, z$ in cylindrical coordinates. Occasionally you will see
-the cylindrical radius written $\altrho$.
+the cylindrical radius written $\varpi$.
 
 In compressible gas dynamics, the sound speed is usually written as
 $c$ or $c_s$. There rarely is confusion with the speed of light, even
-in relativisitic (special or general) MHD. Of course, GR MHD is way
-beyond the scope of this project, but it brings from GR a lot of very
-interesting and rather different notation.
+in relativistic (special or general) MHD.
+
+\subsection{The Equations of MHD}
+\label{sec:equations}
 
 There are a lot of ways to write the equations we need, and they go by
-a lot of names.
+a lot of names. We will start by writing the equations of
+hydrodynamics, and then add MHD later. Fundamentally, these equations
+express the conservation of mass, momentum, and energy. For MHD, we
+also need to describe the evolution of the magnetic field. Please note
+that we are not saying anything physical about fluids, plasmas, or
+(magneto)hydrodynamics here. We're just laying out the relevant
+equations. There is a lot to say about MHD, but I will only say one
+physical thing here: it is really, really important to remember that
+MHD equations are not like general relativity or Maxwell's equations
+or the Schrodinger Equation: they are themselves an
+approximation. They are \emph{not} always valid: the description of a
+system as a continuum of neutral (hydrodynamics) or charged (MHD)
+particles can break down without the mathematical solution you've
+painstakingly derived telling you a thing about it. This is especially
+important to keep in mind because this whole project is about
+constructing analytic solutions by making loads of approximations.
 
-Fundamentally, they are
-
+For a fluid, mass conservation is given by 
 \begin{equation}
   \label{eq:continuity}
-  \partial \rho
+  \partial_t \rho + \nabla \cdot \rho \mathbf{u} = 0.
 \end{equation}
+This is also known as the \textit{continuity} equation, because it not
+only says that mass is conserved, it also states that mass must flow
+continuously from one place to another. In this form, it is the model
+of a class of equations called the conservation laws, because you can
+think of it as saying the following. The time rate of change of the
+mass of fluid within a given volume $\mathcal{V}$ is given by the
+\emph{flux} $\mathcal{F} = \rho \mathbf{u}$ across the surface
+bounding $\mathcal{V}$.
 
+\begin{equation}
+  \label{eq:navier-stokes}
+  \partial_t \mathbf{u} + \mathbf{u \cdot \nabla u} = -\frac{\nabla p}{\rho} + \nu \nabla^2 \mathbf{u},
+\end{equation}
+which is also called the \textit{Navier-Stokes} equation when $\nu
+\neq 0$ and the \textit{Euler} equation otherwise. This equation is
+essentially $F = ma$ for a fluid: any additional physics we want to
+add will add force terms to the right hand side of this equation. Most
+important for us will be the fictitious rotational forces and the
+Lorentz force of MHD. 
+
+Of course, we also need an equation for the conservation of energy (that is, we must satisfy the First Law of Thermodynamics). However, we will be working exclusively with \textit{incompressible} fluids, so we can simply enforce the \emph{incompressibility constraint}, 
+\begin{equation}
+  \label{eq:incompressibility}
+  \mathbf{\nabla \cdot u} = 0.
+\end{equation}
+This is called a ``constraint'' equation because it does not specify
+the time evolution of the system, but instead specifies a certain
+property the solution must obey. 
+
+To add the magneto to hydrodynamics, we first introduce the Lorentz
+force per unit volume,
+\begin{equation}
+  \label{eq:lorentz}
+  \mathbf{f_L = \frac{J \times B}{\rho}}.
+\end{equation}
+The current density (current per unit volume) is just
+\begin{equation}
+  \label{eq:current}
+  \mathbf{J = \frac{\nabla \times B}{4\pi}}
+\end{equation}
+in Gaussian units (which we'll use. Sorry.). We then combine the $f_L$
+with the definition of $J$, and using a vector calculus you can easily
+look up, we arrive at 
+\begin{equation}
+  \label{eq:lorentz_final}
+  \mathbf{F_L = -\frac{\nabla B^2}{8 \pi \rho} + \frac{B \cdot \nabla B}{4
+      \pi \rho}}.
+\end{equation}
+This form is very telling, because it splits the Lorentz force into
+two pieces: the \emph{magnetic pressure} ($\nabla B^2/8 \pi$) and the
+\emph{magnetic tension} ($B \cdot \nabla B / 4 \pi$). The physics of
+the MRI is contained in the latter: magnetic fields, when stretched
+act exactly like elastic bands. 
+
+Of course, now we have added a new vector field, $\mathbf{B}$, to our
+equation set, so obviously we need three more equations
+
+I'm glossing over a lot here, but for MHD, where the plasma behaves
+like a fluid, the ``Ohm's Law'', or relationship between the Electric
+Field and the current, gives
+\begin{equation}
+  \label{eq:ohms}
+  \mathbf{E} = -\frac{\mathbf{u \times B}}{c} - \frac{\mathbf{J}}{\sigma},
+\end{equation}
+where $\sigma$ is the \emph{conductivity} of the plasma (we typically
+never talk in terms of the conductivity, preferring the resistivity,
+which is implicitly derived below).
+
+Now we can employ one of the Maxwell's equations,
+\begin{equation}
+  \label{eq:maxwell}
+  \partial_t \mathbf{B} = -\frac{c}{4\pi} \mathbf{\nabla \times E},
+\end{equation}
+substituting in equation~(\ref{eq:ohms}), we arrive at the
+\emph{induction} equation, sometimes also known as the \emph{MHD}
+equation,
+\begin{equation}
+  \label{eq:induction}
+  \partial_t \mathbf{B = \nabla \times (u \times B) + \mu \nabla^2 B},
+\end{equation}
+where $\mu$ is the \emph{resistivity} of the plasma.
 \section{Computational Basics}
 \label{sec:comp_basics}
 
@@ -149,12 +244,12 @@ version control system. A great intro to is
 
 Our shared repository will be hosted on
 \url{https://bitbucket.org}. You'll need to first setup a bitbucket
-account. Just go to the site, create a username, and email it to
+account. Just go to the site, create a user name, and email it to
 me. I'll add you to the access list for our, which you can find here:
 \url{https://bitbucket.org/jsoishi/weakly_nonlinear_MRI/}. Until
-you've created a username and emailed me, I'll leave it public so you
+you've created a user name and emailed me, I'll leave it public so you
 can see how it works without having to wait for me. However, after
-you've gotten your username, we'll make it private, so you don't have
+you've gotten your user name, we'll make it private, so you don't have
 to worry about anyone seeing our mistakes (which we will make plenty
 of!). Of course, there is tremendous value in open science, so I
 typically open up my repositories after publication. I will encourage
@@ -186,3 +281,7 @@ Basics on the CGLE: ``The complex Ginzburg-Landau equation: an introduction,'' G
 \bibliographystyle{apj}
 \bibliography{library}
 \end{document}
+%  LocalWords:  Pessah magnetohydrodyanmics MHD Navier SymPy iPython
+%  LocalWords:  Dedalus ipython matplotlib hg py sympy Bitbucket CGLE
+%  LocalWords:  bitbucket Roadmap Linearize Ginzburg Couette
+%  LocalWords:  Krischner
