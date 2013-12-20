@@ -1,0 +1,86 @@
+\documentclass[letterpaper,12pt]{article}
+
+%% Page dimensions for 1 inch margins
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9in}
+\setlength{\topmargin}{-0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in} 
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in} 
+\setlength{\hoffset}{0in}
+\setlength{\voffset}{0in}
+
+%% Graphics and math
+\usepackage{graphics,graphicx,subfigure}
+\usepackage{amsmath}
+
+\newcommand\lsim{\mathrel{\rlap{\lower4pt\hbox{\hskip1pt$\sim$}}
+        \raise1pt\hbox{$<$}}}
+\newcommand\gsim{\mathrel{\rlap{\lower4pt\hbox{\hskip1pt$\sim$}}
+        \raise1pt\hbox{$>$}}}
+
+%% Bibliographic stuff
+
+%\usepackage[numbers]{natbib}
+\usepackage{natbib}
+\bibliographystyle{apj}
+%\setlength{\bibsep}{0.0pt}
+
+\newcommand\apjl{ApJL}
+\newcommand\apj{ApJ}
+\newcommand\aj{AJ}
+\newcommand\apjs{ApJS}
+\newcommand\aap{AAP}
+\newcommand\mnras{MNRAS}
+\newcommand\araa{ ARA\&A }
+\newcommand\nat{ Nature }
+
+%Use this for citing without parentheses.
+\newcommand{\citei}[1]{\citeauthor{#1} \citeyear{#1}}
+
+\begin{document}
+\pagestyle{plain}
+\pagenumbering{arabic}
+
+\title{Weakly Nonlinear MRI: Notes}
+\author{Susan Clark}
+\maketitle
+\vspace{0.2cm}
+
+The basic setup for this investigation will follow \citet{Umurhan:2007dz}, who apply a weakly nonlinear analysis to the MRI in the shearing box approximation, in a thin-gap limit with idealized boundary conditions. We will follow a similar derivation, without the thin-gap restriction and with more realistic boundary conditions.
+
+The shearing box (SB) approximation is one in which one considers the flow in a small box at some fiducial distance ${r_0}$ away from the center of the rotating system. This constitutes only a small portion of an accretion disk, but makes the problem more tractable, both for analytic and numerical analyses. 
+
+My understanding is that the thin-gap limit allows one to ignore radially-dependent (``channel") modes. Channel modes are axially symmetric, linear modes, and are exact solutions of the nonlinear MRI in the SB approximation. These are the so-called ``primary MRI" modes discussed in \citet{Pessah:2010ic}. The advantage to analyzing the MRI without channel modes is that the background is steady and has a constant pressure. By widening our gap, we will complicate things because the non-constant background means that we open ourselves to parasitic modes -- modes whose growth rates depend on the amplitudes of the primary modes. In particular, the channel modes are Kelvin-Helmholtz unstable. 
+
+Another way to say this is that the wide gap approximation does not allow us to ignore the $\left(\textbf{u} \cdot \nabla \right) \textbf{u}$ term in the Navier-Stokes equation, which couples velocities with each other and thus allows the existence of parasitic modes. This can be seen by considering $\textbf{u}$ as a sum of discrete modes with wavenumber k:
+
+\begin{equation}
+\textbf{u} = \sum\limits_{k = 0}^{\infty}a_k e^{ikx} \, dk
+\end{equation}
+
+\noindent The Fourier transform of $\left(\textbf{u} \cdot \nabla \right) \textbf{u}$ is:
+
+\begin{equation}
+a_k \otimes i \textbf{k} \cdot a_k
+\end{equation}
+
+\noindent Clearly, each wavenumber (and its associated amplitude) depends on all other wave numbers.\\
+
+So essentially, our approach is similar to \citet{Umurhan:2007dz}, but our setup is complementary to \citet{Pessah:2010ic}. \\
+
+\noindent The MRI setup in \citet{Umurhan:2007dz} is as follows: 
+\begin{itemize}
+\item An axisymmetric channel flow with a differential rotation ${\Omega\left(r\right) \propto \Omega_0\left(\frac{r}{r_0}\right)^{-q}}$ 
+\item A velocity $\textbf{V}$ = $U\left(x\right)\hat{\bf{y}}$ with a linear shear profile $U\left(x\right) = -qU_0x$
+\item Constant, vertical magnetic field $\bf{\hat{B}}$ = $B_0\hat{z}$
+\end{itemize}
+
+We will use the incompressible limit ($\nabla \cdot \textbf{u}$ = $0$), which applies because we consider weak magnetic fields (magnetic energy is small compared to thermal energy).
+
+
+
+\bibliography{mri.bib}
+
+\end{document}
