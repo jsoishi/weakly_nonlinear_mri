@@ -77,9 +77,26 @@ So essentially, our approach is similar to \citet{Umurhan:2007dz}, but our setup
 \item Constant, vertical magnetic field $\bf{\hat{B}}$ = $B_0\hat{z}$
 \end{itemize}
 
-We will use the incompressible limit ($\nabla \cdot \textbf{u}$ = $0$), which applies because we consider weak magnetic fields (magnetic energy is small compared to thermal energy).
+We will use the incompressible limit ($\nabla \cdot \textbf{u}$ = $0$), which applies because we consider weak magnetic fields (magnetic energy is small compared to thermal energy). \\
 
+\noindent We will proceed as follows: \\
 
+\begin{itemize}
+\item Linearize equations for perturbations of the form $e^{st + ik_x x + ik_z z}$. We neglect y-dependence because of axisymmetry.
+\item Write linearized equations in matrix form, use SymPy to obtain dispersion relation. Should be a 4th order polynomial in s.
+\item We are only interested in marginality to the MRI, so we will take s=0. 
+\item This should allow us to isolate the most unstable mode at criticality. 
+\end{itemize}
+
+\noindent Things to include:
+\begin{itemize}
+\item Derivations that I wrote out by hand (scan)
+\item Nondimensionalization 
+\item Multiscale analysis (in analogy to Raleigh B\'enard convection)
+\item Boundary conditions
+\item Amplitude functions
+\item GLE
+\end{itemize}
 
 \bibliography{mri.bib}
 
