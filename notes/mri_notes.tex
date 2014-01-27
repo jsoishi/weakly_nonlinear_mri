@@ -54,7 +54,9 @@ The shearing box (SB) approximation is one in which one considers the flow in a 
 
 My understanding is that the thin-gap limit allows one to ignore radially-dependent (``channel") modes. Channel modes are axially symmetric, linear modes, and are exact solutions of the nonlinear MRI in the SB approximation. These are the so-called ``primary MRI" modes discussed in \citet{Pessah:2010ic}. The advantage to analyzing the MRI without channel modes is that the background is steady and has a constant pressure. By widening our gap, we will complicate things because the non-constant background means that we open ourselves to parasitic modes -- modes whose growth rates depend on the amplitudes of the primary modes. In particular, the channel modes are Kelvin-Helmholtz unstable. 
 
-Another way to say this is that the wide gap approximation does not allow us to ignore the $\left(\textbf{u} \cdot \nabla \right) \textbf{u}$ term in the Navier-Stokes equation, which couples velocities with each other and thus allows the existence of parasitic modes. This can be seen by considering $\textbf{u}$ as a sum of discrete modes with wavenumber k:
+%Another way to say this is that the wide gap approximation does not allow us to
+In general, we cannot ignore the $\left(\textbf{u} \cdot \nabla \right) \textbf{u}$ term in the Navier-Stokes equation, which couples velocities with each other. %and thus allows the existence of parasitic modes. 
+This can be seen by considering $\textbf{u}$ as a sum of discrete modes with wavenumber k:
 
 \begin{equation}
 \textbf{u} = \sum\limits_{k = 0}^{\infty}a_k e^{ikx} \, dk
@@ -79,14 +81,23 @@ So essentially, our approach is similar to \citet{Umurhan:2007dz}, but our setup
 
 We will use the incompressible limit ($\nabla \cdot \textbf{u}$ = $0$), which applies because we consider weak magnetic fields (magnetic energy is small compared to thermal energy). \\
 
-\noindent We will proceed as follows: \\
+\noindent \textbf{We will proceed as follows:}
 
 \begin{itemize}
 \item Linearize equations for perturbations of the form $e^{st + ik_x x + ik_z z}$. We neglect y-dependence because of axisymmetry.
-\item Write linearized equations in matrix form, use SymPy to obtain dispersion relation. Should be a 4th order polynomial in s.
-\item We are only interested in marginality to the MRI, so we will take s=0. 
-\item This should allow us to isolate the most unstable mode at criticality. 
+\item Write linearized equations in matrix form, use SymPy to obtain dispersion relation. This is a 4th order polynomial in s.
 \end{itemize}
+\textit{The following five bullet points are performed in analogy to Raleigh B\'enard convection:}
+\begin{itemize}
+\item We want to derive an envelope (amplitude) equation, which we will do with a multiscale analysis. We choose scalings such that $s$, $k_x$, and $k_z$ in our dispersion relation come in at the same (lowest) order in the small parameter $\epsilon$. This determines the scalings for the corresponding slow variables T, X, and Y.
+\item Rewrite equations in terms of quantities that depend on both fast and slow variables, in the form $u(x, y, t; X, Y, T) = A(X, Y, T)e^{i\mathbf{k} \cdot \mathbf{x}}$.
+\item Expand quantities in powers of $\epsilon$.
+\item Group terms by $\mathcal{O}\left(\epsilon\right)$
+\item Solve successively to obtain envelope equation. We solve up to the order where a term appears that can cause saturation.\\
+
+%\item We are only interested in marginality to the MRI, so we will take s=0. 
+%\item This should allow us to isolate the most unstable mode at criticality. 
+\end{itemize} 
 
 \noindent Things to include:
 \begin{itemize}
