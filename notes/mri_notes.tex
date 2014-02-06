@@ -131,11 +131,13 @@ $\partial_t \rho + \nabla \cdot \left(\rho \mathbf{u}\right) = 0$ \\
 
 But later on, the small shearing box approximation and the assumption that the initial density perturbation is zero will render this equation unnecessary. \\
 
-So instead, we begin with the momentum equation:
+So instead, we begin with the momentum equation: 
+%\begin{equation}
+\[\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = \, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, - \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right)\]
+%\end{equation}\label{momeqn}
 
-\begin{equation}
-\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = \, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, - \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right)
-\end{equation}\label{momeqn}
+And the induction equation:
+\[\partial_t \mathbf{B} = \nabla \times \left(\mathbf{u} \times \mathbf{B}\right) + \eta\nabla^2\mathbf{B} \]
 
 The reference frame is rotating with angular velocity $\Omega_0 \mathbf{\hat{z}}$. \\
 
@@ -165,7 +167,7 @@ $\left( \nabla \times \mathbf{B} \right) \times \mathbf{B} = - \mathbf{B} \times
 
 %$- \frac{1}{8 \pi \rho}\nabla B^2 \,= \, - \frac{1}{8 \pi \rho} \left(2 B_0 \partial_z \mathbf{B}\right) \, = \, - \frac{1}{4 \pi \rho} \left(B_0 \partial_z \mathbf{B}\right)$ \\
 
-We now have: 
+We now have, for the momentum equation: 
 
 \begin{equation}
 \partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(v_r \mathbf{\hat{\phi}} - v_{\phi}\mathbf{\hat{r}}\right) \, = \, - r\left(\Omega^2 - \Omega_0^2\right)\mathbf{\hat{r}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, - \, \nu\nabla^2 \mathbf{u} \,
@@ -190,8 +192,22 @@ Where $\delta \equiv \frac{\Delta}{r_0} \ll 1 $. \\
 And our momentum equation now reads: 
 \[\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(v_x \mathbf{\hat{y}} - v_{y}\mathbf{\hat{x}}\right) \, = \, 2\Omega_0^2 x q \mathbf{\hat{x}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, - \, \nu\nabla^2 \mathbf{u} \,\]
 
+\noindent We nondimensionalize as follows (see Regev \& Umurhan 2008): \\
 
+\noindent x, y, and z are scaled by $\Delta = \delta r_0$ \\
+Velocities are scaled by $\Omega_0 r_0 \delta$ \\
+Magnetic fields are scaled by $B_0$ \\
+Pressure is scaled by $\epsilon^2 \Omega_0^2 r_0^2$ \\ 
 
+And we introduce the following terms:
+\[R_e \equiv \frac{\Omega_0 r_0^2 \delta^2}{\nu} ; \, \, \, R_m \equiv \frac{\Omega_0 r_0^2 \delta^2}{\eta}\]
+
+And a pseudo-plasma beta parameter: 
+\[\beta \equiv \frac{\epsilon^2\Omega_0^2r_0^2}{v_A^2} \]
+
+Where $v_A$ is the Alfven speed. \\
+
+We will next take perturbations with respect to the background flow.
 
 \bibliography{mri.bib}
 
