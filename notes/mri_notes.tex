@@ -115,7 +115,23 @@ We will use the incompressible limit ($\nabla \cdot \textbf{u}$ = $0$), which ap
 
 \textbf{Derivation of Equations} \\
 
-Begin with the Navier-Stokes equation:
+An equation for the conservation of energy is easily derived assuming an ideal gas: \\
+
+$P = \left(\gamma - 1\right)\rho e$\\
+
+$\partial_t e + \left(\mathbf{v}\cdot \nabla\right) e + \frac{1}{\rho}P\nabla \cdot \mathbf{u} = 0$ \\
+
+Becomes: \\
+
+$\partial_t P + \left(\mathbf{u} \cdot \nabla\right)P + \left(\gamma -1\right)P\nabla \cdot \mathbf{u} = 0$ \\
+
+But in our set-up, this will become formally equivalent to the incompressible limit ($\nabla \cdot \mathbf{u} \,=\, 0$). Likewise, we can write the equation for conservation of mass: \\
+
+$\partial_t \rho + \nabla \cdot \left(\rho \mathbf{u}\right) = 0$ \\
+
+But later on, the small shearing box approximation and the assumption that the initial density perturbation is zero will render this equation unnecessary. \\
+
+So instead, we begin with the momentum equation:
 
 \begin{equation}
 \partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = \, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, - \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right)
@@ -123,7 +139,7 @@ Begin with the Navier-Stokes equation:
 
 The reference frame is rotating with angular velocity $\Omega_0 \mathbf{\hat{z}}$. \\
 
-The coriolis term becomes: \\
+The Coriolis term becomes: \\
 
 $2\mathbf{\Omega} \times \mathbf{u} \, = \, 2\Omega_0 \mathbf{\hat{z}} \times \mathbf{u} \, = \, 2\Omega_0\left(\mathbf{\hat{z}} \times u_r \mathbf{\hat{r}} \, + \, \mathbf{\hat{z}} \times u_{\phi} \mathbf{\hat{\phi}}\right) \, = \, 2\Omega_0\left(v_r \mathbf{\hat{\phi}} - v_{\phi}\mathbf{\hat{r}}\right) $\\
 
@@ -169,8 +185,11 @@ We now make the shearing box approximation -- that is, we take a small region of
 $\phi_0 - \frac{\Delta}{2 r_0} \le \phi \le \phi_0 + \frac{\Delta}{2 r_0}$ \\
 $ - \frac{\Delta}{2} \le z \le r \frac{\Delta}{2}$ \\
 
+Where $\delta \equiv \frac{\Delta}{r_0} \ll 1 $. \\
+
 And our momentum equation now reads: 
 \[\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(v_x \mathbf{\hat{y}} - v_{y}\mathbf{\hat{x}}\right) \, = \, 2\Omega_0^2 x q \mathbf{\hat{x}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, - \, \nu\nabla^2 \mathbf{u} \,\]
+
 
 
 
