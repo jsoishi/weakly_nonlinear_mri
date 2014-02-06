@@ -97,6 +97,8 @@ We will use the incompressible limit ($\nabla \cdot \textbf{u}$ = $0$), which ap
 
 %\item We are only interested in marginality to the MRI, so we will take s=0. 
 %\item This should allow us to isolate the most unstable mode at criticality. 
+
+
 \end{itemize} 
 
 \noindent Things to include:
@@ -108,6 +110,58 @@ We will use the incompressible limit ($\nabla \cdot \textbf{u}$ = $0$), which ap
 \item Amplitude functions
 \item GLE
 \end{itemize}
+
+\vspace{10cm}
+
+\textbf{Derivation of Equations} \\
+
+Begin with the Navier-Stokes equation:
+
+\begin{equation}
+\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = \, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, - \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right)
+\end{equation}\label{momeqn}
+
+The reference frame is rotating with angular velocity $\Omega_0 \mathbf{\hat{z}}$. \\
+
+The coriolis term becomes: \\
+
+$2\mathbf{\Omega} \times \mathbf{u} \, = \, 2\Omega_0 \mathbf{\hat{z}} \times \mathbf{u} \, = \, 2\Omega_0\left(\mathbf{\hat{z}} \times u_r \mathbf{\hat{r}} \, + \, \mathbf{\hat{z}} \times u_{\phi} \mathbf{\hat{\phi}}\right) \, = \, 2\Omega_0\left(v_r \mathbf{\hat{\phi}} - v_{\phi}\mathbf{\hat{r}}\right) $\\
+
+The centrifugal term becomes: \\
+
+$\mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right) \, = \, \Omega_0 \mathbf{\hat{z}} \times \left(\Omega_0 \mathbf{\hat{z}} \times \mathbf{\hat{r}}\right) = \Omega_0^2 \mathbf{\hat{z}} \times \left(r \mathbf{\hat{\phi}}\right) \, = \, -\Omega_0^2 r \mathbf{\hat{r}}$ \\
+
+The gravitational force per unit mass can be written: \\
+
+$\nabla\Phi \, = \, -\frac{1}{\rho_b}\nabla P_b + r\Omega^2 \mathbf{\hat{r}}$ \\
+
+Where $\rho_b$ and $P_b$ are the density and pressure that satisfy a barotropic relation in a steady axisymmetric solution. \\
+
+The current density is $\mathbf{J} = \frac{1}{4\pi} \nabla \times \mathbf{B}$ and thus the Lorentz force becomes: \\
+
+$\frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) = \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} = - \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}$ \\
+
+Using the identity: \\
+
+$\left( \nabla \times \mathbf{B} \right) \times \mathbf{B} = - \mathbf{B} \times \left( \nabla \times \mathbf{B} \right) = -\nabla \left(\mathbf{B} \cdot \mathbf{B}\right) + \left(\mathbf{B} \cdot \nabla \right)\mathbf{B} + \left(\mathbf{B} \cdot \nabla \right)\mathbf{B} + \mathbf{B} \times \left(\nabla \times \mathbf{B}\right)$ \\
+
+The initial magnetic field is a constant vertical field $\mathbf{B} = B_0 \mathbf{\hat{z}}$, and thus the magnetic pressure term becomes: \\
+
+$- \frac{1}{8 \pi \rho}\nabla B^2 \,= \, - \frac{1}{8 \pi \rho} \left(2 B_0 \partial_z \mathbf{B}\right) \, = \, - \frac{1}{4 \pi \rho} \left(B_0 \partial_z \mathbf{B}\right)$ \\
+
+We now have: 
+
+\begin{equation}
+\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(v_r \mathbf{\hat{\phi}} - v_{\phi}\mathbf{\hat{r}}\right) \, = \, - r\left(\Omega^2 - \Omega_0^2\right)\mathbf{\hat{r}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{4 \pi \rho} \left(B_0 \partial_z \mathbf{B}\right) + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, - \, \nu\nabla^2 \mathbf{u} \,
+\end{equation}
+
+The net radial body force in the rotating frame, $r\left(\Omega^2 - \Omega_0^2\right)$, is Taylor expanded as follows: \\
+
+$-r\left(\Omega^2 - \Omega_0^2\right) \,= \,-2 r_0 \Omega\left(r_0\right)\left(r - r_0\right)\left.\frac{\partial \Omega}{\partial r}\right|_{r_0} \,= \, -2 r_0 \Omega\left(r_0\right)\left(r - r_0\right)\frac{\Omega_0}{r_0} \left.\frac{\partial ln \Omega}{\partial ln r}\right|_{r_0} $ \\
+
+And the definition -$\left.\frac{\partial ln \Omega}{\partial ln r}\right|_{r_0} \equiv q$ is introduced. \\
+
+We now finally make the switch 
 
 \bibliography{mri.bib}
 
