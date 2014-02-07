@@ -239,6 +239,28 @@ Dividing out a factor of $\left(\Omega_0^2 r_0 \delta\right)$ and rewriting in t
 
 $\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + \, 2 u_x \mathbf{\hat{y}} - 2 u_y \mathbf{\hat{x}} \, = \, 2 x q \mathbf{\hat{x}} \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \nabla P \, + \,  \frac{\epsilon^2}{\delta^2} \frac{1}{\rho_b} \nabla P_b \, - \, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \nabla B^2 \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla \right)\mathbf{B} \, - \, \frac{1}{R_e} \nabla^2 \mathbf{u}$ \\
 
+We perform the same nondimensionalization for the induction equation: \\
+
+\[\frac{\partial \widetilde{\mathbf{B}}}{\partial \widetilde{t}} \,  = \widetilde{\nabla} \times \left(\widetilde{\mathbf{u}} \times \widetilde{\mathbf{B}}\right) + \eta\widetilde{\nabla}^2 \widetilde{\mathbf{B}} \] 
+
+Which expands to become:
+
+\[\frac{\partial \widetilde{\mathbf{B}}}{\partial \widetilde{t}} \, = \, \left(\widetilde{\mathbf{B}} \cdot \widetilde{\nabla} \right) \widetilde{\mathbf{u}} \, - \, \left(\widetilde{\mathbf{u}} \cdot \widetilde{\nabla} \right) \widetilde{\mathbf{B}} \, + \, \eta \widetilde{\nabla}^2\widetilde{\mathbf{B}} \] \\
+
+After using the vector identity:
+
+\[\nabla \times \left(\mathbf{u} \times \mathbf{B}\right) \, = \, \mathbf{u}\left(\nabla \cdot \mathbf{B}\right) \, - \, \mathbf{B}\left(\nabla \cdot \mathbf{u}\right) \, + \, \left(\mathbf{B} \cdot \nabla\right)\mathbf{u} \, - \, \left(\mathbf{u} \cdot \nabla\right)\mathbf{B} \] \\
+
+And applying the incompressibility and solenoidal magnetic field constraints. \\
+
+Substituting for the dimensional variables, the induction equation becomes: \\
+
+\[\left(\Omega_0 B_0\right) \partial_t\mathbf{B} \, = \, \left(\Omega_0 B_0\right)\left(\mathbf{B} \cdot \nabla\right)\mathbf{u} \, - \, \left(\Omega_0 B_0\right)\left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{\eta B_0}{\delta^2 r_0^2}\mathbf{B} \]
+
+Which, after dividing by a factor of $\left(\Omega_0 B_0\right)$ and substituting in $R_m$, becomes: \\
+
+\[\partial_t\mathbf{B} \, = \, \left(\mathbf{B} \cdot \nabla \right)\mathbf{u} \, -\, \left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{1}{R_m}\mathbf{B} \]
+
 We will next take perturbations with respect to the background flow.
 
 \bibliography{mri.bib}
