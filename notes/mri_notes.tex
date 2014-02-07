@@ -271,6 +271,16 @@ $P \, = \, P_b \, + \, P_1$ \\
 
 $\mathbf{B} \, = \, B_0\mathbf{\hat{z}} + \mathbf{B_1}$ \\
 
+We will begin with the momentum equation. To make this more explicit, we write out all 3 equations (pre-perturbation): \\
+
+$\partial_t u_x \, + \, \left(\mathbf{u} \cdot \nabla\right)u_x \, - \, 2 u_y \, = \, 2 x q \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \partial_x P \, + \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho_b} \partial_x P_b \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_x \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_x \, - \, \frac{1}{R_e}\nabla^2 u_x  $ \\
+
+$\partial_t u_y \, + \, \left(\mathbf{u} \cdot \nabla\right)u_y \, + \, 2u_x =  \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \partial_y P \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_y \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_y \, - \, \frac{1}{R_e}\nabla^2 u_y  $ \\
+
+$\partial_t u_z \, + \, \left(\mathbf{u} \cdot \nabla\right)u_z \,  =  \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \partial_z P \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_z \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_z \, - \, \frac{1}{R_e}\nabla^2 u_z $ \\
+
+Where we have made the substitution $\partial_y P_b = \partial_y \rho_b = 0$, as the steady barotropic solution must be axisymmetric. 
+
 \bibliography{mri.bib}
 
 \end{document}
