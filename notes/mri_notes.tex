@@ -181,7 +181,7 @@ And the definition -$\left.\frac{\partial ln \Omega}{\partial ln r}\right|_{r_0}
 
 $-2 r_0 \Omega\left(r_0\right)\left(r - r_0\right)\frac{\Omega_0}{r_0} \left.\frac{\partial ln \Omega}{\partial ln r}\right|_{r_0} \, = \, 2q\Omega_0^2\left(r - r_0\right)$ \\
 
-We now make the shearing box approximation -- that is, we take a small region of size $\Delta$ centered on a point $\left(r = r_0, \phi = \phi_0, z=0\right)$ in our disk. The box has sides of length $\Delta$: \\
+We now make the shearing box approximation \-- that is, we take a small region of size $\Delta$ centered on a point $\left(r = r_0, \phi = \phi_0, z=0\right)$ in our disk. The box has sides of length $\Delta$: \\
 
 \noindent$r_0 - \frac{\Delta}{2} \le r \le r_0 + \frac{\Delta}{2}$ \\
 $\phi_0 - \frac{\Delta}{2 r_0} \le \phi \le \phi_0 + \frac{\Delta}{2 r_0}$ \\
@@ -190,7 +190,7 @@ $ - \frac{\Delta}{2} \le z \le r \frac{\Delta}{2}$ \\
 Where $\delta \equiv \frac{\Delta}{r_0} \ll 1 $. \\
 
 And our momentum equation now reads: 
-\[\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(v_x \mathbf{\hat{y}} - v_{y}\mathbf{\hat{x}}\right) \, = \, 2\Omega_0^2 x q \mathbf{\hat{x}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, - \, \nu\nabla^2 \mathbf{u} \,\]
+\[\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(u_x \mathbf{\hat{y}} - u_{y}\mathbf{\hat{x}}\right) \, = \, 2\Omega_0^2 x q \mathbf{\hat{x}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, - \, \nu\nabla^2 \mathbf{u} \,\]
 
 \noindent We nondimensionalize as follows (see Regev \& Umurhan 2008): \\
 
@@ -205,7 +205,39 @@ And we introduce the following terms:
 And a pseudo-plasma beta parameter: 
 \[\beta \equiv \frac{\epsilon^2\Omega_0^2r_0^2}{v_A^2} \]
 
-Where $v_A$ is the Alfven speed. \\
+Where $v_A$ is the Alfven speed, which is $v_A = \frac{B_0^2}{\rho_0}$. \\
+
+To make it perfectly clear, I will write this out explicitly. Dimensional quantities are denoted by a tilde superscript, and I will first rewrite the momentum equation in its dimensional quantities: \\
+
+\[\frac{\partial \mathbf{\widetilde{u}}}{\partial \widetilde{t}} \, + \, \mathbf{\widetilde{u}} \cdot \widetilde{\nabla} \mathbf{\widetilde{u}} \, + 2\Omega_0\left(\widetilde{u_x} \mathbf{\hat{y}} - \widetilde{u_{y}}\mathbf{\hat{x}}\right) \, = \, 2\Omega_0^2 \widetilde{x} q \mathbf{\hat{x}} \, -\frac{1}{\widetilde{\rho}}\widetilde{\nabla} \widetilde{P} \, +\frac{1}{\widetilde{\rho_b}}\widetilde{\nabla} \widetilde{P_b} \,  - \, \frac{1}{8 \pi \widetilde{\rho}}\widetilde{\nabla} \widetilde{B}^2 + \frac{1}{4 \pi \widetilde{\rho}} \left(\mathbf{\widetilde{B}} \cdot \widetilde{\nabla}\right)\mathbf{\widetilde{B}}  \, - \, \nu \widetilde{\nabla}^2 \mathbf{\widetilde{u}} \,\]
+
+The explicit substitutions made are as follows: \\
+
+$\widetilde{u} = \Omega_0 r_0 \delta u$ \\
+
+$\widetilde{x} = \delta r_0 x$ \\
+
+$\widetilde{\nabla} = \frac{\nabla}{\delta r_0}$ \\
+
+$\widetilde{t} = \frac{t}{\Omega_0}$ \\
+
+$\widetilde{B} = B_0 B \, \,; \,  \widetilde{P} = P_0 P \, \, ; \, \widetilde{\rho} = \rho_0 \rho $ \\
+
+The velocity scale is related to the local sound speed scale $\left(c_{s0} \equiv \sqrt{\frac{P_0}{\rho_0}}\right)$ by:\\
+
+$v_0 = \frac{\delta}{\epsilon} c_{s0}$ \\
+
+And thus: $\Omega_0 r_0 \delta u = \frac{\delta}{\epsilon} \sqrt{\frac{P_0}{\rho_0}}$ \\
+
+Making these substitutions, the dimensionless equation becomes: \\
+
+%\begin{equation}
+$\left(\Omega_0^2 r_0 \delta\right) \partial_t \mathbf{u} \, + \, \left(\Omega_0^2 r_0 \delta\right)\mathbf{u} \cdot \nabla \mathbf{u} \,+\, \left(\Omega_0^2 r_0 \delta\right) 2 u_x \mathbf{\hat{y}} \,-\, \left(\Omega_0^2 r_0 \delta\right) 2 u_y \mathbf{\hat{x}} \, = \, \left(\Omega_0^2 r_0 \delta\right) 2 x q \mathbf{\hat{x}} \,-\, \Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right)\frac{1}{\rho} \nabla P  \,+\, \Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right)\frac{1}{\rho_b} \nabla P_b \, - \, \frac{1}{8\pi}\Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right) \frac{1}{\beta} \frac{1}{\rho} \nabla B^2 \, + \, \frac{1}{4\pi} \Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right) \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla \right)\mathbf{B} \, - \, \nu\left(\frac{\Omega_0}{r_0 \delta}\right) \nabla^2 \mathbf{u}$ \\
+%\end{equation}
+
+Dividing out a factor of $\left(\Omega_0^2 r_0 \delta\right)$ and rewriting in terms of $\beta$ and $R_e$ yields the nondimensionalized momentum equation: \\
+
+$\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + \, 2 u_x \mathbf{\hat{y}} - 2 u_y \mathbf{\hat{x}} \, = \, 2 x q \mathbf{\hat{x}} \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \nabla P \, + \,  \frac{\epsilon^2}{\delta^2} \frac{1}{\rho_b} \nabla P_b \, - \, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \nabla B^2 \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla \right)\mathbf{B} \, - \, \frac{1}{R_e} \nabla^2 \mathbf{u}$ \\
 
 We will next take perturbations with respect to the background flow.
 
