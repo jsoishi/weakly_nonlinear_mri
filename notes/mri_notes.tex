@@ -133,7 +133,7 @@ But later on, the small shearing box approximation and the assumption that the i
 
 So instead, we begin with the momentum equation: 
 %\begin{equation}
-\[\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = \, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, - \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right)\]
+\[\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = \, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, + \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right)\]
 %\end{equation}\label{momeqn}
 
 And the induction equation:
@@ -170,7 +170,7 @@ $\left( \nabla \times \mathbf{B} \right) \times \mathbf{B} = - \mathbf{B} \times
 We now have, for the momentum equation: 
 
 \begin{equation}
-\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(v_r \mathbf{\hat{\phi}} - v_{\phi}\mathbf{\hat{r}}\right) \, = \, - r\left(\Omega^2 - \Omega_0^2\right)\mathbf{\hat{r}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, - \, \nu\nabla^2 \mathbf{u} \,
+\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(v_r \mathbf{\hat{\phi}} - v_{\phi}\mathbf{\hat{r}}\right) \, = \, - r\left(\Omega^2 - \Omega_0^2\right)\mathbf{\hat{r}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, + \, \nu\nabla^2 \mathbf{u} \,
 \end{equation}
 
 The net radial body force in the rotating frame, $r\left(\Omega^2 - \Omega_0^2\right)$, is Taylor expanded as follows: \\
@@ -190,7 +190,7 @@ $ - \frac{\Delta}{2} \le z \le r \frac{\Delta}{2}$ \\
 Where $\delta \equiv \frac{\Delta}{r_0} \ll 1 $. \\
 
 And our momentum equation now reads: 
-\[\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(u_x \mathbf{\hat{y}} - u_{y}\mathbf{\hat{x}}\right) \, = \, 2\Omega_0^2 x q \mathbf{\hat{x}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, - \, \nu\nabla^2 \mathbf{u} \,\]
+\[\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(u_x \mathbf{\hat{y}} - u_{y}\mathbf{\hat{x}}\right) \, = \, 2\Omega_0^2 x q \mathbf{\hat{x}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, + \, \nu\nabla^2 \mathbf{u} \,\]
 
 \noindent We nondimensionalize as follows (see Regev \& Umurhan 2008): \\
 
@@ -209,7 +209,7 @@ Where $v_A$ is the Alfven speed, which is $v_A = \frac{B_0^2}{\rho_0}$. \\
 
 To make it perfectly clear, I will write this out explicitly. Dimensional quantities are denoted by a tilde superscript, and I will first rewrite the momentum equation in its dimensional quantities: \\
 
-\[\frac{\partial \mathbf{\widetilde{u}}}{\partial \widetilde{t}} \, + \, \mathbf{\widetilde{u}} \cdot \widetilde{\nabla} \mathbf{\widetilde{u}} \, + 2\Omega_0\left(\widetilde{u_x} \mathbf{\hat{y}} - \widetilde{u_{y}}\mathbf{\hat{x}}\right) \, = \, 2\Omega_0^2 \widetilde{x} q \mathbf{\hat{x}} \, -\frac{1}{\widetilde{\rho}}\widetilde{\nabla} \widetilde{P} \, +\frac{1}{\widetilde{\rho_b}}\widetilde{\nabla} \widetilde{P_b} \,  - \, \frac{1}{8 \pi \widetilde{\rho}}\widetilde{\nabla} \widetilde{B}^2 + \frac{1}{4 \pi \widetilde{\rho}} \left(\mathbf{\widetilde{B}} \cdot \widetilde{\nabla}\right)\mathbf{\widetilde{B}}  \, - \, \nu \widetilde{\nabla}^2 \mathbf{\widetilde{u}} \,\]
+\[\frac{\partial \mathbf{\widetilde{u}}}{\partial \widetilde{t}} \, + \, \mathbf{\widetilde{u}} \cdot \widetilde{\nabla} \mathbf{\widetilde{u}} \, + 2\Omega_0\left(\widetilde{u_x} \mathbf{\hat{y}} - \widetilde{u_{y}}\mathbf{\hat{x}}\right) \, = \, 2\Omega_0^2 \widetilde{x} q \mathbf{\hat{x}} \, -\frac{1}{\widetilde{\rho}}\widetilde{\nabla} \widetilde{P} \, +\frac{1}{\widetilde{\rho_b}}\widetilde{\nabla} \widetilde{P_b} \,  - \, \frac{1}{8 \pi \widetilde{\rho}}\widetilde{\nabla} \widetilde{B}^2 + \frac{1}{4 \pi \widetilde{\rho}} \left(\mathbf{\widetilde{B}} \cdot \widetilde{\nabla}\right)\mathbf{\widetilde{B}}  \, + \, \nu \widetilde{\nabla}^2 \mathbf{\widetilde{u}} \,\]
 
 The explicit substitutions made are as follows: \\
 
@@ -232,12 +232,12 @@ And thus: $\Omega_0 r_0 \delta u = \frac{\delta}{\epsilon} \sqrt{\frac{P_0}{\rho
 Making these substitutions, the dimensionless equation becomes: \\
 
 %\begin{equation}
-$\left(\Omega_0^2 r_0 \delta\right) \partial_t \mathbf{u} \, + \, \left(\Omega_0^2 r_0 \delta\right)\mathbf{u} \cdot \nabla \mathbf{u} \,+\, \left(\Omega_0^2 r_0 \delta\right) 2 u_x \mathbf{\hat{y}} \,-\, \left(\Omega_0^2 r_0 \delta\right) 2 u_y \mathbf{\hat{x}} \, = \, \left(\Omega_0^2 r_0 \delta\right) 2 x q \mathbf{\hat{x}} \,-\, \Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right)\frac{1}{\rho} \nabla P  \,+\, \Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right)\frac{1}{\rho_b} \nabla P_b \, - \, \frac{1}{8\pi}\Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right) \frac{1}{\beta} \frac{1}{\rho} \nabla B^2 \, + \, \frac{1}{4\pi} \Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right) \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla \right)\mathbf{B} \, - \, \nu\left(\frac{\Omega_0}{r_0 \delta}\right) \nabla^2 \mathbf{u}$ \\
+$\left(\Omega_0^2 r_0 \delta\right) \partial_t \mathbf{u} \, + \, \left(\Omega_0^2 r_0 \delta\right)\mathbf{u} \cdot \nabla \mathbf{u} \,+\, \left(\Omega_0^2 r_0 \delta\right) 2 u_x \mathbf{\hat{y}} \,-\, \left(\Omega_0^2 r_0 \delta\right) 2 u_y \mathbf{\hat{x}} \, = \, \left(\Omega_0^2 r_0 \delta\right) 2 x q \mathbf{\hat{x}} \,-\, \Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right)\frac{1}{\rho} \nabla P  \,+\, \Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right)\frac{1}{\rho_b} \nabla P_b \, - \, \frac{1}{8\pi}\Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right) \frac{1}{\beta} \frac{1}{\rho} \nabla B^2 \, + \, \frac{1}{4\pi} \Omega_0^2 r_0 \left(\frac{\epsilon^2}{\delta}\right) \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla \right)\mathbf{B} \, + \, \nu\left(\frac{\Omega_0}{r_0 \delta}\right) \nabla^2 \mathbf{u}$ \\
 %\end{equation}
 
 Dividing out a factor of $\left(\Omega_0^2 r_0 \delta\right)$ and rewriting in terms of $\beta$ and $R_e$ yields the nondimensionalized momentum equation: \\
 
-$\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + \, 2 u_x \mathbf{\hat{y}} - 2 u_y \mathbf{\hat{x}} \, = \, 2 x q \mathbf{\hat{x}} \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \nabla P \, + \,  \frac{\epsilon^2}{\delta^2} \frac{1}{\rho_b} \nabla P_b \, - \, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \nabla B^2 \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla \right)\mathbf{B} \, - \, \frac{1}{R_e} \nabla^2 \mathbf{u}$ \\
+$\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + \, 2 u_x \mathbf{\hat{y}} - 2 u_y \mathbf{\hat{x}} \, = \, 2 x q \mathbf{\hat{x}} \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \nabla P \, + \,  \frac{\epsilon^2}{\delta^2} \frac{1}{\rho_b} \nabla P_b \, - \, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \nabla B^2 \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla \right)\mathbf{B} \, + \, \frac{1}{R_e} \nabla^2 \mathbf{u}$ \\
 
 We perform the same nondimensionalization for the induction equation: \\
 
@@ -273,13 +273,18 @@ $\mathbf{B} \, = \, B_0\mathbf{\hat{z}} + \mathbf{B_1}$ \\
 
 We will begin with the momentum equation. To make this more explicit, we write out all 3 equations (pre-perturbation): \\
 
-$\partial_t u_x \, + \, \left(\mathbf{u} \cdot \nabla\right)u_x \, - \, 2 u_y \, = \, 2 x q \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \partial_x P \, + \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho_b} \partial_x P_b \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_x \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_x \, - \, \frac{1}{R_e}\nabla^2 u_x  $ \\
+$\partial_t u_x \, + \, \left(\mathbf{u} \cdot \nabla\right)u_x \, - \, 2 u_y \, = \, 2 x q \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \partial_x P \, + \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho_b} \partial_x P_b \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_x \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_x \, + \, \frac{1}{R_e}\nabla^2 u_x  $ \\
 
-$\partial_t u_y \, + \, \left(\mathbf{u} \cdot \nabla\right)u_y \, + \, 2u_x =  \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \partial_y P \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_y \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_y \, - \, \frac{1}{R_e}\nabla^2 u_y  $ \\
+$\partial_t u_y \, + \, \left(\mathbf{u} \cdot \nabla\right)u_y \, + \, 2u_x =  \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \partial_y P \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_y \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_y \, + \, \frac{1}{R_e}\nabla^2 u_y  $ \\
 
-$\partial_t u_z \, + \, \left(\mathbf{u} \cdot \nabla\right)u_z \,  =  \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \partial_z P \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_z \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_z \, - \, \frac{1}{R_e}\nabla^2 u_z $ \\
+$\partial_t u_z \, + \, \left(\mathbf{u} \cdot \nabla\right)u_z \,  =  \, - \, \frac{\epsilon^2}{\delta^2} \frac{1}{\rho} \partial_z P \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_z \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_z \, + \, \frac{1}{R_e}\nabla^2 u_z $ \\
 
-Where we have made the substitution $\partial_y P_b = \partial_y \rho_b = 0$, as the steady barotropic solution must be axisymmetric. 
+Where we have made the substitution $\partial_y P_b = \partial_y \rho_b = 0$, as the steady barotropic solution must be axisymmetric. \\
+
+These become: \\
+
+$\partial_t u_{1x} \, + \, \left(\mathbf{u} \cdot \nabla\right)u_{1x} \, + \, 2 q \Omega_0 x \, - \, 2 u_{1y}\,= \, 2 x q \, - \, \frac{\epsilon^2}{\delta^2} \left( \frac{\partial_x P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_x P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_x \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_x \, + \, \frac{1}{R_e}\nabla^2 u_x  $ \\
+
 
 \bibliography{mri.bib}
 
