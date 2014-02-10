@@ -187,7 +187,7 @@ We now make the shearing box approximation \-- that is, we take a small region o
 $\phi_0 - \frac{\Delta}{2 r_0} \le \phi \le \phi_0 + \frac{\Delta}{2 r_0}$ \\
 $ - \frac{\Delta}{2} \le z \le r \frac{\Delta}{2}$ \\
 
-Where $\delta \equiv \frac{\Delta}{r_0} \ll 1 $. \\
+Where $\delta \equiv \frac{\Delta}{r_0} \ll 1 $. The box lives in a disk of vertical height $h_0$, parameterized by $\epsilon \equiv \frac{h_0}{r_0}$. The relative scaling of $\delta$ and $\epsilon$ determine whether we are in the small or large shearing box limit.\\
 
 And our momentum equation now reads: 
 \[\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + 2\Omega_0\left(u_x \mathbf{\hat{y}} - u_{y}\mathbf{\hat{x}}\right) \, = \, 2\Omega_0^2 x q \mathbf{\hat{x}} \, -\frac{1}{\rho}\nabla P \, +\frac{1}{\rho_b}\nabla P_b \,  - \, \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}  \, + \, \nu\nabla^2 \mathbf{u} \,\]
@@ -281,9 +281,25 @@ $\partial_t u_z \, + \, \left(\mathbf{u} \cdot \nabla\right)u_z \,  =  \, - \, \
 
 Where we have made the substitution $\partial_y P_b = \partial_y \rho_b = 0$, as the steady barotropic solution must be axisymmetric. \\
 
+The term $\left(\mathbf{u} \cdot \nabla\right)\mathbf{u}$ expands as follows:\\
+
+$\left(-q \Omega_0 x \mathbf{\hat{y}} \, + \, \mathbf{u_1}\right) \cdot \left(-q \Omega_0 x \mathbf{\hat{y}} \, + \, \mathbf{u_1}\right) \, = \, - q \Omega_0 x \mathbf{\hat{y}} \cdot \nabla \mathbf{u_1} + \mathbf{u_1} \cdot \nabla \mathbf{u_1} \, = \, - q \Omega_0 x \partial_y \mathbf{u_1} + \mathbf{u_1} \cdot \nabla \mathbf{u_1}$ \\
+
+Because all of the $\nabla \left(-q \Omega_0 x \mathbf{\hat{y}}\right)$ terms are 0. \\
+
+Similarly, the magnetic tension term expands to become: \\
+
+$\left(\mathbf{B} \cdot \nabla \right)\mathbf{B} \, = \, \left(\left(B_0 \mathbf{\hat{z}} + \mathbf{B_1} \right)\cdot \nabla \right)\left(B_0 \mathbf{\hat{z}} + \mathbf{B_1} \right) \, = \, B_0 \partial_z \mathbf{B_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{B_1}$ \\
+
+Because the $\nabla B_0 \mathbf{\hat{z}}$ terms are 0.
+
+The magnetic pressure term expands to become: \\
+
+$\nabla \left(B_0 \mathbf{\hat{z}} + \mathbf{B_1}\right)^2 $ \\
+
 These become: \\
 
-$\partial_t u_{1x} \, + \, \left(\mathbf{u} \cdot \nabla\right)u_{1x} \, + \, 2 q \Omega_0 x \, - \, 2 u_{1y}\,= \, 2 x q \, - \, \frac{\epsilon^2}{\delta^2} \left( \frac{\partial_x P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_x P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_x \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_x \, + \, \frac{1}{R_e}\nabla^2 u_x  $ \\
+$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, + \, 2 q \Omega_0 x \, - \, 2 u_{1y}\,= \, 2 q x \, - \, \frac{\epsilon^2}{\delta^2} \left( \frac{\partial_x P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_x P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, -\, \frac{1}{8\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \partial_x \left(\mathbf{B}^2\right) \, + \, \frac{1}{4\pi} \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{\rho} \left(\mathbf{B} \cdot \nabla\right) B_x \, + \, \frac{1}{R_e}\nabla^2 u_x  $ \\
 
 
 \bibliography{mri.bib}
