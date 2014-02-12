@@ -335,7 +335,16 @@ $\, - \, \frac{\epsilon^2}{\delta^2} \left( \frac{\partial_y P_1}{\rho_1 + \rho_
 $\partial_t u_{1z} \, - \, q \Omega_0 x \partial_y u_{1z} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1z} \, = $\\
 $\, - \, \frac{\epsilon^2}{\delta^2} \left( \frac{\partial_z P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_z P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, + \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1z} \,- \, \frac{B_{1z}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1z} \right) \, + \, \frac{1}{R_e}\nabla^2 u_x  $ \\
 
-In the small shearing box (SSB) limit, $\delta \ll \epsilon \ll 1$. For a rotation law that is close to Keplerian, 
+In the small shearing box (SSB) limit, $\delta \ll \epsilon \ll 1$. For a rotation law that is close to Keplerian, $\frac{1}{\rho_b}\partial_xP_b = \mathcal{O}\left(\delta^3/\epsilon^2\right). $
+
+The following replacements are made: \\
+
+\noindent $\partial_i P_b$ becomes $\frac{\delta^2}{\epsilon^2} \partial_i P_b $ \\
+$\partial_i \rho_b$ becomes $\frac{\delta^2}{\epsilon^2} \partial_i \rho_b $ \\
+
+The pressure perturbation can be expanded: \\
+
+$P_1 = P_0 + \frac{\delta^2}{\epsilon^2}\partial_i P$
 
 
 \bibliography{mri.bib}
