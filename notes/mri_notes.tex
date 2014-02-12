@@ -329,7 +329,7 @@ The three momentum equations become: \\
 
 $\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, + \, 2 q \Omega_0 x \, - \, 2 u_{1y}\,= \, 2 q x \, - \, \frac{\epsilon^2}{\delta^2} \left( \frac{\partial_x P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_x P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, + \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1x} \,- \, \frac{B_{1x}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1x} \right) \, + \, \frac{1}{R_e}\nabla^2 u_x  $ \\
 
-$\partial_t u_{1y} \, - \, q \Omega_0 x \partial_y u_{1y} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1y} \,- \, 2 q \Omega_0 x \, + \, 2u_{1y} \, =  $\\
+$\partial_t u_{1y} \, - \, q \Omega_0 u_{1x} \, - \, q \Omega_0 x \partial_y u_{1y} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1y} \,+ \, 2u_{1x} \, =  $\\
 $\, - \, \frac{\epsilon^2}{\delta^2} \left( \frac{\partial_y P_1}{\rho_1 + \rho_b} \right) \, + \, \frac{\epsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1y} \,- \, \frac{B_{1y}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1y} \right) \, + \, \frac{1}{R_e}\nabla^2 u_y  $ \\
 
 $\partial_t u_{1z} \, - \, q \Omega_0 x \partial_y u_{1z} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1z} \, = $\\
@@ -344,8 +344,24 @@ $\partial_i \rho_b$ becomes $\frac{\delta^2}{\epsilon^2} \partial_i \rho_b $ \\
 
 The pressure perturbation can be expanded: \\
 
-$P_1 = P_0 + \frac{\delta^2}{\epsilon^2}\partial_i P$
+$P_1 = P_0 + \frac{\delta^2}{\epsilon^2}\partial_i p$ where $P_0$ is a constant that gets absorbed into $P_b$. \\
 
+This is equivalent to taking $\delta = \epsilon^2$. Making these substitutions and taking $\rho_1 = 0$, we obtain: \\
+
+$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, - \, 2 u_{1y}\,= \, - \, \frac{1}{\rho_b}\partial_x p  \, + \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1x} \,- \, \frac{B_{1x}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1x} \right) \, + \, \frac{1}{R_e}\nabla^2 u_x  $ \\
+
+$\partial_t u_{1y}\, - \, q \Omega_0 u_{1x}  \, - \, q \Omega_0 x \partial_y u_{1y} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1y} \,+ \, 2u_{1x} \, =  $\\
+$\, - \, \frac{1}{\rho_b}\partial_y p \, + \,  \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1y} \,- \, \frac{B_{1y}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1y} \right) \, + \, \frac{1}{R_e}\nabla^2 u_y  $ \\
+
+$\partial_t u_{1z} \, - \, q \Omega_0 x \partial_y u_{1z} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1z} \, = \, - \, \frac{1}{\rho_b}\partial_z p  \, + \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1z} \,- \, \frac{B_{1z}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1z} \right) \, + \, \frac{1}{R_e}\nabla^2 u_x  $ \\
+
+Now we reparameterize in terms of the total (gas and magnetic) pressure: \\
+
+$\Pi \equiv p + \frac{1}{2\beta} B^2$ \\
+
+And take $\rho_b$ = 1. And finally, we have the momentum equation: \\
+
+$\partial_t \mathbf{u_1} \, - \, q\Omega_0 x \partial_y \mathbf{u_1} \, + \, \left(\mathbf{u_1}\cdot \nabla\right) \mathbf{u_1} \, - \, 2 u_{1y} \mathbf{\hat{x}} + $
 
 \bibliography{mri.bib}
 
