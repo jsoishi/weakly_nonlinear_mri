@@ -259,11 +259,11 @@ And applying the incompressibility and solenoidal magnetic field constraints. \\
 
 Substituting for the dimensional variables, the induction equation becomes: \\
 
-\[\left(\Omega_0 B_0\right) \partial_t\mathbf{B} \, = \, \left(\Omega_0 B_0\right)\left(\mathbf{B} \cdot \nabla\right)\mathbf{u} \, - \, \left(\Omega_0 B_0\right)\left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{\eta B_0}{\delta^2 r_0^2}\mathbf{B} \]
+\[\left(\Omega_0 B_0\right) \partial_t\mathbf{B} \, = \, \left(\Omega_0 B_0\right)\left(\mathbf{B} \cdot \nabla\right)\mathbf{u} \, - \, \left(\Omega_0 B_0\right)\left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{\eta B_0}{\delta^2 r_0^2}\nabla^2\mathbf{B} \]
 
 Which, after dividing by a factor of $\left(\Omega_0 B_0\right)$ and substituting in $R_m$, becomes: \\
 
-\[\partial_t\mathbf{B} \, = \, \left(\mathbf{B} \cdot \nabla \right)\mathbf{u} \, -\, \left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{1}{R_m}\mathbf{B} \]
+\[\partial_t\mathbf{B} \, = \, \left(\mathbf{B} \cdot \nabla \right)\mathbf{u} \, -\, \left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{1}{R_m}\nabla^2\mathbf{B} \]
 
 We will next take perturbations with respect to the background flow. The steady solution is $\mathbf{u} = -2 q \Omega_0 \mathbf{\hat{y}}$, $P = P_b$, $\rho = \rho_b$, and $\mathbf{B} = B_0 \mathbf{\hat{z}}$, so we find perturbation solutions of the following form (1 subscripts denote perturbations): \\
 
@@ -385,7 +385,26 @@ Drop terms of $\mathcal{O}\left(\frac{\delta^2}{\epsilon^2}\right)$, and we reco
 
 $\nabla \cdot \mathbf{u_1} \, = \, 0$ \\
 
-Thus we have formally proven that we are working in the incompressible limit! 
+Thus we have formally proven that we are working in the incompressible limit! \\
+
+As for the induction equation, we already nondimensionalized to obtain: \\
+
+$\partial_t\mathbf{B} \, = \, \left(\mathbf{B} \cdot \nabla \right)\mathbf{u} \, -\, \left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{1}{R_m}\nabla^2\mathbf{B} $ \\
+
+If we plug in perturbations and all terms involving $\nabla\left(-q\Omega_0 x \mathbf{\hat{y}}\right)$ or $\nabla B_0 \mathbf{\hat{z}}$ go to zero, we arrive at: \\
+
+$\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, + \, \frac{1}{R_m} \nabla^2 \mathbf{B_1} $ \\
+
+And finally we have our full equation set: \\
+
+$\partial_t \mathbf{u_1} \, - \, q\Omega_0 x \partial_y \mathbf{u_1} \, + \, \left(\mathbf{u_1}\cdot \nabla\right) \mathbf{u_1} \, - \, 2 u_{1y} \mathbf{\hat{x}} \, + \, \left(2 - \Omega_0 q\right)u_{1x}\mathbf{\hat{y}} \, = \, \frac{1}{4\pi} \nabla \Pi \, + \, \frac{1}{4\pi}B_0\partial_z\mathbf{B_1} \, + \, \frac{1}{4\pi}\mathbf{B_1} \cdot \nabla \mathbf{B_1}$ \\
+
+$\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, + \, \frac{1}{R_m} \nabla^2 \mathbf{B_1} $ \\
+
+$\nabla \cdot \mathbf{u_1} \, = \, 0$\\
+
+$\nabla \cdot \mathbf{B_1} \, = \, 0$ \\ 
+
 
 \bibliography{mri.bib}
 
