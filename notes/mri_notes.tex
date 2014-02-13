@@ -221,7 +221,7 @@ $\widetilde{x} = \delta r_0 x$ \\
 
 $\widetilde{\nabla} = \frac{\nabla}{\delta r_0}$ \\
 
-$\widetilde{t} = \frac{t}{\Omega_0}$ \\
+$\widetilde{t} = \frac{t}{\Omega_0}$ \\ 
 
 $\widetilde{B} = B_0 B \, \,; \,  \widetilde{P} = P_0 P \, \, ; \, \widetilde{\rho} = \rho_0 \rho $ \\
 
@@ -361,7 +361,31 @@ $\Pi \equiv p + \frac{1}{2\beta} B^2$ \\
 
 And take $\rho_b$ = 1. And finally, we have the perturbed, nondimensionalized momentum equation in all its glory: \\
 
-$\partial_t \mathbf{u_1} \, - \, q\Omega_0 x \partial_y \mathbf{u_1} \, + \, \left(\mathbf{u_1}\cdot \nabla\right) \mathbf{u_1} \, - \, 2 u_{1y} \mathbf{\hat{x}} \, + \, \left(2 - \Omega_0 q\right)u_{1x}\mathbf{\hat{y}} \, = \, \frac{1}{4\pi} \nabla \Pi \, + \, \frac{1}{4\pi}B_0\partial_z\mathbf{B_1} \, + \, \frac{1}{4\pi}\mathbf{B_1} \cdot \nabla \mathbf{B_1}$
+$\partial_t \mathbf{u_1} \, - \, q\Omega_0 x \partial_y \mathbf{u_1} \, + \, \left(\mathbf{u_1}\cdot \nabla\right) \mathbf{u_1} \, - \, 2 u_{1y} \mathbf{\hat{x}} \, + \, \left(2 - \Omega_0 q\right)u_{1x}\mathbf{\hat{y}} \, = \, \frac{1}{4\pi} \nabla \Pi \, + \, \frac{1}{4\pi}B_0\partial_z\mathbf{B_1} \, + \, \frac{1}{4\pi}\mathbf{B_1} \cdot \nabla \mathbf{B_1}$ \\
+
+We now formally show what happens to the energy equation. If we perform the same steps as above on our energy equation: \\
+
+$\frac{\partial}{\partial\widetilde{t}} \widetilde{P} + \left(\widetilde{\mathbf{u}} \cdot \widetilde{\nabla} \right)\widetilde{P} + \left(\gamma -1\right)\widetilde{P} \widetilde{\nabla} \cdot \widetilde{\mathbf{u}} = 0$ \\
+
+That is, nondimensionalize: \\
+
+$\Omega_0^3 r_0^2 \epsilon^2 \rho_0 \frac{\partial}{\partial t} P \, + \, \Omega_0^3 r_0^2 \epsilon^2 \rho_0 \left(\mathbf{u} \cdot \nabla \right) P \, + \, \Omega_0^3 r_0^2 \epsilon^2 \rho_0 \left(\gamma - 1 \right) P \nabla \cdot \mathbf{u} \, = \, 0 $ \\
+
+$\partial_t P \, + \, \left(\mathbf{u} \cdot \nabla \right) P \, + \, \left(\gamma - 1 \right) P \nabla \cdot \mathbf{u} \, = \, 0 $ \\
+
+Take perturbations: \\
+
+$\partial_t P_1 \, - \, q\Omega_0 x \partial_y P_1 \, + \, u_{1x}\partial_x P_b \, + \, u_{z1}\partial_z P_b \, + \, \left(\gamma - 1 \right) P_b \nabla \cdot \mathbf{u_1} \, + \, \mathbf{u_1} \cdot \nabla P_1 \, \, + \, \left(\gamma - 1\right)P_1 \nabla \cdot \mathbf{u_1} \, = \, 0$ \\
+
+Substitute in $P_1 = \frac{\delta^2}{\epsilon^2} p$ and $\partial_i \rho_b$ = $\frac{\delta^2}{\epsilon^2} \partial_i \rho_b$ and $\partial_i P_b$ = $\frac{\delta^2}{\epsilon^2} \partial_i P_b$: \\
+
+$\frac{\delta^2}{\epsilon^2}\partial_t p \, - \, \frac{\delta^2}{\epsilon^2}q\Omega_0 x \partial_y p \, + \, \frac{\delta^2}{\epsilon^2}u_{1x}\partial_x P_b \, + \, \frac{\delta^2}{\epsilon^2}u_{z1}\partial_z P_b \, + \, \left(\gamma - 1 \right) P_b \nabla \cdot \mathbf{u_1} \, + \, \frac{\delta^2}{\epsilon^2}\mathbf{u_1} \cdot \nabla p \, \, + \, \frac{\delta^2}{\epsilon^2}\left(\gamma - 1\right)p \nabla \cdot \mathbf{u_1} \, = \, 0$ \\
+
+Drop terms of $\mathcal{O}\left(\frac{\delta^2}{\epsilon^2}\right)$, and we recover:\\
+
+$\nabla \cdot \mathbf{u_1} \, = \, 0$ \\
+
+Thus we have formally proven that we are working in the incompressible limit! 
 
 \bibliography{mri.bib}
 
