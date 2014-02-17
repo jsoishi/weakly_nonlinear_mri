@@ -408,6 +408,24 @@ $\nabla \cdot \mathbf{u_1} \, = \, 0$\\
 
 $\nabla \cdot \mathbf{B_1} \, = \, 0$ \\ 
 
+\section*{Streamfunctions}
+
+Because we are working with a flow that is axisymmetric and incompressible, we can reparameterize the velocity in terms of its streamfunction. \\
+
+Expanding the incompressibility requirement, we have: \\
+
+$\nabla \cdot \mathbf{u_1} \, = \, \partial_x u_{1x} \, \, + \partial_z u_{1z} \, = \, 0$ \\
+
+Because the $\partial_y$ term is 0 even if $u_{1y}$ itself is nonzero. So we see that we can enforce this requirement if we rewrite the velocity in terms of a function $\Psi$ such that:\\
+
+$u_{x1} \, = \, \frac{\partial \Psi}{\partial z}$ \, \, and \, \, $u_{z1} \, = \, - \frac{\partial \Psi}{\partial x}$ \\
+
+Because, plugging into the incompressibility condition: \\
+
+\[\frac{\partial \left(\frac{\partial \Psi}{\partial z}\right)}{\partial x} \, + \, \frac{\partial \left(- \frac{\partial \Psi}{\partial x}\right)}{\partial z} \, = \, \frac{\partial^2 \Psi}{\partial x \partial z} \, - \, \frac{\partial^2 \Psi}{\partial x \partial z} \, = \, 0\] \\
+
+This is clearly zero always. Thus, we have the stream function $\Psi$, defined such that $\left(u_{x1}, u_{z1}\right) \, = \, \left(\partial_z \Psi, -\partial_x \Psi\right)$.
+
 
 \bibliography{mri.bib}
 
