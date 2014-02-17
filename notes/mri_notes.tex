@@ -37,6 +37,7 @@
 \newcommand\nat{ Nature }
 
 \newcommand\reye{\mathrel{Re}}
+\newcommand\reym{\mathrel{Rm}}
 
 %Use this for citing without parentheses.
 \newcommand{\citei}[1]{\citeauthor{#1} \citeyear{#1}}
@@ -204,7 +205,7 @@ Magnetic fields are scaled by $B_0$ \\
 Pressure is scaled by $\varepsilon^2 \Omega_0^2 r_0^2$ \\ 
 
 And we introduce the following terms:
-\[R_e \equiv \frac{\Omega_0 r_0^2 \delta^2}{\nu} ; \, \, \, R_m \equiv \frac{\Omega_0 r_0^2 \delta^2}{\eta}\]
+\[\reye \equiv \frac{\Omega_0 r_0^2 \delta^2}{\nu} ; \, \, \, \reym \equiv \frac{\Omega_0 r_0^2 \delta^2}{\eta}\]
 
 And a pseudo-plasma beta parameter: 
 \[\beta \equiv \frac{\varepsilon^2\Omega_0^2r_0^2}{v_A^2} \]
@@ -241,7 +242,7 @@ Making these substitutions, the dimensionless equation becomes: \\
 $\left(\Omega_0^2 r_0 \delta\right) \partial_t \mathbf{u} \, + \, \left(\Omega_0^2 r_0 \delta\right)\mathbf{u} \cdot \nabla \mathbf{u} \,+\, \left(\Omega_0^2 r_0 \delta\right) 2 u_x \mathbf{\hat{y}} \,-\, \left(\Omega_0^2 r_0 \delta\right) 2 u_y \mathbf{\hat{x}} \, = \, \left(\Omega_0^2 r_0 \delta\right) 2 x q \mathbf{\hat{x}} \,-\, \Omega_0^2 r_0 \left(\frac{\varepsilon^2}{\delta}\right)\frac{1}{\rho} \nabla P  \,+\, \Omega_0^2 r_0 \left(\frac{\varepsilon^2}{\delta}\right)\frac{1}{\rho_b} \nabla P_b \, - \, \frac{\varepsilon^2 \Omega_0^2 r_0}{\beta \delta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, + \, \nu\left(\frac{\Omega_0}{r_0 \delta}\right) \nabla^2 \mathbf{u}$ \\
 %\end{equation}
 
-Dividing out a factor of $\left(\Omega_0^2 r_0 \delta\right)$ and rewriting in terms of $\beta$ and $R_e$ yields the nondimensionalized momentum equation: \\
+Dividing out a factor of $\left(\Omega_0^2 r_0 \delta\right)$ and rewriting in terms of $\beta$ and $\reye$ yields the nondimensionalized momentum equation: \\
 
 $\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + \, 2 u_x \mathbf{\hat{y}} - 2 u_y \mathbf{\hat{x}} \, = \, 2 x q \mathbf{\hat{x}} \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho} \nabla P \, + \,  \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho_b} \nabla P_b \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, + \, \frac{1}{\reye} \nabla^2 \mathbf{u}$ \\
 
@@ -263,9 +264,9 @@ Substituting for the dimensional variables, the induction equation becomes: \\
 
 \[\left(\Omega_0 B_0\right) \partial_t\mathbf{B} \, = \, \left(\Omega_0 B_0\right)\left(\mathbf{B} \cdot \nabla\right)\mathbf{u} \, - \, \left(\Omega_0 B_0\right)\left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{\eta B_0}{\delta^2 r_0^2}\nabla^2\mathbf{B} \]
 
-Which, after dividing by a factor of $\left(\Omega_0 B_0\right)$ and substituting in $R_m$, becomes: \\
+Which, after dividing by a factor of $\left(\Omega_0 B_0\right)$ and substituting in $\reym$, becomes: \\
 
-\[\partial_t\mathbf{B} \, = \, \left(\mathbf{B} \cdot \nabla \right)\mathbf{u} \, -\, \left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{1}{R_m}\nabla^2\mathbf{B} \]
+\[\partial_t\mathbf{B} \, = \, \left(\mathbf{B} \cdot \nabla \right)\mathbf{u} \, -\, \left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{1}{\reym}\nabla^2\mathbf{B} \]
 
 We will next take perturbations with respect to the background flow. The steady solution is $\mathbf{u} = -2 q \Omega_0 \mathbf{\hat{y}}$, $P = P_b$, $\rho = \rho_b$, and $\mathbf{B} = B_0 \mathbf{\hat{z}}$, so we find perturbation solutions of the following form (1 subscripts denote perturbations): \\
 
@@ -315,27 +316,27 @@ $= \, -\frac{\nabla B_0^2}{2} \, + \, B_0 \mathbf{\hat{z}} \cdot \nabla \left(B_
 
 Now the $\nabla B_0 \mathbf{\hat{z}}$ terms are zero, and $\mathbf{B_1} \times \nabla \times B_0 \mathbf{\hat{z}} \, = \, - \nabla \times B_0 \mathbf{\hat{z}} \times \mathbf{B_1}$, so those two terms cancel one another. So we have: \\
 
-$ = \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left(-\frac{\nabla B_0^2}{2} \, - \, \nabla \left(B_0 \mathbf{\hat{z}}\cdot \mathbf{B_1}\right)\, + \, B_0 \mathbf{\hat{z}} \cdot \nabla \mathbf{B_1} \, - \, \frac{\mathbf{B_1}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla \mathbf{B_1} \, \right)$ \\
+$ = \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left(-\frac{\nabla B_0^2}{2} \, - \, \nabla \left(B_0 \mathbf{\hat{z}}\cdot \mathbf{B_1}\right)\, + \, B_0 \mathbf{\hat{z}} \cdot \nabla \mathbf{B_1} \, - \, \frac{\nabla \mathbf{B_1}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla \mathbf{B_1} \, \right)$ \\
 
-$ = \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left(-\frac{\nabla B_0^2}{2} \, - \, B_0 \mathbf{\hat{z}} \cdot \nabla \mathbf{B_1} \, + \, B_0 \cdot \nabla \mathbf{B_1} \,+ \, B_0 \mathbf{\hat{z}} \cdot \nabla \mathbf{B_1} \, - \, \frac{\mathbf{B_1}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla \mathbf{B_1} \, \right)$ \\
+$ = \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left(-\frac{\nabla B_0^2}{2} \, - \, B_0 \mathbf{\hat{z}} \cdot \nabla \mathbf{B_1} \, + \, B_0 \cdot \nabla \mathbf{B_1} \,+ \, B_0 \mathbf{\hat{z}} \cdot \nabla \mathbf{B_1} \, - \, \frac{\nabla\mathbf{B_1}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla \mathbf{B_1} \, \right)$ \\
 
 And finally, the Lorentz force term becomes: \\
 
-$\frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, = \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left(B_0 \mathbf{\hat{z}} \cdot \nabla \mathbf{B_1} - \, \frac{\mathbf{B_1}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla \mathbf{B_1} \, \right)$ \\
+$\frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, = \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left(B_0 \mathbf{\hat{z}} \cdot \nabla \mathbf{B_1} - \, \frac{\nabla \mathbf{B_1}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla \mathbf{B_1} \, \right)$ \\
 
 Which simplifies to: \\
 
-$\frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, = \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left(B_0 \partial_z \mathbf{B_1} - \, \frac{\mathbf{B_1}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla \mathbf{B_1} \, \right)$ \\
+$\frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, = \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left(B_0 \partial_z \mathbf{B_1} - \, \frac{\nabla \mathbf{B_1}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla \mathbf{B_1} \, \right)$ \\
 
 The three momentum equations become: \\
 
-$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, + \, 2 q \Omega_0 x \, - \, 2 u_{1y}\,= \, 2 q x \, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_x P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_x P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, + \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1x} \,- \, \frac{B_{1x}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1x} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
+$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, + \, 2 q \Omega_0 x \, - \, 2 u_{1y}\,= \, 2 q x \, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_x P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_x P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, + \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1x} \,- \, \frac{\nabla B_{1x}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1x} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
 
 $\partial_t u_{1y} \, - \, q \Omega_0 u_{1x} \, - \, q \Omega_0 x \partial_y u_{1y} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1y} \,+ \, 2u_{1x} \, =  $\\
-$\, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_y P_1}{\rho_1 + \rho_b} \right) \, + \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1y} \,- \, \frac{B_{1y}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1y} \right) \, + \, \frac{1}{\reye}\nabla^2 u_y  $ \\
+$\, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_y P_1}{\rho_1 + \rho_b} \right) \, + \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1y} \,- \, \frac{\nabla B_{1y}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1y} \right) \, + \, \frac{1}{\reye}\nabla^2 u_y  $ \\
 
 $\partial_t u_{1z} \, - \, q \Omega_0 x \partial_y u_{1z} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1z} \, = $\\
-$\, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_z P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_z P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, + \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1z} \,- \, \frac{B_{1z}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1z} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
+$\, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_z P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_z P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, + \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1z} \,- \, \frac{\nabla B_{1z}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1z} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
 
 In the small shearing box (SSB) limit, $\delta \ll \varepsilon \ll 1$. For a rotation law that is close to Keplerian, $\frac{1}{\rho_b}\partial_xP_b = \mathcal{O}\left(\delta^3/\varepsilon^2\right). $
 
@@ -350,12 +351,12 @@ $P_1 = P_0 + \frac{\delta^2}{\varepsilon^2}\partial_i p$ where $P_0$ is a consta
 
 This is equivalent to taking $\delta = \varepsilon^2$. Making these substitutions and taking $\rho_1 = 0$, we obtain: \\
 
-$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, - \, 2 u_{1y}\,= \, - \, \frac{1}{\rho_b}\partial_x p  \, + \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1x} \,- \, \frac{B_{1x}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1x} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
+$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, - \, 2 u_{1y}\,= \, - \, \frac{1}{\rho_b}\partial_x p  \, + \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1x} \,- \, \frac{\nabla B_{1x}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1x} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
 
 $\partial_t u_{1y}\, - \, q \Omega_0 u_{1x}  \, - \, q \Omega_0 x \partial_y u_{1y} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1y} \,+ \, 2u_{1x} \, =  $\\
-$\, - \, \frac{1}{\rho_b}\partial_y p \, + \,  \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1y} \,- \, \frac{B_{1y}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1y} \right) \, + \, \frac{1}{\reye}\nabla^2 u_y  $ \\
+$\, - \, \frac{1}{\rho_b}\partial_y p \, + \,  \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1y} \,- \, \frac{\nabla B_{1y}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1y} \right) \, + \, \frac{1}{\reye}\nabla^2 u_y  $ \\
 
-$\partial_t u_{1z} \, - \, q \Omega_0 x \partial_y u_{1z} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1z} \, = \, - \, \frac{1}{\rho_b}\partial_z p  \, + \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1z} \,- \, \frac{B_{1z}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1z} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
+$\partial_t u_{1z} \, - \, q \Omega_0 x \partial_y u_{1z} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1z} \, = \, - \, \frac{1}{\rho_b}\partial_z p  \, + \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1z} \,- \, \frac{\nabla B_{1z}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1z} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
 
 Now we reparameterize in terms of the total (gas and magnetic) pressure: \\
 
@@ -391,17 +392,17 @@ Thus we have formally proven that we are working in the incompressible limit! \\
 
 As for the induction equation, we already nondimensionalized to obtain: \\
 
-$\partial_t\mathbf{B} \, = \, \left(\mathbf{B} \cdot \nabla \right)\mathbf{u} \, -\, \left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{1}{R_m}\nabla^2\mathbf{B} $ \\
+$\partial_t\mathbf{B} \, = \, \left(\mathbf{B} \cdot \nabla \right)\mathbf{u} \, -\, \left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{1}{\reym}\nabla^2\mathbf{B} $ \\
 
 If we plug in perturbations and all terms involving $\nabla\left(-q\Omega_0 x \mathbf{\hat{y}}\right)$ or $\nabla B_0 \mathbf{\hat{z}}$ go to zero, we arrive at: \\
 
-$\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, + \, \frac{1}{R_m} \nabla^2 \mathbf{B_1} $ \\
+$\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, + \, \frac{1}{\reym} \nabla^2 \mathbf{B_1} $ \\
 
 And finally we have our full equation set: \\
 
 $\partial_t \mathbf{u_1} \, - \, q\Omega_0 x \partial_y \mathbf{u_1} \, + \, \left(\mathbf{u_1}\cdot \nabla\right) \mathbf{u_1} \, - \, 2 u_{1y} \mathbf{\hat{x}} \, + \, \left(2 - \Omega_0 q\right)u_{1x}\mathbf{\hat{y}} \, = \, \frac{1}{4\pi} \nabla \Pi \, + \, \frac{1}{4\pi}B_0\partial_z\mathbf{B_1} \, + \, \frac{1}{4\pi}\mathbf{B_1} \cdot \nabla \mathbf{B_1}\,  + \, \frac{1}{\reye}\nabla^2 \mathbf{u_1}$ \\
 
-$\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, + \, \frac{1}{R_m} \nabla^2 \mathbf{B_1} $ \\
+$\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, + \, \frac{1}{\reym} \nabla^2 \mathbf{B_1} $ \\
 
 $\nabla \cdot \mathbf{u_1} \, = \, 0$\\
 
