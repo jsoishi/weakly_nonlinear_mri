@@ -457,6 +457,32 @@ u_{1y} \\
 -\partial_x\Psi \\
 \end{matrix}\right)$ \\
 
+Beginning with the y component of the induction equation: \\
+
+$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, \mathbf{B_1} \cdot \nabla u_{1y} \, + \, q \Omega_0x\partial_y B_{1y} \, - \, \mathbf{u_1} \cdot \nabla B_{1y} \, + \, \frac{1}{\reym} \nabla^2 B_{1y}$ \\
+
+Where: \\
+
+$\nabla u_{1y} \, = \, \partial_x u_{1y} \mathbf{\hat{x}} \, + \, \partial_z u_{1y}\mathbf{\hat{z}}$ \\
+
+$\nabla B_{1y} \, = \, \partial_x B_{1y}\mathbf{\hat{x}} \, + \, \partial_z B_{1y}\mathbf{\hat{z}}$ \\
+
+The equation expands to become: \\
+
+$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, \partial_z A \mathbf{\hat{x}} \cdot \partial_x u_{1y}\mathbf{\hat{x}} \, + \, \partial_z A \mathbf{\hat{x}} \cdot \partial_z u_{1y} \mathbf{\hat{z}} \, - \, \partial_x A \mathbf{\hat{z}} \cdot \partial_x u_{1y} \mathbf{\hat{x}} \, - \, \partial_x A \mathbf{\hat{z}} \cdot \partial_z u_{1y} \mathbf{\hat{z}} \, + \, B_{1y}\mathbf{\hat{y}} \cdot \partial_x u_{1y} \mathbf{\hat{x}} \, + \, B_{1y}\mathbf{\hat{y}} \cdot \partial_z u_{1y} \mathbf{\hat{z}} \, + \, q\Omega_0 x \partial_y B_{1y} \mathbf{\hat{y}} \, - \, \partial_z\Psi\mathbf{\hat{x}}\cdot \partial_x B_{1y} \mathbf{\hat{x}} \, - \, \partial_z\Psi\mathbf{\hat{x}}\cdot \partial_z B_{1y} \mathbf{\hat{z}} \, + \, \partial_x\Psi\mathbf{\hat{z}}\cdot \partial_x B_{1y} \mathbf{\hat{x}} \, + \, \partial_x\Psi\mathbf{\hat{z}}\cdot \partial_z B_{1y} \mathbf{\hat{z}} \, - \, u_{1y} \mathbf{\hat{y}} \partial_x B_{1y} \mathbf{\hat{x}} \, - \, u_{1y}\mathbf{\hat{y}} \partial_z B_{1y} \mathbf{\hat{z}} \, + \, \frac{1}{\reym} \nabla^2 B_{1y} $ \\
+
+Clearly most of these terms cancel in the dot product, and we are left with: \\
+
+$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, \partial_z A \partial_x u_{1y} \, - \, \partial_x A \partial_z u_{1y} \, + \, q\Omega_0 x \partial_y B_{1y} \, - \, \partial_z\Psi \partial_x B_{1y} \, + \, \partial_x\Psi \partial_z B_{1y} \, + \, \frac{1}{\reym} \nabla^2 B_{1y} $ \\
+
+The nonlinear terms are Jacobians: \\
+
+$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, J\left(A, u_{1y}\right) \, + \, q\Omega_0 x \partial_y B_{1y} \, - \, J\left(\Psi, B_{1y}\right) \, + \, \frac{1}{\reym} \nabla^2 B_{1y} $ \\
+
+Where $J\left(f, g\right) \equiv \partial_z f \partial_x g - \partial_x \partial_z g$ \\
+
+
+
 
 
 \bibliography{mri.bib}
