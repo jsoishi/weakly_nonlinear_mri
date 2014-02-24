@@ -412,7 +412,21 @@ $\nabla \cdot \mathbf{B_1} \, = \, 0$ \\
 
 Because we are working with a flow that is axisymmetric and incompressible, we can reparameterize the velocity in terms of its streamfunction. \\
 
-Expanding the incompressibility requirement, we have: \\
+We express the velocity perturbation in terms of the curl of some vector field $\Psi$: \\
+ 
+ $\mathbf{u_1} \, = - \, \nabla \times \Psi\left(x, z\right) \mathbf{\hat{y}}$ \\
+ 
+ This expands as follows: \\
+ 
+ $- \nabla \times \Psi\left(x, z\right) \mathbf{\hat{y}} \, = \, - \Psi\nabla \times \mathbf{\hat{y}} \, + \, \mathbf{\hat{y}} \times \nabla \Psi \, = \, \mathbf{\hat{y}} \times \nabla \Psi \,$ \\
+ 
+ $= \, \mathbf{\hat{y}} \times \partial_x \Psi \mathbf{\hat{x}} \, + \, \mathbf{\hat{y}} \times \partial_z \Psi \mathbf{\hat{z}} \, = \, -\partial_x \Psi \mathbf{\hat{z}} \, + \, \partial_z \Psi \mathbf{\hat{x}}$ \\
+ 
+ And thus we have: \\
+ 
+$u_{x1} = \partial_z \Psi$ \, and \, $u_{z1} = -\partial_x \Psi$ \\
+
+We can check that this works in the following way. Expanding the incompressibility requirement, we have: \\
 
 $\nabla \cdot \mathbf{u_1} \, = \, \partial_x u_{1x} \, \, + \partial_z u_{1z} \, = \, 0$ \\
 
@@ -424,7 +438,25 @@ Because, plugging into the incompressibility condition: \\
 
 \[\frac{\partial \left(\frac{\partial \Psi}{\partial z}\right)}{\partial x} \, + \, \frac{\partial \left(- \frac{\partial \Psi}{\partial x}\right)}{\partial z} \, = \, \frac{\partial^2 \Psi}{\partial x \partial z} \, - \, \frac{\partial^2 \Psi}{\partial x \partial z} \, = \, 0\] \\
 
-This is clearly zero always. Thus, we have the stream function $\Psi$, defined such that $\left(u_{x1}, u_{z1}\right) \, = \, \left(\partial_z \Psi, -\partial_x \Psi\right)$.
+This is clearly zero always. Thus, we have the stream function $\Psi$, defined such that $\left(u_{x1}, u_{z1}\right) \, = \, \left(\partial_z \Psi, -\partial_x \Psi\right)$. Analogously, we can use the solenoidal magnetic field constraint $\nabla \cdot \mathbf{B_1} \, = \, 0$ to define a flux function based on the vector potential A: \\
+
+$B_{1x} = \partial_z A$ \, and \, $B_{1z} = - \partial_x A$ \\
+
+Essentially, we plug in the following to our equations: \\
+
+$\mathbf{B_1} \, = \, \left(\begin{matrix}
+
+\partial_zA \\
+B_{1y} \\
+-\partial_xA \\
+
+\end{matrix}\right)$ \, and \, $\mathbf{u_1} \, = \, \left(\begin{matrix}
+
+\partial_z\Psi \\
+u_{1y} \\
+-\partial_x\Psi \\
+\end{matrix}\right)$ \\
+
 
 
 \bibliography{mri.bib}
