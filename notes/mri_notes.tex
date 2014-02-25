@@ -394,15 +394,25 @@ As for the induction equation, we already nondimensionalized to obtain: \\
 
 $\partial_t\mathbf{B} \, = \, \left(\mathbf{B} \cdot \nabla \right)\mathbf{u} \, -\, \left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, + \, \frac{1}{\reym}\nabla^2\mathbf{B} $ \\
 
-If we plug in perturbations and all terms involving $\nabla\left(-q\Omega_0 x \mathbf{\hat{y}}\right)$ or $\nabla B_0 \mathbf{\hat{z}}$ go to zero, we arrive at: \\
+%If we plug in perturbations and all terms involving $\nabla\left(-q\Omega_0 x \mathbf{\hat{y}}\right)$ or $\nabla B_0 \mathbf{\hat{z}}$ go to zero, we arrive at: \\
 
-$\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, + \, \frac{1}{\reym} \nabla^2 \mathbf{B_1} $ \\
+For the first two terms on the righthand side, plugging in perturbations yields: \\
+
+$\left(\mathbf{B} \cdot \nabla \right)\mathbf{u} \, -\, \left(\mathbf{u} \cdot \nabla \right)\mathbf{B} \, = \, \left(B_0 \mathbf{\hat{z}} + \mathbf{B_1}\right)\cdot\nabla \left(-q\Omega_0 x \mathbf{\hat{y}} + \mathbf{u_1}\right) \, - \, \left(-q\Omega_0 x \mathbf{\hat{y}} + \mathbf{u_1}\right) \cdot \nabla \left(B_0 \mathbf{\hat{z}} + \mathbf{B_1}\right) $ \\
+
+$ = B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1}\cdot\nabla\mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1}\cdot\nabla\mathbf{B_1} \, + \, \mathbf{B_1}\cdot \nabla\left(-q\Omega_0x \mathbf{\hat{y}}\right) \, + \, B_0\mathbf{\hat{z}} \cdot \nabla\left(-q\Omega_0x \mathbf{\hat{y}}\right) $ \\
+
+Because all terms with $\nabla B_0 \mathbf{\hat{z}}$ go to zero. That last term goes to zero, and the term $\mathbf{B_1}\cdot \nabla\left(-q\Omega_0x \mathbf{\hat{y}}\right) \, = \, B_{1x} \partial_x\left(-q \Omega_0 x \right) \mathbf{\hat{y}}$ \\
+
+So the induction equation becomes: \\
+
+$\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, - \, q\Omega_0 B_{1x} \mathbf{\hat{y}} \,+ \, \frac{1}{\reym} \nabla^2 \mathbf{B_1} $ \\
 
 And finally we have our full equation set: \\
 
 $\partial_t \mathbf{u_1} \, - \, q\Omega_0 x \partial_y \mathbf{u_1} \, + \, \left(\mathbf{u_1}\cdot \nabla\right) \mathbf{u_1} \, - \, 2 u_{1y} \mathbf{\hat{x}} \, + \, \left(2 - \Omega_0 q\right)u_{1x}\mathbf{\hat{y}} \, = \, \frac{1}{4\pi} \nabla \Pi \, + \, \frac{1}{4\pi}B_0\partial_z\mathbf{B_1} \, + \, \frac{1}{4\pi}\mathbf{B_1} \cdot \nabla \mathbf{B_1}\,  + \, \frac{1}{\reye}\nabla^2 \mathbf{u_1}$ \\
 
-$\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, + \, \frac{1}{\reym} \nabla^2 \mathbf{B_1} $ \\
+$\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, - \, q\Omega_0 B_{1x} \mathbf{\hat{y}} \,\, + \, \frac{1}{\reym} \nabla^2 \mathbf{B_1} $ \\
 
 $\nabla \cdot \mathbf{u_1} \, = \, 0$\\
 
@@ -457,9 +467,51 @@ u_{1y} \\
 -\partial_x\Psi \\
 \end{matrix}\right)$ \\
 
-Beginning with the y component of the induction equation: \\
+For the x component of the momentum equation, we have: \\
 
-$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, \mathbf{B_1} \cdot \nabla u_{1y} \, + \, q \Omega_0x\partial_y B_{1y} \, - \, \mathbf{u_1} \cdot \nabla B_{1y} \, + \, \frac{1}{\reym} \nabla^2 B_{1y}$ \\
+$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \, + \, \left(\mathbf{u_1} \cdot \nabla\right) u_{1x} \, - \, 2 u_{1y} \, = \, \frac{1}{4\pi} \partial_x \Pi \, + \, \frac{1}{4\pi} B_0 \partial_z B_{1x} \, + \, \frac{1}{4\pi} \mathbf{B_1} \cdot \nabla B_{1x} \, + \, \frac{1}{\reye}\nabla^2 u_{1x} $ \\
+
+The $\partial_y$ terms go to zero, and this expands to become: \\
+
+$\partial_t\partial_z\Psi \, + \, \partial_z\Psi \partial_x \partial_z \Psi \, - \, \partial_x \Psi \partial_z^2\Psi \, - \, 2 u_{1y} \, = \, \frac{1}{4\pi}\partial_x \Pi \, + \, \frac{1}{4\pi} B_0 \partial_z^2 A \, + \, \frac{1}{4\pi} \partial_z A \partial_x \partial_z A \, - \, \frac{1}{4\pi} \partial_x A \partial_z^2 A \, + \, \frac{1}{\reye} \nabla^2 \partial_z \Psi$ \\
+
+Multiplying through by $\partial_z$ and expanding terms yields: \\
+
+$\partial_t \partial_z^2 \Psi \, + \, \partial_z^2\Psi\partial_x\partial_z\Psi \, + \, \partial_z\Psi \partial_x\partial_z^2 \Psi \, - \, \partial_z\partial_x\Psi\partial_z^2\Psi \, - \, \partial_x \Psi \partial_z^3 \Psi \, - \, 2\partial_z u_{1y} \, = \, \frac{1}{4\pi}\partial_z\partial_x\Pi \, + \, \frac{1}{4\pi} B_0\partial_z^3A \, + \, \frac{1}{4\pi}\partial_z^2 A \partial_x \partial_z A \, + \, \frac{1}{4\pi}\partial_zA\partial_x\partial_z^2 A \, - \, \partial{1}{4\pi}\partial_z\partial_x A \partial_z^2 A \, - \, \frac{1}{4\pi}\partial_xA\partial_z^3A \, + \, \frac{1}{\reye} \nabla^2 \partial_z^2 \Psi $ \\
+
+Several terms cancel, and several can be grouped into Jacobians: \\
+
+$J\left(\Psi, \partial_z^2\Psi\right) \, = \, \partial_z \Psi \partial_x\partial_z^2\Psi \, - \, \partial_x\Psi\partial_z^3\Psi $ \\
+
+$J\left(A, \partial_z^2 A\right) \, = \, \partial_z A \partial_x\partial_z^2A \, - \, \partial_xA\partial_z^3A $
+
+Where $J\left(f, g\right) \equiv \partial_z f \partial_x g - \partial_xf \partial_z g$ \\ 
+
+The x-component of the momentum equation then becomes: \\
+
+$\partial_t\partial_z^2\Psi \, + \, J\left(\Psi, \partial_z^2\Psi\right) \, - \, 2\partial_z u_{1y} \, = \, \frac{1}{4\pi}\partial_z\partial_z\Pi \, + \, \frac{1}{4\pi}B_0 \partial_z^3A \, + \, J\left(A, \partial_z^2A\right) \, + \, \frac{1}{\reye}\nabla^2 \partial_z^2 \Psi$ \\
+
+The z-component of the momentum equation is: \\
+
+$\partial_t u_{1z} \, - \, q\Omega_0x\partial_y u_{1z} \, + \, \left(\mathbf{u_1} \cdot \nabla \right) u_{1z} \, = \, \frac{1}{4\pi}\partial_z \Pi \, + \, \frac{1}{4\pi} B_0 \partial_z\partial_zB_{1z} \, + \, \frac{1}{4\pi}\mathbf{B_1}\cdot\nabla B_{1z} \, + \, \frac{1}{\reye}\nabla^2 u_{1z} $ \\
+
+Which, after following the steps outlined above in the expansion of the x-component, becomes: \\
+
+$\partial_t \partial_x^2 \Psi \, + \, J\left(\Psi, \partial_x^2 \Psi\right) \, = \, -\frac{1}{4\pi}\partial_x\partial_z\Pi \, + \, \frac{1}{4\pi}B_0\partial_z\partial_x^2 A \, + \, J\left(A, \partial_x^2 A \right) \, + \, \frac{1}{\reye} \nabla^2 \partial_x^2 \Psi$ \\
+
+We can combine the two equations (for the x- and z-components), noting that: \\
+
+$\nabla^2 \, = \, \partial_x^2 \mathbf{\hat{x}} \, \partial_z^2 \mathbf{\hat{z}}$ \\
+
+$\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \partial_x^2 \Psi\right) \, - \, 2 \partial_z u_{1y} \, = \, \frac{1}{4\pi} B_0 \partial_z \nabla^2 A \, + \, J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi$ \\
+
+Where the term $\frac{1}{4\pi}\partial_x\partial_z\Pi \left(\mathbf{\hat{x}} \, - \, \mathbf{\hat{z}}\right)$ goes to zero. \\
+
+
+
+For the induction equation, we begin with the y component: \\
+
+$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, \mathbf{B_1} \cdot \nabla u_{1y} \, + \, q \Omega_0x\partial_y B_{1y} \, - \, \mathbf{u_1} \cdot \nabla B_{1y} \, + \, \frac{1}{\reym} \nabla^2 B_{1y} \, - \, q\Omega_0 B_{1x} \,$ \\
 
 Where: \\
 
@@ -469,17 +521,49 @@ $\nabla B_{1y} \, = \, \partial_x B_{1y}\mathbf{\hat{x}} \, + \, \partial_z B_{1
 
 The equation expands to become: \\
 
-$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, \partial_z A \mathbf{\hat{x}} \cdot \partial_x u_{1y}\mathbf{\hat{x}} \, + \, \partial_z A \mathbf{\hat{x}} \cdot \partial_z u_{1y} \mathbf{\hat{z}} \, - \, \partial_x A \mathbf{\hat{z}} \cdot \partial_x u_{1y} \mathbf{\hat{x}} \, - \, \partial_x A \mathbf{\hat{z}} \cdot \partial_z u_{1y} \mathbf{\hat{z}} \, + \, B_{1y}\mathbf{\hat{y}} \cdot \partial_x u_{1y} \mathbf{\hat{x}} \, + \, B_{1y}\mathbf{\hat{y}} \cdot \partial_z u_{1y} \mathbf{\hat{z}} \, + \, q\Omega_0 x \partial_y B_{1y} \mathbf{\hat{y}} \, - \, \partial_z\Psi\mathbf{\hat{x}}\cdot \partial_x B_{1y} \mathbf{\hat{x}} \, - \, \partial_z\Psi\mathbf{\hat{x}}\cdot \partial_z B_{1y} \mathbf{\hat{z}} \, + \, \partial_x\Psi\mathbf{\hat{z}}\cdot \partial_x B_{1y} \mathbf{\hat{x}} \, + \, \partial_x\Psi\mathbf{\hat{z}}\cdot \partial_z B_{1y} \mathbf{\hat{z}} \, - \, u_{1y} \mathbf{\hat{y}} \partial_x B_{1y} \mathbf{\hat{x}} \, - \, u_{1y}\mathbf{\hat{y}} \partial_z B_{1y} \mathbf{\hat{z}} \, + \, \frac{1}{\reym} \nabla^2 B_{1y} $ \\
+$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, \partial_z A \mathbf{\hat{x}} \cdot \partial_x u_{1y}\mathbf{\hat{x}} \, + \, \partial_z A \mathbf{\hat{x}} \cdot \partial_z u_{1y} \mathbf{\hat{z}} \, - \, \partial_x A \mathbf{\hat{z}} \cdot \partial_x u_{1y} \mathbf{\hat{x}} \, - \, \partial_x A \mathbf{\hat{z}} \cdot \partial_z u_{1y} \mathbf{\hat{z}} \, + \, B_{1y}\mathbf{\hat{y}} \cdot \partial_x u_{1y} \mathbf{\hat{x}} \, + \, B_{1y}\mathbf{\hat{y}} \cdot \partial_z u_{1y} \mathbf{\hat{z}} \, + \, q\Omega_0 x \partial_y B_{1y} \mathbf{\hat{y}} \, - \, \partial_z\Psi\mathbf{\hat{x}}\cdot \partial_x B_{1y} \mathbf{\hat{x}} \, - \, \partial_z\Psi\mathbf{\hat{x}}\cdot \partial_z B_{1y} \mathbf{\hat{z}} \, + \, \partial_x\Psi\mathbf{\hat{z}}\cdot \partial_x B_{1y} \mathbf{\hat{x}} \, + \, \partial_x\Psi\mathbf{\hat{z}}\cdot \partial_z B_{1y} \mathbf{\hat{z}} \, - \, u_{1y} \mathbf{\hat{y}} \partial_x B_{1y} \mathbf{\hat{x}} \, - \, u_{1y}\mathbf{\hat{y}} \partial_z B_{1y} \mathbf{\hat{z}} \, + \, \frac{1}{\reym} \nabla^2 B_{1y} \, - \, q\Omega_0 \left(\partial_z A \right)$ \\
 
 Clearly most of these terms cancel in the dot product, and we are left with: \\
 
-$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, \partial_z A \partial_x u_{1y} \, - \, \partial_x A \partial_z u_{1y} \, + \, q\Omega_0 x \partial_y B_{1y} \, - \, \partial_z\Psi \partial_x B_{1y} \, + \, \partial_x\Psi \partial_z B_{1y} \, + \, \frac{1}{\reym} \nabla^2 B_{1y} $ \\
+$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, \partial_z A \partial_x u_{1y} \, - \, \partial_x A \partial_z u_{1y} \, + \, q\Omega_0 x \partial_y B_{1y} \, - \, \partial_z\Psi \partial_x B_{1y} \, + \, \partial_x\Psi \partial_z B_{1y} \, + \, \frac{1}{\reym} \nabla^2 B_{1y} \, - \, q \Omega_0 \partial_z A$ \\
 
-The nonlinear terms are Jacobians: \\
+The nonlinear terms are Jacobians, and $\partial_y B_{1y} = 0$: \\
 
-$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, J\left(A, u_{1y}\right) \, + \, q\Omega_0 x \partial_y B_{1y} \, - \, J\left(\Psi, B_{1y}\right) \, + \, \frac{1}{\reym} \nabla^2 B_{1y} $ \\
+$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, J\left(A, u_{1y}\right) \, - \, J\left(\Psi, B_{1y}\right) \, + \, \frac{1}{\reym} \nabla^2 B_{1y}  \, - \, q \Omega_0 \partial_z A$ \\
 
-Where $J\left(f, g\right) \equiv \partial_z f \partial_x g - \partial_x \partial_z g$ \\
+The x component of the induction equation: \\
+
+$\partial_t B_{1x} \, = \, B_0 \partial_z u_{1x} \, + \, \mathbf{B_1} \cdot \nabla u_{1x} \, + \, q \Omega_0 x \partial_y B_{1x} \, - \, \mathbf{u_1} \cdot \nabla B_{1x} \, + \, \frac{1}{\reym} \nabla^2 B_{1x}$ \\
+
+Where: \\
+
+$\nabla u_{1x}  \, = \, \partial_x \partial_z \Psi \mathbf{\hat{x}} \, + \, \partial_y \partial_z \Psi \mathbf{\hat{y}} \, + \, \partial_z \partial_z \Psi \mathbf{\hat{z}}$ \\
+
+$\nabla B_{1x} \, = \, \partial_x \partial_z A \mathbf{\hat{x}} \, + \, \partial_y\partial_z A \mathbf{\hat{y}} \, + \, \partial_z \partial_z A \mathbf{\hat{z}}$ \\
+
+Becomes: \\
+
+$\partial_t \partial_z A \, = \, B_0 \partial_z^2 \Psi \, + \, \partial_z A \partial_x \partial_z \Psi \, - \, \partial_x A \partial_z^2 \Psi \, - \, \partial_z \Psi \partial_x \partial_z A \, + \, \partial_x \Psi \partial_z^2 A \, + \, \frac{1}{\reym} \nabla^2 \partial_z A$ \\
+
+After setting all of the $\partial_y$ terms to 0. Using the fact that: \\
+
+$\partial_z\left(\partial_z A \partial_x \Psi\right) \, = \, \partial_z A \partial_z \partial_x \Psi \, + \, \partial_x \Psi \partial_z^2 A$ \\
+
+$\partial_z\left(\partial_x A \partial_z \Psi\right) \, = \, \partial_x A \partial_z^2 \Psi \, + \, \partial_z \Psi \partial_z \partial_x A$ \\
+
+This can be rewritten: \\
+
+$\partial_z \left(\partial_t A \right) \, = \, \partial_z \left(B_0 \partial_z \Psi \right) \, + \partial_z \left(\partial_z A \partial_x \Psi\right) \, - \, \partial_z\left(\partial_x A \partial_z \Psi \right) \, + \, \partial_z \left(\frac{1}{Rm} \nabla^2 A\right)$ \\
+
+And we can divide out a $\partial_z$ term to arrive at: \\
+
+$\partial_t A \, = \, B_0 \partial_z \Psi \, + \partial_z A \partial_x \Psi \, - \, \partial_x A \partial_z \Psi \, + \, \frac{1}{Rm} \nabla^2 A$ \\
+
+Or: \\
+
+$\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, \frac{1}{Rm} \nabla^2 A$ \\
+
+Clearly, this is the equation for both the x and z components of the induction equation.
 
 
 
