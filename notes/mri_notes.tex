@@ -489,7 +489,7 @@ Where $J\left(f, g\right) \equiv \partial_z f \partial_x g - \partial_x f \parti
 
 The x-component of the momentum equation then becomes: \\
 
-$\partial_t\partial_z^2\Psi \, + \, J\left(\Psi, \partial_z^2\Psi\right) \, - \, 2\partial_z u_{1y} \, = \, \frac{1}{4\pi}\partial_z\partial_z\Pi \, + \, \frac{1}{4\pi}B_0 \partial_z^3A \, + \, J\left(A, \partial_z^2A\right) \, + \, \frac{1}{\reye}\nabla^2 \partial_z^2 \Psi$ \\
+$\partial_t\partial_z^2\Psi \, + \, J\left(\Psi, \partial_z^2\Psi\right) \, - \, 2\partial_z u_{1y} \, = \, \frac{1}{4\pi}\partial_x\partial_z\Pi \, + \, \frac{1}{4\pi}B_0 \partial_z^3A \, + \, J\left(A, \partial_z^2A\right) \, + \, \frac{1}{\reye}\nabla^2 \partial_z^2 \Psi$ \\
 
 The z-component of the momentum equation is: \\
 
@@ -583,6 +583,34 @@ $\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, 
 $\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, J\left(A, u_{1y}\right) \, - \, J\left(\Psi, B_{1y}\right) \, + \, \frac{1}{\reym} \nabla^2 B_{1y}  \, - \, q \Omega_0 \partial_z A$ \\
 
 Note that in all of these derivations, the shear terms went to zero because they contained $\partial_y$ terms. We could instead have explicitly transformed into a shearing frame moving with the steady-state azimuthal flow, but it does not end up mattering because our perturbations are axisymmetric. \\
+
+\section*{Multiscale Analysis}
+
+We now wish to characterize our perturbations in terms of amplitude functions with fast and slow variables. To choose our scalings, we first linearize our equations and find the linear dispersion relation. We then pick spatial and temporal scalings such that the spatial and temporal eigenvalues all appear in the dispersion relation at the same lowest order. \\
+
+Linearizing our four equations, we find a system described by the matrix: \\
+
+%$\left[\begin{smallmatrix}{}s \left(- k_{x}^{2} - k_{z}^{2}\right) - \frac{1}{Re} \left(k_{x}^{4} + 2 k_{x}^{2} k_{z}^{2} + k_{z}^{4}\right) & 2 i k_{z} & \frac{i B_{0} k_{z}}{4 \pi} \left(- k_{x}^{2} - k_{z}^{2}\right) & 0\\\i k_{z} \\left(- \\Omega_{0} q + 2\\right) & s - \\frac{1}{Re} \\left(- k_{x}^{2} - k_{z}^{2}\\right) & 0 & - \\frac{i B_{0} k_{z}}{4 \\pi}\\\\- i B_{0} k_{z} & 0 & s - \\frac{1}{Rm} \\left(- k_{x}^{2} - k_{z}^{2}\\right) & 0\\\\0 & - i B_{0} k_{z} & i \\Omega_{0} k_{z} q & s - \\frac{1}{Rm} \\left(- k_{x}^{2} - k_{z}^{2}\\right)\end{smallmatrix}\right]$
+
+\begin{equation*}
+\left[\begin{matrix}
+\left(- k_{x}^{2} - k_{z}^{2}\right) - \frac{1}{Re} \left(k_{x}^{4} + 2 k_{x}^{2} k_{z}^{2} + k_{z}^{4}\right) & 2 i k_{z} & \frac{i B_{0} k_{z}}{4 \pi} \left(- k_{x}^{2} - k_{z}^{2}\right) & 0\\
+
+i k_{z} \left(- \Omega_{0} q + 2\right) & s - \frac{1}{Re} \left(- k_{x}^{2} - k_{z}^{2}\right) & 0 & - \frac{i B_{0} k_{z}}{4 \pi}\\
+
+-i B_{0} k_{z} & 0 & s - \frac{1}{Rm} \left(- k_{x}^{2} - k_{z}^{2}\right) & 0\\
+
+0 & - i B_{0} k_{z} & i \Omega_{0} k_{z} q & s - \frac{1}{Rm} \left(- k_{x}^{2} - k_{z}^{2}\right)
+
+\end{matrix}\right] \cdot \left[\begin{matrix}
+
+\Psi \\
+u_{1y}\\
+A\\
+B_{1y}
+
+\end{matrix}\right]
+\end{equation*}
 
 
 
