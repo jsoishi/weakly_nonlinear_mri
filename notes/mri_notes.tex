@@ -589,11 +589,8 @@ Note that in all of these derivations, the shear terms went to zero because they
 We now wish to characterize our perturbations in terms of amplitude functions with fast and slow variables. To choose our scalings, we first linearize our equations and find the linear dispersion relation. We then pick spatial and temporal scalings such that the spatial and temporal eigenvalues all appear in the dispersion relation at the same lowest order. \\
 
 Linearizing our four equations, we find a system described by the matrix: \\
-
-%$\left[\begin{smallmatrix}{}s \left(- k_{x}^{2} - k_{z}^{2}\right) - \frac{1}{Re} \left(k_{x}^{4} + 2 k_{x}^{2} k_{z}^{2} + k_{z}^{4}\right) & 2 i k_{z} & \frac{i B_{0} k_{z}}{4 \pi} \left(- k_{x}^{2} - k_{z}^{2}\right) & 0\\\i k_{z} \\left(- \\Omega_{0} q + 2\\right) & s - \\frac{1}{Re} \\left(- k_{x}^{2} - k_{z}^{2}\\right) & 0 & - \\frac{i B_{0} k_{z}}{4 \\pi}\\\\- i B_{0} k_{z} & 0 & s - \\frac{1}{Rm} \\left(- k_{x}^{2} - k_{z}^{2}\\right) & 0\\\\0 & - i B_{0} k_{z} & i \\Omega_{0} k_{z} q & s - \\frac{1}{Rm} \\left(- k_{x}^{2} - k_{z}^{2}\\right)\end{smallmatrix}\right]$
-
 \begin{equation*}
-\left[\begin{matrix}
+M = \left[\begin{matrix}
 \left(- k_{x}^{2} - k_{z}^{2}\right) - \frac{1}{Re} \left(k_{x}^{4} + 2 k_{x}^{2} k_{z}^{2} + k_{z}^{4}\right) & 2 i k_{z} & \frac{i B_{0} k_{z}}{4 \pi} \left(- k_{x}^{2} - k_{z}^{2}\right) & 0\\
 
 i k_{z} \left(- \Omega_{0} q + 2\right) & s - \frac{1}{Re} \left(- k_{x}^{2} - k_{z}^{2}\right) & 0 & - \frac{i B_{0} k_{z}}{4 \pi}\\
@@ -602,15 +599,35 @@ i k_{z} \left(- \Omega_{0} q + 2\right) & s - \frac{1}{Re} \left(- k_{x}^{2} - k
 
 0 & - i B_{0} k_{z} & i \Omega_{0} k_{z} q & s - \frac{1}{Rm} \left(- k_{x}^{2} - k_{z}^{2}\right)
 
-\end{matrix}\right] \cdot \left[\begin{matrix}
+\end{matrix}\right] 
+\end{equation*}
+
+where: 
+$M \cdot \left[\begin{matrix}
 
 \Psi \\
 u_{1y}\\
 A\\
 B_{1y}
 
+\end{matrix}\right] = \left[\begin{matrix}
+0 \\
+0\\
+0\\
+0\\
 \end{matrix}\right]
-\end{equation*}
+$ \\
+
+The determinant of M gives the dispersion relation: \\
+
+$\frac{B_{0}^{4} k_{x}^{2} k_{z}^{4}}{16 \pi^{2}} + \frac{B_{0}^{4} k_{z}^{6}}{16 \pi^{2}} - \frac{B_{0}^{2} \Omega_{0} k_{z}^{4} q}{2 \pi} - 2 \Omega_{0} k_{z}^{2} q s^{2} - \frac{4 s}{Rm} \Omega_{0} k_{x}^{2} k_{z}^{2} q - \frac{4 s}{Rm} \Omega_{0} k_{z}^{4} q - \frac{2 \Omega_{0}}{Rm^{2}} k_{x}^{4} k_{z}^{2} q - \frac{4 \Omega_{0}}{Rm^{2}} k_{x}^{2} k_{z}^{4} q - \frac{2 \Omega_{0}}{Rm^{2}} k_{z}^{6} q - k_{x}^{2} s^{4} - k_{z}^{2} s^{4} + 4 k_{z}^{2} s^{2} - \frac{2 s^{3}}{Rm} k_{x}^{4} - \frac{4 s^{3}}{Rm} k_{x}^{2} k_{z}^{2} + \frac{8 s}{Rm} k_{x}^{2} k_{z}^{2} - \frac{2 s^{3}}{Rm} k_{z}^{4} + \frac{8 s}{Rm} k_{z}^{4} - \frac{k_{x}^{6} s^{2}}{Rm^{2}} - \frac{3 s^{2}}{Rm^{2}} k_{x}^{4} k_{z}^{2} + \frac{4 k_{x}^{4}}{Rm^{2}} k_{z}^{2} - \frac{3 s^{2}}{Rm^{2}} k_{x}^{2} k_{z}^{4} + \frac{8 k_{x}^{2}}{Rm^{2}} k_{z}^{4} - \frac{k_{z}^{6} s^{2}}{Rm^{2}} + \frac{4 k_{z}^{6}}{Rm^{2}} - \frac{2 s^{3}}{Re} k_{x}^{4} - \frac{4 s^{3}}{Re} k_{x}^{2} k_{z}^{2} - \frac{2 s^{3}}{Re} k_{z}^{4} - \frac{4 k_{x}^{6} s^{2}}{Re Rm} - \frac{12 k_{x}^{4} k_{z}^{2} s^{2}}{Re Rm} - \frac{12 k_{x}^{2} k_{z}^{4} s^{2}}{Re Rm} - \frac{4 k_{z}^{6} s^{2}}{Re Rm} - \frac{2 k_{x}^{8} s}{Re Rm^{2}} - \frac{8 k_{x}^{6} k_{z}^{2} s}{Re Rm^{2}} - \frac{12 k_{x}^{4} k_{z}^{4} s}{Re Rm^{2}} - \frac{8 k_{x}^{2} k_{z}^{6} s}{Re Rm^{2}} - \frac{2 k_{z}^{8} s}{Re Rm^{2}} - \frac{k_{x}^{6} s^{2}}{Re^{2}} - \frac{3 s^{2}}{Re^{2}} k_{x}^{4} k_{z}^{2} - \frac{3 s^{2}}{Re^{2}} k_{x}^{2} k_{z}^{4} - \frac{k_{z}^{6} s^{2}}{Re^{2}} - \frac{2 k_{x}^{8} s}{Re^{2} Rm} - \frac{8 k_{x}^{6} k_{z}^{2} s}{Re^{2} Rm} - \frac{12 k_{x}^{4} k_{z}^{4} s}{Re^{2} Rm} - \frac{8 k_{x}^{2} k_{z}^{6} s}{Re^{2} Rm} - \frac{2 k_{z}^{8} s}{Re^{2} Rm} - \frac{k_{x}^{10}}{Re^{2} Rm^{2}} - \frac{5 k_{x}^{8} k_{z}^{2}}{Re^{2} Rm^{2}} - \frac{10 k_{x}^{6} k_{z}^{4}}{Re^{2} Rm^{2}} - \frac{10 k_{x}^{4} k_{z}^{6}}{Re^{2} Rm^{2}} - \frac{5 k_{x}^{2} k_{z}^{8}}{Re^{2} Rm^{2}} - \frac{k_{z}^{10}}{Re^{2} Rm^{2}}$ \\
+
+Which, as expected, is fourth order in s. We see that the spatial eigenvalues appear as $k_x^2$ and $k_z^2$ at lowest order. The temporal eigenvalue appears as $s$ at lowest order. We choose the scalings between fast variables $(x, y, z, t)$ and slow variables $(X, Y, Z, T)$ such that all eigenvalues come in at $\mathcal{O}(\epsilon^2)$. Hence we define: \\
+
+\noindent $X = \epsilon x$, \, \, $Y = \epsilon y$, \, \, $Z = \epsilon z$, \, \, $T = \epsilon^2 t$ \\
+
+
+
 
 
 
