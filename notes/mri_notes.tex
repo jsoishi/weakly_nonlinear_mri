@@ -647,7 +647,25 @@ $\nabla^4 \to \partial_x^4 + \epsilon^2 \partial_x^2 \partial_X^2 + 2\epsilon\pa
 + \epsilon^2\partial_Z^2\partial_x^2 + \epsilon^4\partial_X^2\partial_Z^2 + 2\epsilon^3\partial_Z^2\partial_x\partial_X + \epsilon^3\partial_Z^2\partial_z^2 + \epsilon^4\partial_Z^4 + 2\epsilon^3\partial_Z^3\partial_z \\
 + 2\epsilon\partial_z\partial_Z\partial_x^2 + 2\epsilon^3\partial_X^2\partial_z\partial_Z + 4\epsilon^2\partial_z\partial_Z\partial_x\partial_X + 2\epsilon\partial_z^3\partial_Z + 2\epsilon^3\partial_Z^3\partial_z + 4\epsilon^2 \partial_z^2 \partial_Z^2$ \\
 
-We proceed by replacing all operators in our equation set with the above, and expanding $\mathbf{V}$ in a perturbation series in $\epsilon$. We then group terms of the same order in $\epsilon$, to make three equations. 
+We proceed by replacing all operators in our equation set with the above, and expanding $\mathbf{V}$ in a perturbation series in $\epsilon$. We then group terms of the same order in $\epsilon$, to make three equations (because we have up to $\mathcal{O}(\epsilon^3)$). \\
+
+In analogy to Rayleigh-B\'enard convection and the hydrodynamic Taylor-Couette flow, we assume there is no slow-scale variation in the radial direction, and so the amplitudes are dependent only on Z and T. That is: \\
+
+$\mathbf{V} = \mathbf{V}\left(x, z, Z, T)\right)$ where in detail $\mathbf{V} = \left[\Psi(x), u_{1y}(x), A(x), B_{1y}(x)\right]^T \alpha\left(Z, T\right) e^{st + ik_z z}$. Periodicity in $z$ allows us to posit the exponential $z$ dependence. \\
+
+Our operators therefore become: \\
+
+$\partial_t \to \partial_t + \epsilon^2 \partial_T$ \\
+
+$\partial_z \to \partial_z + \epsilon \partial_Z$ \\
+
+$\nabla^2 = \partial_x^2 + \partial_z^2 \to \partial_x^2  + \partial_z^2 + \epsilon^2 \partial_Z^2 + 2\epsilon\partial_z\partial_Z$ \\
+
+$\nabla^4 \to \partial_x^4 + \partial_x^2\partial_z^2 + \epsilon^2\partial_x^2\partial_Z^2 + 2\epsilon \partial_x^2 \partial_z \partial_Z \\
+ + \partial_z^2\partial_x^2 + \partial_z^4 + \epsilon^2\partial_z^2\partial_Z^2 + 2\epsilon\partial_z^3\partial_Z \\
++ \epsilon^2\partial_Z^2\partial_x^2 + \epsilon^3\partial_Z^2\partial_z^2 + \epsilon^4\partial_Z^4 + 2\epsilon^3\partial_Z^3\partial_z \\
++ 2\epsilon\partial_z\partial_Z\partial_x^2 + 2\epsilon\partial_z^3\partial_Z + 2\epsilon^3\partial_Z^3\partial_z + 4\epsilon^2 \partial_z^2 \partial_Z^2$ \\
+
 
 
 
