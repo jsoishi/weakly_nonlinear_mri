@@ -626,6 +626,27 @@ Which, as expected, is fourth order in s. We see that the spatial eigenvalues ap
 
 \noindent $X \equiv \epsilon x$, \, \, $Y \equiv \epsilon y$, \, \, $Z \equiv \epsilon z$, \, \, $T \equiv \epsilon^2 t$ \\
 
+Let $\mathbf{V}$ be the state vector containing all perturbations: $\mathbf{V} \equiv \left[ \Psi, u_{1y}, A, B_{1y}\right]^T$. \\
+
+Then $\mathbf{V}\left(x, z, t; X, Z, T\right) = \alpha \left(X, Z, T\right)e^{st + ik_x x + ik_z z} + c.c.$ Where $\alpha$ is an amplitude function. I believe that at marginality to the MRI we will assume the amplitudes are dependent only on Z and T, but I want to check this -- in the mean time I'll retain all possible terms.\\
+
+The operators are expanded as follows: \\
+
+$\partial_t \to \partial_t + \epsilon^2 \partial_T$ \\
+
+$\partial_z \to \partial_z + \epsilon \partial_Z$ \\
+
+$\partial_x \to \partial_x + \epsilon \partial_X$ \\
+
+$\nabla^2 = \partial_x^2 + \partial_z^2 \to \partial_x^2 + \epsilon^2 \partial_X^2 + 2\epsilon \partial^2_x \partial^2_X + \partial_z^2 + \epsilon^2 \partial_Z^2 + 2\epsilon\partial_z\partial_Z$ \\
+
+$\nabla^4 \to \partial_x^4 + \epsilon^2 \partial_x^2 \partial_X^2 + 2\epsilon\partial_x^3\partial_X + \partial_x^2\partial_z^2 + \epsilon^2\partial_x^2\partial_Z^2 + 2\epsilon \partial_x^2 \partial_z \partial_Z \\
+ + \epsilon^2\partial_X^2\partial_x^2 + \epsilon^4\partial_X^2 + 2\epsilon^3\partial_X^3 \partial_x + \epsilon^2\partial_X^2\partial_z^2 + \epsilon^4\partial_X^2\partial_Z^2 + 2\epsilon^3\partial_X^2\partial_z\partial_Z \\
+ + 2\epsilon\partial_x^3\partial_X + 2\epsilon^3\partial_x\partial_X^3 + 4\epsilon^2 \partial_x^2\partial_X^2 + 2\epsilon\partial_x\partial_X\partial_z^2 + 2\epsilon^3\partial_x\partial_X\partial_Z^2 + 4\epsilon^2\partial_x\partial_X\partial_z\partial_Z \\
+ + \partial_z^2\partial_x^2 + \epsilon^2\partial_z^2\partial_X^2 + 2\epsilon\partial_z^2\partial_x\partial_X + \partial_z^4 + \epsilon^2\partial_z^2\partial_Z^2 + 2\epsilon\partial_z^3\partial_Z \\
++ \epsilon^2\partial_Z^2\partial_x^2 + \epsilon^4\partial_X^2\partial_Z^2 + 2\epsilon^3\partial_Z^2\partial_x\partial_X + \epsilon^3\partial_Z^2\partial_z^2 + \epsilon^4\partial_Z^4 + 2\epsilon^3\partial_Z^3\partial_z \\
++ 2\epsilon\partial_z\partial_Z\partial_x^2 + 2\epsilon^3\partial_X^2\partial_z\partial_Z + 4\epsilon^2\partial_z\partial_Z\partial_x\partial_X + 2\epsilon\partial_z^3\partial_Z + 2\epsilon^3\partial_Z^3\partial_z + 4\epsilon^2 \partial_z^2 \partial_Z^2$
+
 
 
 
