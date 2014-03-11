@@ -730,14 +730,61 @@ $+ \left[\begin{matrix}
 0 & \frac{1}{\reye}\partial_z^2 & 0 & 0 \\
 0 & 0 & \frac{1}{\reym} \partial_z^2 & 0 \\
 0 & 0 & 0 & \frac{1}{\reym} \partial_z^2 \\ \end{matrix} \right] + \left[ \begin{matrix}
-\frac{1}{\reye} 2\partial_x^2\partial_z^2 & 0 & 0 & 0 \\
+2 \frac{1}{\reye} \partial_x^2\partial_z^2 & 0 & 0 & 0 \\
 0 & 1 & 0 & 0 \\
 0 & 0 & 1 & 0 \\
-0 & 0 & 0 & 1\\ \end{matrix}\right]$
+0 & 0 & 0 & 1\\ \end{matrix}\right]$ \\
+
+And rearranging once more, we arrive at: \\
+
+$\left[\begin{matrix}
+\frac{1}{\reye} \nabla^4 & 0 & 0 & 0 \\
+0 & \frac{1}{\reye}\nabla^2 & 0 & 0 \\
+0 & 0 & \frac{1}{\reym}\nabla^2 & 0 \\
+0 & 0 & 0 & \frac{1}{\reym}\nabla^2 \\ 
+\end{matrix}\right] = \left[\begin{matrix}
+\frac{1}{\reye}\partial_x^4 & 0 & 0 & 0 \\
+0 & \frac{1}{\reye}\partial_x^2 & 0 &0 \\
+0 & 0 & \frac{1}{\reym}\partial_x^2 & 0 \\
+0 & 0 & 0 & \frac{1}{\reym}\partial_x^2 \\ \end{matrix}\right] $ \\
+
+$+ \partial_z^2 \left[\begin{matrix}
+2\frac{1}{\reye} \partial_x^2 & 0 & 0 & 0 \\
+0 & \frac{1}{\reye} & 0 & 0 \\
+0 & 0 & \frac{1}{\reym} & 0 \\
+0 & 0 & 0 & \frac{1}{\reym} \\ \end{matrix}\right] + \partial_z^4 \left[\begin{matrix}
+\frac{1}{\reye} & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\ \end{matrix}\right] $ \\
+
+Clearly these three matrices are 0th, 2nd, and 4th order in $\partial_z$, respectively. \\
+
+The second matrix in $RHS$ involves $B_0$, which we rewrite in terms of the tuning parameter $\epsilon^2 \equiv 1 - B_0$. \\
+
+$\left[\begin{matrix}
+0 & 0 & \frac{1}{4\pi}B_0 \partial_z \nabla^2 & 0 \\
+0 & 0 & 0 & \frac{1}{4\pi} B_0 \partial_z \\
+B_0 \partial_z & 0 & 0 & 0 \\
+0 & B_0 \partial_z & 0 & 0 \\ \end{matrix}\right] = (1 - \epsilon^2) \left[\begin{matrix}
+0 & 0 & \frac{1}{4\pi}\partial_z(\partial_x^2 + \partial_z^2) & 0 \\
+0 & 0 & 0 & \frac{1}{4\pi}\partial_z \\
+\partial_z & 0 & 0 & 0 \\
+0 & \partial_z & 0 & 0 \\ \end{matrix}\right] $ \\
+
+$ = (1 - \epsilon^2)\partial_z\left[\begin{matrix}
+0 & 0 & \frac{1}{4\pi}\partial_x^2 & 0 \\
+0 & 0 & 0 & \frac{1}{4\pi} \\
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\ \end{matrix} \right] + (1 - \epsilon^2)\partial_z^3 \left[\begin{matrix}
+0 & 0 & \frac{1}{4\pi} & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\ \end{matrix} \right] $ \\
+
+The $\mathcal{O}(\partial_z)$ term is combined with the 3rd matrix in RHS, and finally we arrive at our system of equations: \\
 
 
-
-The second matrix involves $B_0$, which we rewrite in terms of the tuning parameter $\epsilon^2 \equiv 1 - B_0$.
 
 \bibliography{mri.bib}
 
