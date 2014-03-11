@@ -666,8 +666,78 @@ $\nabla^4 \to \partial_x^4 + \partial_x^2\partial_z^2 + \epsilon^2\partial_x^2\p
 + \epsilon^2\partial_Z^2\partial_x^2 + \epsilon^3\partial_Z^2\partial_z^2 + \epsilon^4\partial_Z^4 + 2\epsilon^3\partial_Z^3\partial_z \\
 + 2\epsilon\partial_z\partial_Z\partial_x^2 + 2\epsilon\partial_z^3\partial_Z + 2\epsilon^3\partial_Z^3\partial_z + 4\epsilon^2 \partial_z^2 \partial_Z^2$ \\
 
+We now rewrite our system of equations, grouping similar terms into matrices. The system of equations we are rewriting is: \\
+
+$\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, J\left(A, \nabla^2 A \right) \, =  \, 2 \partial_z u_{1y} \,+ \, \frac{1}{4\pi} B_0 \partial_z \nabla^2 A \, + \, \frac{1}{\reye}\nabla^4 \Psi$ \\
+
+$\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, - \, \frac{1}{4\pi} J\left(A, B_{1y}\right) \, + \, \left(2 - \Omega_0 q\right) \partial_z \Psi \, = \, \frac{1}{4\pi}B_0\partial_z B_{1y} \, + \, \frac{1}{\reye} \nabla^2 u_{1y}$ \\
+
+$\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, \frac{1}{Rm} \nabla^2 A$ \\
+
+$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, J\left(A, u_{1y}\right) \, - \, J\left(\Psi, B_{1y}\right) \, + \, \frac{1}{\reym} \nabla^2 B_{1y}  \, - \, q \Omega_0 \partial_z A$ \\
+
+First we have a vector of nonlinear terms:\\
+
+$\mathbf{N} = \left[ \begin{matrix}  J(\Psi, \nabla^2 \Psi) - J(A, \nabla^2 A)\\
+J(\Psi, u_{1y}) - \frac{1}{4\pi} J(A, B_{1y}) \\ 
+-J(A, \Psi) \\
+J(\Psi, B_{1y} - J(A, u_{1y}) \\
+\end{matrix} \right]$ \\
+
+The time-differential term can be described by $\mathcal{D}\partial_t \mathbf{V}$ where: \\
+
+$\mathcal{D} = \left[\begin{matrix}
+\nabla^2 & 0 & 0 & 0 \\
+0 & 1& 0 & 0 \\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1 \\
+\end{matrix}\right]$ \\
+
+The righthand side of the equations can be split into three matrices: one containing the Reynolds numbers, one containing the magnetic field strength, and one containing the shear terms. That is: \\
+
+$RHS = \left[\begin{matrix}
+\frac{1}{\reye} \nabla^4 & 0 & 0 & 0 \\
+0 & \frac{1}{\reye}\nabla^2 & 0 & 0 \\
+0 & 0 & \frac{1}{\reym}\nabla^2 & 0 \\
+0 & 0 & 0 & \frac{1}{\reym}\nabla^2 \\ 
+\end{matrix}\right] + \left[\begin{matrix}
+0 & 0 & \frac{1}{4\pi}B_0 \partial_z \nabla^2 & 0 \\
+0 & 0 & 0 & \frac{1}{4\pi} B_0 \partial_z \\
+B_0 \partial_z & 0 & 0 & 0 \\
+0 & B_0 \partial_z & 0 & 0 \\ \end{matrix}\right]$ \\
+
+$+ \left[\begin{matrix}
+0 & 2\partial_z & 0 & 0 \\
+\left(\Omega_0 - 2\right)q\partial_z & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & -q\Omega_0\partial_z & 0 \\ \end{matrix}\right]$ \\
+
+We will now regroup matrices by $\mathcal{O}(\partial_z)$. The first matrix is rewritten as three matrices, keeping in mind that $\nabla^4 = \partial_x^4 + \partial_z^4 + 2\partial_x\partial_z^2$: \\
+
+$\left[\begin{matrix}
+\frac{1}{\reye} \nabla^4 & 0 & 0 & 0 \\
+0 & \frac{1}{\reye}\nabla^2 & 0 & 0 \\
+0 & 0 & \frac{1}{\reym}\nabla^2 & 0 \\
+0 & 0 & 0 & \frac{1}{\reym}\nabla^2 \\ 
+\end{matrix}\right] = \left[\begin{matrix}
+\frac{1}{\reye}\partial_x^4 & 0 & 0 & 0 \\
+0 & \frac{1}{\reye}\partial_x^2 & 0 &0 \\
+0 & 0 & \frac{1}{\reym}\partial_x^2 & 0 \\
+0 & 0 & 0 & \frac{1}{\reym}\partial_x^2 \\ \end{matrix}\right] $ \\
+
+$+ \left[\begin{matrix}
+\frac{1}{\reye}\partial_z^4 & 0 & 0 & 0 \\
+0 & \frac{1}{\reye}\partial_z^2 & 0 & 0 \\
+0 & 0 & \frac{1}{\reym} \partial_z^2 & 0 \\
+0 & 0 & 0 & \frac{1}{\reym} \partial_z^2 \\ \end{matrix} \right] + \left[ \begin{matrix}
+\frac{1}{\reye} 2\partial_x^2\partial_z^2 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1\\ \end{matrix}\right]$
 
 
+
+The second matrix involves $B_0$, which we rewrite in terms of the tuning parameter $\epsilon^2 \equiv 1 - B_0$.
 
 \bibliography{mri.bib}
 
