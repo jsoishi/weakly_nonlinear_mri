@@ -838,7 +838,7 @@ $\mathcal{X} = \left[\begin{matrix}
 
 \vspace{2mm}
 
-Note that this differs from what Umurhan+ find, although it shouldn't. The sign of the $\chi$ term, the $\partial_z$ in front of it, and the inclusion of the last term are all different. \\
+Note that this differs from what Umurhan+ find, although it shouldn't. The sign of the $\mathcal{X}$ term, the $\partial_z$ in front of it, and the inclusion of the last term are all different. \\
 
 Now we will expand terms. Note the benefit of this notation: with the exception of $\mathcal{D}$, none of the matrices contain terms that change in the multiple scales expansion. Thus we are primarily concerned with expanding the $\partial_z$ terms: \\
 
@@ -860,9 +860,9 @@ $\mathcal{L^*} = \mathcal{L} + \epsilon\mathcal{L}_1\partial_Z \, + \, 2\epsilon
 
 Note that we have the same terms as the $\widetilde{\mathcal{L}}_1$ operator in Umurhan+, but we do not have the same terms as their $\widetilde{\mathcal{L}}_2$. \\
 
-The $\partial_z\chi$ and $\partial_z^3\mathcal{L}_3$ terms become: \\
+The $\partial_z\mathcal{X}$ and $\partial_z^3\mathcal{L}_3$ terms become: \\
 
-$-\epsilon^2\partial_z\chi \to \left(-\epsilon^2 - \epsilon^3\partial_Z\right)\chi$ \\
+$-\epsilon^2\partial_z\mathcal{X} \to \left(-\epsilon^2 - \epsilon^3\partial_Z\right)\mathcal{X}$ \\
 
 $-\epsilon^2\partial_z^3\mathcal{L}_3 \to \left(-\epsilon^2\partial_z^3 - 3\epsilon^3\partial_z^2\partial_Z - 3\epsilon^4\partial_z\partial_Z^2 - \epsilon^5\partial_Z^3\right)\mathcal{L}_3$ \\
 
@@ -885,7 +885,7 @@ We will call this $\mathcal{D} + \left(\epsilon^2\partial_Z^2 + 2\epsilon\partia
 
 Our final equation is: \\
 
-$\left(\partial_t + \epsilon^2 \partial_T \right)\mathcal{D}\mathbf{V} \, + \, \left(\partial_t + \epsilon^2\partial_T\right)\left(\epsilon^2\partial_Z^2 + 2\epsilon\partial_z\partial_Z\right)\mathcal{D^*}\mathbf{V} \, + \, \mathbf{N} \, = \, \mathcal{L}\mathbf{V} \, + \, \epsilon\widetilde{\mathcal{L}}_1\partial_Z\mathbf{V} \, + \, \epsilon^2\widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V} \, + \, \epsilon^3\widetilde{\mathcal{L}}_3\partial_Z^3\mathbf{V} \, + \, \epsilon^4\widetilde{\mathcal{L}}_4\partial_Z^4\mathbf{V} \, - \, \epsilon^2\partial_z\chi\mathbf{V} \, - \epsilon^3\partial_Z\chi\mathbf{V} \, - \, \epsilon^2\partial_z^3\mathcal{L}_3\mathbf{V} \, - \, 3\epsilon^3\partial_z^2\partial_Z\mathcal{L}_3\mathbf{V} \, - \, 3\partial_z\partial_Z^2\mathcal{L}_3\mathbf{V} \, - \, \epsilon^5\partial_Z^3\mathcal{L}_3\mathbf{V}$ \\
+$\left(\partial_t + \epsilon^2 \partial_T \right)\mathcal{D}\mathbf{V} \, + \, \left(\partial_t + \epsilon^2\partial_T\right)\left(\epsilon^2\partial_Z^2 + 2\epsilon\partial_z\partial_Z\right)\mathcal{D^*}\mathbf{V} \, + \, \mathbf{N} \, = \, \mathcal{L}\mathbf{V} \, + \, \epsilon\widetilde{\mathcal{L}}_1\partial_Z\mathbf{V} \, + \, \epsilon^2\widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V} \, + \, \epsilon^3\widetilde{\mathcal{L}}_3\partial_Z^3\mathbf{V} \, + \, \epsilon^4\widetilde{\mathcal{L}}_4\partial_Z^4\mathbf{V} \, - \, \epsilon^2\partial_z\mathcal{X}\mathbf{V} \, - \epsilon^3\partial_Z\mathcal{X}\mathbf{V} \, - \, \epsilon^2\partial_z^3\mathcal{L}_3\mathbf{V} \, - \, 3\epsilon^3\partial_z^2\partial_Z\mathcal{L}_3\mathbf{V} \, - \, 3\epsilon^4\partial_z\partial_Z^2\mathcal{L}_3\mathbf{V} \, - \, \epsilon^5\partial_Z^3\mathcal{L}_3\mathbf{V}$ \\
 
 Where: \\
 
@@ -899,7 +899,7 @@ $\widetilde{\mathcal{L}}_4 = \mathcal{L}_4$ \\
 
 To $\mathcal{O}(\epsilon^2)$ this becomes: \\
 
-$\left(\partial_t + \epsilon^2 \partial_T \right)\mathcal{D}\mathbf{V} \, + \, \left(\partial_t + \epsilon^2\partial_T\right)\left(\epsilon^2\partial_Z^2 + 2\epsilon\partial_z\partial_Z\right)\mathcal{D^*}\mathbf{V}$
+$\partial_t\mathcal{D}\mathbf{V} \, + \, \epsilon^2 \partial_T \mathcal{D}\mathbf{V} \, + \, \epsilon^2\partial_Z^2\partial_t\mathcal{D^*}\mathbf{V} \, + \, 2\epsilon\partial_z\partial_Z\partial_t\mathcal{D^*}\mathbf{V} \, + \, \mathbf{N} \, = \, \mathcal{L}\mathbf{V} \, + \, \epsilon\widetilde{\mathcal{L}}_1\partial_Z\mathbf{V} \, + \, \epsilon^2\widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V} \, - \, \epsilon^2\partial_z\mathcal{X}\mathbf{V} \, - \, \epsilon^2\partial_z^3\mathcal{L}_3\mathbf{V} \, + \, \mathcal{O}(\epsilon^3)$
 
 
 \bibliography{mri.bib}
