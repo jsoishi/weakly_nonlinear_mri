@@ -881,13 +881,25 @@ $\mathcal{D} \to \left[\begin{matrix}
 
 \vspace{2mm}
 
-We will call this $\mathcal{D} + \mathcal{D^*}$. \\
+We will call this $\mathcal{D} + \left(\epsilon^2\partial_Z^2 + 2\epsilon\partial_z\partial_Z\right)\mathcal{D^*}$. \\
 
 Our final equation is: \\
 
+$\left(\partial_t + \epsilon^2 \partial_T \right)\mathcal{D}\mathbf{V} \, + \, \left(\partial_t + \epsilon^2\partial_T\right)\left(\epsilon^2\partial_Z^2 + 2\epsilon\partial_z\partial_Z\right)\mathcal{D^*}\mathbf{V} \, + \, \mathbf{N} \, = \, \mathcal{L}\mathbf{V} \, + \, \epsilon\widetilde{\mathcal{L}}_1\partial_Z\mathbf{V} \, + \, \epsilon^2\widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V} \, + \, \epsilon^3\widetilde{\mathcal{L}}_3\partial_Z^3\mathbf{V} \, + \, \epsilon^4\widetilde{\mathcal{L}}_4\partial_Z^4\mathbf{V} \, - \, \epsilon^2\partial_z\chi\mathbf{V} \, - \epsilon^3\partial_Z\chi\mathbf{V} \, - \, \epsilon^2\partial_z^3\mathcal{L}_3\mathbf{V} \, - \, 3\epsilon^3\partial_z^2\partial_Z\mathcal{L}_3\mathbf{V} \, - \, 3\partial_z\partial_Z^2\mathcal{L}_3\mathbf{V} \, - \, \epsilon^5\partial_Z^3\mathcal{L}_3\mathbf{V}$ \\
+
+Where: \\
+
+$\widetilde{\mathcal{L}}_1 = \mathcal{L}_1 + 2\mathcal{L}_2\partial_z + 3\mathcal{L}_3\partial_z^2 + 4\mathcal{L}_4\partial_z^3$ \\
+
+$\widetilde{\mathcal{L}}_2 = \mathcal{L}_2 + 3\mathcal{L}_3\partial_z + 6\mathcal{L}_4\partial_z^2$ \\
+
+$\widetilde{\mathcal{L}}_3 = \mathcal{L}_3 + 4\mathcal{L}_4\partial_z$ \\
+
+$\widetilde{\mathcal{L}}_4 = \mathcal{L}_4$ \\
+
+To $\mathcal{O}(\epsilon^2)$ this becomes: \\
+
 $\left(\partial_t + \epsilon^2 \partial_T \right)\mathcal{D}\mathbf{V} \, + \, \left(\partial_t + \epsilon^2\partial_T\right)\left(\epsilon^2\partial_Z^2 + 2\epsilon\partial_z\partial_Z\right)\mathcal{D^*}\mathbf{V}$
-
-
 
 
 \bibliography{mri.bib}
