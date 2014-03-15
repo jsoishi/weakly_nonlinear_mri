@@ -923,8 +923,31 @@ Note that $J\left(a + b, c + d\right) = J(a, c) + J(a, d) + J(b, c) + J(b, d)$. 
 
 Thus the first term of $N^{\left(\Psi\right)}$ expands to become: \\
 
-$J(\epsilon\Psi_1 + \epsilon^2\Psi_2, \epsilon\nabla^2 \Psi_1 + \epsilon^2 \nabla^2\Psi_2)$
+$J(\epsilon\Psi_1 + \epsilon^2\Psi_2, \epsilon\nabla^2 \Psi_1 + \epsilon^2 \nabla^2\Psi_2)$ \\
 
+$= J(\epsilon\Psi_1, \epsilon\nabla^2\Psi_1) + J(\epsilon\Psi_1, \epsilon^2\nabla^2\Psi_2) + J(\epsilon^2\Psi_2, \epsilon\nabla^2\Psi_1) + J(\epsilon^2\Psi_2, \epsilon^2\nabla^2\Psi_2)$ \\
+
+$= \epsilon^2 J(\Psi_1, \nabla^2\Psi_1) + \epsilon^3J(\Psi_1, \nabla^2\Psi_2) + \epsilon^3J(\Psi_2, \nabla^2\Psi_1) + \epsilon^4J(\Psi_2, \nabla^2\Psi_2)$ \\
+
+And the term $2\epsilon J(\epsilon\Psi_1 + \epsilon^2\Psi_2, \epsilon\partial_z\partial_Z\Psi_1 + \epsilon^2\partial_z\partial_Z\Psi_2)$ becomes: \\
+
+$= 2\epsilon^3 J(\Psi_1, \partial_z\partial_Z\Psi_1) + 2\epsilon^4 J(\Psi_1, \partial_z\partial_Z\Psi_2) + 2\epsilon^4 J(\Psi_2, \partial_z\partial_Z\Psi_1) + 2\epsilon^5 J(\Psi_2, \partial_z\partial_Z \Psi_2)$ \\
+
+And the term $\epsilon \widetilde{J}(\epsilon\Psi_1 + \epsilon\Psi_2, \epsilon\nabla^2\Psi_1 + \epsilon^2\nabla^2\Psi_2)$ becomes: \\
+
+$= \epsilon^3 \widetilde{J}(\Psi_1, \nabla^2 \Psi_1) + \epsilon^4\widetilde{J}(\Psi_1, \nabla^2\Psi_2) + \epsilon^4\widetilde{J}(\Psi_2, \nabla^2\Psi_1) + \epsilon^5\widetilde{J}(\Psi_2, \nabla^2 \Psi_2)$ \\
+
+As for the terms in $N^{(\Psi)}$ that are $\mathcal{O}(\epsilon^2)$ and higher, they will not contain any terms in the expansion that are lower than $\mathcal{O}(\epsilon^4)$. \\
+
+Thus the first term in the pre-expansion nonlinear vector $N^{(\Psi)}$ becomes: \\
+
+$J(\Psi, \nabla^2\Psi) \to \epsilon^2 J(\Psi_1, \nabla^2 \Psi_1) + \epsilon^3 J(\Psi_1, \nabla^2\Psi_2) + \epsilon^3 J(\Psi_2, \nabla^2\Psi_1) + 2\epsilon^3 J(\Psi_1, \partial_z\partial_Z \Psi_1) + \epsilon^3\widetilde{J}(\Psi_1, \nabla^2 \Psi_1) + \mathcal{O}(\epsilon^4)$ \\
+
+The second term behaves similarly, and thus $N^{(\Psi)}$ becomes: \\
+
+$N^{(\Psi)} \to \epsilon^2 J(\Psi_1, \nabla^2 \Psi_1) \,-\, \epsilon^2 J(A_1, \nabla^2 A_1) \,+\, \epsilon^3 J(\Psi_1, \nabla^2\Psi_2) \, - \epsilon^3J(A_1, \nabla^2 A_2) \,+\, \epsilon^3 J(\Psi_2, \nabla^2\Psi_1) \, - \, \epsilon^3 J(A_2, \nabla^2 A_1) \,+\, 2\epsilon^3 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, - \, 2\epsilon^3 J(A_1, \partial_z\partial_Z A_1) \,+\, \epsilon^3\widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \, \epsilon^3 \widetilde{J}(A_1, \nabla^2 A_1) \, + \, \mathcal{O}(\epsilon^4)$ \\
+
+Note that this is the same as Umurhan+ except for a sign on one term: they have a typo in their Eq. B19. \\
 
 
 
