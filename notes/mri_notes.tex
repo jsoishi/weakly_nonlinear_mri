@@ -901,6 +901,8 @@ To $\mathcal{O}(\epsilon^2)$ this becomes: \\
 
 $\mathcal{D}\partial_t\mathbf{V} \, + \, \epsilon^2  \mathcal{D}\partial_T\mathbf{V} \, + \, \epsilon^2\mathcal{D^*}\partial_Z^2\partial_t\mathbf{V} \, + \, 2\epsilon\mathcal{D^*}\partial_z\partial_Z\partial_t\mathbf{V} \, + \, \mathbf{N} \, = \, \mathcal{L}\mathbf{V} \, + \, \epsilon\widetilde{\mathcal{L}}_1\partial_Z\mathbf{V} \, + \, \epsilon^2\widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V} \, - \, \epsilon^2\partial_z\mathcal{X}\mathbf{V} \, - \, \epsilon^2\partial_z^3\mathcal{L}_3\mathbf{V} \, + \, \mathcal{O}(\epsilon^3)$ \\
 
+\section*{Expansion of Nonlinear Terms}
+
 What about the vector of nonlinear terms? Let $\mathbf{N} = \left[N^{\left(\Psi\right)}, N^{\left(u_{1y}\right)}, N^{\left(A\right)}, N^{\left(B_{1y}\right)} \right]^\mathbf{T}$. We begin with the term $N^{\left(\Psi\right)} = J\left(\Psi, \nabla^2\Psi\right) - J\left(A, \nabla^2A\right)$: \\
 
 Making the replacements: \\
@@ -962,6 +964,13 @@ The $N^{(A)}$ term is simple: \\
 $N^{(A)} = -J(A, \Psi) = -J(A, \Psi) - \epsilon\widetilde{J}(A, \Psi)$ \\
 
 $N^{(A)} \to -\epsilon^2 J(A_1, \Psi_1) \, - \, \epsilon^3 J(A_1, \Psi_2) \, - \, \epsilon^3 J(A_2, \Psi_1) \, - \, \epsilon^4 J(A_2, \Psi_2) \, - \, \epsilon^3 \widetilde{J}(A_1, \Psi_1) \, - \, \epsilon^4 \widetilde{J}(A_1, \Psi_2) \, - \, \epsilon^4 \widetilde{J}(A_2, \Psi_1) \, - \, \epsilon^5 \widetilde{J}(A_2, \Psi_2)$ \\
+
+And finally, we expand $N^{(B_{1y})} = J(\Psi, B_{1y}) - J(A, u_{1y})$: \\
+
+$= J(\Psi, B_{1y}) + \epsilon\widetilde{J}(\Psi, B_{1y}) - J(A, u_{1y}) - \epsilon\widetilde{J}(A, u_{1y})$ \\
+
+$ = \epsilon^2 J(\Psi_1, B_1) \, + \, \epsilon^3 J(\Psi_1, B_2) \, + \, \epsilon^3 J(\Psi_2, B_1) \, + \, \epsilon^4 J(\Psi_2, B_2) \, + \, \epsilon^3\widetilde{J}(\Psi_1, B_1) \, + \, \epsilon^4\widetilde{J}(\Psi_1, B_2) \, + \, \epsilon^4 \widetilde{J}(\Psi_2, B_1) \, + \, \epsilon^5 \widetilde{J}(\Psi_2, B_2) \, - \, \epsilon^2 J(A_1, u_1) \, - \, \epsilon^3 J(A_1, u_2) \, - \, \epsilon^3 J(A_2, u_1) \, - \, \epsilon^4 J(A_2, u_2) \, - \, \epsilon^3 \widetilde{J}(A_1, u_1) \, - \, \epsilon^4 \widetilde{J}(A_1, u_2) \, - \, \epsilon^4 \widetilde{J}(\Psi_2, B_1) \, - \, \epsilon^5 \widetilde{J}(\Psi_2, B_2)$\\
+
 
 
 
