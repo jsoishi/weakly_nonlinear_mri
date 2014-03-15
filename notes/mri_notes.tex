@@ -911,7 +911,22 @@ $\nabla^2 \to \nabla^2 + \epsilon^2\partial_Z^2 + 2\epsilon\partial_z\partial_Z$
 
 We find that $J\left(\Psi, \nabla^2\Psi\right) = \partial_z\Psi\partial_x\nabla^2\Psi - \partial_x\Psi\partial_z\nabla^2\Psi$ becomes: \\
 
-$\partial_z\Psi\partial_x\nabla^2\Psi \, - \, \partial_x\Psi\partial_z\nabla^2\Psi \, + \, \epsilon^2\partial_z\Psi\partial_x\partial_Z^2\Psi \, - \, \epsilon^2\partial_x\Psi\partial_z\partial_Z^2\Psi \, + \, 2\epsilon\partial_z\Psi\partial_x\partial_z\partial_Z\Psi \, - \, 2\epsilon\partial_x\Psi\partial_z^2\partial_Z\Psi \, + \, \epsilon\partial_Z\Psi\partial_x\nabla^2\Psi \, - \, \epsilon\partial_x\Psi\partial_Z\nabla^2\Psi \, + \, \epsilon^3\partial_Z\Psi\partial_x\partial_Z^2\Psi \, - \, \epsilon^3\partial_x\Psi\partial_Z^3\Psi \, + \, 2\epsilon^2\partial_Z\Psi\partial_x\partial_z\partial_Z\Psi \, - \, 2\epsilon^2\partial_x\Psi\partial_z\partial_Z^2\Psi$
+$\partial_z\Psi\partial_x\nabla^2\Psi \, - \, \partial_x\Psi\partial_z\nabla^2\Psi \, + \, \epsilon^2\partial_z\Psi\partial_x\partial_Z^2\Psi \, - \, \epsilon^2\partial_x\Psi\partial_z\partial_Z^2\Psi \, + \, 2\epsilon\partial_z\Psi\partial_x\partial_z\partial_Z\Psi \, - \, 2\epsilon\partial_x\Psi\partial_z^2\partial_Z\Psi \, + \, \epsilon\partial_Z\Psi\partial_x\nabla^2\Psi \, - \, \epsilon\partial_x\Psi\partial_Z\nabla^2\Psi \, + \, \epsilon^3\partial_Z\Psi\partial_x\partial_Z^2\Psi \, - \, \epsilon^3\partial_x\Psi\partial_Z^3\Psi \, + \, 2\epsilon^2\partial_Z\Psi\partial_x\partial_z\partial_Z\Psi \, - \, 2\epsilon^2\partial_x\Psi\partial_z\partial_Z^2\Psi$ \\
+
+$= \, J\left(\Psi, \nabla^2\Psi\right) \, + \, \epsilon^2J\left(\Psi, \partial_Z^2\Psi\right) \, + \, 2\epsilon J\left(\Psi, \partial_z\partial_Z\Psi\right) \, + \epsilon\widetilde{J}\left(\Psi, \nabla^2\Psi\right) \, + \, \epsilon^3\widetilde{J}\left(\Psi, \partial_Z^2\Psi\right) \, + \, 2\epsilon^2\widetilde{J}\left(\Psi, \partial_z\partial_Z\Psi\right)$ \\
+
+Where $\widetilde{J}\left(f, g\right) \equiv \partial_Z f \partial_x g - \partial_x f \partial_Z g$ \\
+
+When we expand the fluid quantities $\mathbf{V}$ in a perturbation series $\mathbf{V} = \epsilon\mathbf{V_1} + \epsilon^2\mathbf{V_2} + \epsilon^3\mathbf{V_3} + ...$, we will introduce additional $\epsilon$ terms. Because we are truncating our expansion at $\mathcal{O}(\epsilon^3)$, we will write out the full perturbation series expansion of the nonlinear vector now. \\
+
+Note that $J\left(a + b, c + d\right) = J(a, c) + J(a, d) + J(b, c) + J(b, d)$. \\
+
+Thus the first term of $N^{\left(\Psi\right)}$ expands to become: \\
+
+$J(\epsilon\Psi_1 + \epsilon^2\Psi_2, \epsilon\nabla^2 \Psi_1 + \epsilon^2 \nabla^2\Psi_2)$
+
+
+
 
 
 
