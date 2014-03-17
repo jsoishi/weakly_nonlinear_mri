@@ -971,11 +971,36 @@ $= J(\Psi, B_{1y}) + \epsilon\widetilde{J}(\Psi, B_{1y}) - J(A, u_{1y}) - \epsil
 
 $ = \epsilon^2 J(\Psi_1, B_1) \, + \, \epsilon^3 J(\Psi_1, B_2) \, + \, \epsilon^3 J(\Psi_2, B_1) \, + \, \epsilon^4 J(\Psi_2, B_2) \, + \, \epsilon^3\widetilde{J}(\Psi_1, B_1) \, + \, \epsilon^4\widetilde{J}(\Psi_1, B_2) \, + \, \epsilon^4 \widetilde{J}(\Psi_2, B_1) \, + \, \epsilon^5 \widetilde{J}(\Psi_2, B_2) \, - \, \epsilon^2 J(A_1, u_1) \, - \, \epsilon^3 J(A_1, u_2) \, - \, \epsilon^3 J(A_2, u_1) \, - \, \epsilon^4 J(A_2, u_2) \, - \, \epsilon^3 \widetilde{J}(A_1, u_1) \, - \, \epsilon^4 \widetilde{J}(A_1, u_2) \, - \, \epsilon^4 \widetilde{J}(\Psi_2, B_1) \, - \, \epsilon^5 \widetilde{J}(\Psi_2, B_2)$\\
 
+Thus we are left with the following: \\
 
+$\mathbf{N} = \epsilon^2\mathbf{N_1} \, + \, \epsilon^3\mathbf{N_2} \, + \, \mathcal{O}(\epsilon^4)$ \\
 
+Where: \\
 
+\noindent $N^{(\Psi)} = \epsilon^2 N_2^{(\Psi)} \, + \, \epsilon^3 N_3^{(\Psi)} \, + \, \mathcal{O}(\epsilon^4)$ \\
+$N^{(u)} = \epsilon^2 N_2^{(u)} \, + \, \epsilon^3 N_3^{(u)} \, + \, \mathcal{O}(\epsilon^4)$ \\
+$N^{(A)} = \epsilon^2 N_2^{(A)} \, + \, \epsilon^3 N_3^{(A)} \, + \, \mathcal{O}(\epsilon^4)$ \\
+$N^{(B)} = \epsilon^2 N_2^{(B)} \, + \, \epsilon^3 N_3^{(B)} \, + \, \mathcal{O}(\epsilon^4)$ \\
 
+And: \\
 
+$N_2^{(\Psi)} = J(\Psi_1, \nabla^2 \Psi_1) \,-\, J(A_1, \nabla^2 A_1) $ \\
+
+$N_2^{(u)} = J(\Psi_1, u_1) \, - \, \frac{1}{4\pi} J(A_1, B_1) $ \\
+
+$N_2^{(A)} = - J(A_1, \Psi_1)$ \\
+
+$N_2^{(B)} =  J(\Psi_1, B_1) \, - \, J(A_1, u_1)$\\
+
+And: \\
+
+$N_3^{(\Psi)} = J(\Psi_1, \nabla^2\Psi_2) \, - \, J(A_1, \nabla^2 A_2) \,+\, J(\Psi_2, \nabla^2\Psi_1) \, - \, J(A_2, \nabla^2 A_1) \,+\, 2 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, - \, 2 J(A_1, \partial_z\partial_Z A_1) \,+\, \widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \,  \widetilde{J}(A_1, \nabla^2 A_1) $ \\
+
+$N_3^{(u)} = J(\Psi_1, u_2) \, + \, J(\Psi_2, u_1) \, + \, \widetilde{J}(\Psi_1, u_1) \, - \, \frac{1}{4\pi} J(A_1, B_2) \, - \, \frac{1}{4\pi} J(A_2, B_1) \, - \, \frac{1}{4\pi} \widetilde{J}(A_1, B_1)$ \\
+
+$N_3^{(A)} = - J(A_1, \Psi_2) \, - \, J(A_2, \Psi_1) \, - \, \widetilde{J}(A_1, \Psi_1) \,$ \\
+
+$N_3^{(B)} = \, J(\Psi_1, B_2) \, + \, J(\Psi_2, B_1) \, + \, \widetilde{J}(\Psi_1, B_1) \, - \, J(A_1, u_2) \, - \,  J(A_2, u_1) \, - \, \widetilde{J}(A_1, u_1) \, $\\
 
 
 \bibliography{mri.bib}
