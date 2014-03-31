@@ -1037,9 +1037,27 @@ To find the $\mathcal{O}(\epsilon^2)$ solution, must write out $\mathbf{N_2}$. \
 
 We find: \\
 
-$\mathbf{N_2} = \alpha^2\mathbb{N}_{22} e^{i2Qz} + \left|\alpha\right|^2 \mathbb{N}_{20} + c.c.$
+$\mathbf{N_2} = \alpha^2\mathbb{N}_{22} e^{i2Qz} + \left|\alpha\right|^2 \mathbb{N}_{20} + c.c.$ \\
 
 Then: \\
+
+$\mathcal{L}\mathbf{V_2} \, = \, \mathbf{N_2} \, - \, \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}$ \\
+
+$\mathbf{V_2} \, = \, \alpha^2 e^{i2Qz} \mathcal{L}^{-1}\mathbb{N}_{22} \, + \,  \left|\alpha\right|^2 \mathcal{L}^{-1} \mathbb{N}_{20}\, - \, \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}$ + c.c.\\
+
+And $\partial_Z \mathbf{V_1} = \partial_Z \alpha \mathbb{V}_{11} e^{i Q z} \, + \, \partial_Z \beta \mathbb{U}_{11} \, + \, c.c.$, so we end up with: \\
+
+$\mathbf{V_2} \, = \, \alpha^2 e^{i2Qz} \mathbb{V}_{22} \, + \, \left|\alpha\right|^2 \mathbb{V}_{20} \, - \, \partial_Z \alpha \mathbb{V}_{21} e^{iQz} \, - \, \partial_Z \beta \mathbb{U}_{20} + c.c.$ \\
+
+Where: \\
+
+$\mathbb{V}_{22} = \mathcal{L}^{-1}\mathbb{N}_{22}$ \\
+
+$\mathbb{V}_{20} = \mathcal{L}^{-1} \mathbb{N}_{20}$ \\
+
+$\mathbb{V}_{21} = \mathcal{L}^{-1} \widetilde{\mathcal{L}}_1 \mathbb{V}_{11}$ \\
+
+$\mathbb{U}_{20} = \mathcal{L}^{-1} \widetilde{\mathcal{L}}_1 \mathbb{U}_{11}$ \\
 
 
 
