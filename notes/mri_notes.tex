@@ -1109,18 +1109,45 @@ The solvability condition arises from the Fredholm alternative, which I looked u
 
 $M Y = F$ and $M^\dagger Z = G$ \\
 
-And the corresponding homogenous equations, and if $M^\dagger Z = 0$ has a solution, then $M Y = F$ has a solution if and only if $\left<F \cdot Z \right> = 0$, where Z is the nontrivial solution to the adjoint homogenous equation. \\
+And \\
+
+$M Y = 0$ and $M^\dagger Z = 0$, \\
+
+If $M^\dagger Z = 0$ has a solution, then $M Y = F$ has a solution if and only if $\left<F \cdot Z \right> = 0$, where Z is the nontrivial solution to the adjoint homogenous equation. \\
 
 In our case, we have: \\
 
 $\mathcal{L}\mathbf{V_2} \, = \mathbf{N_2} - \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}$ \\
 
+$\mathcal{L}^\dagger \mathbf{V}^\dagger = 0$ \\ 
+
 Where $\widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}$ contains a term resonant with $e^{iQz}$. This is a secular term because it is a solution of the homogenous equation. \\
 
+Because $\mathcal{L}^\dagger \mathbf{V}^\dagger = 0$ has a nontrivial solution, the following solvability criterion must be satisfied in order for $\mathcal{L}\mathbf{V_2} \, = \mathbf{N_2} - \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}$ to have a solution: \\
 
+$\left<\left(\mathbf{N_2} - \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}\right) \cdot \mathbf{V}^\dagger\right> = 0$ \\
 
+Which can be rewritten: \\
 
+$\left<\mathbf{N_2} \cdot \mathbf{V}^\dagger \right> \, + \, \left< \mathbf{V}^\dagger \cdot \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}\right> = 0 $ \\
 
+Now, since: \\
+
+$\mathbf{V_1} = \alpha(T, Z) \mathbb{V}_{11} e^{i Q z} + c.c. + \beta(T, Z)\mathbb{U}_{11}$ \\
+
+$\mathbf{V}^\dagger = \mathbb{V}^\dagger e^{iQz} + c.c.$ \\
+
+And: \\
+
+$\mathbf{N_2} = \alpha^2\mathbb{N}_{22} e^{i2Qz} + \left|\alpha\right|^2 \mathbb{N}_{20} + c.c.$ \\
+
+All that matters is that $e^{iQz}$ is orthogonal to $e^{2iQz}$ but NOT orthogonal to $e^{iQz}$, that is: \\
+
+$\left< e^{i2Qz} \cdot e^{iQz} \right> \, = \, \int \limits_{-\pi/Q}^{\pi/Q} \left(e^{i2Qz}e^{-iQz^*}\right) \, dz \, = \, 0$\\
+
+$\left< e^{iQz} \cdot e^{iQz} \right> \, = \, \int \limits_{-\pi/Q}^{\pi/Q} \left(e^{iQz}e^{-iQz^*}\right) \, dz \, \ne \, 0$\\
+
+Thus the solvability condition is automatically satisfied by the nonsecular terms, and so must be enforced on the secular terms only. This is functionally equivalent to setting the coefficients of the secular terms to zero, but this provides a rigorous justification for doing so. \\
 
 
 
