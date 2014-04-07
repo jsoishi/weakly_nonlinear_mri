@@ -15,6 +15,7 @@
 \usepackage{graphics,graphicx,subfigure}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage[makeroom]{cancel}
 
 \newcommand\lsim{\mathrel{\rlap{\lower4pt\hbox{\hskip1pt$\sim$}}
         \raise1pt\hbox{$<$}}}
@@ -1148,6 +1149,22 @@ $\left< e^{i2Qz} \cdot e^{iQz} \right> \, = \, \int \limits_{-\pi/Q}^{\pi/Q} \le
 $\left< e^{iQz} \cdot e^{iQz} \right> \, = \, \int \limits_{-\pi/Q}^{\pi/Q} \left(e^{iQz}e^{-iQz^*}\right) \, dz \, \ne \, 0$\\
 
 Thus the solvability condition is automatically satisfied by the nonsecular terms, and so must be enforced on the secular terms only. This is functionally equivalent to setting the coefficients of the secular terms to zero, but this provides a rigorous justification for doing so. \\
+
+Because the inner product integrations are actually performed over both z and x, the even/oddness of the fluid quantity eigenfunctions can force the inner product to be zero. Thus for the solvability condition: \\
+
+ $\left< \mathbf{V}^\dagger \cdot \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}\right> = 0 $ \\
+ 
+ $\left< \left(\mathbb{V}^\dagger e^{iQz} + c.c.\right) \cdot \left(\widetilde{\mathcal{L}}_1 \partial_Z \alpha(T, Z) \mathbb{V}_{11} e^{i Q z} + c.c. + \widetilde{\mathcal{L}}_1 \partial_Z \beta(T, Z)\mathbb{U}_{11}\right) \right> = 0$ \\
+ 
+ $\iint \mathbb{V}^\dagger e^{iQz} \cdot \widetilde{\mathcal{L}}_1 \partial_Z \alpha(T, Z)^* \mathbb{V}_{11}^* e^{-i Q z^*} \, dx dz \, + \, \cancel{\iint \mathbb{V}^\dagger e^{iQz} \cdot \widetilde{\mathcal{L}}_1 \partial_Z \alpha(T, Z) \mathbb{V}_{11} e^{i Q z} \, dx dz} \, + $ \\
+$\cancel{\iint \mathbb{V}^\dagger e^{iQz} \cdot \widetilde{\mathcal{L}}_1 \partial_Z \beta(T, Z)^*\mathbb{U}_{11}^* \, dx dz} \, + \, \cancel{\iint {\mathbb{V}^\dagger}^* e^{-iQz^*} \cdot \widetilde{\mathcal{L}}_1 \partial_Z \alpha(T, Z)^* \mathbb{V}_{11}^* e^{-i Q z^*} \, dx dz} \, + $\\
+\noindent $\iint {\mathbb{V}^\dagger}^* e^{-iQz^*} \cdot \widetilde{\mathcal{L}}_1 \partial_Z \alpha(T, Z) \mathbb{V}_{11} e^{i Q z} \, dxdz \, + \, \cancel{\iint {\mathbb{V}^\dagger}^* e^{-iQz^*} \cdot \widetilde{\mathcal{L}}_1 \partial_Z \beta(T, Z)^*\mathbb{U}_{11}^* \, dx dz} \, = \, 0$ \\
+
+Where terms with $\beta$ and terms with either $e^{iQz}\cdot e^{iQz}$ or  $e^{-iQz^*}\cdot e^{-iQz^*}$ are zero. Since $\int \limits_{-\pi/Q}^{\pi/Q} \left(e^{iQz}e^{-iQz^*}\right) \, dz \, \ne \, 0$, we have the condition: \\
+
+$\int \limits_{-1}^1 \mathbb{V}^\dagger \cdot \widetilde{\mathcal{L}}_1 \partial_Z \alpha(T, Z)^* \mathbb{V}_{11}^*\, dx \, + \, \int \limits_{-1}^1 {\mathbb{V}^\dagger}^* \cdot \widetilde{\mathcal{L}}_1 \partial_Z \alpha(T, Z) \mathbb{V}_{11} \, dx \, = \, 0$ \\
+ 
+I believe one can state this as ``$\mathbb{V}^\dagger$ must be orthogonal to $\widetilde{\mathcal{L}}_1 \mathbb{V}_{11}$". Because both $\mathbb{V}^\dagger$ and $\mathbb{V}_{11}$ are even symmetric about x = 0, the requirement is really that $\widetilde{\mathcal{L}}_1 \mathbb{V}_{11}$ is odd symmetric with respect to x, XOR $\partial_Z \alpha(T, Z)$ is odd symmetric with respect to x = 0. 
 
 
 
