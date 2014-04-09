@@ -1066,7 +1066,7 @@ Our $\mathcal{O}(\epsilon^3)$ equation is: \\
 
 $\mathcal{D}\partial_T \mathbf{V_1} \, + \, \mathbf{N_3} \, = \, \mathcal{L} \mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} \, - \partial_Z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1}$ \\
 
-Which, substituting in the forms of $\mathbf{V_1}$ and $\mathbf{V_2}$ and taking Umurhan+'s $\mathbf{N3}$, gives us the full amplitude equation:\\
+Which, substituting in the forms of $\mathbf{V_1}$ and $\mathbf{V_2}$ and taking Umurhan+'s $\mathbf{N_3}$, gives us the full amplitude equation:\\
 
 $\mathcal{D}\mathbb{V}_{11} e^{iQz}\partial_T \alpha \, + \, \mathcal{D}\mathbb{U}_{11} \partial_T \beta \, + \, \alpha^3 \mathbf{N_{33}} e^{i3Qz} \, + \, \alpha \partial_Z \alpha \mathbf{N_{32}} e^{i2Qz} \, + \, \alpha\left|\alpha\right|^2 \mathbf{N_{31}} e^{iQz} \, + \, \alpha \partial_Z\beta \widetilde{\mathbf{N}}_{31} e^{iQz} \, + \, \alpha^* \partial_Z \alpha \mathbf{N_{30}} \, = \, \mathcal{L}\mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1 \mathbb{V}_{22} 2 \alpha \partial_Z \alpha e^{i2Qz} \, + \, \widetilde{\mathcal{L}}_1 \mathbb{V}_{20} 2 \left|\alpha\right| \partial_Z \alpha \, - \, \widetilde{\mathcal{L}}_1 \mathbb{V}_{21} \partial_Z^2 \alpha e^{iQz} \, - \, \widetilde{\mathcal{L}}_1 \mathbb{U}_{20} \partial_Z^2 \beta \, + \, \widetilde{\mathcal{L}}_2 \mathbb{V}_{11} e^{iQz} \partial_Z^2 \alpha \, + \, \widetilde{\mathcal{L}}_2 \mathbb{U}_{11} \partial_Z^2 \beta \, - \, \mathcal{X}\mathbb{V}_{11} e^{iQz} \partial_Z \alpha \, - \, \mathcal{X} \mathbb{U}_{11} \partial_Z \beta \, + \, \mathcal{L}_3 \mathbb{V}_{11} e^{iQz} iQ^3 \alpha $\\
 
@@ -1164,7 +1164,14 @@ Where terms with $\beta$ and terms with either $e^{iQz}\cdot e^{iQz}$ or  $e^{-i
 
 $\int \limits_{-1}^1 \mathbb{V}^\dagger \cdot \widetilde{\mathcal{L}}_1 \partial_Z \alpha(T, Z)^* \mathbb{V}_{11}^*\, dx \, + \, \int \limits_{-1}^1 {\mathbb{V}^\dagger}^* \cdot \widetilde{\mathcal{L}}_1 \partial_Z \alpha(T, Z) \mathbb{V}_{11} \, dx \, = \, 0$ \\
  
-I believe one can state this as ``$\mathbb{V}^\dagger$ must be orthogonal to $\widetilde{\mathcal{L}}_1 \mathbb{V}_{11}$". Because both $\mathbb{V}^\dagger$ and $\mathbb{V}_{11}$ are even symmetric about x = 0, the requirement is really that $\widetilde{\mathcal{L}}_1 \mathbb{V}_{11}$ is odd symmetric with respect to x, since $\partial_Z \alpha(T, Z)$ is presumably not zero everywhere. 
+I believe one can state this as ``$\mathbb{V}^\dagger$ must be orthogonal to $\widetilde{\mathcal{L}}_1 \mathbb{V}_{11}$". Because both $\mathbb{V}^\dagger$ and $\mathbb{V}_{11}$ are even symmetric about x = 0, the requirement is really that $\widetilde{\mathcal{L}}_1 \mathbb{V}_{11}$ is odd symmetric with respect to x, since $\partial_Z \alpha(T, Z)$ is presumably not zero everywhere. \\
+
+This solvability condition is enforceable on all terms resonant with $e^{iQz}$. That is why we take the inner product of $\mathbb{V}^\dagger$ with the $e^{iQz}$ terms in the $\mathcal{O}(\epsilon^3)$ equation to arrive at the first amplitude equation (see above). \\
+
+The second solvability condition is found for the terms without $e^{iQz}$ dependence: \\
+
+$\mathcal{D}\mathbb{U}_{11} \partial_T \beta \, = \, \mathcal{L}\mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1 \mathbb{V}_{20} 2 \left|\alpha\right| \partial_Z \alpha \, - \, \widetilde{\mathcal{L}}_1 \mathbb{U}_{20} \partial_Z^2 \beta \, + \, \widetilde{\mathcal{L}}_2 \mathbb{U}_{11} \partial_Z^2 \beta \, - \, \mathcal{X} \mathbb{U}_{11} \partial_Z \beta \, $\\
+
 
 
 
