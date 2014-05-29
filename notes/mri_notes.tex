@@ -28,6 +28,7 @@
 \usepackage{natbib}
 \bibliographystyle{apj}
 %\setlength{\bibsep}{0.0pt}
+\usepackage{courier}
 
 \newcommand\apjl{ApJL}
 \newcommand\apj{ApJ}
@@ -1193,6 +1194,30 @@ $\mathcal{L}_3^T = \left[\begin{matrix}
 \frac{1}{4\pi} & 0 & 0 & 0\\
 0 & 0 & 0 & 0 \\
 \end{matrix}\right]$ \\
+
+Writing out the expressions, where $\mathbf{V}^\dagger = \left[\Psi^\dagger, u^\dagger, A^\dagger, B^\dagger\right]^T$, we have: \\
+
+$\frac{1}{\reye}\partial_x^4 \Psi^\dagger \, - \, (2-q)\partial_z u^\dagger \, - \, \partial_z A^\dagger \, + \, \frac{2}{\reye}\partial_x^2 \partial_z^2 \Psi^\dagger \, + \, \frac{1}{\reye}\partial_z^4 \Psi^\dagger \, = \, 0$ \\
+
+$\frac{1}{\reye}\partial_x^2 u^\dagger \, - \, 2 \partial_z \Psi^\dagger \, - \, \partial_z B^\dagger, \, + \, \frac{1}{\reye}\partial_z^2 u^\dagger \, = \, 0$ \\
+
+$\frac{1}{\reym} \partial_x^2 A^\dagger \, - \, \frac{1}{4\pi} \partial_x^2 \partial_z \Psi^\dagger \, + \, q \partial_z B^\dagger  \,+ \, \frac{1}{\reym} \partial_z^2 A^\dagger \, - \, \frac{1}{4\pi} \partial_z^3 \Psi^\dagger \, = \, 0$ \\
+
+$\frac{1}{\reym} \partial_x^2 B^\dagger \, - \, \frac{1}{4\pi} \partial_z u^\dagger \, + \, \frac{1}{\reym} \partial_z^2 B^\dagger \, = \, 0$ \\
+
+We will use the linear eigenvalue solver in Dedalus to determine $\mathbf{V}^\dagger$. \\
+
+At marginality, the z-dependence is given by $e^{iQz}$. Thus the above equations become a system of PDEs in x for the fluid quantities: \\
+
+$\frac{1}{\reye}\partial_x^4 \Psi^\dagger \, - \, (2 - q) i Q u^\dagger \, - \,  i Q A^\dagger \, - \, Q^2 \frac{2}{\reye} \partial_x^2 \Psi^\dagger \, + \, Q^4 \frac{1}{\reye} \Psi^\dagger \, = \, 0$ \\
+
+$\frac{1}{\reye}\partial_x^2 u^\dagger \, - \, 2 i Q \Psi^\dagger \, - \, i Q B \, - \frac{1}{\reye} Q^2 u^\dagger \, = \, 0$ \\
+
+$\frac{1}{\reym} \partial_x^2 A^\dagger \, - \, \frac{1}{4\pi} i A \partial_x^2 \Psi^\dagger \, + \, q i Q B^\dagger \, - \, Q^2 \frac{1}{\reym} A^\dagger \, + \, i Q^3 \frac{1}{4\pi} \Psi^\dagger \, = \, 0$ \\
+
+$\frac{1}{\reym} \partial_x^2 B^\dagger \, - \, \frac{1}{4\pi} i Q u^\dagger \, - \, Q^2 \frac{1}{\reym} B^\dagger \, = \, 0$ \\
+
+The above is coded up in \texttt{adjoint\_homogenous.py}.
 
 
 
