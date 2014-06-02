@@ -581,7 +581,7 @@ $\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \p
 
 $\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, + \, \left(2 - \Omega_0 q\right) \partial_z \Psi \, = \, \frac{1}{4\pi}B_0\partial_z B_{1y} \, + \, \frac{1}{4\pi} J\left(A, B_{1y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{1y}$ \\
 
-$\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, \frac{1}{Rm} \nabla^2 A$ \\
+$\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, \frac{1}{\reym} \nabla^2 A$ \\
 
 $\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, J\left(A, u_{1y}\right) \, - \, J\left(\Psi, B_{1y}\right) \, + \, \frac{1}{\reym} \nabla^2 B_{1y}  \, - \, q \Omega_0 \partial_z A$ \\
 
@@ -654,7 +654,7 @@ We proceed by replacing all operators in our equation set with the above, and ex
 
 In analogy to Rayleigh-B\'enard convection and the hydrodynamic Taylor-Couette flow, we assume there is no slow-scale variation in the radial direction, and so the amplitudes are dependent only on Z and T. That is: \\
 
-$\mathbf{V} = \mathbf{V}\left(x, z, Z, T)\right)$ where in detail $\mathbf{V} = \left[\Psi(x), u_{1y}(x), A(x), B_{1y}(x)\right]^T \alpha\left(Z, T\right) e^{st + ik_z z}$. Periodicity in $z$ allows us to posit the exponential $z$ dependence. \\
+$\mathbf{V} = \mathbf{V}\left(x, z, Z, T\right)$ where in detail $\mathbf{V} = \left[\Psi(x), u_{1y}(x), A(x), B_{1y}(x)\right]^T \alpha\left(Z, T\right) e^{st + ik_z z}$. Periodicity in $z$ allows us to posit the exponential $z$ dependence. \\
 
 Our operators therefore become: \\
 
@@ -668,6 +668,8 @@ $\nabla^4 \to \partial_x^4 + \partial_x^2\partial_z^2 + \epsilon^2\partial_x^2\p
  + \partial_z^2\partial_x^2 + \partial_z^4 + \epsilon^2\partial_z^2\partial_Z^2 + 2\epsilon\partial_z^3\partial_Z \\
 + \epsilon^2\partial_Z^2\partial_x^2 + \epsilon^3\partial_Z^2\partial_z^2 + \epsilon^4\partial_Z^4 + 2\epsilon^3\partial_Z^3\partial_z \\
 + 2\epsilon\partial_z\partial_Z\partial_x^2 + 2\epsilon\partial_z^3\partial_Z + 2\epsilon^3\partial_Z^3\partial_z + 4\epsilon^2 \partial_z^2 \partial_Z^2$ \\
+
+\section*{Matrix Formulation}
 
 We now rewrite our system of equations, grouping similar terms into matrices. The system of equations we are rewriting is: \\
 
@@ -1104,6 +1106,8 @@ And for the (B)-component of that equation, I find: \\
 $\partial_T \beta \, = \, -\widetilde{u}_{20} \partial_Z^2 \beta \, + \, \frac{1}{\reym} \partial_Z^2 \beta \, - \, \alpha^* \partial_Z \alpha N_{30}^{(B)} \, + \, 2 \left|\alpha\right| \partial_Z \left| \alpha \right| \left(u_{20} \, - \, q\Omega_0A_{20}\right) \, + \, \frac{1}{\reym} \partial_x^2 B_{30} \, + \, \frac{1}{\reym} \partial_z^2 B_{30}$ \\
 
 The fourth term on the RHS, which couples to the shear, does not appear in Umurhan+, and we need to investigate whether something in the lower-order solvability criterions allow this term to drop out. \\
+
+\section*{Solvability Conditions}
 
 Some thoughts on the solvability conditions: \\
 
