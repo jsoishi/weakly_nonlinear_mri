@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from dedalus2.public import *
 from dedalus2.pde.solvers import LinearEigenvalue
+import pylab
 lv1 = ParsedProblem(['x'],
                       field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'psixxxx', 'ux', 'Ax', 'Bx'],
                       param_names=['Q', 'iR', 'iRm', 'q', 'ifourpi'])
@@ -66,24 +67,32 @@ LEV.solve(LEV.pencils[0])
 
 #Find the eigenvalue that is closest to zero. This should be the adjoint homogenous solution.
 evals = LEV.eigenvalues
-indx = np.arange(len(evals))
-e0 = indx[evals == np.min(evals[evals >= 0])]
-print(e0)
+#indx = np.arange(len(evals))
+#e0 = indx[evals == np.min(evals[evals >= 0])]
+#print(e0)
 
 #Plot
 x = domain.grid(0)
-LEV.set_state(e0[0])
+#LEV.set_state(e0[0])
 
 fig = plt.figure()
-ax1 = fig.add_subplot(221)
-ax1.plot(x, LEV.state['psi']['g'])
-ax1.set_title(r"$\psi$")
-ax1 = fig.add_subplot(222)
-ax1.plot(x, LEV.state['u']['g'])
-ax1.set_title("u")
-ax1 = fig.add_subplot(223)
-ax1.plot(x, LEV.state['A']['g'])
-ax1.set_title("A")
-ax1 = fig.add_subplot(224)
-ax1.plot(x, LEV.state['B']['g'])
-ax1.set_title("B")
+
+for i in range(len(evals)):
+    LEV.set_state(i)
+
+    ax1 = fig.add_subplot(221)
+    ax1.plot(x, LEV.state['psi']['g'].imag)
+    ax1.set_title(r"$\psi$")
+    ax1 = fig.add_subplot(222)
+    ax1.plot(x, LEV.state['u']['g'].real)
+    ax1.set_title("u")
+    ax1 = fig.add_subplot(223)
+    ax1.plot(x, LEV.state['A']['g'].real)
+    ax1.set_title("A")
+    ax1 = fig.add_subplot(224)
+    ax1.plot(x, LEV.state['B']['g'].imag)
+    ax1.set_title("B")
+
+    pylab.savefig('AH_'+ '%03d' % i +'.png')
+
+    fig.clf()
