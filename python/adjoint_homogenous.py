@@ -4,10 +4,10 @@ from dedalus2.public import *
 from dedalus2.pde.solvers import LinearEigenvalue
 import pylab
 lv1 = ParsedProblem(['x'],
-                      field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'psixxxx', 'ux', 'Ax', 'Bx'],
+                      field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
                       param_names=['Q', 'iR', 'iRm', 'q', 'ifourpi'])
                       
-x_basis = Chebyshev(128)#(256)
+x_basis = Chebyshev(64)#(256)
 domain = Domain([x_basis])#,grid_dtype=np.float64)
 
 #Solve equations for fixed z eigenvalue: V+ = V+ e^(iQz)
@@ -37,7 +37,6 @@ lv1.add_equation("-1j*iRm*dx(Bx) - -1j*ifourpi*1j*Q*u - -1j*Q*Q*iRm*B + dt(B) = 
 lv1.add_equation("dx(psi) - psix = 0")
 lv1.add_equation("dx(psix) - psixx = 0")
 lv1.add_equation("dx(psixx) - psixxx = 0")
-lv1.add_equation("dx(psixxx) - psixxxx = 0")
 lv1.add_equation("dx(u) - ux = 0")
 lv1.add_equation("dx(A) - Ax = 0")
 lv1.add_equation("dx(B) - Bx = 0")
@@ -67,16 +66,35 @@ LEV.solve(LEV.pencils[0])
 
 #Find the eigenvalue that is closest to zero. This should be the adjoint homogenous solution.
 evals = LEV.eigenvalues
-#indx = np.arange(len(evals))
-#e0 = indx[evals == np.min(evals[evals >= 0])]
-#print(e0)
+indx = np.arange(len(evals))
+e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+print(e0)
 
 #Plot
 x = domain.grid(0)
-#LEV.set_state(e0[0])
+LEV.set_state(e0[0])
 
 fig = plt.figure()
+ax1 = fig.add_subplot(221)
+ax1.plot(x, LEV.state['psi']['g'].imag)
+ax1.plot(x, LEV.state['psi']['g'].real)
+ax1.set_title(r"$\psi$")
+ax1 = fig.add_subplot(222)
+ax1.plot(x, LEV.state['u']['g'].imag)
+ax1.plot(x, LEV.state['u']['g'].real)
+ax1.set_title("u")
+ax1 = fig.add_subplot(223)
+ax1.plot(x, LEV.state['A']['g'].imag)
+ax1.plot(x, LEV.state['A']['g'].real)
+ax1.set_title("A")
+ax1 = fig.add_subplot(224)
+ax1.plot(x, LEV.state['B']['g'].imag)
+ax1.plot(x, LEV.state['B']['g'].real)
+ax1.set_title("B")
+fig.savefig("ah.png")
+fig.clf()
 
+"""
 for i in range(len(evals)):
     LEV.set_state(i)
 
@@ -96,3 +114,4 @@ for i in range(len(evals)):
     pylab.savefig('AH_'+ '%03d' % i +'.png')
 
     fig.clf()
+"""
