@@ -26,12 +26,9 @@ def linear_MRI(Q, Rm):
     q = 3/2.
     
     ifourpi = 1./(4*np.pi)
-    
-    #These are the equations:
-    # -dx(
 
     #multiply by -1j and add dt's:
-    lv1.add_equation("dt(-dx(psix) - Q**2*psi) - iR*(dx(psixxx) + 2*dx(psix)*Q**2 + Q**4*psi) + 2*1j*Q*u + ifourpi*1j*Q*(-dx(Ax) - Q**2*A) = 0")
+    lv1.add_equation("-dt(dx(psix)) - Q**2*dt(psi) - iR*(dx(psixxx) + 2*dx(psix)*Q**2 + Q**4*psi) + 2*1j*Q*u + ifourpi*1j*Q*(-dx(Ax) - Q**2*A) = 0")
     lv1.add_equation("1j*Q*(2 - q)*psi - iR*(-dx(ux) - Q**2*u) - ifourpi*1j*Q*B + dt(u) = 0")
     lv1.add_equation("-1j*Q*psi - iR*(-dx(Ax) - Q**2*A) + dt(A) = 0")
     lv1.add_equation("-1j*Q*u + 1j*Q*q*A - iRm*(-dx(Bx) - Q**2*B) + dt(B) = 0")
@@ -66,8 +63,9 @@ def linear_MRI(Q, Rm):
     LEV = LinearEigenvalue(lv1,domain)
     LEV.solve(LEV.pencils[0])
 
-    #Find the eigenvalue that is closest to zero. This should be the adjoint homogenous solution.
+    #Find the eigenvalue that is closest to zero.
     evals = LEV.eigenvalues
     indx = np.arange(len(evals))
     e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
-    print(e0)
+    
+    return evals[e0]
