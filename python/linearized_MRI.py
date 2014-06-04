@@ -68,4 +68,26 @@ def linear_MRI(Q, Rm):
     indx = np.arange(len(evals))
     e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
     
-    return evals[e0]
+    val = evals[e0]
+    
+    return val[0]
+
+
+def paramsearch():
+
+    Qsearch = np.arange(0.74, 0.76, 0.001)
+    Rmsearch = np.arange(4.8, 5.0, 0.001)
+    
+    esearch = np.zeros((len(Qsearch), len(Rmsearch)), np.complex128)
+    print(esearch.shape)
+    
+    for i in range(len(Qsearch)):
+       for j in range(len(Rmsearch)):
+           
+           #e = linear_MRI(Qsearch[i], Rmsearch[j])
+           #print(e)
+           esearch[i, j] = linear_MRI(Qsearch[i], Rmsearch[j])
+    
+    return esearch
+           
+
