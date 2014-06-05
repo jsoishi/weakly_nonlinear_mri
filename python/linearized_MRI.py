@@ -28,7 +28,7 @@ def linear_MRI(Q, Rm):
     ifourpi = 1./(4*np.pi)
 
     #multiply by -1j and add dt's:
-    lv1.add_equation("-dt(dx(psix)) - Q**2*dt(psi) - iR*(dx(psixxx) + 2*dx(psix)*Q**2 + Q**4*psi) + 2*1j*Q*u + ifourpi*1j*Q*(-dx(Ax) - Q**2*A) = 0")
+    lv1.add_equation("-dt(psixx) - Q**2*dt(psi) - iR*(dx(psixxx) + 2*psixx*Q**2 + Q**4*psi) + 2*1j*Q*u + ifourpi*1j*Q*(-dx(Ax) - Q**2*A) = 0")
     lv1.add_equation("1j*Q*(2 - q)*psi - iR*(-dx(ux) - Q**2*u) - ifourpi*1j*Q*B + dt(u) = 0")
     lv1.add_equation("-1j*Q*psi - iR*(-dx(Ax) - Q**2*A) + dt(A) = 0")
     lv1.add_equation("-1j*Q*u + 1j*Q*q*A - iRm*(-dx(Bx) - Q**2*B) + dt(B) = 0")
