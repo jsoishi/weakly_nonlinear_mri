@@ -75,10 +75,17 @@ def linear_MRI(Q, Rm):
 
 def paramsearch():
 
-    Qsearch = np.arange(0.74, 0.76, 0.001)
-    Rmsearch = np.arange(4.8, 5.0, 0.001)
+    #Qsearch = np.arange(0.748, 0.76, 0.001)
+    #Rmsearch = np.arange(4.88, 5.0, 0.001)
+    #Qsearch = np.arange(0.745, 0.755, 0.001)
+    #Rmsearch = np.arange(4.85, 4.95, 0.01)
+    Qsearch = np.arange(0.755, 0.765, 0.001)
+    Rmsearch = np.arange(4.95, 5.01, 0.01)
     
     esearch = np.zeros((len(Qsearch), len(Rmsearch)), np.complex128)
+    Rms = np.zeros((len(Qsearch), len(Rmsearch)), np.float_)
+    Qs = np.zeros((len(Qsearch), len(Rmsearch)), np.float_)
+    
     print(esearch.shape)
     
     for i in range(len(Qsearch)):
@@ -87,7 +94,14 @@ def paramsearch():
            #e = linear_MRI(Qsearch[i], Rmsearch[j])
            #print(e)
            esearch[i, j] = linear_MRI(Qsearch[i], Rmsearch[j])
+           Qs[i, j] = Qsearch[i]
+           Rms[i, j] = Rmsearch[j]
     
-    return esearch
-           
+    return esearch, Qs, Rms
+    
+esearch, Qs, Rms = paramsearch()
+
+np.save("esearch_2.npy", esearch)
+np.save("Qsearch_2.npy", Qs)
+np.save("Rmsearch_2.npy", Rms)
 
