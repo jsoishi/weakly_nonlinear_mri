@@ -24,6 +24,8 @@ for Rm in Rmsearch:
         processes[Rm, Q].wait()
         print("Ending process")
 
+        
+
 results = {}
 for k,proc in processes.items():
     res = proc.communicate()
@@ -33,7 +35,7 @@ for k,proc in processes.items():
 
 print(results)
 
-pickle.dump(results, open("results_coarse_Co.p", "wb"))
+pickle.dump(results, open("results_coarse_Co_fixed.p", "wb"))
 
 #np.save("results_Qrange"+str(Qsearch[0])+"_to_"+str(Qsearch[-1])+"Rrange"+str(Rmsearch[0])+"_to_"+str(Rmsearch[-1])+".npy", results)
 #np.save("results_test.npy", results)
