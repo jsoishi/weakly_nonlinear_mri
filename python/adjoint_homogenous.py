@@ -19,7 +19,7 @@ q = 3/2.
 ifourpi = 1./(4*np.pi)
 
 #Parameter values found by solving the linear MRI to find most unstable mode
-Rm = 4.9
+Rm = 4.88
 iRm = 1./Rm
 Q = 0.75
 

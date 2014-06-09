@@ -4,8 +4,12 @@ import numpy as np
 import pickle
 
 # Fine grid
-Qsearch = np.arange(0.745, 0.760, 0.001)
-Rmsearch = np.arange(4.84, 4.90, 0.01)
+#Qsearch = np.arange(0.745, 0.760, 0.001)
+#Rmsearch = np.arange(4.84, 4.90, 0.01)
+
+#Finest grid
+Qsearch = np.arange(0.749, 0.751, 0.001)
+Rmsearch = np.arange(4.87, 4.88, 0.001)
 
 # Coarsest grid (for comparison with Umurhan+_)
 #Qsearch = np.arange(0.1, 1.5, 0.1)
@@ -32,7 +36,7 @@ for k,proc in processes.items():
 
 print(results)
 
-pickle.dump(results, open("results_finegrid2.p", "wb"))
+pickle.dump(results, open("results_finegrid3.p", "wb"))
 
 #np.save("results_Qrange"+str(Qsearch[0])+"_to_"+str(Qsearch[-1])+"Rrange"+str(Rmsearch[0])+"_to_"+str(Rmsearch[-1])+".npy", results)
 #np.save("results_test.npy", results)
