@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pylab
 import pickle
 
-testdata = pickle.load(open("results_finegrid2.p", "rb"))
+testdata = pickle.load(open("results_finegrid3.p", "rb"))
 
 Rms = np.zeros(len(testdata))
 Qs = np.zeros(len(testdata))
