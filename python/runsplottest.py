@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pylab
 import pickle
 
-testdata = pickle.load(open("results_coarse_Co_fixed.p", "rb"))
+testdata = pickle.load(open("results_test.p", "rb"))
 
 Rms = np.zeros(len(testdata))
 Qs = np.zeros(len(testdata))
@@ -16,7 +16,7 @@ for i in range(len(testdata)):
     Qs[i] = RmQ[1]
     eval[i] = jj[1]
     
-eval = 1j*eval
+#eval = -1j*eval
 
 fig = plt.figure()
 ax1 = fig.add_subplot(121)

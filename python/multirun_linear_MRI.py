@@ -8,8 +8,8 @@ import pylab
 
 import sys
 
-Q = float(sys.argv[1])
-Rm = float(sys.argv[2])
+Q = float(sys.argv[2])
+Rm = float(sys.argv[1])
 name = sys.argv[0]
 
 #print("%s: Q = %10.5f; Rm = %10.5f" % (name, Q, Rm))
@@ -51,11 +51,11 @@ beta = 2./Co
 #lv1.add_equation("dt(A) - iRm*dx(Ax) + iRm*Q**2*A - B0*1j*Q*psi = 0")
 #lv1.add_equation("dt(B) - iRm*dx(Bx) + iRm*Q**2*B - B0*1j*Q*u + q*1j*Q*A = 0")
 
-#In terms of Co
-lv1.add_equation("dt(psixx) - Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - Co*B0*1j*Q*dx(Ax) + Co*B0*Q**3*1j*A = 0")
-lv1.add_equation("dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - Co*B0*1j*Q*B = 0") 
-lv1.add_equation("dt(A) - iRm*dx(Ax) + iRm*Q**2*A - B0*1j*Q*psi = 0") 
-lv1.add_equation("dt(B) - iRm*dx(Bx) + iRm*Q**2*B - B0*1j*Q*u + q*1j*Q*A = 0")
+#In terms of Co ....multiplied dt terms by -1j
+lv1.add_equation("-1j*dt(psixx) - -1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - Co*B0*1j*Q*dx(Ax) + Co*B0*Q**3*1j*A = 0")
+lv1.add_equation("-1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - Co*B0*1j*Q*B = 0") 
+lv1.add_equation("-1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - B0*1j*Q*psi = 0") 
+lv1.add_equation("-1j*dt(B) - iRm*dx(Bx) + iRm*Q**2*B - B0*1j*Q*u + q*1j*Q*A = 0")
 
 lv1.add_equation("dx(psi) - psix = 0")
 lv1.add_equation("dx(psix) - psixx = 0")
