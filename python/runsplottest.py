@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pylab
 import pickle
 
-testdata = pickle.load(open("results_finegrid3.p", "rb"))
+testdata = pickle.load(open("results_finegrid6.p", "rb"))
 
 Rms = np.zeros(len(testdata))
 Qs = np.zeros(len(testdata))
@@ -16,7 +16,7 @@ for i in range(len(testdata)):
     Qs[i] = RmQ[1]
     eval[i] = jj[1]
     
-eval = -1*eval
+eval = -1j*eval
 
 fig = plt.figure()
 ax1 = fig.add_subplot(121)

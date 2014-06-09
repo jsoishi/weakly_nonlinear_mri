@@ -5,7 +5,7 @@ from dedalus2.pde.solvers import LinearEigenvalue
 import pylab
 lv1 = ParsedProblem(['x'],
                       field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
-                      param_names=['Q', 'iR', 'iRm', 'q', 'ifourpi'])
+                      param_names=['Q', 'iR', 'iRm', 'q', 'Co'])
                       
 x_basis = Chebyshev(64)#(256)
 domain = Domain([x_basis])#,grid_dtype=np.float64)
@@ -13,15 +13,16 @@ domain = Domain([x_basis])#,grid_dtype=np.float64)
 #Solve equations for fixed z eigenvalue: V+ = V+ e^(iQz)
 #Parameter values from Umurhan+:
 Pm = 0.001 #Pm = Rm/R
-R = Rm/Pm
-iR = 1./R
 q = 3/2.
-ifourpi = 1./(4*np.pi)
+Co = 0.08
 
 #Parameter values found by solving the linear MRI to find most unstable mode
-Rm = 4.88
+Rm = 4.877
 iRm = 1./Rm
 Q = 0.75
+
+R = Rm/Pm
+iR = 1./R
 
 #Define higher order derivatives of x
 #These are the equations....
@@ -33,8 +34,8 @@ Q = 0.75
 #multiply by -1j and add dt's:
 lv1.add_equation("-1j*iR*dx(psixxx) - -1j*(2-q)*1j*Q*u - -1j*1j*Q*A - -1j*Q*Q*iR*2*dx(psix) + -1j*Q**4*iR*psi + dt(psi) = 0")
 lv1.add_equation("-1j*iR*dx(ux) - -1j*2*1j*Q*psi - -1j*1j*Q*B - -1j*iR*Q**2*u + dt(u) = 0")
-lv1.add_equation("-1j*iRm*dx(Ax) - -1j*ifourpi*1j*Q*dx(psix) + -1j*q*1j*Q*B - -1j*Q*Q*iRm*A + -1j*1j*Q**3*ifourpi*psi + dt(A) = 0")
-lv1.add_equation("-1j*iRm*dx(Bx) - -1j*ifourpi*1j*Q*u - -1j*Q*Q*iRm*B + dt(B) = 0")
+lv1.add_equation("-1j*iRm*dx(Ax) - -1j*Co*1j*Q*dx(psix) + -1j*q*1j*Q*B - -1j*Q*Q*iRm*A + -1j*1j*Q**3*Co*psi + dt(A) = 0")
+lv1.add_equation("-1j*iRm*dx(Bx) - -1j*Co*1j*Q*u - -1j*Q*Q*iRm*B + dt(B) = 0")
 
 lv1.add_equation("dx(psi) - psix = 0")
 lv1.add_equation("dx(psix) - psixx = 0")
@@ -60,7 +61,7 @@ lv1.parameters['Q'] = Q
 lv1.parameters['iR'] = iR
 lv1.parameters['iRm'] = iRm
 lv1.parameters['q'] = q
-lv1.parameters['ifourpi'] = ifourpi
+lv1.parameters['Co'] = Co
 
 lv1.expand(domain)
 LEV = LinearEigenvalue(lv1,domain)
@@ -93,8 +94,8 @@ ax1 = fig.add_subplot(224)
 ax1.plot(x, LEV.state['B']['g'].imag)
 ax1.plot(x, LEV.state['B']['g'].real)
 ax1.set_title("B")
-fig.savefig("ah.png")
-fig.clf()
+fig.savefig("ah1.png")
+
 
 """
 for i in range(len(evals)):
