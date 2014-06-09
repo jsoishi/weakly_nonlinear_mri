@@ -17,7 +17,8 @@ q = 3/2.
 Co = 0.08
 
 #Parameter values found by solving the linear MRI to find most unstable mode
-Rm = 4.877
+#Rm = 4.8775
+Rm = 4.89
 iRm = 1./Rm
 Q = 0.75
 
@@ -32,10 +33,15 @@ iR = 1./R
 # iRm*dx(Bx) - ifourpi*1j*Q*u - Q*Q*iRm*B = 0
 
 #multiply by -1j and add dt's:
-lv1.add_equation("-1j*iR*dx(psixxx) - -1j*(2-q)*1j*Q*u - -1j*1j*Q*A - -1j*Q*Q*iR*2*dx(psix) + -1j*Q**4*iR*psi + dt(psi) = 0")
-lv1.add_equation("-1j*iR*dx(ux) - -1j*2*1j*Q*psi - -1j*1j*Q*B - -1j*iR*Q**2*u + dt(u) = 0")
-lv1.add_equation("-1j*iRm*dx(Ax) - -1j*Co*1j*Q*dx(psix) + -1j*q*1j*Q*B - -1j*Q*Q*iRm*A + -1j*1j*Q**3*Co*psi + dt(A) = 0")
-lv1.add_equation("-1j*iRm*dx(Bx) - -1j*Co*1j*Q*u - -1j*Q*Q*iRm*B + dt(B) = 0")
+#lv1.add_equation("-1j*iR*dx(psixxx) - -1j*(2-q)*1j*Q*u - -1j*1j*Q*A - -1j*Q*Q*iR*2*psixx + -1j*Q**4*iR*psi + dt(psi) = 0")
+#lv1.add_equation("-1j*iR*dx(ux) - -1j*2*1j*Q*psi - -1j*1j*Q*B - -1j*iR*Q**2*u + dt(u) = 0")
+#lv1.add_equation("-1j*iRm*dx(Ax) - -1j*Co*1j*Q*psixx + -1j*q*1j*Q*B - -1j*Q*Q*iRm*A + -1j*1j*Q**3*Co*psi + dt(A) = 0")
+#lv1.add_equation("-1j*iRm*dx(Bx) - -1j*Co*1j*Q*u - -1j*Q*Q*iRm*B + dt(B) = 0")
+
+lv1.add_equation("1j*dt(psi) + -1j*Q*A - 1j*Q*(2-q)*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
+lv1.add_equation("1j*dt(u) + -1j*Q*B - 1j*2*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
+lv1.add_equation("1j*dt(A) + -iRm*Q**2*A + iRm*dx(Ax) + 1j*Q*q*B + 1j*Co*Q**3*psi - 1j*Co*Q*psixx = 0")
+lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) - 1j*Co*Q*u = 0")
 
 lv1.add_equation("dx(psi) - psix = 0")
 lv1.add_equation("dx(psix) - psixx = 0")
@@ -76,6 +82,12 @@ print(e0)
 #Plot
 x = domain.grid(0)
 LEV.set_state(e0[0])
+
+L = LEV.eigenvalue_pencil.L.todense()
+b = np.zeros_like(LEV.eigenvectors[0])
+
+lsolve = np.linalg.solve(L, b)
+LEV.set_state(lsolve)
 
 fig = plt.figure()
 ax1 = fig.add_subplot(221)

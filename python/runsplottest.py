@@ -16,7 +16,7 @@ for i in range(len(testdata)):
     Qs[i] = RmQ[1]
     eval[i] = jj[1]
     
-eval = -1j*eval
+eval = -1*eval
 
 fig = plt.figure()
 ax1 = fig.add_subplot(121)
