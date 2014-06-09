@@ -12,14 +12,16 @@ domain = Domain([x_basis])#,grid_dtype=np.float64)
 
 #Solve equations for fixed z eigenvalue: V+ = V+ e^(iQz)
 #Parameter values from Umurhan+:
-Rm = 4.9
-iRm = 1./Rm
 Pm = 0.001 #Pm = Rm/R
 R = Rm/Pm
 iR = 1./R
-Q = 0.75
 q = 3/2.
 ifourpi = 1./(4*np.pi)
+
+#Parameter values found by solving the linear MRI to find most unstable mode
+Rm = 4.9
+iRm = 1./Rm
+Q = 0.75
 
 #Define higher order derivatives of x
 #These are the equations....
