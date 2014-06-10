@@ -1221,7 +1221,21 @@ $\frac{1}{\reym} \partial_x^2 A^\dagger \, - \, \frac{1}{4\pi} i Q \partial_x^2 
 
 $\frac{1}{\reym} \partial_x^2 B^\dagger \, - \, \frac{1}{4\pi} i Q u^\dagger \, - \, Q^2 \frac{1}{\reym} B^\dagger \, = \, 0$ \\
 
-The above is coded up in \texttt{adjoint\_homogenous.py}.
+The above is coded up in \texttt{adjoint\_homogenous.py}. \\
+
+To determine what the critical values $\reym = \reym_{crit}$ and $k_z = Q$, we solve the linearized MRI equations for a number of $\reym$ and $k_z$ values to determine criticality. \\
+
+We reproduce Fig. 1b of Umurhan+: \\
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[width=\textwidth]{s_Re_Im_Co_coarse}
+\caption{Real and Imaginary parts of parameter space for linear MRI system.}
+\label{onoff}
+\end{figure*}
+
+By solving the linear MRI system on a coarse parameter space grid. \\
+
 
 
 
