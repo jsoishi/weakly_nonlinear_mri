@@ -1230,11 +1230,32 @@ We reproduce Fig. 1b of Umurhan+: \\
 \begin{figure*}[h!]
 \centering
 \includegraphics[width=\textwidth]{s_Re_Im_Co_coarse}
-\caption{Real and Imaginary parts of parameter space for linear MRI system.}
-\label{onoff}
+\caption{Real and Imaginary parts of parameter space for linear MRI system: coarse grid}
 \end{figure*}
 
-By solving the linear MRI system on a coarse parameter space grid. \\
+By solving the linear MRI system on a coarse parameter space grid. We then zoom in to find the critical values of $\reym$ and $Q$:\\
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[width=\textwidth]{s_Re_Im_Co_finegrid3}
+\caption{Real and Imaginary parts of parameter space for linear MRI system: fine grid}
+\end{figure*}
+
+The code that produces the above is in \texttt{multirun\_paramspace.py}, which runs\\ \texttt{multirun\_linear\_MRI.py}. \\
+
+From this investigation, I have been using $Q = 0.75$, $\reym = 4.877$, rather than the $\reym \sim 4.9$ given in Umurhan+. The adjoint homogenous solution, however, still does not resemble the one found in Umurhan+. Our solution is shown in Figure \ref{AHsol}:
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[width=\textwidth]{adjoint_soln_incorrect}
+\caption{Adjoint homogenous solution.}
+\label{AHsol}
+\end{figure*}
+
+While this solution is symmetric about the origin, as expected, it does not have the same shape as the solution in Umurhan+. 
+
+
+
 
 
 

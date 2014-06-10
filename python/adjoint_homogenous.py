@@ -18,7 +18,8 @@ Co = 0.08
 
 #Parameter values found by solving the linear MRI to find most unstable mode
 #Rm = 4.8775
-Rm = 4.89
+#Rm = 4.89
+Rm = 4.877
 iRm = 1./Rm
 Q = 0.75
 
@@ -83,29 +84,29 @@ print(e0)
 x = domain.grid(0)
 LEV.set_state(e0[0])
 
-L = LEV.eigenvalue_pencil.L.todense()
-b = np.zeros_like(LEV.eigenvectors[0])
+#L = LEV.eigenvalue_pencil.L.todense()
+#b = np.zeros_like(LEV.eigenvectors[0])
 
-lsolve = np.linalg.solve(L, b)
-LEV.set_state(lsolve)
+#lsolve = np.linalg.solve(L, b)
+#LEV.set_state(lsolve)
 
 fig = plt.figure()
 ax1 = fig.add_subplot(221)
 ax1.plot(x, LEV.state['psi']['g'].imag)
-ax1.plot(x, LEV.state['psi']['g'].real)
-ax1.set_title(r"$\psi$")
+#ax1.plot(x, LEV.state['psi']['g'].real)
+ax1.set_title(r"Im($\psi^\dagger$)")
 ax1 = fig.add_subplot(222)
-ax1.plot(x, LEV.state['u']['g'].imag)
+#ax1.plot(x, LEV.state['u']['g'].imag)
 ax1.plot(x, LEV.state['u']['g'].real)
-ax1.set_title("u")
+ax1.set_title("Re($u^\dagger$)")
 ax1 = fig.add_subplot(223)
-ax1.plot(x, LEV.state['A']['g'].imag)
+#ax1.plot(x, LEV.state['A']['g'].imag)
 ax1.plot(x, LEV.state['A']['g'].real)
-ax1.set_title("A")
+ax1.set_title("Re($A^\dagger$)")
 ax1 = fig.add_subplot(224)
 ax1.plot(x, LEV.state['B']['g'].imag)
-ax1.plot(x, LEV.state['B']['g'].real)
-ax1.set_title("B")
+#ax1.plot(x, LEV.state['B']['g'].real)
+ax1.set_title("Im($B^\dagger$)")
 fig.savefig("ah1.png")
 
 
