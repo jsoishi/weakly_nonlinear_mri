@@ -1265,15 +1265,22 @@ We also use Dedalus to solve the linear MRI at marginality, that is, Umurhan+ Fi
 
 The correct adjoint homogenous solution is still elusive. Things I have tried so far: \\
 
-$L = L0 - L1*dz + L2*dz**2 - L3*dz**3 + L4*dz**4$
+1. $L = L_0 - L_1 dz + L_2 dz^2 - L_3 dz^3 + L_4 dz^4$
 
 \begin{figure*}[h!]
 \centering
-\includegraphics[width=\textwidth]{ah_attempt1}
-\caption{Marginal mode eigenfunctions.}
+\includegraphics[scale=0.5]{ah_attempt1}
 \end{figure*}
 
 
+2. $L = L_0 + L_1 dz - L_2 dz^2 - L_3 dz^3 + L_4 dz^4$
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[scale=0.5]{ah_pmmp}
+\end{figure*}
+
+3. 
 
 
 

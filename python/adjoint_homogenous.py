@@ -40,16 +40,16 @@ iR = 1./R
 #lv1.add_equation("-1j*iRm*dx(Bx) - -1j*Co*1j*Q*u - -1j*Q*Q*iRm*B + dt(B) = 0")
 
 #Proper equations?
-lv1.add_equation("1j*dt(psi) + -1j*Q*A - 1j*Q*(2-q)*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
-lv1.add_equation("1j*dt(u) + -1j*Q*B - 1j*2*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
-lv1.add_equation("1j*dt(A) + -iRm*Q**2*A + iRm*dx(Ax) + 1j*Q*q*B + 1j*Co*Q**3*psi - 1j*Co*Q*psixx = 0")
-lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) - 1j*Co*Q*u = 0")
+#lv1.add_equation("1j*dt(psi) + -1j*Q*A - 1j*Q*(2-q)*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
+#lv1.add_equation("1j*dt(u) + -1j*Q*B - 1j*2*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
+#lv1.add_equation("1j*dt(A) + -iRm*Q**2*A + iRm*dx(Ax) + 1j*Q*q*B + 1j*Co*Q**3*psi - 1j*Co*Q*psixx = 0")
+#lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) - 1j*Co*Q*u = 0")
 
 #Equations without the sign change on the dz terms:
-#lv1.add_equation("1j*dt(psi) + 1j*Q*A + 1j*Q*(2-q)*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
-#lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
-#lv1.add_equation("1j*dt(A) + -iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*Co*Q**3*psi + 1j*Co*Q*psixx = 0")
-#lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) + 1j*Co*Q*u = 0")
+lv1.add_equation("1j*dt(psi) + 1j*Q*A + 1j*Q*(2-q)*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
+lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
+lv1.add_equation("1j*dt(A) + -iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*Co*Q**3*psi + 1j*Co*Q*psixx = 0")
+lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) + 1j*Co*Q*u = 0")
 
 #without iQ's
 #lv1.add_equation("1j*dt(psi) + A + iR*dx(psixxx) + iR*2*psixx + iR*psi + (2-q)*u = 0")
