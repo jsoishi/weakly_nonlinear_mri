@@ -1263,24 +1263,48 @@ We also use Dedalus to solve the linear MRI at marginality, that is, Umurhan+ Fi
 \label{margsol}
 \end{figure*}
 
-The correct adjoint homogenous solution is still elusive. Things I have tried so far: \\
+\pagebreak
+The correct adjoint homogenous solution is still elusive. Here is everything I have tried so far. In what follows, red is the solution indicated in the title, and black is supposed to be zero everywhere. \\
 
-1. $L = L_0 - L_1 dz + L_2 dz^2 - L_3 dz^3 + L_4 dz^4$
+1. $L = L_0 - L_1 dz + L_2 dz^2 - L_3 dz^3 + L_4 dz^4$ \\
+
+Smallest eigenvalue: [-0.00624309 +1.97781664e-16j] \\
 
 \begin{figure*}[h!]
 \centering
 \includegraphics[scale=0.5]{ah_attempt1}
+\includegraphics[scale=0.5]{ah_attempt1_redonly}
 \end{figure*}
 
+\pagebreak
+2. $L = L_0 + L_1 dz - L_2 dz^2 - L_3 dz^3 + L_4 dz^4$ \\
 
-2. $L = L_0 + L_1 dz - L_2 dz^2 - L_3 dz^3 + L_4 dz^4$
+Smallest eigenvalue: [-0.00624309 +1.97781664e-16j] \\
 
 \begin{figure*}[h!]
 \centering
 \includegraphics[scale=0.5]{ah_pmmp}
+\includegraphics[scale=0.5]{ah_pmmp_redonly}
 \end{figure*}
 
-3. 
+\pagebreak
+3. $L = L_0 + L_1 dz + L_2 dz^2 + L_3 dz^3 + L_4 dz^4$ \\
+
+Smallest eigenvalue: [-0.00624309 +1.97781664e-16j] \\
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[scale=0.5]{ah_allpos}
+\includegraphics[scale=0.5]{ah_allpos_redonly}
+\end{figure*}
+
+\pagebreak
+I also tried to solve the equations without any iQ's -- that is, without the $\partial_z$ terms: \\
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[scale=0.5]{ah_nodz}
+\end{figure*}
 
 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  13 JUN 2014 17:02
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  13 JUN 2014 17:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2554,64 +2554,126 @@ File: marginal_solution.png Graphic file (type png)
 <use marginal_solution.png>
 Package pdftex.def Info: marginal_solution.png used on input line 1261.
 (pdftex.def)             Requested size: 469.75499pt x 267.14684pt.
- [29 <./s_Re_Im_Co_finegrid3.png> <./adjoint_soln_incorrect.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1266--1267
+ [29 <./s_Re_Im_Co_finegrid3.png> <./adjoint_soln_incorrect.png>] [30 <./margin
+al_solution.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1267--1268
 
  []
 
-<ah_attempt1.png, id=121, 578.16pt x 433.62pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 1269--1270
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1271--1272
+
+ []
+
+<ah_attempt1.png, id=125, 578.16pt x 433.62pt>
 File: ah_attempt1.png Graphic file (type png)
  <use ah_attempt1.png>
-Package pdftex.def Info: ah_attempt1.png used on input line 1272.
+Package pdftex.def Info: ah_attempt1.png used on input line 1275.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
 
-<ah_pmmp.png, id=122, 578.16pt x 433.62pt>
+<ah_attempt1_redonly.png, id=126, 578.16pt x 433.62pt>
+File: ah_attempt1_redonly.png Graphic file (type png)
+
+<use ah_attempt1_redonly.png>
+Package pdftex.def Info: ah_attempt1_redonly.png used on input line 1276.
+(pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
+ [31 <./ah_attempt1.png> <./ah_attempt1_redonly.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1280--1281
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1282--1283
+
+ []
+
+<ah_pmmp.png, id=133, 578.16pt x 433.62pt>
 File: ah_pmmp.png Graphic file (type png)
  <use ah_pmmp.png>
-Package pdftex.def Info: ah_pmmp.png used on input line 1280.
+Package pdftex.def Info: ah_pmmp.png used on input line 1286.
 (pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
 
+<ah_pmmp_redonly.png, id=134, 578.16pt x 433.62pt>
+File: ah_pmmp_redonly.png Graphic file (type png)
+ <use ah_pmmp_redonly.png>
+Package pdftex.def Info: ah_pmmp_redonly.png used on input line 1287.
+(pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+[32 <./ah_pmmp.png> <./ah_pmmp_redonly.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1291--1292
 
-(./mri_notes.bbl)
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1293--1294
+
+ []
+
+<ah_allpos.png, id=140, 578.16pt x 433.62pt>
+File: ah_allpos.png Graphic file (type png)
+ <use ah_allpos.png>
+Package pdftex.def Info: ah_allpos.png used on input line 1297.
+(pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
+
+<ah_allpos_redonly.png, id=141, 578.16pt x 433.62pt>
+File: ah_allpos_redonly.png Graphic file (type png)
+
+<use ah_allpos_redonly.png>
+Package pdftex.def Info: ah_allpos_redonly.png used on input line 1298.
+(pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
+ [33 <./ah_allpos.png> <./ah_allpos_redonly.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1302--1303
+
+ []
+
+<ah_nodz.png, id=147, 578.16pt x 433.62pt>
+File: ah_nodz.png Graphic file (type png)
+ <use ah_nodz.png>
+Package pdftex.def Info: ah_nodz.png used on input line 1306.
+(pdftex.def)             Requested size: 289.07928pt x 216.80946pt.
+ (./mri_notes.bbl)
 
 Package natbib Warning: There were undefined citations.
 
-[30 <./marginal_solution.png> <./ah_attempt1.png>] [31 <./ah_pmmp.png>]
-(./mri_notes.aux) ) 
+[34 <./ah_nodz.png>] (./mri_notes.aux) ) 
 Here is how much of TeX's memory you used:
- 2808 strings out of 493315
- 38088 string characters out of 6137904
+ 2833 strings out of 493315
+ 38618 string characters out of 6137904
  118154 words of memory out of 5000000
- 6201 multiletter control sequences out of 15000+600000
+ 6221 multiletter control sequences out of 15000+600000
  13579 words of font info for 52 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  38i,12n,24p,1989b,228s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.
-enc}</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.p
-fb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb
-></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb><
-/usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
-usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb
-></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb>
-</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></
-usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></us
-r/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
-local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/lo
-cal/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local
-/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/te
-xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
-live/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texli
-ve/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive
-/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/
-2013/texmf-dist/fonts/type1/public/amsfonts/latxfont/line10.pfb></usr/local/tex
-live/2013/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local
-/texlive/2013/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on mri_notes.pdf (31 pages, 704428 bytes).
+{/usr/local/texlive/2013/texmf-dist/fon
+ts/enc/dvips/base/8r.enc}</usr/local/texlive/2013/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmbx6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmbx8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmex10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfo
+nts/cmextra/cmex8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmmi12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmmi6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
+0.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.
+pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pf
+b></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb
+></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/latxfont/line1
+0.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/symbols/m
+sbm10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/courier/ucrr8a.pf
+b>
+Output written on mri_notes.pdf (34 pages, 1053949 bytes).
 PDF statistics:
- 195 PDF objects out of 1000 (max. 8388607)
- 129 compressed objects within 2 object streams
+ 214 PDF objects out of 1000 (max. 8388607)
+ 135 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 
