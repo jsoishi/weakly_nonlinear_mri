@@ -21,7 +21,7 @@ Co = 0.08
 #Rm = 4.89
 Rm = 4.877
 iRm = 1./Rm
-Q = 0.75
+Q = -0.75
 
 R = Rm/Pm
 iR = 1./R
@@ -46,10 +46,10 @@ iR = 1./R
 #lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) - 1j*Co*Q*u = 0")
 
 #Equations without the sign change on the dz terms:
-#lv1.add_equation("1j*dt(psi) + 1j*Q*A + 1j*Q*(2-q)*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
-#lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
-#lv1.add_equation("1j*dt(A) + -iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*Co*Q**3*psi + 1j*Co*Q*psixx = 0")
-#lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) + 1j*Co*Q*u = 0")
+lv1.add_equation("1j*dt(psi) + 1j*Q*A + 1j*Q*(2-q)*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
+lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
+lv1.add_equation("1j*dt(A) + -iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*Co*Q**3*psi + 1j*Co*Q*psixx = 0")
+lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) + 1j*Co*Q*u = 0")
 
 #without iQ's
 #lv1.add_equation("1j*dt(psi) + A + iR*dx(psixxx) + iR*2*psixx + iR*psi + (2-q)*u = 0")
@@ -64,10 +64,10 @@ iR = 1./R
 #lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) + 1j*Co*Q*u + iRm*dx(Bx) + iRm*B = 0")
 
 #NON-ADJOINT LV=0
-lv1.add_equation("1j*dt(psi) - 1j*Co*Q**3*A + 1j*Co*Q*dx(Ax) + 2*1j*Q*u + iR*Q**4*psi - iR*2*Q**2*psixx + iR*dx(psixxx) = 0")
-lv1.add_equation("1j*dt(u) + 1j*B*Co*Q + 1j*Q*(2 - q)*psi - iR*Q**2*u + iR*dx(ux) = 0")
-lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) + 1j*Q*psi = 0")
-lv1.add_equation("1j*dt(B) - 1j*Q*q*A -iRm*Q**2*B + iRm*dx(Bx) + 1j*Q*u = 0")
+#lv1.add_equation("1j*dt(psi) - 1j*Co*Q**3*A + 1j*Co*Q*dx(Ax) + 2*1j*Q*u + iR*Q**4*psi - iR*2*Q**2*psixx + iR*dx(psixxx) = 0")
+#lv1.add_equation("1j*dt(u) + 1j*B*Co*Q + 1j*Q*(2 - q)*psi - iR*Q**2*u + iR*dx(ux) = 0")
+#lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) + 1j*Q*psi = 0")
+#lv1.add_equation("1j*dt(B) - 1j*Q*q*A -iRm*Q**2*B + iRm*dx(Bx) + 1j*Q*u = 0")
 
 lv1.add_equation("dx(psi) - psix = 0")
 lv1.add_equation("dx(psix) - psixx = 0")
@@ -119,21 +119,23 @@ fig = plt.figure()
 ax1 = fig.add_subplot(221)
 ax1.plot(x, LEV.state['psi']['g'].imag, color="red")
 #ax1.plot(x, LEV.state['psi']['g'].real, color="black")
-
 ax1.set_title(r"Im($\psi^\dagger$)")
-ax1 = fig.add_subplot(222)
-#ax1.plot(x, LEV.state['u']['g'].imag, color="black")
-ax1.plot(x, LEV.state['u']['g'].real, color="red")
-ax1.set_title("Re($u^\dagger$)")
-ax1 = fig.add_subplot(223)
-#ax1.plot(x, LEV.state['A']['g'].imag, color="black")
-ax1.plot(x, LEV.state['A']['g'].real, color="red")
-ax1.set_title("Re($A^\dagger$)")
-ax1 = fig.add_subplot(224)
-ax1.plot(x, LEV.state['B']['g'].imag, color="red")
-#ax1.plot(x, LEV.state['B']['g'].real, color="black")
-ax1.set_title("Im($B^\dagger$)")
-fig.savefig("ah1.png")
+
+ax2 = fig.add_subplot(222)
+#ax2.plot(x, LEV.state['u']['g'].imag, color="black")
+ax2.plot(x, LEV.state['u']['g'].real, color="red")
+ax2.set_title("Re($u^\dagger$)")
+
+ax3 = fig.add_subplot(223)
+#ax3.plot(x, LEV.state['A']['g'].imag, color="black")
+ax3.plot(x, LEV.state['A']['g'].real, color="red")
+ax3.set_title("Re($A^\dagger$)")
+
+ax4 = fig.add_subplot(224)
+ax4.plot(x, LEV.state['B']['g'].imag, color="red")
+#ax4.plot(x, LEV.state['B']['g'].real, color="black")
+ax4.set_title("Im($B^\dagger$)")
+#fig.savefig("ah1.png")
 
 
 """
