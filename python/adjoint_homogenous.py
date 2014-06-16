@@ -21,7 +21,7 @@ Co = 0.08
 #Rm = 4.89
 Rm = 4.877
 iRm = 1./Rm
-Q = -0.75
+Q = 0.75
 
 R = Rm/Pm
 iR = 1./R
@@ -35,6 +35,7 @@ iR = 1./R
 
 #multiply by -1j and add dt's:
 #lv1.add_equation("-1j*iR*dx(psixxx) - -1j*(2-q)*1j*Q*u - -1j*1j*Q*A - -1j*Q*Q*iR*2*psixx + -1j*Q**4*iR*psi + dt(psi) = 0")
+#lv1.add_equation("-1j*iR*dx(psixxx) - -1j*(2-q)*1j*Q*u - -1j*1j*Q*A - -1j*Q*Q*iR*2*psixx + -1j*Q**4*iR*psi + dt(psixx) -Q**2*dt(psi) = 0")
 #lv1.add_equation("-1j*iR*dx(ux) - -1j*2*1j*Q*psi - -1j*1j*Q*B - -1j*iR*Q**2*u + dt(u) = 0")
 #lv1.add_equation("-1j*iRm*dx(Ax) - -1j*Co*1j*Q*psixx + -1j*q*1j*Q*B - -1j*Q*Q*iRm*A + -1j*1j*Q**3*Co*psi + dt(A) = 0")
 #lv1.add_equation("-1j*iRm*dx(Bx) - -1j*Co*1j*Q*u - -1j*Q*Q*iRm*B + dt(B) = 0")
@@ -46,7 +47,8 @@ iR = 1./R
 #lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) - 1j*Co*Q*u = 0")
 
 #Equations without the sign change on the dz terms:
-lv1.add_equation("1j*dt(psi) + 1j*Q*A + 1j*Q*(2-q)*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
+#lv1.add_equation("1j*dt(psi) + 1j*Q*A + 1j*Q*(2-q)*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
+lv1.add_equation("1j*dt(psixx) - 1j*Q**2*dt(psi) + 1j*Q*A - 1j*Q*(2-q)*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0") #with del^2(psi)
 lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
 lv1.add_equation("1j*dt(A) + -iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*Co*Q**3*psi + 1j*Co*Q*psixx = 0")
 lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) + 1j*Co*Q*u = 0")
@@ -65,9 +67,16 @@ lv1.add_equation("1j*dt(B) + -iRm*Q**2*B + iRm*dx(Bx) + 1j*Co*Q*u = 0")
 
 #NON-ADJOINT LV=0
 #lv1.add_equation("1j*dt(psi) - 1j*Co*Q**3*A + 1j*Co*Q*dx(Ax) + 2*1j*Q*u + iR*Q**4*psi - iR*2*Q**2*psixx + iR*dx(psixxx) = 0")
-#lv1.add_equation("1j*dt(u) + 1j*B*Co*Q + 1j*Q*(2 - q)*psi - iR*Q**2*u + iR*dx(ux) = 0")
+#lv1.add_equation("1j*dt(psixx) - 1j*Q**2*dt(psi) - 1j*Co*Q**3*A + 1j*Co*Q*dx(Ax) + 2*1j*Q*u + iR*Q**4*psi - iR*2*Q**2*psixx + iR*dx(psixxx) = 0")
+#lv1.add_equation("1j*dt(u) + 1j*B*Co*Q - 1j*Q*(2 - q)*psi - iR*Q**2*u + iR*dx(ux) = 0")
 #lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) + 1j*Q*psi = 0")
 #lv1.add_equation("1j*dt(B) - 1j*Q*q*A -iRm*Q**2*B + iRm*dx(Bx) + 1j*Q*u = 0")
+
+#Linear MRI...
+#lv1.add_equation("1j*dt(psixx) - 1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - Co*1j*Q*dx(Ax) + Co*Q**3*1j*A = 0")
+#lv1.add_equation("1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - Co*1j*Q*B = 0") 
+#lv1.add_equation("1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
+#lv1.add_equation("1j*dt(B) - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
 
 lv1.add_equation("dx(psi) - psix = 0")
 lv1.add_equation("dx(psix) - psixx = 0")
@@ -117,23 +126,23 @@ LEV.set_state(e0[0])
 
 fig = plt.figure()
 ax1 = fig.add_subplot(221)
-ax1.plot(x, LEV.state['psi']['g'].imag, color="red")
-#ax1.plot(x, LEV.state['psi']['g'].real, color="black")
+#ax1.plot(x, LEV.state['psi']['g'].imag, color="red")
+ax1.plot(x, LEV.state['psi']['g'].real, color="black")
 ax1.set_title(r"Im($\psi^\dagger$)")
 
 ax2 = fig.add_subplot(222)
-#ax2.plot(x, LEV.state['u']['g'].imag, color="black")
-ax2.plot(x, LEV.state['u']['g'].real, color="red")
+ax2.plot(x, LEV.state['u']['g'].imag, color="black")
+#ax2.plot(x, LEV.state['u']['g'].real, color="red")
 ax2.set_title("Re($u^\dagger$)")
 
 ax3 = fig.add_subplot(223)
-#ax3.plot(x, LEV.state['A']['g'].imag, color="black")
-ax3.plot(x, LEV.state['A']['g'].real, color="red")
+ax3.plot(x, LEV.state['A']['g'].imag, color="black")
+#ax3.plot(x, LEV.state['A']['g'].real, color="red")
 ax3.set_title("Re($A^\dagger$)")
 
 ax4 = fig.add_subplot(224)
-ax4.plot(x, LEV.state['B']['g'].imag, color="red")
-#ax4.plot(x, LEV.state['B']['g'].real, color="black")
+#ax4.plot(x, LEV.state['B']['g'].imag, color="red")
+ax4.plot(x, LEV.state['B']['g'].real, color="black")
 ax4.set_title("Im($B^\dagger$)")
 #fig.savefig("ah1.png")
 
