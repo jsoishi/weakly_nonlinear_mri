@@ -6,8 +6,6 @@ from scipy.linalg import eig, norm
 import pylab
 import copy
 
-def dothis():
-
 lv1 = ParsedProblem(['x'],
                       field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
                       param_names=['Q', 'iR', 'iRm', 'q', 'Co'])
@@ -110,7 +108,10 @@ ax4 = fig.add_subplot(224)
 #ax4.plot(x, LEV.state['B']['g'].imag*norm1, color="red")
 ax4.plot(x, LEV.state['B']['g'].real*norm1, color="black")
 ax4.set_title("Im($B^\dagger$)")
-#fig.savefig("ah1.png")
+
+
+if __name__ == '__main__':
+    fig.savefig("ah1.png")
 
 
 """
