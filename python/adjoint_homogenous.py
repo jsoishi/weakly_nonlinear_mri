@@ -25,7 +25,11 @@ def setup():
     #Parameter values found by solving the linear MRI to find most unstable mode
     Rm = 4.8775
     #Rm = 4.89
+    #Rm = 4.9
+    #Rm = 4.88
     #Rm = 4.877
+    #Rm = 4.878
+    #Rm = 4.87
     iRm = 1./Rm
     Q = 0.75
 
@@ -90,29 +94,30 @@ def setup():
 
 def plot_all(x, LEV):
 
-    norm1 = -0.9/np.min(LEV.state['u']['g'].imag) #norm(LEV.eigenvectors)
-
     #Currently normalized so that ee = 1
     #ee = np.abs(np.real(LEV.eigenvectors)) + np.abs(np.imag(LEV.eigenvectors))
 
+    #Normalized to resemble Umurhan+
+    norm1 = -0.9/np.min(LEV.state['u']['g'].imag) #norm(LEV.eigenvectors)
+
     fig = plt.figure()
     ax1 = fig.add_subplot(221)
-    #ax1.plot(x, LEV.state['psi']['g'].imag*norm1, color="red")
+    ax1.plot(x, LEV.state['psi']['g'].imag*norm1, color="red")
     ax1.plot(x, LEV.state['psi']['g'].real*norm1, color="black")
     ax1.set_title(r"Im($\psi^\dagger$)")
 
     ax2 = fig.add_subplot(222)
     ax2.plot(x, LEV.state['u']['g'].imag*norm1, color="black")
-    #ax2.plot(x, LEV.state['u']['g'].real*norm1, color="red")
+    ax2.plot(x, LEV.state['u']['g'].real*norm1, color="red")
     ax2.set_title("Re($u^\dagger$)")
 
     ax3 = fig.add_subplot(223)
     ax3.plot(x, LEV.state['A']['g'].imag*norm1, color="black")
-    #ax3.plot(x, LEV.state['A']['g'].real*norm1, color="red")
+    ax3.plot(x, LEV.state['A']['g'].real*norm1, color="red")
     ax3.set_title("Re($A^\dagger$)")
 
     ax4 = fig.add_subplot(224)
-    #ax4.plot(x, LEV.state['B']['g'].imag*norm1, color="red")
+    ax4.plot(x, LEV.state['B']['g'].imag*norm1, color="red")
     ax4.plot(x, LEV.state['B']['g'].real*norm1, color="black")
     ax4.set_title("Im($B^\dagger$)")
     fig.savefig("ah1.png")
