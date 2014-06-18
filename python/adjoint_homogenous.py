@@ -23,9 +23,9 @@ def setup():
     Co = 0.08
 
     #Parameter values found by solving the linear MRI to find most unstable mode
-    #Rm = 4.8775
+    Rm = 4.8775
     #Rm = 4.89
-    Rm = 4.877
+    #Rm = 4.877
     iRm = 1./Rm
     Q = 0.75
 
@@ -115,12 +115,11 @@ def plot_all(x, LEV):
     #ax4.plot(x, LEV.state['B']['g'].imag*norm1, color="red")
     ax4.plot(x, LEV.state['B']['g'].real*norm1, color="black")
     ax4.set_title("Im($B^\dagger$)")
-
+    fig.savefig("ah1.png")
 
 if __name__ == '__main__':
     x, LEV = setup()
     plot_all(x, LEV)
-    fig.savefig("ah1.png")
 
 
 """
