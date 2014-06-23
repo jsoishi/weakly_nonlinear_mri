@@ -13,7 +13,7 @@ def setup():
                           field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
                           param_names=['Q', 'iR', 'iRm', 'q', 'Co'])
                   
-    x_basis = Chebyshev(64)
+    x_basis = Chebyshev(128)
     domain = Domain([x_basis])#,grid_dtype=np.float64)
 
     #Solve equations for fixed z eigenvalue: V+ = V+ e^(iQz)
@@ -75,18 +75,27 @@ def setup():
     #Find the eigenvalue that is closest to zero. This should be the adjoint homogenous solution.
     evals = LEV.eigenvalues
     indx = np.arange(len(evals))
+    #e0 = indx[np.abs(evals.imag) == np.nanmin(np.abs(evals.imag))]
     e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
     print(evals[e0])
     
+    """
     #second closest to zero...
     indx = np.delete(indx, e0)
     evals = np.delete(evals, e0)
     e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
     print(evals[e0])
+    
+    #third closest to zero...
+    indx = np.delete(indx, e0)
+    evals = np.delete(evals, e0)
+    e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+    print(evals[e0])
+    """
 
     #Plot
     x = domain.grid(0)
-    LEV.set_state(e0[0])
+    LEV.set_state(e0[-1])
 
     #L = LEV.eigenvalue_pencil.L.todense()
     #M = LEV.eigenvalue_pencil.M.todense()
