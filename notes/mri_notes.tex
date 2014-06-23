@@ -205,7 +205,7 @@ And our momentum equation now reads:
 \noindent x, y, and z are scaled by $\Delta = \delta r_0$ \\
 Velocities are scaled by $\Omega_0 r_0 \delta$ \\
 Magnetic fields are scaled by $B_0$ \\
-Pressure is scaled by $\varepsilon^2 \Omega_0^2 r_0^2$ \\ 
+Pressure is scaled by $\varepsilon^2 \Omega_0^2 r_0^2 \rho_0$ \\ 
 
 And we introduce the following terms:
 \[\reye \equiv \frac{\Omega_0 r_0^2 \delta^2}{\nu} ; \, \, \, \reym \equiv \frac{\Omega_0 r_0^2 \delta^2}{\eta}\]
@@ -247,7 +247,7 @@ $\left(\Omega_0^2 r_0 \delta\right) \partial_t \mathbf{u} \, + \, \left(\Omega_0
 
 Dividing out a factor of $\left(\Omega_0^2 r_0 \delta\right)$ and rewriting in terms of $\beta$ and $\reye$ yields the nondimensionalized momentum equation: \\
 
-$\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + \, 2 u_x \mathbf{\hat{y}} - 2 u_y \mathbf{\hat{x}} \, = \, 2 x q \mathbf{\hat{x}} \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho} \nabla P \, + \,  \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho_b} \nabla P_b \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, + \, \frac{1}{\reye} \nabla^2 \mathbf{u}$ \\
+$\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, + \, 2 u_x \mathbf{\hat{y}} - 2 u_y \mathbf{\hat{x}} \, = \, 2 x q \mathbf{\hat{x}} \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho} \nabla P \, + \,  \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho_b} \nabla P_b \, - \, \frac{\varepsilon^2}{\delta^2} \frac{2}{\beta \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, + \, \frac{1}{\reye} \nabla^2 \mathbf{u}$ \\
 
 We perform the same nondimensionalization for the induction equation: \\
 
@@ -283,11 +283,11 @@ $\mathbf{B} \, = \, B_0\mathbf{\hat{z}} + \mathbf{B_1}$ \\
 
 We will begin with the momentum equation. To make this more explicit, we write out all 3 equations (pre-perturbation): \\
 
-$\partial_t u_x \, + \, \left(\mathbf{u} \cdot \nabla\right)u_x \, - \, 2 u_y \, = \, 2 x q \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho} \partial_x P \, + \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho_b} \partial_x P_b \, +\, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
+$\partial_t u_x \, + \, \left(\mathbf{u} \cdot \nabla\right)u_x \, - \, 2 u_y \, = \, 2 x q \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho} \partial_x P \, + \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho_b} \partial_x P_b \, +\, \frac{\varepsilon^2}{\delta^2} \frac{2}{\beta \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
 
-$\partial_t u_y \, + \, \left(\mathbf{u} \cdot \nabla\right)u_y \, + \, 2u_x =  \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho} \partial_y P \, +\, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, + \, \frac{1}{\reye}\nabla^2 u_y  $ \\
+$\partial_t u_y \, + \, \left(\mathbf{u} \cdot \nabla\right)u_y \, + \, 2u_x =  \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho} \partial_y P \, +\, \frac{\varepsilon^2}{\delta^2} \frac{2}{\beta \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, + \, \frac{1}{\reye}\nabla^2 u_y  $ \\
 
-$\partial_t u_z \, + \, \left(\mathbf{u} \cdot \nabla\right)u_z \,  =  \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho} \partial_z P \,  + \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho_b} \partial_z P_b \, +\, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, + \, \frac{1}{\reye}\nabla^2 u_z $ \\
+$\partial_t u_z \, + \, \left(\mathbf{u} \cdot \nabla\right)u_z \,  =  \, - \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho} \partial_z P \,  + \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\rho_b} \partial_z P_b \, +\, \frac{\varepsilon^2}{\delta^2} \frac{2}{\beta \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} \, + \, \frac{1}{\reye}\nabla^2 u_z $ \\
 
 Where we have made the substitution $\partial_y P_b = \partial_y \rho_b = 0$, as the steady barotropic solution must be axisymmetric. \\
 
@@ -307,7 +307,7 @@ Because all of the $\nabla \left(-q \Omega_0 x \mathbf{\hat{y}}\right)$ terms ar
 
 %$\nabla \left(B_0 \mathbf{\hat{z}} + \mathbf{B_1}\right)^2 $ \\
 
-The Lorentz force term $\frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B}$ expands as follows: \\
+The Lorentz force term $\frac{\varepsilon^2}{\delta^2} \frac{2}{\beta \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B}$ expands as follows: \\
 
 $ \left( \nabla \times \left(B_0 \mathbf{\hat{z}} + \mathbf{B_1}\right) \right) \times \left(B_0 \mathbf{\hat{z}} + \mathbf{B_1}\right) \, = \, \left( \nabla \times B_0 \mathbf{\hat{z}} + \nabla \times \mathbf{B_1} \right) \times \left(B_0 \mathbf{\hat{z}} + \mathbf{B_1}\right) \, $ \\
 
