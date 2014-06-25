@@ -12,6 +12,9 @@ Q = float(sys.argv[2])
 Rm = float(sys.argv[1])
 name = sys.argv[0]
 
+#Q = 0.75
+#Rm = 4.8775
+
 #print("%s: Q = %10.5f; Rm = %10.5f" % (name, Q, Rm))
 
 
@@ -24,7 +27,7 @@ lv1 = ParsedProblem(['x'],
                       field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
                       param_names=['Q', 'iR', 'iRm', 'q', 'B0', 'beta', 'Co'])
                   
-x_basis = Chebyshev(16)
+x_basis = Chebyshev(64)
 domain = Domain([x_basis])
 
 #Rm is an input parameter

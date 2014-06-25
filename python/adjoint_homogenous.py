@@ -13,8 +13,8 @@ def setup():
                           field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
                           param_names=['Q', 'iR', 'iRm', 'q', 'Co'])
                   
-    x_basis = Chebyshev(128)
-    domain = Domain([x_basis])#,grid_dtype=np.float64)
+    x_basis = Chebyshev(64)
+    domain = Domain([x_basis], grid_dtype=np.complex128)#,grid_dtype=np.float64)
 
     #Solve equations for fixed z eigenvalue: V+ = V+ e^(iQz)
     #Parameter values from Umurhan+:
@@ -41,6 +41,12 @@ def setup():
     lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
     lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*Co*Q**3*psi + 1j*Co*Q*psixx = 0")
     lv1.add_equation("1j*dt(B) - iRm*Q**2*B + iRm*dx(Bx) + 1j*Co*Q*u = 0")
+    
+    #without iQ's
+    #lv1.add_equation("1j*dt(psixx) + A + iR*dx(psixxx) + iR*2*psixx + iR*psi + (q-2)*u = 0")
+    #lv1.add_equation("1j*dt(u) + B + 2*psi + iR*dx(ux) + iR*u = 0")
+    #lv1.add_equation("1j*dt(A) + iRm*dx(Ax) + iRm*A - q*B + Co*dx(psix) + Co*psi = 0")
+    #lv1.add_equation("1j*dt(B) + iRm*dx(Bx) + iRm*B + Co*u = 0")
 
     lv1.add_equation("dx(psi) - psix = 0")
     lv1.add_equation("dx(psix) - psixx = 0")
@@ -95,7 +101,7 @@ def setup():
 
     #Plot
     x = domain.grid(0)
-    LEV.set_state(e0[-1])
+    LEV.set_state(e0[0])
 
     #L = LEV.eigenvalue_pencil.L.todense()
     #M = LEV.eigenvalue_pencil.M.todense()
