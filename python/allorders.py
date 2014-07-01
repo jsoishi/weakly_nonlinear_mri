@@ -302,6 +302,7 @@ class N2():
     def solve(self, gridnum = 64, save = True):
 
         self.gridnum = gridnum
+        self.x = domain.grid(0)
         
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
@@ -352,6 +353,31 @@ class N2():
         N2B = 1j*Q*psi_1*B_1_x - psi_1_x*1j*Q*B_1 - 1j*Q*A_1*u_1_x + A_1_x*1j*Q*u_1
         self.N2_B = N2B.evaluate()
         
+    def plot(self):
+    
+        fig = plt.figure()
+        
+        ax1 = fig.add_subplot(221)
+        ax1.plot(self.x, self.N2_psi['g'].imag, color="black")
+        ax1.plot(self.x, self.N2_psi['g'].real, color="red")
+        ax1.set_title(r"Im($\psi_{N2}$)")
+
+        ax2 = fig.add_subplot(222)
+        ax2.plot(self.x, self.N2_u['g'].real, color="black")
+        ax2.plot(self.x, self.N2_u['g'].imag, color="red")
+        ax2.set_title("Re($u_{N2}$)")
+
+        ax3 = fig.add_subplot(223)
+        ax3.plot(self.x, self.N2_A['g'].real, color="black")
+        ax3.plot(self.x, self.N2_A['g'].imag, color="red")
+        ax3.set_title("Re($A_{N2}$)")
+
+        ax4 = fig.add_subplot(224)
+        ax4.plot(self.x, self.N2_B['g'].imag, color="black")
+        ax4.plot(self.x, self.N2_B['g'].real, color="red")
+        ax4.set_title("Im($B_{N2}$)")
+        fig.savefig("n2.png")
+
         
 class OrderE2():
 
@@ -433,13 +459,21 @@ class OrderE2():
         self.rhs_B = rhs_B.evaluate()
         
         # nonconstant coefficients
-        #rhs_psi = x_basis.grid**2
-        #rhs_psi = x_basis.grid
         rhs_psi = self.rhs_psi['g']
-        #rhs_psi = 2
         rhs_u = self.rhs_u['g']
         rhs_A = self.rhs_A['g']
         rhs_B = self.rhs_B['g']
+        
+        # should these instead be just term2 for the 21 terms?
+        rhs_psi = self.term2_psi['g']
+        rhs_u = self.term2_u['g']
+        rhs_A = self.term2_A['g']
+        rhs_B = self.term2_B['g']
+        
+        rhs_n2_psi = self.n2_psi['g']
+        rhs_n2_u = self.n2_u['g']
+        rhs_n2_A = self.n2_A['g']
+        rhs_n2_B = self.n2_B['g']        
         
         # define problem using righthand side as nonconstant coefficients
         
@@ -457,18 +491,18 @@ class OrderE2():
         #lv2.add_equation("1j*dt(B20) + 1j*dt(B21) + 1j*dt(B22) + -q*A20 + 1j*Q*q*A21 - 2*1j*Q*q*A22 + iRm*dx(B20x) + iRm*B20 + iRm*Q**2*B21 - iRm*dx(B21x) - iRm*4*Q**2*B22 + iRm*dx(B22x) - 1j*Q*u21 + 2*1j*Q*u22 + u20 = rhs_B")
         
         # need to 'stack' equations for each component of V2 in order to have 30 equations
-        lv2.add_equation("dt(psi20xx) + dt(psi20) + (2/beta)*dx(A20x) + (2/beta)*A20 + iR*dx(psi20xxx) + 2*iR*psi20xx + iR*psi20 + 2*u20")
-        lv2.add_equation("dt(u20) + (2/beta)*B20 + (q - 2)*psi20 + iR*dx(u20x) + iR*u20")
-        lv2.add_equation("dt(A20) + iRm*dx(A20x) + iRm*A20 + psi20")
-        lv2.add_equation("dt(B20) + -q*A20 + iRm*dx(B20x) + iRm*B20 + u20")
-        lv2.add_equation("Q**2*dt(psi21) - dt(psi21xx) + 1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx)")
-        lv2.add_equation("-dt(u21) + -1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x)")
-        lv2.add_equation("-dt(A21) + iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21")
-        lv2.add_equation("-dt(B21) + 1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21")
-        lv2.add_equation("-4*Q**2*dt(psi22) + dt(psi22xx) + -8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) + 4*1j*Q*u22 + 16*iR*Q**4*psi22 - 8*iR*Q**2*psi22xx + iR*dx(psi22xxx)")
-        lv2.add_equation("dt(u22) + 2*1j*(2/beta)*Q*B22 + 2*1j*Q*(q-2)*psi22 - 4*iR*Q**2*u22 + iR*dx(u22x)")
-        lv2.add_equation("dt(A22) + -iRm*4*Q**2*A22 + iRm*dx(A22x) + 2*1j*Q*psi22")
-        lv2.add_equation("dt(B22) + -2*1j*Q*q*A22 - iRm*4*Q**2*B22 + iRm*dx(B22x) + 2*1j*Q*u22")
+        lv2.add_equation("1j*dt(psi20xx) + 1j*dt(psi20) + (2/beta)*dx(A20x) + (2/beta)*A20 + iR*dx(psi20xxx) + 2*iR*psi20xx + iR*psi20 + 2*u20 = rhs_n2_psi")
+        lv2.add_equation("1j*dt(u20) + (2/beta)*B20 + (q - 2)*psi20 + iR*dx(u20x) + iR*u20 = rhs_n2_u")
+        lv2.add_equation("1j*dt(A20) + iRm*dx(A20x) + iRm*A20 + psi20 = rhs_n2_A")
+        lv2.add_equation("1j*dt(B20) + -q*A20 + iRm*dx(B20x) + iRm*B20 + u20 = rhs_n2_B")
+        lv2.add_equation("1j*Q**2*dt(psi21) - 1j*dt(psi21xx) + 1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs_psi")
+        lv2.add_equation("-1j*dt(u21) + -1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs_u")
+        lv2.add_equation("-1j*dt(A21) + iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs_A")
+        lv2.add_equation("-1j*dt(B21) + 1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs_B")
+        lv2.add_equation("-4*Q**2*1j*dt(psi22) + 1j*dt(psi22xx) + -8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) + 4*1j*Q*u22 + 16*iR*Q**4*psi22 - 8*iR*Q**2*psi22xx + iR*dx(psi22xxx) = rhs_n2_psi")
+        lv2.add_equation("1j*dt(u22) + 2*1j*(2/beta)*Q*B22 + 2*1j*Q*(q-2)*psi22 - 4*iR*Q**2*u22 + iR*dx(u22x) = rhs_n2_u")
+        lv2.add_equation("1j*dt(A22) + -iRm*4*Q**2*A22 + iRm*dx(A22x) + 2*1j*Q*psi22 = rhs_n2_A")
+        lv2.add_equation("1j*dt(B22) + -2*1j*Q*q*A22 - iRm*4*Q**2*B22 + iRm*dx(B22x) + 2*1j*Q*u22 = rhs_n2_B")
         
                                         
         lv2.add_equation("dx(psi20) - psi20x = 0")
@@ -574,7 +608,75 @@ class OrderE2():
         self.A22 = LEV.state['A22']['g']
         self.B22 = LEV.state['B22']['g']
         
+    def plot(self):
+    
+        fig = plt.figure()
         
+        # plot 20
+        ax1 = fig.add_subplot(3, 4, 1)
+        ax1.plot(self.x, self.psi20.imag, color="black")
+        ax1.plot(self.x, self.psi20.real, color="red")
+        ax1.set_title(r"$\psi_{20}$")
+
+        ax2 = fig.add_subplot(3, 4, 2)
+        ax2.plot(self.x, self.u20.real, color="black")
+        ax2.plot(self.x, self.u20.imag, color="red")
+        ax2.set_title(r"$u_{20}$")
+
+        ax3 = fig.add_subplot(3, 4, 3)
+        ax3.plot(self.x, self.A20.real, color="black")
+        ax3.plot(self.x, self.A20.imag, color="red")
+        ax3.set_title(r"$A_{20}$")
+
+        ax4 = fig.add_subplot(3, 4, 4)
+        ax4.plot(self.x, self.B20.imag, color="black")
+        ax4.plot(self.x, self.B20.real, color="red")
+        ax4.set_title(r"$B_{20}$")
+        
+        # plot 21
+        ax1 = fig.add_subplot(3, 4, 5)
+        ax1.plot(self.x, self.psi21.real, color="black")
+        ax1.plot(self.x, self.psi21.imag, color="red")
+        ax1.set_title(r"$\psi_{21}$")
+
+        ax2 = fig.add_subplot(3, 4, 6)
+        ax2.plot(self.x, self.u21.imag, color="black")
+        ax2.plot(self.x, self.u21.real, color="red")
+        ax2.set_title(r"$u_{21}$")
+
+        ax3 = fig.add_subplot(3, 4, 7)
+        ax3.plot(self.x, self.A21.imag, color="black")
+        ax3.plot(self.x, self.A21.real, color="red")
+        ax3.set_title(r"$A_{21}$")
+
+        ax4 = fig.add_subplot(3, 4, 8)
+        ax4.plot(self.x, self.B21.real, color="black")
+        ax4.plot(self.x, self.B21.imag, color="red")
+        ax4.set_title(r"$B_{21}$")
+        
+        # plot 22
+        ax1 = fig.add_subplot(3, 4, 9)
+        ax1.plot(self.x, self.psi22.imag, color="black")
+        ax1.plot(self.x, self.psi22.real, color="red")
+        ax1.set_title(r"$\psi_{22}$")
+
+        ax2 = fig.add_subplot(3, 4, 10)
+        ax2.plot(self.x, self.u22.real, color="black")
+        ax2.plot(self.x, self.u22.imag, color="red")
+        ax2.set_title(r"$u_{22}$")
+
+        ax3 = fig.add_subplot(3, 4, 11)
+        ax3.plot(self.x, self.A22.real, color="black")
+        ax3.plot(self.x, self.A22.imag, color="red")
+        ax3.set_title(r"$A_{22}$")
+
+        ax4 = fig.add_subplot(3, 4, 12)
+        ax4.plot(self.x, self.B22.imag, color="black")
+        ax4.plot(self.x, self.B22.real, color="red")
+        ax4.set_title(r"$B_{22}$")
+        
+        
+        fig.savefig("v2.png")
     
         
             
