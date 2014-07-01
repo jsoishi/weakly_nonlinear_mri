@@ -451,14 +451,26 @@ class OrderE2():
         #domain = Domain([x_basis], grid_dtype=np.complex128)
 
         # second order equations
-        lv2.add_equation("1j*dt(dx(psi20x)) + 1j*dt(psi20) + 1j*Q**2*dt(psi21) - 1j*dt(dx(psi21x)) - 1j*4*Q**2*dt(psi22) + 1j*dt(dx(psi22x)) + (2/beta)*dx(A20x) + (2/beta)*A20 + 1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) - 2*1j*Q*u21 + 4*1j*Q*u22 + iR*dx(psi20xxx) + iR*2*dx(psi20x) + iR*psi20 - iR*Q**4*psi21 + 2*iR*Q**2*dx(psi21x) - iR*dx(psi21xxx) + 16*iR*Q**4*psi22 - 8*iR*Q**2*dx(psi22x) + iR*dx(psi22xxx) + 2*u20 = rhspsi")
-        lv2.add_equation("1j*dt(u20) + 1j*dt(u21) + 1j*dt(u22) + (2/beta)*B20 - 1j*(2/beta)*Q*B21 + 2*1j*(2/beta)*Q*B22 - 1j*Q*(q - 2)*psi21 + 2*1j*Q*(q - 2)*psi22 + (q - 2)*psi20 + iR*dx(u20x) + iR*u20 + iR*Q**2*u21 - iR*dx(u21x) - 4*iR*Q**2*u22 + iR*dx(u22x) = rhs_u")
-        lv2.add_equation("1j*dt(A20) + 1j*dt(A21) + 1j*dt(A22) + iRm*dx(A20x) + iRm*A20 + iRm*Q**2*A21 - iRm*dx(A21x) - 4*iRm*Q**2*A22 + iRm*dx(A22x) -1j*Q*psi21 + 2*1j*Q*psi22 + psi20 = rhs_A")
-        lv2.add_equation("1j*dt(B20) + 1j*dt(B21) + 1j*dt(B22) + -q*A20 + 1j*Q*q*A21 - 2*1j*Q*q*A22 + iRm*dx(B20x) + iRm*B20 + iRm*Q**2*B21 - iRm*dx(B21x) - iRm*4*Q**2*B22 + iRm*dx(B22x) - 1j*Q*u21 + 2*1j*Q*u22 + u20 = rhs_B")
+        #lv2.add_equation("1j*dt(dx(psi20x)) + 1j*dt(psi20) + 1j*Q**2*dt(psi21) - 1j*dt(dx(psi21x)) - 1j*4*Q**2*dt(psi22) + 1j*dt(dx(psi22x)) + (2/beta)*dx(A20x) + (2/beta)*A20 + 1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) - 2*1j*Q*u21 + 4*1j*Q*u22 + iR*dx(psi20xxx) + iR*2*dx(psi20x) + iR*psi20 - iR*Q**4*psi21 + 2*iR*Q**2*dx(psi21x) - iR*dx(psi21xxx) + 16*iR*Q**4*psi22 - 8*iR*Q**2*dx(psi22x) + iR*dx(psi22xxx) + 2*u20 = rhspsi")
+        #lv2.add_equation("1j*dt(u20) + 1j*dt(u21) + 1j*dt(u22) + (2/beta)*B20 - 1j*(2/beta)*Q*B21 + 2*1j*(2/beta)*Q*B22 - 1j*Q*(q - 2)*psi21 + 2*1j*Q*(q - 2)*psi22 + (q - 2)*psi20 + iR*dx(u20x) + iR*u20 + iR*Q**2*u21 - iR*dx(u21x) - 4*iR*Q**2*u22 + iR*dx(u22x) = rhs_u")
+        #lv2.add_equation("1j*dt(A20) + 1j*dt(A21) + 1j*dt(A22) + iRm*dx(A20x) + iRm*A20 + iRm*Q**2*A21 - iRm*dx(A21x) - 4*iRm*Q**2*A22 + iRm*dx(A22x) -1j*Q*psi21 + 2*1j*Q*psi22 + psi20 = rhs_A")
+        #lv2.add_equation("1j*dt(B20) + 1j*dt(B21) + 1j*dt(B22) + -q*A20 + 1j*Q*q*A21 - 2*1j*Q*q*A22 + iRm*dx(B20x) + iRm*B20 + iRm*Q**2*B21 - iRm*dx(B21x) - iRm*4*Q**2*B22 + iRm*dx(B22x) - 1j*Q*u21 + 2*1j*Q*u22 + u20 = rhs_B")
         
         # need to 'stack' equations for each component of V2 in order to have 30 equations
+        lv2.add_equation("dt(psi20xx) + dt(psi20) + (2/beta)*dx(A20x) + (2/beta)*A20 + iR*dx(psi20xxx) + 2*iR*psi20xx + iR*psi20 + 2*u20")
+        lv2.add_equation("dt(u20) + (2/beta)*B20 + (q - 2)*psi20 + iR*dx(u20x) + iR*u20")
+        lv2.add_equation("dt(A20) + iRm*dx(A20x) + iRm*A20 + psi20")
+        lv2.add_equation("dt(B20) + -q*A20 + iRm*dx(B20x) + iRm*B20 + u20")
+        lv2.add_equation("Q**2*dt(psi21) - dt(psi21xx) + 1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx)")
+        lv2.add_equation("-dt(u21) + -1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x)")
+        lv2.add_equation("-dt(A21) + iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21")
+        lv2.add_equation("-dt(B21) + 1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21")
+        lv2.add_equation("-4*Q**2*dt(psi22) + dt(psi22xx) + -8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) + 4*1j*Q*u22 + 16*iR*Q**4*psi22 - 8*iR*Q**2*psi22xx + iR*dx(psi22xxx)")
+        lv2.add_equation("dt(u22) + 2*1j*(2/beta)*Q*B22 + 2*1j*Q*(q-2)*psi22 - 4*iR*Q**2*u22 + iR*dx(u22x)")
+        lv2.add_equation("dt(A22) + -iRm*4*Q**2*A22 + iRm*dx(A22x) + 2*1j*Q*psi22")
+        lv2.add_equation("dt(B22) + -2*1j*Q*q*A22 - iRm*4*Q**2*B22 + iRm*dx(B22x) + 2*1j*Q*u22")
         
-        
+                                        
         lv2.add_equation("dx(psi20) - psi20x = 0")
         lv2.add_equation("dx(psi20x) - psi20xx = 0")
         lv2.add_equation("dx(psi20xx) - psi20xxx = 0")
