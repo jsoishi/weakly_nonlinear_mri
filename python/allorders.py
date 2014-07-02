@@ -342,7 +342,10 @@ class N2():
         # complex conjugates domain.new_field()
         psi_1_star = domain.new_field()
         psi_1_star.name = 'psi_1_star'
-        psi_1_star.data = psi_1['g'].conj()
+        #psi_1_star.data = psi_1['g'].conj()
+        # is this screwed up because of the nonzero Re(psi_1)??
+        psi_1_star.data = -1*psi_1['g'].imag
+        
         psi_1_star_x = psi_1_star.differentiate(0)
         psi_1_star_xx = psi_1_star_x.differentiate(0)
         psi_1_star_xxx = psi_1_star_xx.differentiate(0)
@@ -350,19 +353,22 @@ class N2():
         
         u_1_star = domain.new_field()
         u_1_star.name = 'u_1_star'
-        u_1_star.data = u_1['g'].conj()
+        #u_1_star.data = u_1['g'].conj()
+        u_1_star.data = u_1['g'].real
         u_1_star_x = u_1_star.differentiate(0)
         
         A_1_star = domain.new_field()
         A_1_star.name = 'A_1_star'
-        A_1_star.data = A_1['g'].conj()
+        #A_1_star.data = A_1['g'].conj()
+        A_1_star.data = A_1['g'].real
         A_1_star_x = A_1_star.differentiate(0)
         A_1_star_xx = A_1_star_x.differentiate(0)
         A_1_star_xxx = A_1_star_xx.differentiate(0)
         
         B_1_star = domain.new_field()
         B_1_star.name = 'B_1_star'
-        B_1_star.data = B_1['g'].conj()
+        #B_1_star.data = B_1['g'].conj()
+        B_1_star.data = -1*B_1['g'].imag
         B_1_star_x = B_1_star.differentiate(0)
         
         # define nonlinear terms N22 and N20
