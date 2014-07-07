@@ -322,78 +322,104 @@ class N2():
         #B_1 = pickle.load(open("V_1_B.p", "rb"))
         
         # take derivatives
-        psi_1 = self.psi_1
-        A_1 = self.A_1
-        u_1 = self.u_1
-        B_1 = self.B_1
+        #psi_1 = self.psi_1
+        #A_1 = self.A_1
+        #u_1 = self.u_1
+        #B_1 = self.B_1
         
-        psi_1_x = psi_1.differentiate(0)
-        psi_1_xx = psi_1_x.differentiate(0)
-        psi_1_xxx = psi_1_xx.differentiate(0)
+        self.psi_1_x = self.psi_1.differentiate(0)
+        self.psi_1_xx = self.psi_1_x.differentiate(0)
+        self.psi_1_xxx = self.psi_1_xx.differentiate(0)
         
-        u_1_x = u_1.differentiate(0)
+        self.u_1_x = self.u_1.differentiate(0)
         
-        A_1_x = A_1.differentiate(0)
-        A_1_xx = A_1_x.differentiate(0)
-        A_1_xxx = A_1_xx.differentiate(0)
+        self.A_1_x = self.A_1.differentiate(0)
+        self.A_1_xx = self.A_1_x.differentiate(0)
+        self.A_1_xxx = self.A_1_xx.differentiate(0)
         
-        B_1_x = B_1.differentiate(0)
+        self.B_1_x = self.B_1.differentiate(0)
         
         # complex conjugates domain.new_field()
-        psi_1_star = domain.new_field()
-        psi_1_star.name = 'psi_1_star'
-        #psi_1_star.data = psi_1['g'].conj()
+        self.psi_1_star = domain.new_field()
+        self.psi_1_star.name = 'psi_1_star'
+        #self.psi_1_star['g'] = self.psi_1['g'].conj()
         # is this screwed up because of the nonzero Re(psi_1)??
-        psi_1_star.data = -1*psi_1['g'].imag
+        self.psi_1_star['g'] = -1*self.psi_1['g'].imag
         
-        psi_1_star_x = psi_1_star.differentiate(0)
-        psi_1_star_xx = psi_1_star_x.differentiate(0)
-        psi_1_star_xxx = psi_1_star_xx.differentiate(0)
+        #testing ...
+        #self.psi_1_star_x = domain.new_field()
+        #self.psi_1_star_x.name = 'psi_1_star_x'
+        #self.psi_1_star_x['g'] = self.psi_1_x['g'].conj()
+        
+        #self.psi_1_star_xx = domain.new_field()
+        #self.psi_1_star_xx.name = 'psi_1_star_xx'
+        #self.psi_1_star_xx['g'] = self.psi_1_xx['g'].conj()
+        
+        #self.psi_1_star_xxx = domain.new_field()
+        #self.psi_1_star_xxx.name = 'psi_1_star_xxx'
+        #self.psi_1_star_xxx['g'] = self.psi_1_xxx['g'].conj()
+        
+        self.psi_1_star_x = self.psi_1_star.differentiate(0)
+        self.psi_1_star_xx = self.psi_1_star_x.differentiate(0)
+        self.psi_1_star_xxx = self.psi_1_star_xx.differentiate(0)
         
         
-        u_1_star = domain.new_field()
-        u_1_star.name = 'u_1_star'
-        #u_1_star.data = u_1['g'].conj()
-        u_1_star.data = u_1['g'].real
-        u_1_star_x = u_1_star.differentiate(0)
+        self.u_1_star = domain.new_field()
+        self.u_1_star.name = 'u_1_star'
+        #self.u_1_star['g'] = self.u_1['g'].conj()
+        self.u_1_star['g'] = self.u_1['g'].real
+        self.u_1_star_x = self.u_1_star.differentiate(0)
         
-        A_1_star = domain.new_field()
-        A_1_star.name = 'A_1_star'
-        #A_1_star.data = A_1['g'].conj()
-        A_1_star.data = A_1['g'].real
-        A_1_star_x = A_1_star.differentiate(0)
-        A_1_star_xx = A_1_star_x.differentiate(0)
-        A_1_star_xxx = A_1_star_xx.differentiate(0)
+        self.A_1_star = domain.new_field()
+        self.A_1_star.name = 'A_1_star'
+        #self.A_1_star['g'] = self.A_1['g'].conj()
+        self.A_1_star['g'] = self.A_1['g'].real
         
-        B_1_star = domain.new_field()
-        B_1_star.name = 'B_1_star'
-        #B_1_star.data = B_1['g'].conj()
-        B_1_star.data = -1*B_1['g'].imag
-        B_1_star_x = B_1_star.differentiate(0)
+        #self.A_1_star_x = domain.new_field()
+        #self.A_1_star_x.name = 'A_1_star_x'
+        #self.A_1_star_x['g'] = self.A_1_x['g'].conj()
+        
+        #self.A_1_star_xx = domain.new_field()
+        #self.A_1_star_xx.name = 'A_1_star_xx'
+        #self.A_1_star_xx['g'] = self.A_1_xx['g'].conj()
+        
+        #self.A_1_star_xxx = domain.new_field()
+        #self.A_1_star_xxx.name = 'A_1_star_xxx'
+        #self.A_1_star_xxx['g'] = self.A_1_xxx['g'].conj()
+        
+        self.A_1_star_x = self.A_1_star.differentiate(0)
+        self.A_1_star_xx = self.A_1_star_x.differentiate(0)
+        self.A_1_star_xxx = self.A_1_star_xx.differentiate(0)
+        
+        self.B_1_star = domain.new_field()
+        self.B_1_star.name = 'B_1_star'
+        #self.B_1_star['g'] = self.B_1['g'].conj()
+        self.B_1_star['g'] = -1*self.B_1['g'].imag
+        self.B_1_star_x = self.B_1_star.differentiate(0)
         
         # define nonlinear terms N22 and N20
-        N22psi = 1j*Q*psi_1*(psi_1_xxx - Q**2*psi_1_x) - psi_1_x*(1j*Q*psi_1_xx - 1j*Q**3*psi_1) + (2/self.beta)*A_1_x*(1j*Q*A_1_xx - 1j*Q**3*A_1) - (2/self.beta)*1j*Q*A_1*(A_1_xxx - Q**2*A_1_x)
+        N22psi = 1j*Q*self.psi_1*(self.psi_1_xxx - Q**2*self.psi_1_x) - self.psi_1_x*(1j*Q*self.psi_1_xx - 1j*Q**3*self.psi_1) + (2/self.beta)*self.A_1_x*(1j*Q*self.A_1_xx - 1j*Q**3*self.A_1) - (2/self.beta)*1j*Q*self.A_1*(self.A_1_xxx - Q**2*self.A_1_x)
         self.N22_psi = N22psi.evaluate()
         
-        N20psi = 1j*Q*psi_1*(psi_1_star_xxx - Q**2*psi_1_star_x) - psi_1_x*(1j*Q*psi_1_star_xx - 1j*Q**3*psi_1_star) + (2/self.beta)*A_1_x*(1j*Q*A_1_star_xx - 1j*Q**3*A_1_star) - (2/self.beta)*1j*Q*A_1*(A_1_star_xxx - Q**2*A_1_star_x)
+        N20psi = 1j*Q*self.psi_1*(self.psi_1_star_xxx - Q**2*self.psi_1_star_x) - self.psi_1_x*(1j*Q*self.psi_1_star_xx - 1j*Q**3*self.psi_1_star) + (2/self.beta)*self.A_1_x*(1j*Q*self.A_1_star_xx - 1j*Q**3*self.A_1_star) - (2/self.beta)*1j*Q*self.A_1*(self.A_1_star_xxx - Q**2*self.A_1_star_x)
         self.N20_psi = N20psi.evaluate()
         
-        N22u = 1j*Q*psi_1*u_1_x - psi_1_x*1j*Q*u_1 - (2/self.beta)*1j*Q*A_1*B_1_x + (2/self.beta)*A_1_x*1j*Q*B_1
+        N22u = 1j*Q*self.psi_1*self.u_1_x - self.psi_1_x*1j*Q*self.u_1 - (2/self.beta)*1j*Q*self.A_1*self.B_1_x + (2/self.beta)*self.A_1_x*1j*Q*self.B_1
         self.N22_u = N22u.evaluate()
         
-        N20u = 1j*Q*psi_1*u_1_star_x - psi_1_x*1j*Q*u_1_star - (2/self.beta)*1j*Q*A_1*B_1_star_x + (2/self.beta)*A_1_x*1j*Q*B_1_star
+        N20u = 1j*Q*self.psi_1*self.u_1_star_x - self.psi_1_x*1j*Q*self.u_1_star - (2/self.beta)*1j*Q*self.A_1*self.B_1_star_x + (2/self.beta)*self.A_1_x*1j*Q*self.B_1_star
         self.N20_u = N20u.evaluate()
         
-        N22A = -1j*Q*A_1*psi_1_x + A_1_x*1j*Q*psi_1
+        N22A = -1j*Q*self.A_1*self.psi_1_x + self.A_1_x*1j*Q*self.psi_1
         self.N22_A = N22A.evaluate()
         
-        N20A = -1j*Q*A_1*psi_1_star_x - A_1_x*1j*Q*psi_1_star
+        N20A = -1j*Q*self.A_1*self.psi_1_star_x - self.A_1_x*1j*Q*self.psi_1_star
         self.N20_A = N20A.evaluate()
         
-        N22B = 1j*Q*psi_1*B_1_x - psi_1_x*1j*Q*B_1 - 1j*Q*A_1*u_1_x + A_1_x*1j*Q*u_1
+        N22B = 1j*Q*self.psi_1*self.B_1_x - self.psi_1_x*1j*Q*self.B_1 - 1j*Q*self.A_1*self.u_1_x + self.A_1_x*1j*Q*self.u_1
         self.N22_B = N22B.evaluate()
         
-        N20B = 1j*Q*psi_1*B_1_star_x - psi_1_x*1j*Q*B_1_star - 1j*Q*A_1*u_1_star_x + A_1_x*1j*Q*u_1_star
+        N20B = 1j*Q*self.psi_1*self.B_1_star_x - self.psi_1_x*1j*Q*self.B_1_star - 1j*Q*self.A_1*self.u_1_star_x + self.A_1_x*1j*Q*self.u_1_star
         self.N20_B = N20B.evaluate()
         
         
@@ -505,14 +531,14 @@ class OrderE2():
         q = self.q
         
         # derivatives
-        psi_1_x = self.psi_1.differentiate(0)
-        psi_1_xx = psi_1_x.differentiate(0)
+        self.psi_1_x = self.psi_1.differentiate(0)
+        self.psi_1_xx = self.psi_1_x.differentiate(0)
         
-        A_1_x = self.A_1.differentiate(0)
-        A_1_xx = A_1_x.differentiate(0)
+        self.A_1_x = self.A_1.differentiate(0)
+        self.A_1_xx = self.A_1_x.differentiate(0)
         
         # second term: L1twiddle V1
-        term2_psi = -3*(2/self.beta)*Q**2*self.A_1 + (2/self.beta)*A_1_xx - 4*iR*1j*Q**3*self.psi_1 + 4*iR*1j*Q*psi_1_xx + 2*self.u_1
+        term2_psi = -3*(2/self.beta)*Q**2*self.A_1 + (2/self.beta)*self.A_1_xx - 4*iR*1j*Q**3*self.psi_1 + 4*iR*1j*Q*self.psi_1_xx + 2*self.u_1
         self.term2_psi = term2_psi.evaluate()
         
         term2_u = (2/self.beta)*self.B_1 + 2*iR*Q*self.u_1 + (q - 2)*self.psi_1
@@ -567,8 +593,19 @@ class OrderE2():
         rhs20_u = self.n20_u['g']
         rhs20_A = self.n20_A['g']
         rhs20_B = self.n20_B['g']
-                
         
+        print(rhs20_psi)
+        
+        self.rhs20_psi = rhs20_psi
+        self.rhs20_u = rhs20_u
+        self.rhs20_A = rhs20_A
+        self.rhs20_B = rhs20_B
+        
+        self.rhs22_psi = rhs22_psi
+        self.rhs22_u = rhs22_u
+        self.rhs22_A = rhs22_A
+        self.rhs22_B = rhs22_B
+                
         # define problem using righthand side as nonconstant coefficients
         
         lv2 = ParsedProblem(['x'],
