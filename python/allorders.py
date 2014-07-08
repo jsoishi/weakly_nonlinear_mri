@@ -517,6 +517,71 @@ class OrderE2():
             self.n20_A = n2.N20_A
             self.n20_B = n2.N20_B
             
+    def solvetest(self, gridnum = 64, save = False):
+        # inverse magnetic reynolds number
+        iRm = 1./self.Rm
+
+        # rayleigh number defined from prandtl number
+        R = self.Rm/self.Pm
+        iR = 1./R
+        
+        beta = self.beta
+        Q = self.Q
+        q = self.q
+        
+        # righthand side for the 20 terms (e^0)
+        rhs20_psi = self.n20_psi['g']
+        rhs20_u = self.n20_u['g']
+        rhs20_A = self.n20_A['g']
+        rhs20_B = self.n20_B['g']
+        
+        # testing          
+        lv3 = ParsedProblem(['x'],
+                              field_names=['psi20', 'psi20x', 'psi20xx', 'psi20xxx', 'u20', 'u20x', 'A20', 'A20x', 'B20', 'B20x'],
+                              param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rhs20_psi', 'rhs20_u', 'rhs20_A', 'rhs20_B'])
+        
+        lv3.add_equation("1j*dt(psi20xx) + 1j*dt(psi20) + (2/beta)*dx(A20x) + (2/beta)*A20 + iR*dx(psi20xxx) + 2*iR*psi20xx + iR*psi20 + 2*u20 = rhs20_psi")
+        lv3.add_equation("1j*dt(u20) + (2/beta)*B20 + (q - 2)*psi20 + iR*dx(u20x) + iR*u20 = rhs20_u")
+        lv3.add_equation("1j*dt(A20) + iRm*dx(A20x) + iRm*A20 + psi20 = rhs20_A")
+        lv3.add_equation("1j*dt(B20) + -q*A20 + iRm*dx(B20x) + iRm*B20 + u20 = rhs20_B")
+        lv3.add_equation("dx(psi20) - psi20x = 0")
+        lv3.add_equation("dx(psi20x) - psi20xx = 0")
+        lv3.add_equation("dx(psi20xx) - psi20xxx = 0")
+        lv3.add_equation("dx(u20) - u20x = 0")
+        lv3.add_equation("dx(A20) - A20x = 0")
+        lv3.add_equation("dx(B20) - B20x = 0")
+        lv3.parameters['Q'] = Q
+        lv3.parameters['iR'] = iR
+        lv3.parameters['iRm'] = iRm
+        lv3.parameters['q'] = q
+        lv3.parameters['beta'] = beta
+        lv3.parameters['rhs20_psi'] = rhs20_psi
+        lv3.parameters['rhs20_u'] = rhs20_u
+        lv3.parameters['rhs20_A'] = rhs20_A
+        lv3.parameters['rhs20_B'] = rhs20_B
+        
+        print(lv3.equations)
+        
+        lv3.expand(domain, order = gridnum)
+        LEV3 = LinearEigenvalue(lv3, domain)
+        LEV3.solve(LEV3.pencils[0])
+        
+        self.lv3 = lv3
+        self.LEV3 = LEV3
+        evals = LEV3.eigenvalues
+        indx = np.arange(len(evals))
+        e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+        print('eigenvalue', evals[e0])
+       
+        # set state
+        self.x = domain.grid(0)
+        LEV3.set_state(e0[0])
+        
+        self.psi20_3 = LEV3.state['psi20']['g']
+        self.u20_3 = LEV3.state['u20']['g']
+        self.A20_3 = LEV3.state['A20']['g']
+        self.B20_3 = LEV3.state['B20']['g']
+            
     def solve(self, gridnum = 64, save = True):
     
         # inverse magnetic reynolds number
@@ -594,8 +659,6 @@ class OrderE2():
         rhs20_A = self.n20_A['g']
         rhs20_B = self.n20_B['g']
         
-        print(rhs20_psi)
-        
         self.rhs20_psi = rhs20_psi
         self.rhs20_u = rhs20_u
         self.rhs20_A = rhs20_A
@@ -605,13 +668,20 @@ class OrderE2():
         self.rhs22_u = rhs22_u
         self.rhs22_A = rhs22_A
         self.rhs22_B = rhs22_B
+        
+        print(self.rhs20_psi)
+        print(rhs20_psi)
+        print(self.n20_psi['g'])
                 
         # define problem using righthand side as nonconstant coefficients
         
         lv2 = ParsedProblem(['x'],
                               field_names=['psi20', 'psi20x', 'psi20xx', 'psi20xxx', 'u20', 'u20x', 'A20', 'A20x', 'B20', 'B20x', 'psi21', 'psi21x', 'psi21xx', 'psi21xxx', 'u21', 'u21x', 'A21', 'A21x', 'B21', 'B21x', 'psi22', 'psi22x', 'psi22xx', 'psi22xxx', 'u22', 'u22x', 'A22', 'A22x', 'B22', 'B22x'],
                               param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rhs20_psi', 'rhs20_u', 'rhs20_A', 'rhs20_B', 'rhs21_psi', 'rhs21_u', 'rhs21_A', 'rhs21_B', 'rhs22_psi', 'rhs22_u', 'rhs22_A', 'rhs22_B'])
-                  
+          
+        
+        #------------------------------------------------- end test.
+        
         #x_basis = Chebyshev(gridnum)
         #domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -626,10 +696,12 @@ class OrderE2():
         lv2.add_equation("1j*dt(u20) + (2/beta)*B20 + (q - 2)*psi20 + iR*dx(u20x) + iR*u20 = rhs20_u")
         lv2.add_equation("1j*dt(A20) + iRm*dx(A20x) + iRm*A20 + psi20 = rhs20_A")
         lv2.add_equation("1j*dt(B20) + -q*A20 + iRm*dx(B20x) + iRm*B20 + u20 = rhs20_B")
+        
         lv2.add_equation("1j*Q**2*dt(psi21) - 1j*dt(psi21xx) + 1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs21_psi")
         lv2.add_equation("-1j*dt(u21) + -1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs21_u")
         lv2.add_equation("-1j*dt(A21) + iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs21_A")
         lv2.add_equation("-1j*dt(B21) + 1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")
+        
         lv2.add_equation("-4*Q**2*1j*dt(psi22) + 1j*dt(psi22xx) + -8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) + 4*1j*Q*u22 + 16*iR*Q**4*psi22 - 8*iR*Q**2*psi22xx + iR*dx(psi22xxx) = rhs22_psi")
         lv2.add_equation("1j*dt(u22) + 2*1j*(2/beta)*Q*B22 + 2*1j*Q*(q-2)*psi22 - 4*iR*Q**2*u22 + iR*dx(u22x) = rhs22_u")
         lv2.add_equation("1j*dt(A22) + -iRm*4*Q**2*A22 + iRm*dx(A22x) + 2*1j*Q*psi22 = rhs22_A")
@@ -720,6 +792,7 @@ class OrderE2():
         LEV = LinearEigenvalue(lv2, domain)
         LEV.solve(LEV.pencils[0])
         
+        self.lv2 = lv2
         self.LEV = LEV
 
         #Find the eigenvalue that is closest to zero.
