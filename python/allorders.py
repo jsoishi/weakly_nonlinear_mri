@@ -1,11 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from dedalus2.public import *
-from dedalus2.pde.solvers import LinearEigenvalue
+from dedalus2.pde.solvers import LinearEigenvalue, LinearBVP
 from scipy.linalg import eig, norm
 import pylab
 import copy
 import pickle
+
+import matplotlib
+matplotlib.rcParams['backend'] = "Qt4Agg"
+matplotlib.rcParams.update({'figure.autolayout': True})
 
 gridnum = 64
 x_basis = Chebyshev(gridnum)
@@ -100,7 +104,6 @@ class AdjointHomogenous():
         self.A = LEV.state['A']['g']
         self.B = LEV.state['B']['g']
         
-        psi = copy.copy(LEV.state['psi'])
 
         if save == True:
             pickle.dump(psi, open("V_adj_psi.p", "wb"), protocol=-1)
@@ -113,7 +116,8 @@ class AdjointHomogenous():
     def plot(self):
         
         #Normalized to resemble Umurhan+
-        norm1 = -0.9/np.min(self.u.imag) #norm(LEV.eigenvectors)
+        #norm1 = -0.9/np.min(self.u.imag) #norm(LEV.eigenvectors)
+        norm1 = 1
     
         fig = plt.figure()
     
@@ -158,7 +162,7 @@ class OrderE():
         self.beta = beta
         
     
-    def solve(self, gridnum = 64, save = False):
+    def solve(self, gridnum = 64, save = False, norm = True):
 
         self.gridnum = gridnum
 
@@ -211,7 +215,7 @@ class OrderE():
         lv1.parameters['q'] = q
         lv1.parameters['beta'] = beta
 
-        lv1.expand(domain)
+        lv1.expand(domain, order = gridnum)
         LEV = LinearEigenvalue(lv1, domain)
         LEV.solve(LEV.pencils[0])
         
@@ -231,6 +235,20 @@ class OrderE():
         self.u = LEV.state['u']['g']
         self.A = LEV.state['A']['g']
         self.B = LEV.state['B']['g']
+        
+        if norm == True:
+            n = np.abs(self.LEV.state['psi']['g'])[13]
+            a = self.LEV.state['psi']['g'].real[13]/n
+            b = self.LEV.state['psi']['g'].imag[13]/n
+            scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
+            scale *= -664.4114817
+            
+            self.psi = LEV.state['psi']['g']*scale
+            self.u = LEV.state['u']['g']*scale
+            self.A = LEV.state['A']['g']*scale
+            self.B = LEV.state['B']['g']*scale
+            
+            self.scale = scale
 
         if save == True:
             pickle.dump(LEV.state['psi'], open("V_1_psi.p", "wb"))
@@ -273,7 +291,7 @@ class N2():
     
     """
     
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True):
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True):
         
         self.Q = Q
         self.Rm = Rm
@@ -285,10 +303,26 @@ class N2():
         if run == True:
             v1 = OrderE()
             v1.solve(save=False)
-            self.psi_1 = v1.LEV.state['psi']
-            self.u_1 = v1.LEV.state['u']
-            self.A_1 = v1.LEV.state['A']
-            self.B_1 = v1.LEV.state['B']
+            
+            if norm == True:
+            
+                psi_1 = v1.LEV.state['psi']*v1.scale
+                u_1 = v1.LEV.state['u']*v1.scale
+                A_1 = v1.LEV.state['A']*v1.scale
+                B_1 = v1.LEV.state['B']*v1.scale
+            
+                self.psi_1 = psi_1.evaluate()
+                self.u_1 = u_1.evaluate()
+                self.A_1 = A_1.evaluate()
+                self.B_1 = B_1.evaluate()
+                
+                
+            else:
+            
+                self.psi_1 = v1.LEV.state['psi']
+                self.u_1 = v1.LEV.state['u']
+                self.A_1 = v1.LEV.state['A']
+                self.B_1 = v1.LEV.state['B']
         
         
     def run_V1(self):
@@ -352,7 +386,6 @@ class N2():
         #self.psi_1_star_xx = self.psi_1_star_x.differentiate(0)
         #self.psi_1_star_xxx = self.psi_1_star_xx.differentiate(0)
         
-        
         self.u_1_star = domain.new_field()
         self.u_1_star.name = 'u_1_star'
         self.u_1_star['g'] = self.u_1['g'].conj()
@@ -361,7 +394,7 @@ class N2():
         #self.u_1_star_x = self.u_1_star.differentiate(0)
         self.u_1_star_x = domain.new_field()
         self.u_1_star_x.name = 'u_1_star_x'
-        self.u_1_star_x['g'] = self.u_1_star_x['g'].conj()
+        self.u_1_star_x['g'] = self.u_1_x['g'].conj()
         
         self.A_1_star = domain.new_field()
         self.A_1_star.name = 'A_1_star'
@@ -487,7 +520,7 @@ class OrderE2():
     
     """
     
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True):
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True):
         
         self.Q = Q
         self.Rm = Rm
@@ -498,10 +531,26 @@ class OrderE2():
         if run == True:
             v1 = OrderE()
             v1.solve(save=False)
-            self.psi_1 = v1.LEV.state['psi']
-            self.u_1 = v1.LEV.state['u']
-            self.A_1 = v1.LEV.state['A']
-            self.B_1 = v1.LEV.state['B']
+            
+            if norm == True:
+            
+                psi_1 = v1.LEV.state['psi']*v1.scale
+                u_1 = v1.LEV.state['u']*v1.scale
+                A_1 = v1.LEV.state['A']*v1.scale
+                B_1 = v1.LEV.state['B']*v1.scale
+            
+                self.psi_1 = psi_1.evaluate()
+                self.u_1 = u_1.evaluate()
+                self.A_1 = A_1.evaluate()
+                self.B_1 = B_1.evaluate()
+                
+                
+            else:
+            
+                self.psi_1 = v1.LEV.state['psi']
+                self.u_1 = v1.LEV.state['u']
+                self.A_1 = v1.LEV.state['A']
+                self.B_1 = v1.LEV.state['B']
             
             n2 = N2()
             n2.solve()
@@ -530,29 +579,30 @@ class OrderE2():
         # righthand side for the 20 terms (e^0)
         rhs20_psi = self.n20_psi['g']
         rhs20_u = self.n20_u['g']
-        rhs20_A = self.n20_A['g']
+        rhs20_A = self.n20_A['g'] 
         rhs20_B = self.n20_B['g']
         
-        # testing          
+                  
         lv20 = ParsedProblem(['x'],
                               field_names=['psi20', 'psi20x', 'psi20xx', 'psi20xxx', 'u20', 'u20x', 'A20', 'A20x', 'B20', 'B20x'],
-                              param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rhs20_psi', 'rhs20_u', 'rhs20_A', 'rhs20_B'])
+                              param_names=['iR', 'iRm', 'rhs20_psi', 'rhs20_u', 'rhs20_A', 'rhs20_B'])
         
-        lv20.add_equation("1j*dt(psi20xx) + 1j*dt(psi20) + (2/beta)*dx(A20x) + (2/beta)*A20 + iR*dx(psi20xxx) + 2*iR*psi20xx + iR*psi20 + 2*u20 = rhs20_psi")
-        lv20.add_equation("1j*dt(u20) + (2/beta)*B20 + (q - 2)*psi20 + iR*dx(u20x) + iR*u20 = rhs20_u")
-        lv20.add_equation("1j*dt(A20) + iRm*dx(A20x) + iRm*A20 + psi20 = rhs20_A")
-        lv20.add_equation("1j*dt(B20) + -q*A20 + iRm*dx(B20x) + iRm*B20 + u20 = rhs20_B")
+        #lv20.add_equation("1j*dt(psi20xx) + iR*dx(psi20xxx) = rhs20_psi")
+        #lv20.add_equation("1j*dt(u20) + iR*dx(u20x) = rhs20_u")
+        #lv20.add_equation("1j*dt(A20) + iRm*dx(A20x) = rhs20_A")
+        #lv20.add_equation("1j*dt(B20) + iRm*dx(B20x) = rhs20_B")
+        lv20.add_equation("iR*dx(psi20xxx) = rhs20_psi")
+        lv20.add_equation("iR*dx(u20x) = rhs20_u")
+        lv20.add_equation("iRm*dx(A20x) = rhs20_A")
+        lv20.add_equation("iRm*dx(B20x) = rhs20_B")
         lv20.add_equation("dx(psi20) - psi20x = 0")
         lv20.add_equation("dx(psi20x) - psi20xx = 0")
         lv20.add_equation("dx(psi20xx) - psi20xxx = 0")
         lv20.add_equation("dx(u20) - u20x = 0")
         lv20.add_equation("dx(A20) - A20x = 0")
         lv20.add_equation("dx(B20) - B20x = 0")
-        lv20.parameters['Q'] = Q
         lv20.parameters['iR'] = iR
         lv20.parameters['iRm'] = iRm
-        lv20.parameters['q'] = q
-        lv20.parameters['beta'] = beta
         lv20.parameters['rhs20_psi'] = rhs20_psi
         lv20.parameters['rhs20_u'] = rhs20_u
         lv20.parameters['rhs20_A'] = rhs20_A
@@ -570,19 +620,21 @@ class OrderE2():
         lv20.add_right_bc("B20x = 0")
         
         lv20.expand(domain, order = gridnum)
-        LEV20 = LinearEigenvalue(lv20, domain)
-        LEV20.solve(LEV20.pencils[0])
+        #LEV20 = LinearEigenvalue(lv20, domain)
+        #LEV20.solve(LEV20.pencils[0])
+        LEV20 = LinearBVP(lv20, domain)
+        LEV20.solve()
         
         self.lv20 = lv20
         self.LEV20 = LEV20
-        evals = LEV20.eigenvalues
-        indx = np.arange(len(evals))
-        e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
-        print('eigenvalue', evals[e0])
+        #evals = LEV20.eigenvalues
+        #indx = np.arange(len(evals))
+        #e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+        #print('eigenvalue', evals[e0])
        
         # set state
         self.x = domain.grid(0)
-        LEV20.set_state(e0[0])
+        #LEV20.set_state(e0[0])
         
         self.psi20 = LEV20.state['psi20']['g']
         self.u20 = LEV20.state['u20']['g']
@@ -636,10 +688,14 @@ class OrderE2():
           
         # equations for V21
         
-        lv21.add_equation("1j*Q**2*dt(psi21) - 1j*dt(psi21xx) + 1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs21_psi")
-        lv21.add_equation("-1j*dt(u21) + -1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs21_u")
-        lv21.add_equation("-1j*dt(A21) + iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs21_A")
-        lv21.add_equation("-1j*dt(B21) + 1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")
+        #lv21.add_equation("1j*Q**2*dt(psi21) - 1j*dt(psi21xx) + 1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs21_psi")
+        #lv21.add_equation("-1j*dt(u21) + -1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs21_u")
+        #lv21.add_equation("-1j*dt(A21) + iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs21_A")
+        #lv21.add_equation("-1j*dt(B21) + 1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")
+        lv21.add_equation("1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs21_psi")
+        lv21.add_equation("-1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs21_u")
+        lv21.add_equation("iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs21_A")
+        lv21.add_equation("1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")
 
         lv21.add_equation("dx(psi21) - psi21x = 0")
         lv21.add_equation("dx(psi21x) - psi21xx = 0")
@@ -680,21 +736,23 @@ class OrderE2():
 
         # expand domain to gridnum points
         lv21.expand(domain, order = gridnum)
-        LEV21 = LinearEigenvalue(lv21, domain)
-        LEV21.solve(LEV21.pencils[0])
+        #LEV21 = LinearEigenvalue(lv21, domain)
+        #LEV21.solve(LEV21.pencils[0])
+        LEV21 = LinearBVP(lv21, domain)
+        LEV21.solve()
         
         self.lv21 = lv21
         self.LEV21 = LEV21
 
         #Find the eigenvalue that is closest to zero.
-        evals = LEV21.eigenvalues
-        indx = np.arange(len(evals))
-        e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
-        print('eigenvalue', evals[e0])
+        #evals = LEV21.eigenvalues
+        #indx = np.arange(len(evals))
+        #e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+        #print('eigenvalue', evals[e0])
        
         # set state
         self.x = domain.grid(0)
-        LEV21.set_state(e0[0])
+        #LEV21.set_state(e0[0])
         
         self.psi21 = LEV21.state['psi21']['g']
         self.u21 = LEV21.state['u21']['g']
@@ -730,11 +788,11 @@ class OrderE2():
         lv22 = ParsedProblem(['x'],
                               field_names=['psi22', 'psi22x', 'psi22xx', 'psi22xxx', 'u22', 'u22x', 'A22', 'A22x', 'B22', 'B22x'],
                               param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rhs22_psi', 'rhs22_u', 'rhs22_A', 'rhs22_B'])
-          
-        lv22.add_equation("-4*Q**2*1j*dt(psi22) + 1j*dt(psi22xx) + -8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) + 4*1j*Q*u22 + 16*iR*Q**4*psi22 - 8*iR*Q**2*psi22xx + iR*dx(psi22xxx) = rhs22_psi")
-        lv22.add_equation("1j*dt(u22) + 2*1j*(2/beta)*Q*B22 + 2*1j*Q*(q-2)*psi22 - 4*iR*Q**2*u22 + iR*dx(u22x) = rhs22_u")
-        lv22.add_equation("1j*dt(A22) + -iRm*4*Q**2*A22 + iRm*dx(A22x) + 2*1j*Q*psi22 = rhs22_A")
-        lv22.add_equation("1j*dt(B22) + -2*1j*Q*q*A22 - iRm*4*Q**2*B22 + iRm*dx(B22x) + 2*1j*Q*u22 = rhs22_B")
+        
+        lv22.add_equation("-8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) + 4*1j*Q*u22 + 16*iR*Q**4*psi22 - 8*iR*Q**2*psi22xx + iR*dx(psi22xxx) = rhs22_psi")
+        lv22.add_equation("2*1j*(2/beta)*Q*B22 + 2*1j*Q*(q-2)*psi22 - 4*iR*Q**2*u22 + iR*dx(u22x) = rhs22_u")
+        lv22.add_equation("-iRm*4*Q**2*A22 + iRm*dx(A22x) + 2*1j*Q*psi22 = rhs22_A")
+        lv22.add_equation("-2*1j*Q*q*A22 - iRm*4*Q**2*B22 + iRm*dx(B22x) + 2*1j*Q*u22 = rhs22_B")
         
         lv22.add_equation("dx(psi22) - psi22x = 0")
         lv22.add_equation("dx(psi22x) - psi22xx = 0")
@@ -771,21 +829,23 @@ class OrderE2():
 
         # expand domain to gridnum points
         lv22.expand(domain, order = gridnum)
-        LEV22 = LinearEigenvalue(lv22, domain)
-        LEV22.solve(LEV22.pencils[0])
+        #LEV22 = LinearEigenvalue(lv22, domain)
+        #LEV22.solve(LEV22.pencils[0])
+        LEV22 = LinearBVP(lv22, domain)
+        LEV22.solve()
         
         self.lv22 = lv22
         self.LEV22 = LEV22
 
         #Find the eigenvalue that is closest to zero.
-        evals = LEV22.eigenvalues
-        indx = np.arange(len(evals))
-        e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
-        print('eigenvalue', evals[e0])
+        #evals = LEV22.eigenvalues
+        #indx = np.arange(len(evals))
+        #e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+        #print('eigenvalue', evals[e0])
        
         # set state
         self.x = domain.grid(0)
-        LEV22.set_state(e0[0])
+        #LEV22.set_state(e0[0])
         
         self.psi22 = LEV22.state['psi22']['g']
         self.u22 = LEV22.state['u22']['g']
@@ -859,7 +919,6 @@ class OrderE2():
         ax4.plot(self.x, self.B22.imag, color="black")
         ax4.plot(self.x, self.B22.real, color="red")
         ax4.set_title(r"$B_{22}$")
-        
         
         fig.savefig("v2.png")
     
