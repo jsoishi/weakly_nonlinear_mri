@@ -184,6 +184,13 @@ class OrderE():
         q = self.q
 
         # linear MRI equations
+        
+        # bvp way
+        #lv1.add_equation("-iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A = 0")
+        #lv1.add_equation("-iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - (2/beta)*1j*Q*B = 0") 
+        #lv1.add_equation("-iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
+        #lv1.add_equation("-iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
+        
         lv1.add_equation("1j*dt(psixx) - 1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A = 0")
         lv1.add_equation("1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - (2/beta)*1j*Q*B = 0") 
         lv1.add_equation("1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
@@ -218,6 +225,8 @@ class OrderE():
         lv1.expand(domain, order = gridnum)
         LEV = LinearEigenvalue(lv1, domain)
         LEV.solve(LEV.pencils[0])
+        #LEV = LinearBVP(lv1, domain)
+        #LEV.solvedense()
         
         self.LEV = LEV
 
@@ -370,6 +379,7 @@ class N2():
         #self.psi_1_star['g'] = -1*self.psi_1['g'].imag
         
         #testing ...
+        """
         self.psi_1_star_x = domain.new_field()
         self.psi_1_star_x.name = 'psi_1_star_x'
         self.psi_1_star_x['g'] = self.psi_1_x['g'].conj()
@@ -381,26 +391,29 @@ class N2():
         self.psi_1_star_xxx = domain.new_field()
         self.psi_1_star_xxx.name = 'psi_1_star_xxx'
         self.psi_1_star_xxx['g'] = self.psi_1_xxx['g'].conj()
+        """
         
-        #self.psi_1_star_x = self.psi_1_star.differentiate(0)
-        #self.psi_1_star_xx = self.psi_1_star_x.differentiate(0)
-        #self.psi_1_star_xxx = self.psi_1_star_xx.differentiate(0)
+        self.psi_1_star_x = self.psi_1_star.differentiate(0)
+        self.psi_1_star_xx = self.psi_1_star_x.differentiate(0)
+        self.psi_1_star_xxx = self.psi_1_star_xx.differentiate(0)
+        
         
         self.u_1_star = domain.new_field()
         self.u_1_star.name = 'u_1_star'
         self.u_1_star['g'] = self.u_1['g'].conj()
         #self.u_1_star['g'] = self.u_1['g'].real
         
-        #self.u_1_star_x = self.u_1_star.differentiate(0)
+        self.u_1_star_x = self.u_1_star.differentiate(0)
+        """
         self.u_1_star_x = domain.new_field()
         self.u_1_star_x.name = 'u_1_star_x'
         self.u_1_star_x['g'] = self.u_1_x['g'].conj()
-        
+        """
         self.A_1_star = domain.new_field()
         self.A_1_star.name = 'A_1_star'
         self.A_1_star['g'] = self.A_1['g'].conj()
         #self.A_1_star['g'] = self.A_1['g'].real
-        
+        """
         self.A_1_star_x = domain.new_field()
         self.A_1_star_x.name = 'A_1_star_x'
         self.A_1_star_x['g'] = self.A_1_x['g'].conj()
@@ -412,45 +425,50 @@ class N2():
         self.A_1_star_xxx = domain.new_field()
         self.A_1_star_xxx.name = 'A_1_star_xxx'
         self.A_1_star_xxx['g'] = self.A_1_xxx['g'].conj()
+        """
         
-        #self.A_1_star_x = self.A_1_star.differentiate(0)
-        #self.A_1_star_xx = self.A_1_star_x.differentiate(0)
-        #self.A_1_star_xxx = self.A_1_star_xx.differentiate(0)
+        self.A_1_star_x = self.A_1_star.differentiate(0)
+        self.A_1_star_xx = self.A_1_star_x.differentiate(0)
+        self.A_1_star_xxx = self.A_1_star_xx.differentiate(0)
         
         self.B_1_star = domain.new_field()
         self.B_1_star.name = 'B_1_star'
         self.B_1_star['g'] = self.B_1['g'].conj()
         #self.B_1_star['g'] = -1*self.B_1['g'].imag
-        #self.B_1_star_x = self.B_1_star.differentiate(0)
-        
+        self.B_1_star_x = self.B_1_star.differentiate(0)
+        """
         self.B_1_star_x = domain.new_field()
         self.B_1_star_x.name = 'B_1_star_x'
         self.B_1_star_x['g'] = self.B_1_x['g'].conj()
-        
+        """
         
         # define nonlinear terms N22 and N20
         N22psi = 1j*Q*self.psi_1*(self.psi_1_xxx - Q**2*self.psi_1_x) - self.psi_1_x*(1j*Q*self.psi_1_xx - 1j*Q**3*self.psi_1) + (2/self.beta)*self.A_1_x*(1j*Q*self.A_1_xx - 1j*Q**3*self.A_1) - (2/self.beta)*1j*Q*self.A_1*(self.A_1_xxx - Q**2*self.A_1_x)
         self.N22_psi = N22psi.evaluate()
         
-        N20psi = 1j*Q*self.psi_1*(self.psi_1_star_xxx - Q**2*self.psi_1_star_x) - self.psi_1_x*(1j*Q*self.psi_1_star_xx - 1j*Q**3*self.psi_1_star) + (2/self.beta)*self.A_1_x*(1j*Q*self.A_1_star_xx - 1j*Q**3*self.A_1_star) - (2/self.beta)*1j*Q*self.A_1*(self.A_1_star_xxx - Q**2*self.A_1_star_x)
+        #N20psi = 1j*Q*self.psi_1*(self.psi_1_star_xxx - Q**2*self.psi_1_star_x) - self.psi_1_x*(1j*Q*self.psi_1_star_xx - 1j*Q**3*self.psi_1_star) + (2/self.beta)*self.A_1_x*(1j*Q*self.A_1_star_xx - 1j*Q**3*self.A_1_star) - (2/self.beta)*1j*Q*self.A_1*(self.A_1_star_xxx - Q**2*self.A_1_star_x)
+        N20psi = 1j*Q*self.psi_1*(self.psi_1_star_xxx - Q**2*self.psi_1_star_x) - self.psi_1_x*(-1j*Q*self.psi_1_star_xx + 1j*Q**3*self.psi_1_star) + (2/self.beta)*self.A_1_x*(-1j*Q*self.A_1_star_xx + 1j*Q**3*self.A_1_star) - (2/self.beta)*1j*Q*self.A_1*(self.A_1_star_xxx - Q**2*self.A_1_star_x)
         self.N20_psi = N20psi.evaluate()
         
         N22u = 1j*Q*self.psi_1*self.u_1_x - self.psi_1_x*1j*Q*self.u_1 - (2/self.beta)*1j*Q*self.A_1*self.B_1_x + (2/self.beta)*self.A_1_x*1j*Q*self.B_1
         self.N22_u = N22u.evaluate()
         
-        N20u = 1j*Q*self.psi_1*self.u_1_star_x - self.psi_1_x*1j*Q*self.u_1_star - (2/self.beta)*1j*Q*self.A_1*self.B_1_star_x + (2/self.beta)*self.A_1_x*1j*Q*self.B_1_star
+        #N20u = 1j*Q*self.psi_1*self.u_1_star_x - self.psi_1_x*1j*Q*self.u_1_star - (2/self.beta)*1j*Q*self.A_1*self.B_1_star_x + (2/self.beta)*self.A_1_x*1j*Q*self.B_1_star
+        N20u = 1j*Q*self.psi_1*self.u_1_star_x + self.psi_1_x*1j*Q*self.u_1_star - (2/self.beta)*1j*Q*self.A_1*self.B_1_star_x - (2/self.beta)*self.A_1_x*1j*Q*self.B_1_star
         self.N20_u = N20u.evaluate()
         
         N22A = -1j*Q*self.A_1*self.psi_1_x + self.A_1_x*1j*Q*self.psi_1
         self.N22_A = N22A.evaluate()
         
+        #N20A = -1j*Q*self.A_1*self.psi_1_star_x - self.A_1_x*1j*Q*self.psi_1_star
         N20A = -1j*Q*self.A_1*self.psi_1_star_x - self.A_1_x*1j*Q*self.psi_1_star
         self.N20_A = N20A.evaluate()
         
         N22B = 1j*Q*self.psi_1*self.B_1_x - self.psi_1_x*1j*Q*self.B_1 - 1j*Q*self.A_1*self.u_1_x + self.A_1_x*1j*Q*self.u_1
         self.N22_B = N22B.evaluate()
         
-        N20B = 1j*Q*self.psi_1*self.B_1_star_x - self.psi_1_x*1j*Q*self.B_1_star - 1j*Q*self.A_1*self.u_1_star_x + self.A_1_x*1j*Q*self.u_1_star
+        #N20B = 1j*Q*self.psi_1*self.B_1_star_x - self.psi_1_x*1j*Q*self.B_1_star - 1j*Q*self.A_1*self.u_1_star_x + self.A_1_x*1j*Q*self.u_1_star
+        N20B = 1j*Q*self.psi_1*self.B_1_star_x + self.psi_1_x*1j*Q*self.B_1_star - 1j*Q*self.A_1*self.u_1_star_x - self.A_1_x*1j*Q*self.u_1_star
         self.N20_B = N20B.evaluate()
         
         
@@ -577,56 +595,131 @@ class OrderE2():
         q = self.q
         
         # righthand side for the 20 terms (e^0)
-        rhs20_psi = self.n20_psi['g']
-        rhs20_u = self.n20_u['g']
-        rhs20_A = self.n20_A['g'] 
-        rhs20_B = self.n20_B['g']
+        rhs20_psi = self.n20_psi['g'] #+ self.n20_psi['g'].conj()
+        rhs20_u = self.n20_u['g'] #+ self.n20_u['g'].conj()
+        rhs20_A = self.n20_A['g'] #+ self.n20_A['g'].conj()
+        rhs20_B = self.n20_B['g'] #+ self.n20_B['g'].conj()
         
                   
-        lv20 = ParsedProblem(['x'],
-                              field_names=['psi20', 'psi20x', 'psi20xx', 'psi20xxx', 'u20', 'u20x', 'A20', 'A20x', 'B20', 'B20x'],
-                              param_names=['iR', 'iRm', 'rhs20_psi', 'rhs20_u', 'rhs20_A', 'rhs20_B'])
+        #lv20 = ParsedProblem(['x'],
+        #                      field_names=['psi20', 'psi20x', 'psi20xx', 'psi20xxx', 'u20', 'u20x', 'A20', 'A20x', 'B20', 'B20x'],
+        #                      param_names=['iR', 'iRm', 'rhs20_psi', 'rhs20_u', 'rhs20_A', 'rhs20_B'])
+        
+        lv20psi = ParsedProblem(['x'],
+                              field_names=['psi20', 'psi20x', 'psi20xx', 'psi20xxx'],
+                              param_names=['iR', 'rhs20_psi'])
+        lv20psi.add_equation("iR*dx(psi20xxx) = rhs20_psi")
+        lv20psi.add_equation("dx(psi20) - psi20x = 0")
+        lv20psi.add_equation("dx(psi20x) - psi20xx = 0")
+        lv20psi.add_equation("dx(psi20xx) - psi20xxx = 0")
+        lv20psi.parameters['iR'] = iR
+        lv20psi.parameters['rhs20_psi'] = rhs20_psi
+        lv20psi.add_left_bc("psi20 = 0")
+        lv20psi.add_right_bc("psi20 = 0")
+        lv20psi.add_left_bc("psi20x = 0")
+        lv20psi.add_right_bc("psi20x = 0")
+        
+        lv20u = ParsedProblem(['x'],
+                              field_names=['u20', 'u20x'],
+                              param_names=['iR', 'rhs20_u'])
+        lv20u.add_equation("iR*dx(u20x) = rhs20_u")
+        lv20u.add_equation("dx(u20) - u20x = 0")
+        lv20u.parameters['iR'] = iR
+        lv20u.parameters['rhs20_u'] = rhs20_u
+        lv20u.add_left_bc("u20 = 0")
+        lv20u.add_right_bc("u20 = 0")
+        
+        """
+        lv20utwiddle = ParsedProblem(['x'],
+                              field_names=['u20twiddle', 'u20twiddlex'],
+                              param_names=['iR', 'beta'])
+        lv20utwiddle.add_equation("iR*dx(u20twiddlex) = (2/beta)")
+        lv20utwiddle.add_equation("dx(u20twiddle) - u20twiddlex = 0")                      
+        lv20utwiddle.parameters['iR'] = iR
+        lv20utwiddle.parameters['beta'] = beta
+        lv20utwiddle.add_left_bc("u20twiddle = 0")
+        lv20utwiddle.add_right_bc("u20twiddle = 0")
+        """
+        
+        lv20A = ParsedProblem(['x'],
+                              field_names=['A20', 'A20x'],
+                              param_names=['iRm', 'rhs20_A'])
+        lv20A.add_equation("iRm*dx(A20x) = rhs20_A")
+        lv20A.add_equation("dx(A20) - A20x = 0")
+        lv20A.parameters['iRm'] = iRm
+        lv20A.parameters['rhs20_A'] = rhs20_A
+        lv20A.add_left_bc("A20 = 0")
+        lv20A.add_right_bc("A20 = 0")
+        
+        lv20B = ParsedProblem(['x'],
+                              field_names=['B20', 'B20x'],
+                              param_names=['iRm', 'rhs20_B'])
+        lv20B.add_equation("iRm*dx(B20x) = rhs20_B")
+        lv20B.add_equation("dx(B20) - B20x = 0")
+        lv20B.parameters['iRm'] = iRm
+        lv20B.parameters['rhs20_B'] = rhs20_B
+        lv20B.add_left_bc("B20x = 0")
+        lv20B.add_right_bc("B20x = 0")
+        
         
         #lv20.add_equation("1j*dt(psi20xx) + iR*dx(psi20xxx) = rhs20_psi")
         #lv20.add_equation("1j*dt(u20) + iR*dx(u20x) = rhs20_u")
         #lv20.add_equation("1j*dt(A20) + iRm*dx(A20x) = rhs20_A")
         #lv20.add_equation("1j*dt(B20) + iRm*dx(B20x) = rhs20_B")
-        lv20.add_equation("iR*dx(psi20xxx) = rhs20_psi")
-        lv20.add_equation("iR*dx(u20x) = rhs20_u")
-        lv20.add_equation("iRm*dx(A20x) = rhs20_A")
-        lv20.add_equation("iRm*dx(B20x) = rhs20_B")
-        lv20.add_equation("dx(psi20) - psi20x = 0")
-        lv20.add_equation("dx(psi20x) - psi20xx = 0")
-        lv20.add_equation("dx(psi20xx) - psi20xxx = 0")
-        lv20.add_equation("dx(u20) - u20x = 0")
-        lv20.add_equation("dx(A20) - A20x = 0")
-        lv20.add_equation("dx(B20) - B20x = 0")
-        lv20.parameters['iR'] = iR
-        lv20.parameters['iRm'] = iRm
-        lv20.parameters['rhs20_psi'] = rhs20_psi
-        lv20.parameters['rhs20_u'] = rhs20_u
-        lv20.parameters['rhs20_A'] = rhs20_A
-        lv20.parameters['rhs20_B'] = rhs20_B
         
-        lv20.add_left_bc("psi20 = 0")
-        lv20.add_right_bc("psi20 = 0")
-        lv20.add_left_bc("u20 = 0")
-        lv20.add_right_bc("u20 = 0")
-        lv20.add_left_bc("A20 = 0")
-        lv20.add_right_bc("A20 = 0")
-        lv20.add_left_bc("psi20x = 0")
-        lv20.add_right_bc("psi20x = 0")
-        lv20.add_left_bc("B20x = 0")
-        lv20.add_right_bc("B20x = 0")
+        #lv20.add_equation("iR*dx(psi20xxx) = rhs20_psi")
+        #lv20.add_equation("iR*dx(u20x) = rhs20_u")
+        #lv20.add_equation("iRm*dx(A20x) = rhs20_A")
+        #lv20.add_equation("iRm*dx(B20x) = rhs20_B")
+        #lv20.add_equation("dx(psi20) - psi20x = 0")
+        #lv20.add_equation("dx(psi20x) - psi20xx = 0")
+        #lv20.add_equation("dx(psi20xx) - psi20xxx = 0")
+        #lv20.add_equation("dx(u20) - u20x = 0")
+        #lv20.add_equation("dx(A20) - A20x = 0")
+        #lv20.add_equation("dx(B20) - B20x = 0")
+        #lv20.parameters['iR'] = iR
+        #lv20.parameters['iRm'] = iRm
+        #lv20.parameters['rhs20_psi'] = rhs20_psi
+        #lv20.parameters['rhs20_u'] = rhs20_u
+        #lv20.parameters['rhs20_A'] = rhs20_A
+        #lv20.parameters['rhs20_B'] = rhs20_B
         
-        lv20.expand(domain, order = gridnum)
+        #lv20.add_left_bc("psi20 = 0")
+        #lv20.add_right_bc("psi20 = 0")
+        #lv20.add_left_bc("u20 = 0")
+        #lv20.add_right_bc("u20 = 0")
+        #lv20.add_left_bc("A20 = 0")
+        #lv20.add_right_bc("A20 = 0")
+        #lv20.add_left_bc("psi20x = 0")
+        #lv20.add_right_bc("psi20x = 0")
+        #lv20.add_left_bc("B20x = 0")
+        #lv20.add_right_bc("B20x = 0")
+        
+        lv20psi.expand(domain, order = gridnum)
+        lv20u.expand(domain, order = gridnum)
+        lv20A.expand(domain, order = gridnum)
+        lv20B.expand(domain, order = gridnum)
+        
         #LEV20 = LinearEigenvalue(lv20, domain)
         #LEV20.solve(LEV20.pencils[0])
-        LEV20 = LinearBVP(lv20, domain)
-        LEV20.solve()
         
-        self.lv20 = lv20
-        self.LEV20 = LEV20
+        LEV20psi = LinearBVP(lv20psi, domain)
+        LEV20psi.solve()
+        
+        LEV20u = LinearBVP(lv20u, domain)
+        LEV20u.solve()
+        
+        #LEV20utwiddle = LinearBVP(lv20utwiddle, domain)
+        #LEV20utwiddle.solve()
+        
+        LEV20A = LinearBVP(lv20A, domain)
+        LEV20A.solve()
+        
+        LEV20B = LinearBVP(lv20B, domain)
+        LEV20B.solve()
+        
+        self.lv20psi = lv20psi
+        self.LEV20psi = LEV20psi
         #evals = LEV20.eigenvalues
         #indx = np.arange(len(evals))
         #e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
@@ -636,12 +729,12 @@ class OrderE2():
         self.x = domain.grid(0)
         #LEV20.set_state(e0[0])
         
-        self.psi20 = LEV20.state['psi20']['g']
-        self.u20 = LEV20.state['u20']['g']
-        self.A20 = LEV20.state['A20']['g']
-        self.B20 = LEV20.state['B20']['g']
+        self.psi20 = LEV20psi.state['psi20']['g']
+        self.u20 = LEV20u.state['u20']['g'] #+ beta*R*(self.x**2 - 1) #+ LEV20utwiddle.state['u20twiddle']['g']
+        self.A20 = LEV20A.state['A20']['g']
+        self.B20 = LEV20B.state['B20']['g']
             
-    def solve21(self, gridnum = 64, save = True):
+    def solve21(self, gridnum = 64, save = True, norm = True):
     
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
@@ -758,6 +851,19 @@ class OrderE2():
         self.u21 = LEV21.state['u21']['g']
         self.A21 = LEV21.state['A21']['g']
         self.B21 = LEV21.state['B21']['g']
+        
+        if norm == True:
+            n = np.abs(self.LEV21.state['psi21']['g'])[13]
+            a = self.LEV21.state['psi21']['g'].real[13]/n
+            b = self.LEV21.state['psi21']['g'].imag[13]/n
+            scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
+            tt = 1j*132/29.097408658719342
+            scale *= tt
+            
+            self.psi21 = LEV21.state['psi21']['g']*scale
+            self.u21 = LEV21.state['u21']['g']*scale
+            self.A21 = LEV21.state['A21']['g']*scale
+            self.B21 = LEV21.state['B21']['g']*scale
 
     def solve22(self, gridnum = 64, save = True):
 
@@ -773,10 +879,10 @@ class OrderE2():
         q = self.q
         
         # righthand side for the 22 terms (e^2iQz)
-        rhs22_psi = self.n22_psi['g']
-        rhs22_u = self.n22_u['g']
-        rhs22_A = self.n22_A['g']
-        rhs22_B = self.n22_B['g']
+        rhs22_psi = self.n22_psi['g'] #+ self.n22_psi['g'].conj()
+        rhs22_u = self.n22_u['g'] #+ self.n22_u['g'].conj()
+        rhs22_A = self.n22_A['g'] #+ self.n22_A['g'].conj()
+        rhs22_B = self.n22_B['g'] #+ self.n22_B['g'].conj()
         
         self.rhs22_psi = rhs22_psi
         self.rhs22_u = rhs22_u
@@ -859,23 +965,27 @@ class OrderE2():
         
         # plot 20
         ax1 = fig.add_subplot(3, 4, 1)
-        ax1.plot(self.x, self.psi20.imag, color="black")
-        ax1.plot(self.x, self.psi20.real, color="red")
+        #ax1.plot(self.x, self.psi20.imag, color="black")
+        #ax1.plot(self.x, self.psi20.real, color="red")
+        ax1.plot(self.x, self.psi20, color="black")
         ax1.set_title(r"$\psi_{20}$")
 
         ax2 = fig.add_subplot(3, 4, 2)
-        ax2.plot(self.x, self.u20.real, color="black")
-        ax2.plot(self.x, self.u20.imag, color="red")
+        #ax2.plot(self.x, self.u20.real, color="black")
+        #ax2.plot(self.x, self.u20.imag, color="red")
+        ax2.plot(self.x, self.u20, color="black")
         ax2.set_title(r"$u_{20}$")
 
         ax3 = fig.add_subplot(3, 4, 3)
-        ax3.plot(self.x, self.A20.real, color="black")
-        ax3.plot(self.x, self.A20.imag, color="red")
+        #ax3.plot(self.x, self.A20.real, color="black")
+        #ax3.plot(self.x, self.A20.imag, color="red")
+        ax3.plot(self.x, self.A20, color="black")
         ax3.set_title(r"$A_{20}$")
 
         ax4 = fig.add_subplot(3, 4, 4)
-        ax4.plot(self.x, self.B20.imag, color="black")
-        ax4.plot(self.x, self.B20.real, color="red")
+        #ax4.plot(self.x, self.B20.imag, color="black")
+        #ax4.plot(self.x, self.B20.real, color="red")
+        ax4.plot(self.x, self.B20, color="black")
         ax4.set_title(r"$B_{20}$")
         
         # plot 21
