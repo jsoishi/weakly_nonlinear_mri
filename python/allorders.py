@@ -11,7 +11,7 @@ import matplotlib
 matplotlib.rcParams['backend'] = "Qt4Agg"
 matplotlib.rcParams.update({'figure.autolayout': True})
 
-gridnum = 64
+gridnum = 128
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -32,7 +32,7 @@ class AdjointHomogenous():
         self.beta = beta
         
     
-    def solve(self, gridnum = 64, save = False):
+    def solve(self, gridnum = gridnum, save = False):
 
         self.gridnum = gridnum
 
@@ -162,7 +162,7 @@ class OrderE():
         self.beta = beta
         
     
-    def solve(self, gridnum = 64, save = False, norm = True):
+    def solve(self, gridnum = gridnum, save = False, norm = True):
 
         self.gridnum = gridnum
 
@@ -334,7 +334,7 @@ class N2():
                 self.B_1 = v1.LEV.state['B']
         
     
-    def solve(self, gridnum = 64, save = True, norm = True):
+    def solve(self, gridnum = gridnum, save = True, norm = True):
 
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -530,7 +530,7 @@ class OrderE2():
             self.n20_A = n2.N20_A
             self.n20_B = n2.N20_B
             
-    def solve20(self, gridnum = 64, save = False):
+    def solve20(self, gridnum = gridnum, save = False):
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
 
@@ -629,7 +629,7 @@ class OrderE2():
         self.A20 = LEV20A.state['A20']['g']
         self.B20 = LEV20B.state['B20']['g']
             
-    def solve21(self, gridnum = 64, save = True, norm = True):
+    def solve21(self, gridnum = gridnum, save = True, norm = True):
     
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
@@ -762,7 +762,7 @@ class OrderE2():
             
             self.scale = scale
 
-    def solve22(self, gridnum = 64, save = True):
+    def solve22(self, gridnum = gridnum, save = True):
 
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
@@ -1003,7 +1003,7 @@ class N3():
             self.v22_A = o2.LEV22.state['A22']
             self.v22_B = o2.LEV22.state['B22']
             
-    def solve31(self, gridnum = 64, save = False):
+    def solve31(self, gridnum = gridnum, save = False, norm = True):
     
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -1175,6 +1175,24 @@ class N3():
         N31_B = N31_B_my1 + N31_B_my2 + N31_B_my3 + N31_B_my4
         
         self.N31_B = N31_B.evaluate()
+        
+        if norm == False:
+            n = np.abs(self.N31_A['g'])[13]
+            a = self.N31_A['g'].real[13]/n
+            b = self.N31_A['g'].imag[13]/n
+            scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
+            #scale *= -664.4114817
+            
+            N31_psi = self.N31_psi*scale
+            self.N31_psi = N31_psi.evaluate()
+            N31_u = self.N31_u*scale
+            self.N31_u = N31_u.evaluate()
+            N31_A = self.N31_A*scale
+            self.A_psi = N31_A.evaluate()
+            N31_B = self.N31_B*scale
+            self.N31_B = N31_B.evaluate()
+            
+            self.scale = scale
         
          
     def plot(self):
