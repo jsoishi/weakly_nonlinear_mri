@@ -1134,28 +1134,30 @@ class N3():
         
         self.v20_B_star_x = self.v20_B_star.differentiate(0)
     
-        N31_psi_line1 = (1j*2*self.Q*self.v22_psi)*(self.v11_psi_star_xxx - self.Q**2*self.v11_psi_star_x) - (self.v22_psi_x)*(-1j*self.Q*self.v11_psi_star_xx + 1j*self.Q**3*self.v11_psi_star) - (self.v20_psi_x)*(1j*self.Q*self.v11_psi_xx - 1j*self.Q**3*self.v11_psi)
-        N31_psi_line2 = (-1j*self.Q*self.v11_psi_star)*(self.v22_psi_xxx - 4*self.Q**2*self.v22_psi_x) + 1j*self.Q*self.v11_psi*self.v20_psi_xxx - self.v11_psi_star_x*(1j*2*self.Q*self.v22_psi_xx - 1j*8*self.Q**3*self.v22_psi)
-        N31_psi_line3 = (-2/self.beta)*(1j*2*self.Q*self.v22_A)*(self.v11_A_star_xxx - self.Q**2*self.v11_A_star_x) + (2/self.beta)*self.v22_A_x*(-1j*self.Q*self.v11_A_star_xx + 1j*self.Q**3*self.v11_A_star) + (2/self.beta)*self.v20_A_x*(1j*self.Q*self.v11_A_xx - 1j*self.Q**3*self.v11_A)
-        N31_psi_line4 = (-2/self.beta)*(-1j*self.Q*self.v11_A_star)*(self.v22_A_xxx - 4*self.Q**2*self.v22_A_x) - (2/self.beta)*(1j*self.Q*self.v11_A)*self.v20_A_xxx + (2/self.beta)*self.v11_A_star_x*(1j*2*self.Q*self.v22_A_xx - 1j*8*self.Q**3*self.v22_A)
+        #N31_psi_line1 = (1j*2*self.Q*self.v22_psi)*(self.v11_psi_star_xxx - self.Q**2*self.v11_psi_star_x) - (self.v22_psi_x)*(-1j*self.Q*self.v11_psi_star_xx + 1j*self.Q**3*self.v11_psi_star) - (self.v20_psi_x)*(1j*self.Q*self.v11_psi_xx - 1j*self.Q**3*self.v11_psi)
+        #N31_psi_line2 = (-1j*self.Q*self.v11_psi_star)*(self.v22_psi_xxx - 4*self.Q**2*self.v22_psi_x) + 1j*self.Q*self.v11_psi*self.v20_psi_xxx - self.v11_psi_star_x*(1j*2*self.Q*self.v22_psi_xx - 1j*8*self.Q**3*self.v22_psi)
+        #N31_psi_line3 = (-2/self.beta)*(1j*2*self.Q*self.v22_A)*(self.v11_A_star_xxx - self.Q**2*self.v11_A_star_x) + (2/self.beta)*self.v22_A_x*(-1j*self.Q*self.v11_A_star_xx + 1j*self.Q**3*self.v11_A_star) + (2/self.beta)*self.v20_A_x*(1j*self.Q*self.v11_A_xx - 1j*self.Q**3*self.v11_A)
+        #N31_psi_line4 = (-2/self.beta)*(-1j*self.Q*self.v11_A_star)*(self.v22_A_xxx - 4*self.Q**2*self.v22_A_x) - (2/self.beta)*(1j*self.Q*self.v11_A)*self.v20_A_xxx + (2/self.beta)*self.v11_A_star_x*(1j*2*self.Q*self.v22_A_xx - 1j*8*self.Q**3*self.v22_A)
         
-        N31_psi = N31_psi_line1 + N31_psi_line2 + N31_psi_line3 + N31_psi_line4
+        #N31_psi = N31_psi_line1 + N31_psi_line2 + N31_psi_line3 + N31_psi_line4
+        
+        N31_psi_my1 = 1j*self.Q*(self.v11_psi*self.v20_psi_xxx) + 1j*self.Q*(self.v11_psi*self.v20_psi_star_xxx) - 1j*self.Q*(self.v11_psi_star*self.v22_psi_xxx) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_psi_xx) + 1j*8*self.Q**3*(self.v11_psi_star_x*self.v22_psi) + 1j*4*self.Q**3*(self.v11_psi_star*self.v22_psi_x)
+        N31_psi_my2 = -1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_A_xxx) - 1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_A_star_xxx) + 1j*self.Q*(2/self.beta)*(self.v11_A_star*self.v22_A_xxx) + 1j*2*self.Q*(2/self.beta)*(self.v11_A_star_x*self.v22_A_xx) - 1j*8*self.Q**3*(2/self.beta)*(self.v11_A_star_x*self.v22_A) - 1j*4*self.Q**3*(2/self.beta)*(self.v11_A_star*self.v22_A_x)
+        N31_psi_my3 = 1j*2*self.Q*(self.v22_psi*self.v11_psi_star_xxx) - 1j*2*self.Q**3*(self.v22_psi*self.v11_psi_star_x) - 1j*self.Q*(self.v20_psi_x*self.v11_psi_xx) + 1j*self.Q*(self.v22_psi_x*self.v11_psi_star_xx) - 1j*self.Q*(self.v20_psi_star_x*self.v11_psi_xx) + 1j*self.Q**3*(self.v20_psi_x*self.v11_psi) + 1j*self.Q**3*(self.v20_psi_star_x*self.v11_psi) - 1j*self.Q**3*(self.v22_psi_x*self.v11_psi_star)
+        N31_psi_my4 = -1j*2*self.Q*(2/self.beta)*(self.v22_A*self.v11_A_star_xxx) + 1j*2*self.Q**3*(2/self.beta)*(self.v22_A*self.v11_A_star_x) + 1j*self.Q*(2/self.beta)*(self.v20_A_x*self.v11_A_xx) - 1j*self.Q*(2/self.beta)*(self.v22_A_x*self.v11_A_star_xx) + 1j*self.Q*(2/self.beta)*(self.v20_A_star_x*self.v11_A_xx) - 1j*self.Q**3*(2/self.beta)*(self.v20_A_x*self.v11_A) - 1j*self.Q**3*(2/self.beta)*(self.v20_A_star_x*self.v11_A) + 1j*self.Q**3*(2/self.beta)*(self.v22_A_x*self.v11_A_star)
+        
+        N31_psi = N31_psi_my1 + N31_psi_my2 + N31_psi_my3 + N31_psi_my4
         
         self.N31_psi = N31_psi.evaluate()
         
-        N31_u_line1 = (1j*2*self.Q*self.v11_psi)*self.v11_u_star_x + self.v22_psi_x*1j*self.Q*self.v11_u_star -self.v20_psi_x*1j*self.Q*self.v11_u
-        N31_u_line2 = -1j*self.Q*self.v11_psi_star*self.v22_u_x + 1j*self.Q*self.v11_psi*self.v20_u_x - self.v11_psi_star_x*1j*2*self.Q*self.v22_u
-        N31_u_line3 = (-2/self.beta)*1j*2*self.Q*self.v22_A*self.v11_B_star_x + (2/self.beta)*self.v22_A_x*(-1j*self.Q*self.v11_B_star) + (2/self.beta)*self.v20_A_x*1j*self.Q*self.v11_B
-        N31_u_line4 = (2/self.beta)*1j*self.Q*self.v11_A_star*self.v22_B_x - (2/self.beta)*1j*self.Q*self.v11_A*self.v20_B_x + (2/self.beta)*self.v11_A_star_x*1j*2*self.Q*self.v22_B
+        N31_u_my1 = 1j*self.Q*(self.v11_psi*self.v20_u_x) + 1j*self.Q*(self.v11_psi*self.v20_u_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_u_x) - (self.v11_psi_x*self.v20_u) - (self.v11_psi_x*self.v20_u_star) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_u)
+        N31_u_my2 = -1j*self.Q*(self.v11_u*self.v20_psi_x) - 1j*self.Q*(self.v11_u*self.v20_psi_star_x) + 1j*self.Q*(self.v11_u_star*self.v22_psi_x) + (self.v11_u_x*self.v20_psi) + (self.v11_u_x*self.v20_psi_star) + 1j*2*self.Q*(self.v11_u_star_x*self.v22_psi)
+        N31_u_my3 = -1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_B_x) - 1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_B_star_x) + 1j*self.Q*(2/self.beta)*(self.v11_A_star*self.v22_B_x) + (2/self.beta)*(self.v11_A_x*self.v20_B) + (2/self.beta)*(self.v11_A_x*self.v20_B_star) + 1j*2*self.Q*(2/self.beta)*(self.v11_A_star_x*self.v22_B)
+        N31_u_my4 = 1j*self.Q*(2/self.beta)*(self.v11_B*self.v20_A_x) + 1j*self.Q*(2/self.beta)*(self.v11_B*self.v20_A_star_x) - 1j*self.Q*(2/self.beta)*(self.v11_B_star*self.v20_A_x) - (2/self.beta)*(self.v11_B_x*self.v20_A) - (2/self.beta)*(self.v11_B_x*self.v20_A_star) - 1j*2*self.Q*(2/self.beta)*(self.v11_B_star_x*self.v22_A)
         
-        N31_u = N31_u_line1 + N31_u_line2 + N31_u_line3 + N31_u_line4
+        N31_u = N31_u_my1 + N31_u_my2 + N31_u_my3 + N31_u_my4
         
         self.N31_u = N31_u.evaluate()
-        
-        #N31_A_line1 = -1j*2*self.Q*self.v22_psi*self.v11_psi_star_x - self.v22_psi_x*1j*self.Q*self.v11_psi_star + self.v20_psi_x*1j*self.Q*self.v11_psi
-        #N31_A_line2 = -1j*self.Q*self.v11_psi_star*self.v22_psi_x + 1j*self.Q*self.v11_psi*self.v20_psi_x - self.v11_psi_star_x*1j*2*self.Q*self.v22_psi
-        
-        #N31_A = N31_A_line1 + N31_A_line2
         
         N31_A_my1 = -1j*self.Q*(self.v11_A*self.v20_psi_x) - 1j*self.Q*(self.v11_A*self.v20_psi_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_psi_x) + (self.v11_A_x*self.v20_psi)
         N31_A_my2 = (self.v11_A_x*self.v20_psi_star) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_psi) + 1j*self.Q*(self.v11_psi*self.v20_A_x) + 1j*self.Q*(self.v11_psi*self.v20_A_star_x)
@@ -1165,12 +1167,12 @@ class N3():
         
         self.N31_A = N31_A.evaluate()
         
-        N31_B_line1 = 1j*2*self.Q*self.v22_psi*self.v11_B_star_x + self.v22_psi_x*1j*self.Q*self.v11_B_star - self.v20_psi_x*1j*self.Q*self.v11_B
-        N31_B_line2 = -1j*self.Q*self.v11_psi_star*self.v22_B_x + 1j*self.Q*self.v11_psi*self.v20_B_x - self.v11_psi_star_x*1j*2*self.Q*self.v22_B
-        N31_B_line3 = -1j*2*self.Q*self.v22_A*self.v11_u_star_x - self.v22_A_x*1j*self.Q*self.v11_u_star + self.v20_A_x*1j*self.Q*self.v11_u
-        N31_B_line4 = 1j*self.Q*self.v11_A_star*self.v22_u_x - 1j*self.Q*self.v11_A*self.v20_u_x + self.v11_A_star_x*1j*2*self.Q*self.v22_u
+        N31_B_my1 = 1j*self.Q*(self.v11_psi*self.v20_B_x) + 1j*self.Q*(self.v11_psi*self.v20_B_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_B_x) - (self.v11_psi_x*self.v20_B) - (self.v11_psi_x*self.v20_B_star) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_B)
+        N31_B_my2 = -1j*self.Q*(self.v11_B*self.v20_psi_x) - 1j*self.Q*(self.v11_B*self.v20_psi_star_x) + 1j*self.Q*(self.v11_B_star*self.v22_psi_x) + (self.v11_B_x*self.v20_psi) + (self.v11_B_x*self.v20_psi_star) + 1j*2*self.Q*(self.v11_B_star_x*self.v22_psi)
+        N31_B_my3 = -1j*self.Q*(self.v11_A*self.v20_u_x) - 1j*self.Q*(self.v11_A*self.v20_u_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_u_x) + (self.v11_A_x*self.v20_u) + (self.v11_A_x*self.v20_u_star) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_u)
+        N31_B_my4 = 1j*self.Q*(self.v11_u*self.v20_A_x) + 1j*self.Q*(self.v11_u*self.v20_A_star_x) - 1j*self.Q*(self.v11_u_star*self.v22_A_x) - (self.v11_u_x*self.v20_A) - (self.v11_u_x*self.v20_A_star) - 1j*2*self.Q*(self.v11_u_star_x*self.v22_A)
         
-        N31_B = N31_B_line1 + N31_B_line2 + N31_B_line3 + N31_B_line4
+        N31_B = N31_B_my1 + N31_B_my2 + N31_B_my3 + N31_B_my4
         
         self.N31_B = N31_B.evaluate()
         
