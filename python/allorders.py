@@ -1152,11 +1152,16 @@ class N3():
         
         self.N31_u = N31_u.evaluate()
         
-        N31_A_line1 = -1j*2*self.Q*self.v22_psi*self.v11_psi_star_x - self.v22_psi_x*1j*self.Q*self.v11_psi_star + self.v20_psi_x*1j*self.Q*self.v11_psi
+        #N31_A_line1 = -1j*2*self.Q*self.v22_psi*self.v11_psi_star_x - self.v22_psi_x*1j*self.Q*self.v11_psi_star + self.v20_psi_x*1j*self.Q*self.v11_psi
         #N31_A_line2 = -1j*self.Q*self.v11_psi_star*self.v22_psi_x + 1j*self.Q*self.v11_psi*self.v20_psi_x - self.v11_psi_star_x*1j*2*self.Q*self.v22_psi
-        N31_A_line2 = 1j*self.Q*self.v11_psi_star*self.v22_psi_x - 1j*self.Q*self.v11_psi*self.v20_psi_x + self.v11_psi_star_x*1j*2*self.Q*self.v22_psi
         
-        N31_A = N31_A_line1 + N31_A_line2
+        #N31_A = N31_A_line1 + N31_A_line2
+        
+        N31_A_my1 = -1j*self.Q*(self.v11_A*self.v20_psi_x) - 1j*self.Q*(self.v11_A*self.v20_psi_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_psi_x) + (self.v11_A_x*self.v20_psi)
+        N31_A_my2 = (self.v11_A_x*self.v20_psi_star) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_psi) + 1j*self.Q*(self.v11_psi*self.v20_A_x) + 1j*self.Q*(self.v11_psi*self.v20_A_star_x)
+        N31_A_my3 = -1j*self.Q*(self.v11_psi_star*self.v22_A_x) - (self.v11_psi_x*self.v20_A) - (self.v11_psi_x*self.v20_A_star) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_A)
+        
+        N31_A = N31_A_my1 + N31_A_my2 + N31_A_my3
         
         self.N31_A = N31_A.evaluate()
         
@@ -1178,22 +1183,22 @@ class N3():
         ax1 = fig.add_subplot(1, 4, 1)
         ax1.plot(self.x, self.N31_psi['g'].imag, color="black")
         ax1.plot(self.x, self.N31_psi['g'].real, color="red")
-        ax1.set_title(r"$N_{31}^{(\psi)}$")
+        ax1.set_title(r"$Im(N_{31}^{(\psi)})$")
 
         ax2 = fig.add_subplot(1, 4, 2)
         ax2.plot(self.x, self.N31_u['g'].real, color="black")
         ax2.plot(self.x, self.N31_u['g'].imag, color="red")
-        ax2.set_title(r"$N_{31}^{(u)}$")
+        ax2.set_title(r"$Re(N_{31}^{(u)})$")
 
         ax3 = fig.add_subplot(1, 4, 3)
         ax3.plot(self.x, self.N31_A['g'].real, color="black")
         ax3.plot(self.x, self.N31_A['g'].imag, color="red")
-        ax3.set_title(r"$N_{31}^{(A)}$")
+        ax3.set_title(r"$Re(N_{31}^{(A)})$")
 
         ax4 = fig.add_subplot(1, 4, 4)
         ax4.plot(self.x, self.N31_B['g'].imag, color="black")
         ax4.plot(self.x, self.N31_B['g'].real, color="red")
-        ax4.set_title(r"$N_{31}^{(B)}$")
+        ax4.set_title(r"$Im(N_{31}^{(B)})$")
         
         fig.savefig("n3.png")
                 
