@@ -32,7 +32,7 @@ class AdjointHomogenous():
         self.beta = beta
         
     
-    def solve(self, gridnum = gridnum, save = False):
+    def solve(self, gridnum = gridnum, save = False, norm = True):
 
         self.gridnum = gridnum
 
@@ -99,10 +99,28 @@ class AdjointHomogenous():
         self.x = domain.grid(0)
         LEV.set_state(e0[0])
         
-        self.psi = LEV.state['psi']['g']
-        self.u = LEV.state['u']['g']
-        self.A = LEV.state['A']['g']
-        self.B = LEV.state['B']['g']
+        self.psi = LEV.state['psi']
+        self.u = LEV.state['u']
+        self.A = LEV.state['A']
+        self.B = LEV.state['B']
+        
+        if norm == True:
+            n = np.abs(self.LEV.state['psi']['g'])[13]
+            a = self.LEV.state['psi']['g'].real[13]/n
+            b = self.LEV.state['psi']['g'].imag[13]/n
+            scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
+            #scale *= -664.4114817
+            
+            psinorm = LEV.state['psi']*scale
+            self.psi = psinorm.evaluate()
+            unorm = LEV.state['u']*scale
+            self.u = unorm.evaluate()
+            Anorm = LEV.state['A']*scale
+            self.A = Anorm.evaluate()
+            Bnorm = LEV.state['B']*scale
+            self.B = Bnorm.evaluate()
+            
+            self.scale = scale
         
 
         if save == True:
@@ -122,23 +140,23 @@ class AdjointHomogenous():
         fig = plt.figure()
     
         ax1 = fig.add_subplot(221)
-        ax1.plot(self.x, self.psi.imag*norm1, color="black")
-        ax1.plot(self.x, self.psi.real*norm1, color="red")
+        ax1.plot(self.x, self.psi['g'].imag*norm1, color="black")
+        ax1.plot(self.x, self.psi['g'].real*norm1, color="red")
         ax1.set_title(r"Im($\psi^\dagger$)")
 
         ax2 = fig.add_subplot(222)
-        ax2.plot(self.x, self.u.imag*norm1, color="red")
-        ax2.plot(self.x, self.u.real*norm1, color="black")
+        ax2.plot(self.x, self.u['g'].imag*norm1, color="red")
+        ax2.plot(self.x, self.u['g'].real*norm1, color="black")
         ax2.set_title("Re($u^\dagger$)")
 
         ax3 = fig.add_subplot(223)
-        ax3.plot(self.x, self.A.imag*norm1, color="red")
-        ax3.plot(self.x, self.A.real*norm1, color="black")
+        ax3.plot(self.x, self.A['g'].imag*norm1, color="red")
+        ax3.plot(self.x, self.A['g'].real*norm1, color="black")
         ax3.set_title("Re($A^\dagger$)")
 
         ax4 = fig.add_subplot(224)
-        ax4.plot(self.x, self.B.imag*norm1, color="black")
-        ax4.plot(self.x, self.B.real*norm1, color="red")
+        ax4.plot(self.x, self.B['g'].imag*norm1, color="black")
+        ax4.plot(self.x, self.B['g'].real*norm1, color="red")
         ax4.set_title("Im($B^\dagger$)")
         fig.savefig("ah1.png")
         
@@ -1003,7 +1021,7 @@ class N3():
             self.v22_A = o2.LEV22.state['A22']
             self.v22_B = o2.LEV22.state['B22']
             
-    def solve31(self, gridnum = gridnum, save = False, norm = True):
+    def solve31(self, gridnum = gridnum, save = False):
     
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -1134,13 +1152,6 @@ class N3():
         
         self.v20_B_star_x = self.v20_B_star.differentiate(0)
     
-        #N31_psi_line1 = (1j*2*self.Q*self.v22_psi)*(self.v11_psi_star_xxx - self.Q**2*self.v11_psi_star_x) - (self.v22_psi_x)*(-1j*self.Q*self.v11_psi_star_xx + 1j*self.Q**3*self.v11_psi_star) - (self.v20_psi_x)*(1j*self.Q*self.v11_psi_xx - 1j*self.Q**3*self.v11_psi)
-        #N31_psi_line2 = (-1j*self.Q*self.v11_psi_star)*(self.v22_psi_xxx - 4*self.Q**2*self.v22_psi_x) + 1j*self.Q*self.v11_psi*self.v20_psi_xxx - self.v11_psi_star_x*(1j*2*self.Q*self.v22_psi_xx - 1j*8*self.Q**3*self.v22_psi)
-        #N31_psi_line3 = (-2/self.beta)*(1j*2*self.Q*self.v22_A)*(self.v11_A_star_xxx - self.Q**2*self.v11_A_star_x) + (2/self.beta)*self.v22_A_x*(-1j*self.Q*self.v11_A_star_xx + 1j*self.Q**3*self.v11_A_star) + (2/self.beta)*self.v20_A_x*(1j*self.Q*self.v11_A_xx - 1j*self.Q**3*self.v11_A)
-        #N31_psi_line4 = (-2/self.beta)*(-1j*self.Q*self.v11_A_star)*(self.v22_A_xxx - 4*self.Q**2*self.v22_A_x) - (2/self.beta)*(1j*self.Q*self.v11_A)*self.v20_A_xxx + (2/self.beta)*self.v11_A_star_x*(1j*2*self.Q*self.v22_A_xx - 1j*8*self.Q**3*self.v22_A)
-        
-        #N31_psi = N31_psi_line1 + N31_psi_line2 + N31_psi_line3 + N31_psi_line4
-        
         N31_psi_my1 = 1j*self.Q*(self.v11_psi*self.v20_psi_xxx) + 1j*self.Q*(self.v11_psi*self.v20_psi_star_xxx) - 1j*self.Q*(self.v11_psi_star*self.v22_psi_xxx) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_psi_xx) + 1j*8*self.Q**3*(self.v11_psi_star_x*self.v22_psi) + 1j*4*self.Q**3*(self.v11_psi_star*self.v22_psi_x)
         N31_psi_my2 = -1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_A_xxx) - 1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_A_star_xxx) + 1j*self.Q*(2/self.beta)*(self.v11_A_star*self.v22_A_xxx) + 1j*2*self.Q*(2/self.beta)*(self.v11_A_star_x*self.v22_A_xx) - 1j*8*self.Q**3*(2/self.beta)*(self.v11_A_star_x*self.v22_A) - 1j*4*self.Q**3*(2/self.beta)*(self.v11_A_star*self.v22_A_x)
         N31_psi_my3 = 1j*2*self.Q*(self.v22_psi*self.v11_psi_star_xxx) - 1j*2*self.Q**3*(self.v22_psi*self.v11_psi_star_x) - 1j*self.Q*(self.v20_psi_x*self.v11_psi_xx) + 1j*self.Q*(self.v22_psi_x*self.v11_psi_star_xx) - 1j*self.Q*(self.v20_psi_star_x*self.v11_psi_xx) + 1j*self.Q**3*(self.v20_psi_x*self.v11_psi) + 1j*self.Q**3*(self.v20_psi_star_x*self.v11_psi) - 1j*self.Q**3*(self.v22_psi_x*self.v11_psi_star)
@@ -1150,62 +1161,35 @@ class N3():
         
         self.N31_psi = N31_psi.evaluate()
         
-        N31_u_my1 = 1j*self.Q*(self.v11_psi*self.v20_u_x) + 1j*self.Q*(self.v11_psi*self.v20_u_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_u_x) #- (self.v11_psi_x*self.v20_u) - (self.v11_psi_x*self.v20_u_star) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_u)
-        N31_u_my2 = -1j*self.Q*(self.v11_u*self.v20_psi_x) - 1j*self.Q*(self.v11_u*self.v20_psi_star_x) + 1j*self.Q*(self.v11_u_star*self.v22_psi_x) + (self.v11_u_x*self.v20_psi) + (self.v11_u_x*self.v20_psi_star) + 1j*2*self.Q*(self.v11_u_star_x*self.v22_psi)
-        N31_u_my3 = -1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_B_x) - 1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_B_star_x) + 1j*self.Q*(2/self.beta)*(self.v11_A_star*self.v22_B_x) + (2/self.beta)*(self.v11_A_x*self.v20_B) + (2/self.beta)*(self.v11_A_x*self.v20_B_star) + 1j*2*self.Q*(2/self.beta)*(self.v11_A_star_x*self.v22_B)
-        N31_u_my4 = 1j*self.Q*(2/self.beta)*(self.v11_B*self.v20_A_x) + 1j*self.Q*(2/self.beta)*(self.v11_B*self.v20_A_star_x) - 1j*self.Q*(2/self.beta)*(self.v11_B_star*self.v20_A_x) - (2/self.beta)*(self.v11_B_x*self.v20_A) - (2/self.beta)*(self.v11_B_x*self.v20_A_star) - 1j*2*self.Q*(2/self.beta)*(self.v11_B_star_x*self.v22_A)
+        N31_u_my1 = 1j*self.Q*(self.v11_psi*self.v20_u_x) + 1j*self.Q*(self.v11_psi*self.v20_u_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_u_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_u)
+        N31_u_my2 = -1j*self.Q*(self.v11_u*self.v20_psi_x) - 1j*self.Q*(self.v11_u*self.v20_psi_star_x) + 1j*self.Q*(self.v11_u_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_u_star_x*self.v22_psi)
+        N31_u_my3 = -1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_B_x) - 1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_B_star_x) + 1j*self.Q*(2/self.beta)*(self.v11_A_star*self.v22_B_x) + 1j*2*self.Q*(2/self.beta)*(self.v11_A_star_x*self.v22_B)
+        N31_u_my4 = 1j*self.Q*(2/self.beta)*(self.v11_B*self.v20_A_x) + 1j*self.Q*(2/self.beta)*(self.v11_B*self.v20_A_star_x) - 1j*self.Q*(2/self.beta)*(self.v11_B_star*self.v20_A_x) - 1j*2*self.Q*(2/self.beta)*(self.v11_B_star_x*self.v22_A)
         
-        # something wrong with my1
         N31_u = N31_u_my1 + N31_u_my2 + N31_u_my3 + N31_u_my4
         
         self.N31_u = N31_u.evaluate()
-        
-        #N31_A_my1 = -1j*self.Q*(self.v11_A*self.v20_psi_x) - 1j*self.Q*(self.v11_A*self.v20_psi_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_psi_x) + (self.v11_A_x*self.v20_psi)
-        #N31_A_my2 = (self.v11_A_x*self.v20_psi_star) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_psi) + 1j*self.Q*(self.v11_psi*self.v20_A_x) + 1j*self.Q*(self.v11_psi*self.v20_A_star_x)
-        #N31_A_my3 = -1j*self.Q*(self.v11_psi_star*self.v22_A_x) - (self.v11_psi_x*self.v20_A) #- (self.v11_psi_x*self.v20_A_star) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_A)
         
         N31_A_my1 = -1j*self.Q*(self.v11_A*self.v20_psi_x) - 1j*self.Q*(self.v11_A*self.v20_psi_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_psi)
         N31_A_my2 = 1j*self.Q*(self.v11_psi*self.v20_A_x) + 1j*self.Q*(self.v11_psi*self.v20_A_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_A_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_A)
         
         N31_A = N31_A_my1 + N31_A_my2
         
-        # something wrong with my3
-        #N31_A = N31_A_my1 + N31_A_my2 + N31_A_my3
-        
         self.N31_A = N31_A.evaluate()
         
-        N31_B_my1 = 1j*self.Q*(self.v11_psi*self.v20_B_x) + 1j*self.Q*(self.v11_psi*self.v20_B_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_B_x) - (self.v11_psi_x*self.v20_B) - (self.v11_psi_x*self.v20_B_star) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_B)
-        N31_B_my2 = -1j*self.Q*(self.v11_B*self.v20_psi_x) - 1j*self.Q*(self.v11_B*self.v20_psi_star_x) + 1j*self.Q*(self.v11_B_star*self.v22_psi_x) + (self.v11_B_x*self.v20_psi) + (self.v11_B_x*self.v20_psi_star) + 1j*2*self.Q*(self.v11_B_star_x*self.v22_psi)
-        N31_B_my3 = -1j*self.Q*(self.v11_A*self.v20_u_x) - 1j*self.Q*(self.v11_A*self.v20_u_star_x) #+ 1j*self.Q*(self.v11_A_star*self.v22_u_x) + (self.v11_A_x*self.v20_u) + (self.v11_A_x*self.v20_u_star) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_u)
-        N31_B_my4 = 1j*self.Q*(self.v11_u*self.v20_A_x) + 1j*self.Q*(self.v11_u*self.v20_A_star_x) - 1j*self.Q*(self.v11_u_star*self.v22_A_x) - (self.v11_u_x*self.v20_A) - (self.v11_u_x*self.v20_A_star) - 1j*2*self.Q*(self.v11_u_star_x*self.v22_A)
+        N31_B_my1 = 1j*self.Q*(self.v11_psi*self.v20_B_x) + 1j*self.Q*(self.v11_psi*self.v20_B_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_B_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_B)
+        N31_B_my2 = -1j*self.Q*(self.v11_B*self.v20_psi_x) - 1j*self.Q*(self.v11_B*self.v20_psi_star_x) + 1j*self.Q*(self.v11_B_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_B_star_x*self.v22_psi)
+        N31_B_my3 = -1j*self.Q*(self.v11_A*self.v20_u_x) - 1j*self.Q*(self.v11_A*self.v20_u_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_u_x) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_u)
+        N31_B_my4 = 1j*self.Q*(self.v11_u*self.v20_A_x) + 1j*self.Q*(self.v11_u*self.v20_A_star_x) - 1j*self.Q*(self.v11_u_star*self.v22_A_x) - 1j*2*self.Q*(self.v11_u_star_x*self.v22_A)
         
-        # something wrong with my3 and my4
-        N31_B = N31_B_my1 + N31_B_my2 + N31_B_my3 #+ N31_B_my4
+        N31_B = N31_B_my1 + N31_B_my2 + N31_B_my3 + N31_B_my4
         
         self.N31_B = N31_B.evaluate()
-        
-        if norm == False:
-            n = np.abs(self.N31_A['g'])[13]
-            a = self.N31_A['g'].real[13]/n
-            b = self.N31_A['g'].imag[13]/n
-            scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
-            #scale *= -664.4114817
-            
-            N31_psi = self.N31_psi*scale
-            self.N31_psi = N31_psi.evaluate()
-            N31_u = self.N31_u*scale
-            self.N31_u = N31_u.evaluate()
-            N31_A = self.N31_A*scale
-            self.A_psi = N31_A.evaluate()
-            N31_B = self.N31_B*scale
-            self.N31_B = N31_B.evaluate()
-            
-            self.scale = scale
         
          
     def plot(self):
     
-        fig = plt.figure((4,10))
+        fig = plt.figure(figsize=(16,4))
         
         # plot N31
         ax1 = fig.add_subplot(1, 4, 1)
@@ -1230,6 +1214,117 @@ class N3():
         
         fig.savefig("n3.png")
                 
+class AmplitudeAlpha():
+
+    """
+    Solves the coefficients of the first amplitude equation for alpha -- e^(iQz) terms.
+    
+    """
+    
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True):
+        
+        self.Q = Q
+        self.Rm = Rm
+        self.Pm = Pm
+        self.q = q
+        self.beta = beta
+        
+        if run == True:
+        
+            self.va = AdjointHomogenous()
+            self.va.solve(save = False, norm = True)
+        
+            v1 = OrderE()
+            v1.solve(save=False)
+            
+            if norm == True:
+            
+                psi_1 = v1.LEV.state['psi']*v1.scale
+                u_1 = v1.LEV.state['u']*v1.scale
+                A_1 = v1.LEV.state['A']*v1.scale
+                B_1 = v1.LEV.state['B']*v1.scale
+            
+                self.v11_psi = psi_1.evaluate()
+                self.v11_u = u_1.evaluate()
+                self.v11_A = A_1.evaluate()
+                self.v11_B = B_1.evaluate()
+                
+                
+            else:
+            
+                self.v11_psi = v1.LEV.state['psi']
+                self.v11_u = v1.LEV.state['u']
+                self.v11_A = v1.LEV.state['A']
+                self.v11_B = v1.LEV.state['B']
+            
+            o2 = OrderE2()
+            o2.solve20()
+            o2.solve21(norm = norm)
+            o2.solve22()
+            
+            self.v20_psi = o2.LEV20psi.state['psi20']
+            self.v20_u = o2.LEV20u.state['u20']
+            self.v20_A = o2.LEV20A.state['A20']
+            self.v20_B = o2.LEV20B.state['B20']  
+            
+            if norm == True:
+                v21_psi = o2.LEV21.state['psi21']*o2.scale   
+                v21_u = o2.LEV21.state['u21']*o2.scale 
+                v21_A = o2.LEV21.state['A21']*o2.scale 
+                v21_B = o2.LEV21.state['B21']*o2.scale 
+                
+                self.v21_psi = v21_psi.evaluate()     
+                self.v21_u = v21_u.evaluate() 
+                self.v21_A = v21_A.evaluate() 
+                self.v21_B = v21_B.evaluate() 
+            
+            else: 
+                
+                self.v21_psi = o2.LEV21.state['psi21']
+                self.v21_u = o2.LEV21.state['u21']
+                self.v21_A = o2.LEV21.state['A21']
+                self.v21_B = o2.LEV21.state['B21']
+                
+            self.v22_psi = o2.LEV22.state['psi22']
+            self.v22_u = o2.LEV22.state['u22']
+            self.v22_A = o2.LEV22.state['A22']
+            self.v22_B = o2.LEV22.state['B22']
+            
+            self.n3 = N3()
+            self.n3.solve31()
+            
+            
+    def solve(self, gridnum = gridnum, save = False):
+    
+        self.gridnum = gridnum
+        self.x = domain.grid(0)
+        
+        # complex conjugate of N31
+        self.N31_psi_star = domain.new_field()
+        self.N31_psi_star.name = 'N31_psi_star'
+        self.N31_psi_star['g'] = self.n3.N31_psi['g'].conj()
+        
+        self.N31_u_star = domain.new_field()
+        self.N31_u_star.name = 'N31_u_star'
+        self.N31_u_star['g'] = self.n3.N31_u['g'].conj()
+        
+        self.N31_A_star = domain.new_field()
+        self.N31_A_star.name = 'N31_A_star'
+        self.N31_A_star['g'] = self.n3.N31_A['g'].conj()
+        
+        self.N31_B_star = domain.new_field()
+        self.N31_B_star.name = 'N31_B_star'
+        self.N31_B_star['g'] = self.n3.N31_B['g'].conj()
+        
+        c_psi = self.va.psi*self.N31_psi_star
+        self.c_psi = c_psi.evaluate()
+        
+        self.c_psi = np.sum(self.c_psi['g'])
+        
+        print('c : ', self.c_amp)
+        
+        
+            
                 
                 
                 
