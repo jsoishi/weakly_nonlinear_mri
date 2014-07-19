@@ -1316,16 +1316,41 @@ class AmplitudeAlpha():
         self.N31_B_star.name = 'N31_B_star'
         self.N31_B_star['g'] = self.n3.N31_B['g'].conj()
         
+        # c amplitude
         c_psi = self.va.psi*self.N31_psi_star
-        self.c_psi = c_psi.evaluate()
+        c_psi = c_psi.evaluate()
+        c = domain.new_field()
+        c.name = 'c'
+        c['g'] = c_psi['g']
+        cc = c.integrate(x_basis)
+        self.c_psi = cc['g'][0]
         
-        self.c_psi = np.sum(self.c_psi['g'])
+        c_u = self.va.u*self.N31_u_star
+        c_u = c_u.evaluate()
+        c = domain.new_field()
+        c.name = 'c'
+        c['g'] = c_u['g']
+        cc = c.integrate(x_basis)
+        self.c_u = cc['g'][0]
         
-        print('c : ', self.c_amp)
+        c_A = self.va.u*self.N31_A_star
+        c_A = c_A.evaluate()
+        c = domain.new_field()
+        c.name = 'c'
+        c['g'] = c_A['g']
+        cc = c.integrate(x_basis)
+        self.c_A = cc['g'][0]
         
+        c_B = self.va.u*self.N31_B_star
+        c_B = c_B.evaluate()
+        c = domain.new_field()
+        c.name = 'c'
+        c['g'] = c_B['g']
+        cc = c.integrate(x_basis)
+        self.c_B = cc['g'][0]
         
             
                 
-                
+        
                 
 
