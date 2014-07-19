@@ -1316,7 +1316,68 @@ class AmplitudeAlpha():
         self.N31_B_star.name = 'N31_B_star'
         self.N31_B_star['g'] = self.n3.N31_B['g'].conj()
         
-        # c amplitude
+        self.v11_psi_star = domain.new_field()
+        self.v11_psi_star.name = 'v11_psi_star'
+        self.v11_psi_star['g'] = self.v11_psi['g'].conj()
+        
+        self.v11_psi_star_x = self.v11_psi_star.differentiate(0)
+        self.v11_psi_star_xx = self.v11_psi_star_x.differentiate(0)
+        
+        self.v11_u_star = domain.new_field()
+        self.v11_u_star.name = 'v11_u_star'
+        self.v11_u_star['g'] = self.v11_u['g'].conj()
+        
+        self.v11_u_star_x = self.v11_u_star.differentiate(0)
+        self.v11_u_star_xx = self.v11_u_star_x.differentiate(0)
+        
+        self.v11_A_star = domain.new_field()
+        self.v11_A_star.name = 'v11_A_star'
+        self.v11_A_star['g'] = self.v11_A['g'].conj()
+        
+        self.v11_A_star_x = self.v11_A_star.differentiate(0)
+        self.v11_A_star_xx = self.v11_A_star_x.differentiate(0)
+        
+        self.v11_B_star = domain.new_field()
+        self.v11_B_star.name = 'v11_B_star'
+        self.v11_B_star['g'] = self.v11_B['g'].conj()
+        
+        self.v11_B_star_x = self.v11_B_star.differentiate(0)
+        self.v11_B_star_xx = self.v11_B_star_x.differentiate(0)
+        
+        # a = <va . D V11*>
+        a_psi = self.va.psi*(self.v11_psi_star_xx - self.Q**2*self.v11_psi_star)
+        a_psi = a_psi.evaluate()
+        a = domain.new_field()
+        a.name = 'a'
+        a['g'] = a_psi['g']
+        aa = a.integrate(x_basis)
+        self.a_psi = aa['g'][0]
+        
+        a_u = self.va.u*(self.v11_u_star_xx - self.Q**2*self.v11_u_star)
+        a_u = a_u.evaluate()
+        a = domain.new_field()
+        a.name = 'a'
+        a['g'] = a_u['g']
+        aa = a.integrate(x_basis)
+        self.a_u = aa['g'][0]
+        
+        a_A = self.va.A*(self.v11_A_star_xx - self.Q**2*self.v11_A_star)
+        a_A = a_A.evaluate()
+        a = domain.new_field()
+        a.name = 'a'
+        a['g'] = a_A['g']
+        aa = a.integrate(x_basis)
+        self.a_A = aa['g'][0]
+        
+        a_B = self.va.B*(self.v11_B_star_xx - self.Q**2*self.v11_B_star)
+        a_B = a_B.evaluate()
+        a = domain.new_field()
+        a.name = 'a'
+        a['g'] = a_B['g']
+        aa = a.integrate(x_basis)
+        self.a_B = aa['g'][0]
+        
+        # c = <va . N31*>
         c_psi = self.va.psi*self.N31_psi_star
         c_psi = c_psi.evaluate()
         c = domain.new_field()
@@ -1349,8 +1410,51 @@ class AmplitudeAlpha():
         cc = c.integrate(x_basis)
         self.c_B = cc['g'][0]
         
-            
+        # b = < va . X v11* >
+        b_psi = self.va.psi*(2/self.beta)*self.v11_A_star
+        b_psi = b_psi.evaluate()
+        b = domain.new_field()
+        b.name = 'b'
+        b['g'] = b_psi['g']
+        bb = b.integrate(x_basis)
+        self.b_psi = bb['g'][0]
+        
+        b_u = self.va.u*(2/self.beta)*self.v11_B_star
+        b_u = b_u.evaluate()
+        b = domain.new_field()
+        b.name = 'b'
+        b['g'] = b_u['g']
+        bb = b.integrate(x_basis)
+        self.b_u = bb['g'][0]
+        
+        b_A = self.va.A*self.v11_psi_star
+        b_A = b_A.evaluate()
+        b = domain.new_field()
+        b.name = 'b'
+        b['g'] = b_A['g']
+        bb = b.integrate(x_basis)
+        self.b_A = bb['g'][0]
+        
+        b_B = self.va.B*self.v11_u_star
+        b_B = b_B.evaluate()
+        b = domain.new_field()
+        b.name = 'b'
+        b['g'] = b_B['g']
+        bb = b.integrate(x_basis)
+        self.b_B = bb['g'][0]
+        
+        # h = < va . (L2twiddle v11 - L1twiddle v21)* >
+        
+        # g = < va . L3 v11 >
+        g_psi = self.va.psi*(2/self.beta)*self.v11_A
+        g_psi = g_psi.evaluate()
+        g = domain.new_field()
+        g.name = 'g'
+        g['g'] = g_psi['g']
+        gg = g.integrate(x_basis)
+        self.g_psi = gg['g'][0]
                 
+        
         
                 
 
