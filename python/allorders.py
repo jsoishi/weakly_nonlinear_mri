@@ -1229,6 +1229,13 @@ class AmplitudeAlpha():
         self.q = q
         self.beta = beta
         
+        # inverse magnetic reynolds number
+        self.iRm = 1./self.Rm
+
+        # rayleigh number defined from prandtl number
+        self.R = self.Rm/self.Pm
+        self.iR = 1./self.R
+        
         if run == True:
         
             self.va = AdjointHomogenous()
@@ -1344,6 +1351,17 @@ class AmplitudeAlpha():
         self.v11_B_star_x = self.v11_B_star.differentiate(0)
         self.v11_B_star_xx = self.v11_B_star_x.differentiate(0)
         
+        # V11 derivatives
+        self.v11_psi_x = self.v11_psi.differentiate(0)
+        self.v11_psi_xx = self.v11_psi_x.differentiate(0)
+        
+        # V21 derivatives
+        self.v21_psi_x = self.v21_psi.differentiate(0)
+        self.v21_psi_xx = self.v21_psi_x.differentiate(0)
+        
+        self.v21_A_x = self.v21_A.differentiate(0)
+        self.v21_A_xx = self.v21_A_x.differentiate(0)
+        
         # a = <va . D V11*>
         a_psi = self.va.psi*(self.v11_psi_star_xx - self.Q**2*self.v11_psi_star)
         a_psi = a_psi.evaluate()
@@ -1444,6 +1462,56 @@ class AmplitudeAlpha():
         self.b_B = bb['g'][0]
         
         # h = < va . (L2twiddle v11 - L1twiddle v21)* >
+        l2twiddlel1twiddle_psi = 3*1j*(2/self.beta)*self.Q*self.v11_A + 3*(2/self.beta)*self.Q**2*self.v21_A - (2/self.beta)*self.v21_A_xx - 6*self.Q**2*self.iR*self.v11_psi + 2*self.iR*self.v11_psi_xx + 4*1j*self.iR*self.Q**3*self.v21_psi - 4*self.iR*1j*self.Q*self.v21_psi_xx - 2*self.v21_u
+        l2l1t_psi = l2twiddlel1twiddle_psi.evaluate()
+        l2l1t_psi_conj = domain.new_field()
+        l2l1t_psi_conj.name = 'l2l1t_psi_conj'
+        l2l1t_psi_conj['g'] = l2l1t_psi['g'].conj()
+        h_psi = self.va.psi*l2l1t_psi_conj
+        h_psi = h_psi.evaluate()
+        h = domain.new_field()
+        h.name = 'h'
+        h['g'] = h_psi['g']
+        hh = h.integrate(x_basis)
+        self.h_psi = hh['g'][0]
+        
+        l2twiddlel1twiddle_u = -(2/self.beta)*self.v21_B - 2*1j*self.iR*self.Q*self.v21_u - (self.q - 2)*self.v21_psi + self.iR*self.v11_u
+        l2l1t_u = l2twiddlel1twiddle_u.evaluate()
+        l2l1t_u_conj = domain.new_field()
+        l2l1t_u_conj.name = 'l2l1t_u_conj'
+        l2l1t_u_conj['g'] = l2l1t_u['g'].conj()
+        h_u = self.va.u*l2l1t_u_conj
+        h_u = h_u.evaluate()
+        h = domain.new_field()
+        h.name = 'h'
+        h['g'] = h_u['g']
+        hh = h.integrate(x_basis)
+        self.h_u = hh['g'][0]
+        
+        l2twiddlel1twiddle_A = self.iRm*self.v11_A - 2*1j*self.iRm*self.Q*self.v21_A - self.v21_psi
+        l2l1t_A = l2twiddlel1twiddle_A.evaluate()
+        l2l1t_A_conj = domain.new_field()
+        l2l1t_A_conj.name = 'l2l1t_A_conj'
+        l2l1t_A_conj['g'] = l2l1t_A['g'].conj()
+        h_A = self.va.A*l2l1t_A_conj
+        h_A = h_A.evaluate()
+        h = domain.new_field()
+        h.name = 'h'
+        h['g'] = h_A['g']
+        hh = h.integrate(x_basis)
+        self.h_A = hh['g'][0]
+        
+        l2twiddlel1twiddle_B = self.q*self.v21_A + self.iRm*self.v11_B - 2*1j*self.iRm*self.Q*self.v21_B - self.v21_u
+        l2l1t_B = l2twiddlel1twiddle_B.evaluate()
+        l2l1t_B_conj = domain.new_field()
+        l2l1t_B_conj.name = 'l2l1t_B_conj'
+        l2l1t_B_conj['g'] = l2l1t_B['g'].conj()
+        h_B = self.va.B*l2l1t_B_conj
+        h_B = h_B.evaluate()
+        h = domain.new_field()
+        h.name = 'h'
+        hh = h.integrate(x_basis)
+        self.h_B = hh['g'][0]
         
         # g = < va . L3 v11 >
         g_psi = self.va.psi*(2/self.beta)*self.v11_A
