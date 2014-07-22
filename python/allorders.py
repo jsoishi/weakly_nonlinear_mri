@@ -6,6 +6,7 @@ from scipy.linalg import eig, norm
 import pylab
 import copy
 import pickle
+import plot_tools
 
 import matplotlib
 matplotlib.rcParams['backend'] = "Qt4Agg"
@@ -947,6 +948,99 @@ class OrderE2():
         
         fig.savefig("v2.png")
            
+class OrderE3():
+
+    """
+    Solves the third order equation L V3 = D U11 - 2*L1twiddle V20 + L1twiddle U20 - L2 U11 + X U11
+    Returns B30, the (B) component of V3
+    
+    """
+    
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True):
+        
+        self.Q = Q
+        self.Rm = Rm
+        self.Pm = Pm
+        self.q = q
+        self.beta = beta
+        self.R = self.Rm/self.Pm
+        
+        if run == True:
+            
+            o2 = OrderE2()
+            o2.solve20()
+            o2.solve21(norm = norm)
+            o2.solve22()
+            
+            self.v20_psi = o2.LEV20psi.state['psi20']
+            self.v20_u = o2.LEV20u.state['u20']
+            self.v20_A = o2.LEV20A.state['A20']
+            self.v20_B = o2.LEV20B.state['B20']  
+            
+            if norm == True:
+                v21_psi = o2.LEV21.state['psi21']*o2.scale   
+                v21_u = o2.LEV21.state['u21']*o2.scale 
+                v21_A = o2.LEV21.state['A21']*o2.scale 
+                v21_B = o2.LEV21.state['B21']*o2.scale 
+                
+                self.v21_psi = v21_psi.evaluate()     
+                self.v21_u = v21_u.evaluate() 
+                self.v21_A = v21_A.evaluate() 
+                self.v21_B = v21_B.evaluate() 
+            
+            else: 
+                
+                self.v21_psi = o2.LEV21.state['psi21']
+                self.v21_u = o2.LEV21.state['u21']
+                self.v21_A = o2.LEV21.state['A21']
+                self.v21_B = o2.LEV21.state['B21']
+        
+        self.x = domain.grid(0)
+        
+        self.v20_utwiddle = domain.new_field()
+        self.v20_utwiddle.name = 'self.v20_utwiddle'
+        self.v20_utwiddle['g'] = 0.5*(2/self.beta)*self.R*(self.x**2 - 1)
+            
+    def solve(self, gridnum = gridnum, save = False):
+    
+        self.gridnum = gridnum
+    
+        # inverse magnetic reynolds number
+        iRm = 1./self.Rm
+
+        # rayleigh number defined from prandtl number
+        R = self.Rm/self.Pm
+        iR = 1./R
+        
+        beta = self.beta
+        Q = self.Q
+        q = self.q
+        
+        # righthand side for the 20 terms (e^0)
+        rhs30_B = 1 - 2*(self.v20_u['g'] - self.q*self.v20_A['g']) + self.v20_utwiddle['g'] - iRm
+        
+        self.rhs30_B = rhs30_B
+        
+        lv30B = ParsedProblem(['x'],
+                              field_names=['B30', 'B30x'],
+                              param_names=['iRm', 'rhs30_B'])
+        lv30B.add_equation("iRm*dx(B30x) = rhs30_B")
+        lv30B.add_equation("dx(B30) - B30x = 0")
+        lv30B.parameters['iRm'] = iRm
+        lv30B.parameters['rhs30_B'] = rhs30_B
+        lv30B.add_left_bc("B30x = 0")
+        lv30B.add_right_bc("B30x = 0")
+        
+        lv30B.expand(domain, order = gridnum)
+        
+        LEV30B = LinearBVP(lv30B, domain)
+        LEV30B.solve()
+        
+        self.lv30B = lv30B
+        self.LEV30B = LEV30B
+
+        self.B30 = LEV30B.state['B30']
+        
             
 class N3():
 
@@ -1340,6 +1434,9 @@ class AmplitudeAlpha():
             self.v22_A = o2.LEV22.state['A22']
             self.v22_B = o2.LEV22.state['B22']
             
+            self.o3 = OrderE3()
+            self.o3.solve()
+            
             self.n3 = N3()
             self.n3.solve31()
             self.n3.solve30()
@@ -1406,6 +1503,17 @@ class AmplitudeAlpha():
         self.v21_A_x = self.v21_A.differentiate(0)
         self.v21_A_xx = self.v21_A_x.differentiate(0)
         
+        # V20_utwiddle
+        self.v20_utwiddle = domain.new_field()
+        self.v20_utwiddle.name = 'self.v20_utwiddle'
+        self.v20_utwiddle['g'] = 0.5*(2/self.beta)*self.R*(self.x**2 - 1)
+        
+        self.v20_utwiddle_star = domain.new_field()
+        self.v20_utwiddle_star.name = 'self.v20_utwiddle_star'
+        self.v20_utwiddle_star['g'] = self.v20_utwiddle['g'].conj()
+        
+        self.v20_utwiddle_x = self.v20_utwiddle.differentiate(0)
+        
         # a = <va . D V11*>
         a_psi = self.va.psi*(self.v11_psi_star_xx - self.Q**2*self.v11_psi_star)
         a_psi = a_psi.evaluate()
@@ -1471,6 +1579,27 @@ class AmplitudeAlpha():
         c['g'] = c_B['g']
         cc = c.integrate(x_basis)
         self.c_B = cc['g'][0]
+        
+        # ctwiddle = < va . N31_twiddle_star > 
+        self.c_twiddle_psi = 0j
+        
+        c_twiddle_u = self.va.psi*(1j*self.Q*self.v11_psi)*(self.v20_utwiddle_x)
+        c_twiddle_u = c_twiddle_u.evaluate()
+        c_twiddle_u_conj = domain.new_field()
+        c_twiddle_u_conj.name = 'c_twiddle_u_conj'
+        c_twiddle_u_conj['g'] = c_twiddle_u['g'].conj()
+        cc_twiddle_u = c_twiddle_u_conj.integrate(x_basis)
+        self.c_twiddle_u = cc_twiddle_u['g'][0]
+        
+        self.c_twiddle_A = 0j
+        
+        c_twiddle_B = self.va.psi*(-1j*self.Q*self.v11_psi)*(self.v20_utwiddle_x)
+        c_twiddle_B = c_twiddle_B.evaluate()
+        c_twiddle_B_conj = domain.new_field()
+        c_twiddle_B_conj.name = 'c_twiddle_B_conj'
+        c_twiddle_B_conj['g'] = c_twiddle_B['g'].conj()
+        cc_twiddle_B = c_twiddle_B_conj.integrate(x_basis)
+        self.c_twiddle_B = cc_twiddle_B['g'][0]
         
         # b = < va . X v11* >
         b_psi = self.va.psi*(2/self.beta)*self.v11_A_star
@@ -1566,6 +1695,37 @@ class AmplitudeAlpha():
         gg = g.integrate(x_basis)
         self.g_psi = gg['g'][0]
         
+        self.g_u = 0j
+        self.g_A = 0j
+        self.g_B = 0j
+        
+        # print all the coefficients
+        print("a_psi :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.a_psi))
+        print("a_u :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.a_u))
+        print("a_A :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.a_A))
+        print("a_B :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.a_B))
+        
+        print("c_psi :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.c_psi))
+        print("c_u :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.c_u))
+        print("c_A :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.c_A))
+        print("c_B :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.c_B))
+        
+        print("b_psi :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.b_psi))
+        print("b_u :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.b_u))
+        print("b_A :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.b_A))
+        print("b_B :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.b_B))
+        
+        print("h_psi :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.h_psi))
+        print("h_u :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.h_u))
+        print("h_A :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.h_A))
+        print("h_B :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.h_B))
+        
+        print("g_psi :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.g_psi))
+        print("g_u :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.g_u))
+        print("g_A :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.g_A))
+        print("g_B :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.g_B))
+        
+        
 class AmplitudeBeta():
 
     """
@@ -1653,6 +1813,9 @@ class AmplitudeBeta():
             self.n3.solve31()
             self.n3.solve30()
             
+            self.o3 = OrderE3()
+            self.o3.solve()
+            
             
     def solve(self, gridnum = gridnum, save = False):
     
@@ -1671,6 +1834,14 @@ class AmplitudeBeta():
         self.N30_B_star.name = 'N30_B_star'
         self.N30_B_star['g'] = self.n3.N30_B['g'].conj()
         
+        self.v30_B_star = domain.new_field()
+        self.v30_B_star.name = 'v30_B_star'
+        self.v30_B_star['g'] = self.o3.rhs30_B.conj()
+        
+        # n = < u11 . (L V30)* >  = v30.rhs ??
+        nn = self.v30_B_star.integrate(x_basis)  
+        self.n_B = nn['g'][0]      
+        
         # k = < u11 . (Ltwiddle1 V20)* > = int u20_star - q*A20_star
         k_B = self.v20_u_star - self.q*self.v20_A_star
         k_B = k_B.evaluate()
@@ -1679,6 +1850,17 @@ class AmplitudeBeta():
         k['g'] = k_B['g']
         kk = k.integrate(x_basis)
         self.k_B = kk['g'][0]
+        
+        k_B1 = self.v20_u_star.integrate(x_basis)
+        self.k_B1 = k_B1['g'][0]
+        
+        k_B2 = -self.q*self.v20_A_star
+        k_B2 = k_B2.evaluate()
+        k = domain.new_field()
+        k.name = 'k'
+        k['g'] = k_B2['g']
+        kk2 = k.integrate(x_basis)
+        self.k_B2 = kk2['g'][0]
         
         # m = < U11 . (L1twiddle U20)* > = int u20_twiddle_star
         self.v20_utwiddle = domain.new_field()
@@ -1692,10 +1874,114 @@ class AmplitudeBeta():
         mm = self.v20_utwiddle_star.integrate(x_basis)
         self.m_B = mm['g'][0]
         
-        nn = self.N30_B_star.integrate(x_basis)
-        self.n_B = nn['g'][0]
+        pp = self.N30_B_star.integrate(x_basis)
+        self.p_B = pp['g'][0]
         
         
+class PlotContours():
+    
+    """
+    Plots contours of fluid quantities up to and including order e^2.
+    
+    """
+    
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True):
         
+        self.Q = Q
+        self.Rm = Rm
+        self.Pm = Pm
+        self.q = q
+        self.beta = beta
+        
+        # inverse magnetic reynolds number
+        self.iRm = 1./self.Rm
+
+        # rayleigh number defined from prandtl number
+        self.R = self.Rm/self.Pm
+        self.iR = 1./self.R
+        
+        if run == True:
+        
+            self.va = AdjointHomogenous()
+            self.va.solve(save = False, norm = True)
+        
+            v1 = OrderE()
+            v1.solve(save=False)
+            
+            if norm == True:
+            
+                psi_1 = v1.LEV.state['psi']*v1.scale
+                u_1 = v1.LEV.state['u']*v1.scale
+                A_1 = v1.LEV.state['A']*v1.scale
+                B_1 = v1.LEV.state['B']*v1.scale
+            
+                self.v11_psi = psi_1.evaluate()
+                self.v11_u = u_1.evaluate()
+                self.v11_A = A_1.evaluate()
+                self.v11_B = B_1.evaluate()
                 
+                
+            else:
+            
+                self.v11_psi = v1.LEV.state['psi']
+                self.v11_u = v1.LEV.state['u']
+                self.v11_A = v1.LEV.state['A']
+                self.v11_B = v1.LEV.state['B']
+            
+            o2 = OrderE2()
+            o2.solve20()
+            o2.solve21(norm = norm)
+            o2.solve22()
+            
+            self.v20_psi = o2.LEV20psi.state['psi20']
+            self.v20_u = o2.LEV20u.state['u20']
+            self.v20_A = o2.LEV20A.state['A20']
+            self.v20_B = o2.LEV20B.state['B20']  
+            
+            if norm == True:
+                v21_psi = o2.LEV21.state['psi21']*o2.scale   
+                v21_u = o2.LEV21.state['u21']*o2.scale 
+                v21_A = o2.LEV21.state['A21']*o2.scale 
+                v21_B = o2.LEV21.state['B21']*o2.scale 
+                
+                self.v21_psi = v21_psi.evaluate()     
+                self.v21_u = v21_u.evaluate() 
+                self.v21_A = v21_A.evaluate() 
+                self.v21_B = v21_B.evaluate() 
+            
+            else: 
+                
+                self.v21_psi = o2.LEV21.state['psi21']
+                self.v21_u = o2.LEV21.state['u21']
+                self.v21_A = o2.LEV21.state['A21']
+                self.v21_B = o2.LEV21.state['B21']
+                
+            self.v22_psi = o2.LEV22.state['psi22']
+            self.v22_u = o2.LEV22.state['u22']
+            self.v22_A = o2.LEV22.state['A22']
+            self.v22_B = o2.LEV22.state['B22']
+            
+            self.n3 = N3()
+            self.n3.solve31()
+            self.n3.solve30()
+            
+            self.o3 = OrderE3()
+            self.o3.solve()
+            
+            # plotting
+            eps = 0.5
+            
+            fig = plt.figure()
+            
+            
+            def field_plot_2d(domain, field):
+                # Plot and data axes are reversed
+                y = domain.grid(0)
+                x = domain.grid(1)
+                xmesh, ymesh = plot_tools.quad_mesh(x.flatten(), y.flatten())
+                plt.pcolormesh(xmesh, ymesh, field['g'], cmap='RdBu_r')
+                plt.axis(plot_tools.pad_limits(x, y));
+                plt.colorbar()
+            
+
 
