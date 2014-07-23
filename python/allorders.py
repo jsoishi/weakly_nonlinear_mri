@@ -505,7 +505,7 @@ class OrderE2():
     
     """
     
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True):
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True, speedy = False, o1 = 0):
         
         self.Q = Q
         self.Rm = Rm
@@ -513,7 +513,9 @@ class OrderE2():
         self.q = q
         self.beta = beta
         
-        if run == True:
+        
+        if (run == True) and (speedy == False):
+            
             v1 = OrderE()
             v1.solve(save=False)
             
@@ -536,18 +538,40 @@ class OrderE2():
                 self.u_1 = v1.LEV.state['u']
                 self.A_1 = v1.LEV.state['A']
                 self.B_1 = v1.LEV.state['B']
+                
+        if speedy == True:
             
-            n2 = N2()
-            n2.solve()
-            self.n22_psi = n2.N22_psi
-            self.n22_u = n2.N22_u
-            self.n22_A = n2.N22_A
-            self.n22_B = n2.N22_B
+            if norm == True:
             
-            self.n20_psi = n2.N20_psi
-            self.n20_u = n2.N20_u
-            self.n20_A = n2.N20_A
-            self.n20_B = n2.N20_B
+                psi_1 = o1.LEV.state['psi']*o1.scale
+                u_1 = o1.LEV.state['u']*o1.scale
+                A_1 = o1.LEV.state['A']*o1.scale
+                B_1 = o1.LEV.state['B']*o1.scale
+            
+                self.psi_1 = psi_1.evaluate()
+                self.u_1 = u_1.evaluate()
+                self.A_1 = A_1.evaluate()
+                self.B_1 = B_1.evaluate()
+                
+                
+            else:
+            
+                self.psi_1 = o1.LEV.state['psi']
+                self.u_1 = o1.LEV.state['u']
+                self.A_1 = o1.LEV.state['A']
+                self.B_1 = o1.LEV.state['B']
+                 
+        n2 = N2()
+        n2.solve()
+        self.n22_psi = n2.N22_psi
+        self.n22_u = n2.N22_u
+        self.n22_A = n2.N22_A
+        self.n22_B = n2.N22_B
+        
+        self.n20_psi = n2.N20_psi
+        self.n20_u = n2.N20_u
+        self.n20_A = n2.N20_A
+        self.n20_B = n2.N20_B
             
     def solve20(self, gridnum = gridnum, save = False):
         # inverse magnetic reynolds number
@@ -956,7 +980,7 @@ class OrderE3():
     
     """
     
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True):
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True, speedy = False, o2 = 0):
         
         self.Q = Q
         self.Rm = Rm
@@ -965,12 +989,37 @@ class OrderE3():
         self.beta = beta
         self.R = self.Rm/self.Pm
         
-        if run == True:
+        if (run == True) and (speedy == False):
             
             o2 = OrderE2()
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
+            
+            self.v20_psi = o2.LEV20psi.state['psi20']
+            self.v20_u = o2.LEV20u.state['u20']
+            self.v20_A = o2.LEV20A.state['A20']
+            self.v20_B = o2.LEV20B.state['B20']  
+            
+            if norm == True:
+                v21_psi = o2.LEV21.state['psi21']*o2.scale   
+                v21_u = o2.LEV21.state['u21']*o2.scale 
+                v21_A = o2.LEV21.state['A21']*o2.scale 
+                v21_B = o2.LEV21.state['B21']*o2.scale 
+                
+                self.v21_psi = v21_psi.evaluate()     
+                self.v21_u = v21_u.evaluate() 
+                self.v21_A = v21_A.evaluate() 
+                self.v21_B = v21_B.evaluate() 
+            
+            else: 
+                
+                self.v21_psi = o2.LEV21.state['psi21']
+                self.v21_u = o2.LEV21.state['u21']
+                self.v21_A = o2.LEV21.state['A21']
+                self.v21_B = o2.LEV21.state['B21']
+                
+        if speedy == True:
             
             self.v20_psi = o2.LEV20psi.state['psi20']
             self.v20_u = o2.LEV20u.state['u20']
@@ -1050,7 +1099,7 @@ class N3():
     
     """
     
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True):
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, run = True, norm = True, speedy = False, o1 = 0, o2 = 0):
         
         self.Q = Q
         self.Rm = Rm
@@ -1058,7 +1107,7 @@ class N3():
         self.q = q
         self.beta = beta
         
-        if run == True:
+        if (run == True) and (speedy == False):
             v1 = OrderE()
             v1.solve(save=False)
             
@@ -1086,6 +1135,61 @@ class N3():
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
+            
+            self.v20_psi = o2.LEV20psi.state['psi20']
+            self.v20_u = o2.LEV20u.state['u20']
+            self.v20_A = o2.LEV20A.state['A20']
+            self.v20_B = o2.LEV20B.state['B20']  
+            
+            if norm == True:
+                v21_psi = o2.LEV21.state['psi21']*o2.scale   
+                v21_u = o2.LEV21.state['u21']*o2.scale 
+                v21_A = o2.LEV21.state['A21']*o2.scale 
+                v21_B = o2.LEV21.state['B21']*o2.scale 
+                
+                self.v21_psi = v21_psi.evaluate()     
+                self.v21_u = v21_u.evaluate() 
+                self.v21_A = v21_A.evaluate() 
+                self.v21_B = v21_B.evaluate() 
+            
+            else: 
+                
+                self.v21_psi = o2.LEV21.state['psi21']
+                self.v21_u = o2.LEV21.state['u21']
+                self.v21_A = o2.LEV21.state['A21']
+                self.v21_B = o2.LEV21.state['B21']
+                
+            self.v22_psi = o2.LEV22.state['psi22']
+            self.v22_u = o2.LEV22.state['u22']
+            self.v22_A = o2.LEV22.state['A22']
+            self.v22_B = o2.LEV22.state['B22']
+            
+        if speedy == True:
+            
+            # load o1 
+            v1 = o1
+            
+            if norm == True:
+            
+                psi_1 = v1.LEV.state['psi']*v1.scale
+                u_1 = v1.LEV.state['u']*v1.scale
+                A_1 = v1.LEV.state['A']*v1.scale
+                B_1 = v1.LEV.state['B']*v1.scale
+            
+                self.v11_psi = psi_1.evaluate()
+                self.v11_u = u_1.evaluate()
+                self.v11_A = A_1.evaluate()
+                self.v11_B = B_1.evaluate()
+                
+                
+            else:
+            
+                self.v11_psi = v1.LEV.state['psi']
+                self.v11_u = v1.LEV.state['u']
+                self.v11_A = v1.LEV.state['A']
+                self.v11_B = v1.LEV.state['B']
+            
+            # load o2
             
             self.v20_psi = o2.LEV20psi.state['psi20']
             self.v20_u = o2.LEV20u.state['u20']
@@ -1401,7 +1505,7 @@ class AmplitudeAlpha():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2()
+            o2 = OrderE2(speedy = True, o1 = v1)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1434,10 +1538,10 @@ class AmplitudeAlpha():
             self.v22_A = o2.LEV22.state['A22']
             self.v22_B = o2.LEV22.state['B22']
             
-            self.o3 = OrderE3()
+            self.o3 = OrderE3(speedy = True, o2 = o2)
             self.o3.solve()
             
-            self.n3 = N3()
+            self.n3 = N3(speedy = True, o1 = v1, o2 = o2)
             self.n3.solve31()
             self.n3.solve30()
             
@@ -1767,7 +1871,7 @@ class AmplitudeBeta():
             self.v22_A = o2.LEV22.state['A22']
             self.v22_B = o2.LEV22.state['B22']
             
-            self.n3 = N3()
+            self.n3 = N3(speedy = True, o1 = v1, o2 = o2)
             self.n3.solve31()
             self.n3.solve30()
             
@@ -1858,23 +1962,21 @@ class SolveAmplitudeAlpha():
         self.gridnum = gridnum
 
         # obtain amplitude coefficients
-        alpha = AmplitudeAlpha()
-        alpha.solve()
-        beta = AmplitudeBeta()
-        beta.solve()
+        self.alpha_amp = AmplitudeAlpha()
+        self.alpha_amp.solve()
         
         problem = ParsedProblem(axis_names=['Z'],
                            field_names=['alpha', 'alphaZ'],
                            param_names=['a', 'b', 'c', 'h', 'g', 'Q'])
         
-        problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*(alpha**2)")
+        problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*(alpha**2)")##alpha*alpha*alpha.conj")#(alpha**2)")
         problem.add_equation("alphaZ - dZ(alpha) = 0")
                 
-        problem.parameters['a'] = alpha.a
-        problem.parameters['b'] = alpha.b
-        problem.parameters['c'] = alpha.c
-        problem.parameters['h'] = alpha.h
-        problem.parameters['g'] = alpha.g
+        problem.parameters['a'] = self.alpha_amp.a
+        problem.parameters['b'] = self.alpha_amp.b
+        problem.parameters['c'] = self.alpha_amp.c
+        problem.parameters['h'] = self.alpha_amp.h
+        problem.parameters['g'] = self.alpha_amp.g
         problem.parameters['Q'] = self.Q
         
         lambda_crit = 2*np.pi/self.Q
@@ -1929,6 +2031,7 @@ class SolveAmplitudeAlpha():
         plt.xlabel('Z')
         plt.ylabel('t')
     
+        self.saturation_amplitude = alpha_array[-1, 0]
         
 class PlotContours():
     
@@ -1952,88 +2055,68 @@ class PlotContours():
         self.R = self.Rm/self.Pm
         self.iR = 1./self.R
         
-        if run == True:
+        self.gridnum = gridnum
         
-            self.va = AdjointHomogenous()
-            self.va.solve(save = False, norm = True)
+        saa = SolveAmplitudeAlpha()
+        #alpha_amp = AmplitudeAlpha()
+        #beta_amp = AmplitudeBeta()
         
-            v1 = OrderE()
-            v1.solve(save=False)
-            
-            if norm == True:
-            
-                psi_1 = v1.LEV.state['psi']*v1.scale
-                u_1 = v1.LEV.state['u']*v1.scale
-                A_1 = v1.LEV.state['A']*v1.scale
-                B_1 = v1.LEV.state['B']*v1.scale
-            
-                self.v11_psi = psi_1.evaluate()
-                self.v11_u = u_1.evaluate()
-                self.v11_A = A_1.evaluate()
-                self.v11_B = B_1.evaluate()
-                
-                
-            else:
-            
-                self.v11_psi = v1.LEV.state['psi']
-                self.v11_u = v1.LEV.state['u']
-                self.v11_A = v1.LEV.state['A']
-                self.v11_B = v1.LEV.state['B']
-            
-            o2 = OrderE2()
-            o2.solve20()
-            o2.solve21(norm = norm)
-            o2.solve22()
-            
-            self.v20_psi = o2.LEV20psi.state['psi20']
-            self.v20_u = o2.LEV20u.state['u20']
-            self.v20_A = o2.LEV20A.state['A20']
-            self.v20_B = o2.LEV20B.state['B20']  
-            
-            if norm == True:
-                v21_psi = o2.LEV21.state['psi21']*o2.scale   
-                v21_u = o2.LEV21.state['u21']*o2.scale 
-                v21_A = o2.LEV21.state['A21']*o2.scale 
-                v21_B = o2.LEV21.state['B21']*o2.scale 
-                
-                self.v21_psi = v21_psi.evaluate()     
-                self.v21_u = v21_u.evaluate() 
-                self.v21_A = v21_A.evaluate() 
-                self.v21_B = v21_B.evaluate() 
-            
-            else: 
-                
-                self.v21_psi = o2.LEV21.state['psi21']
-                self.v21_u = o2.LEV21.state['u21']
-                self.v21_A = o2.LEV21.state['A21']
-                self.v21_B = o2.LEV21.state['B21']
-                
-            self.v22_psi = o2.LEV22.state['psi22']
-            self.v22_u = o2.LEV22.state['u22']
-            self.v22_A = o2.LEV22.state['A22']
-            self.v22_B = o2.LEV22.state['B22']
-            
-            self.n3 = N3()
-            self.n3.solve31()
-            self.n3.solve30()
-            
-            self.o3 = OrderE3()
-            self.o3.solve()
-            
-            # plotting
-            eps = 0.5
-            
-            fig = plt.figure()
-            
-            """
-            def field_plot_2d(domain, field):
-                # Plot and data axes are reversed
-                y = domain.grid(0)
-                x = domain.grid(1)
-                xmesh, ymesh = plot_tools.quad_mesh(x.flatten(), y.flatten())
-                plt.pcolormesh(xmesh, ymesh, field['g'], cmap='RdBu_r')
-                plt.axis(plot_tools.pad_limits(x, y));
-                plt.colorbar()
-            """
-
+        # saturation amplitude
+        alpha_s = saa.saturation_amplitude
+           
+        # epsilon value 
+        eps = 0.5
+        
+        fig = plt.figure(figsize=(12, 12))
+        ax1 = fig.add_subplot(221)
+        ax2 = fig.add_subplot(222)
+        ax3 = fig.add_subplot(223)
+        ax4 = fig.add_subplot(224)
+        
+        nz = self.gridnum
+        Lz = 2*np.pi/self.Q
+        z = np.linspace(0, Lz, nz, endpoint=False)
+        zz = z.reshape(nz, 1)
+        
+        # structure in the z direction
+        self.eiqz = np.cos(self.Q*zz) + 1j*np.sin(self.Q*zz)
+        self.ei2qz = np.cos(2*self.Q*zz) + 1j*np.sin(2*self.Q*zz)
+        self.ei0qz = np.cos(0*self.Q*zz) + 1j*np.sin(0*self.Q*zz)
+        
+        # psi terms
+        self.V1_psi = alpha_s*saa.alpha_amp.v11_psi['g']*self.eiqz
+        self.V2_psi = alpha_s**2*self.ei2qz*saa.alpha_amp.v22_psi['g'] + (alpha_s*alpha_s.conj())*saa.alpha_amp.v20_psi['g']*self.ei0qz
+        self.V_psi = eps*self.V1_psi + eps**2*self.V2_psi
+        
+        # u terms
+        self.V1_u = alpha_s*saa.alpha_amp.v11_u['g']*self.eiqz
+        self.V2_u = alpha_s**2*self.ei2qz*saa.alpha_amp.v22_u['g'] + (alpha_s*alpha_s.conj())*saa.alpha_amp.v20_u['g']*self.ei0qz
+        self.V_u = eps*self.V1_u + eps**2*self.V2_u
+        
+        # A terms
+        self.V1_A = alpha_s*saa.alpha_amp.v11_A['g']*self.eiqz
+        self.V2_A = alpha_s**2*self.ei2qz*saa.alpha_amp.v22_A['g'] + (alpha_s*alpha_s.conj())*saa.alpha_amp.v20_A['g']*self.ei0qz
+        self.V_A = eps*self.V1_A + eps**2*self.V2_A
+        
+        # B terms
+        self.V1_B = alpha_s*saa.alpha_amp.v11_B['g']*self.eiqz
+        self.V2_B = alpha_s**2*self.ei2qz*saa.alpha_amp.v22_B['g'] + (alpha_s*alpha_s.conj())*saa.alpha_amp.v20_B['g']*self.ei0qz
+        self.V_B = eps*self.V1_B + eps**2*self.V2_B
+        
+        ax1.pcolormesh(saa.alpha_amp.x, z, self.V_psi)
+        ax1.set_ylim(0, Lz)
+        
+        ax2.pcolormesh(saa.alpha_amp.x, z, self.V_u)
+        ax2.set_ylim(0, Lz)
+        
+        ax3.pcolormesh(saa.alpha_amp.x, z, self.V_A)
+        ax3.set_ylim(0, Lz)
+        
+        ax4.pcolormesh(saa.alpha_amp.x, z, self.V_B)
+        ax4.set_ylim(0, Lz)
+        
+        
+        
+        
+        
 
