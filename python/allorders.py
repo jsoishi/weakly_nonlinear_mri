@@ -1965,12 +1965,16 @@ class SolveAmplitudeAlpha():
         self.alpha_amp = AmplitudeAlpha()
         self.alpha_amp.solve()
         
+        #MagSq = operators.MagSquared
+        Absolute = operators.Absolute
+        
         problem = ParsedProblem(axis_names=['Z'],
                            field_names=['alpha', 'alphaZ'],
-                           param_names=['a', 'b', 'c', 'h', 'g', 'Q'])
+                           param_names=['a', 'b', 'c', 'h', 'g', 'Q', 'Absolute'])
         
-        problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*(alpha**2)")##alpha*alpha*alpha.conj")#(alpha**2)")
+        problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = alpha*Absolute(alpha**2)")#-c*alpha*(alpha**2)")#-c*alpha*MagSq(alpha)")
         problem.add_equation("alphaZ - dZ(alpha) = 0")
+        
                 
         problem.parameters['a'] = self.alpha_amp.a
         problem.parameters['b'] = self.alpha_amp.b
@@ -1978,6 +1982,8 @@ class SolveAmplitudeAlpha():
         problem.parameters['h'] = self.alpha_amp.h
         problem.parameters['g'] = self.alpha_amp.g
         problem.parameters['Q'] = self.Q
+        #problem.parameters['MagSq'] = MagSq
+        problem.parameters['Absolute'] = Absolute
         
         lambda_crit = 2*np.pi/self.Q
         
@@ -2115,6 +2121,24 @@ class PlotContours():
         ax4.pcolormesh(saa.alpha_amp.x, z, self.V_B)
         ax4.set_ylim(0, Lz)
         
+        self.x = domain.grid(0)
+        
+        
+        # uz1 = - dx(psi)
+        v22_psi_x = domain.new_field()
+        v22_psi_x.name = 'v22_psi_x'
+        v22_psi_x['g'] = saa.alpha_amp.v22_psi.differentiate(0)['g']
+        
+        v20_psi_x = domain.new_field()
+        v20_psi_x.name = 'v20_psi_x'
+        v20_psi_x['g'] = saa.alpha_amp.v20_psi.differentiate(0)['g']
+        
+        self.V1_uz1 = -alpha_s*saa.alpha_amp.v11_psi_x['g']*self.eiqz
+        self.V2_uz1 = -alpha_s**2*self.ei2qz*v22_psi_x - (alpha_s*alpha_s.conj())*v20_psi_x['g']*self.ei0qz
+        
+        self.V_uz1 = eps*self.V1_uz1 + eps**2*self.V2_uz1
+        
+        #self.V1_Ax = V1_A.differentiate(0)
         
         
         
