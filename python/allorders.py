@@ -2240,5 +2240,29 @@ def plot_uy(pc_obj, oplot = True):
         uymag = pc_obj.V_u.real
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, pc_obj.V_ux1.real, pc_obj.V_uz1.real, linewidth = 3*speed/speed.max(), color = "black")
         
+def plot_By(pc_obj, oplot = True):
+
+    nz = pc_obj.gridnum
+    Lz = 2*np.pi/pc_obj.Q
+    z = np.linspace(0, Lz, nz, endpoint=False)
+    zz = z.reshape(nz, 1)
+    
+    dz = z[1] - z[0]
+
+    fig = plt.figure(figsize = (12, 8))
+    ax = fig.add_subplot(111)
+    ax.set_xlabel("x (radial)", size = 20)
+    ax.set_ylabel("z (vertical)", size = 20)
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.V_B, cmap="RdBu_r")
+    cbar = plt.colorbar(info)
+    cbar.set_label(r"$B_y$ Perturbation", size = 20)
+    
+    ax.set_ylim(0, Lz - dz)
+    
+    if oplot == True:
+        Bmag = np.sqrt(np.abs(pc_obj.V_Bx1**2) + np.abs(pc_obj.V_Bz1**2))
+        uymag = pc_obj.V_B.real
+        su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, pc_obj.V_Bx1.real, pc_obj.V_Bz1.real, linewidth = 3*Bmag/Bmag.max(), color = "black")
+        
     
 
