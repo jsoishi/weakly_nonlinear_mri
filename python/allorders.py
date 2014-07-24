@@ -12,7 +12,7 @@ import matplotlib
 matplotlib.rcParams['backend'] = "Qt4Agg"
 matplotlib.rcParams.update({'figure.autolayout': True})
 
-gridnum = 64
+gridnum = 256
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -1972,7 +1972,8 @@ class SolveAmplitudeAlpha():
                            field_names=['alpha', 'alphaZ'],
                            param_names=['a', 'b', 'c', 'h', 'g', 'Q', 'Absolute'])
         
-        problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = alpha*Absolute(alpha**2)")#-c*alpha*(alpha**2)")#-c*alpha*MagSq(alpha)")
+        #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = alpha*Absolute(alpha**2)")#-c*alpha*(alpha**2)")#-c*alpha*MagSq(alpha)")
+        problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = alpha*MagSquared(alpha)")
         problem.add_equation("alphaZ - dZ(alpha) = 0")
         
                 
@@ -2063,17 +2064,17 @@ class PlotContours():
         
         self.gridnum = gridnum
         
-        saa = SolveAmplitudeAlpha()
+        self.saa = SolveAmplitudeAlpha()
         #alpha_amp = AmplitudeAlpha()
         #beta_amp = AmplitudeBeta()
         
         # saturation amplitude
-        alpha_s = saa.saturation_amplitude
+        self.alpha_s = self.saa.saturation_amplitude
            
         # epsilon value 
-        eps = 0.5
+        self.eps = 0.5
         
-        fig = plt.figure(figsize=(12, 12))
+        fig = plt.figure(figsize=(10, 10))
         ax1 = fig.add_subplot(221)
         ax2 = fig.add_subplot(222)
         ax3 = fig.add_subplot(223)
@@ -2084,63 +2085,131 @@ class PlotContours():
         z = np.linspace(0, Lz, nz, endpoint=False)
         zz = z.reshape(nz, 1)
         
+        dz = z[1] - z[0]
+        
         # structure in the z direction
         self.eiqz = np.cos(self.Q*zz) + 1j*np.sin(self.Q*zz)
         self.ei2qz = np.cos(2*self.Q*zz) + 1j*np.sin(2*self.Q*zz)
         self.ei0qz = np.cos(0*self.Q*zz) + 1j*np.sin(0*self.Q*zz)
         
+        self.eiqz_z = 1j*self.Q*np.cos(self.Q*zz) - self.Q*np.sin(self.Q*zz)
+        self.ei2qz_z = 2*1j*self.Q*np.cos(2*self.Q*zz) - 2*self.Q*np.sin(2*self.Q*zz)
+        
+        # dz(e^0) = 0
+        
         # psi terms
-        self.V1_psi = alpha_s*saa.alpha_amp.v11_psi['g']*self.eiqz
-        self.V2_psi = alpha_s**2*self.ei2qz*saa.alpha_amp.v22_psi['g'] + (alpha_s*alpha_s.conj())*saa.alpha_amp.v20_psi['g']*self.ei0qz
-        self.V_psi = eps*self.V1_psi + eps**2*self.V2_psi
+        self.V1_psi = self.alpha_s*self.saa.alpha_amp.v11_psi['g']*self.eiqz
+        self.V2_psi = self.alpha_s**2*self.ei2qz*self.saa.alpha_amp.v22_psi['g'] + (self.alpha_s*self.alpha_s.conj())*self.saa.alpha_amp.v20_psi['g']*self.ei0qz
+        self.V_psi = self.eps*self.V1_psi + self.eps**2*self.V2_psi
         
         # u terms
-        self.V1_u = alpha_s*saa.alpha_amp.v11_u['g']*self.eiqz
-        self.V2_u = alpha_s**2*self.ei2qz*saa.alpha_amp.v22_u['g'] + (alpha_s*alpha_s.conj())*saa.alpha_amp.v20_u['g']*self.ei0qz
-        self.V_u = eps*self.V1_u + eps**2*self.V2_u
+        self.V1_u = self.alpha_s*self.saa.alpha_amp.v11_u['g']*self.eiqz
+        self.V2_u = self.alpha_s**2*self.ei2qz*self.saa.alpha_amp.v22_u['g'] + (self.alpha_s*self.alpha_s.conj())*self.saa.alpha_amp.v20_u['g']*self.ei0qz
+        self.V_u = self.eps*self.V1_u + self.eps**2*self.V2_u
         
         # A terms
-        self.V1_A = alpha_s*saa.alpha_amp.v11_A['g']*self.eiqz
-        self.V2_A = alpha_s**2*self.ei2qz*saa.alpha_amp.v22_A['g'] + (alpha_s*alpha_s.conj())*saa.alpha_amp.v20_A['g']*self.ei0qz
-        self.V_A = eps*self.V1_A + eps**2*self.V2_A
+        self.V1_A = self.alpha_s*self.saa.alpha_amp.v11_A['g']*self.eiqz
+        self.V2_A = self.alpha_s**2*self.ei2qz*self.saa.alpha_amp.v22_A['g'] + (self.alpha_s*self.alpha_s.conj())*self.saa.alpha_amp.v20_A['g']*self.ei0qz
+        self.V_A = self.eps*self.V1_A + self.eps**2*self.V2_A
         
         # B terms
-        self.V1_B = alpha_s*saa.alpha_amp.v11_B['g']*self.eiqz
-        self.V2_B = alpha_s**2*self.ei2qz*saa.alpha_amp.v22_B['g'] + (alpha_s*alpha_s.conj())*saa.alpha_amp.v20_B['g']*self.ei0qz
-        self.V_B = eps*self.V1_B + eps**2*self.V2_B
+        self.V1_B = self.alpha_s*self.saa.alpha_amp.v11_B['g']*self.eiqz
+        self.V2_B = self.alpha_s**2*self.ei2qz*self.saa.alpha_amp.v22_B['g'] + (self.alpha_s*self.alpha_s.conj())*self.saa.alpha_amp.v20_B['g']*self.ei0qz
+        self.V_B = self.eps*self.V1_B + self.eps**2*self.V2_B
         
-        ax1.pcolormesh(saa.alpha_amp.x, z, self.V_psi)
-        ax1.set_ylim(0, Lz)
+        ax1.pcolormesh(self.saa.alpha_amp.x, z, self.V_psi, cmap="RdBu")
+        ax1.set_ylim(0, Lz - dz)
         
-        ax2.pcolormesh(saa.alpha_amp.x, z, self.V_u)
-        ax2.set_ylim(0, Lz)
+        ax2.pcolormesh(self.saa.alpha_amp.x, z, self.V_u, cmap="RdBu")
+        ax2.set_ylim(0, Lz - dz)
         
-        ax3.pcolormesh(saa.alpha_amp.x, z, self.V_A)
-        ax3.set_ylim(0, Lz)
+        ax3.pcolormesh(self.saa.alpha_amp.x, z, self.V_A, cmap="RdBu")
+        ax3.set_ylim(0, Lz - dz)
         
-        ax4.pcolormesh(saa.alpha_amp.x, z, self.V_B)
-        ax4.set_ylim(0, Lz)
+        ax4.pcolormesh(self.saa.alpha_amp.x, z, self.V_B, cmap="RdBu")
+        ax4.set_ylim(0, Lz - dz)
         
-        self.x = domain.grid(0)
-        
-        
+    def plot_streams(self):
+        import streamplot_uneven as su
+    
+        nz = self.gridnum
+        Lz = 2*np.pi/self.Q
+        z = np.linspace(0, Lz, nz, endpoint=False)
+        zz = z.reshape(nz, 1)
+            
         # uz1 = - dx(psi)
         v22_psi_x = domain.new_field()
         v22_psi_x.name = 'v22_psi_x'
-        v22_psi_x['g'] = saa.alpha_amp.v22_psi.differentiate(0)['g']
+        v22_psi_x['g'] = self.saa.alpha_amp.v22_psi.differentiate(0)['g']
         
         v20_psi_x = domain.new_field()
         v20_psi_x.name = 'v20_psi_x'
-        v20_psi_x['g'] = saa.alpha_amp.v20_psi.differentiate(0)['g']
+        v20_psi_x['g'] = self.saa.alpha_amp.v20_psi.differentiate(0)['g']
         
-        self.V1_uz1 = -alpha_s*saa.alpha_amp.v11_psi_x['g']*self.eiqz
-        self.V2_uz1 = -alpha_s**2*self.ei2qz*v22_psi_x - (alpha_s*alpha_s.conj())*v20_psi_x['g']*self.ei0qz
+        self.V1_uz1 = -self.alpha_s*self.saa.alpha_amp.v11_psi_x['g']*self.eiqz
+        self.V2_uz1 = -self.alpha_s**2*self.ei2qz*v22_psi_x['g'] - (self.alpha_s*self.alpha_s.conj())*v20_psi_x['g']*self.ei0qz
         
-        self.V_uz1 = eps*self.V1_uz1 + eps**2*self.V2_uz1
+        self.V_uz1 = self.eps*self.V1_uz1 + self.eps**2*self.V2_uz1
         
-        #self.V1_Ax = V1_A.differentiate(0)
+        # ux1 = dz(psi)
+        self.V1_ux1 = self.alpha_s*self.saa.alpha_amp.v11_psi['g']*self.eiqz_z
+        self.V2_ux1 = self.alpha_s**2*self.ei2qz_z*self.saa.alpha_amp.v22_psi['g']
         
+        self.V_ux1 = self.eps*self.V1_ux1 + self.eps**2*self.V2_ux1
         
+        fig2 = plt.figure()
+        ax2 = fig2.add_subplot(111)
         
+        speed = np.sqrt(np.abs(self.V_ux1**2) + np.abs(self.V_uz1**2))
+        uymag = self.V_u.real
         
+        #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, color = speed/speed.max(), cmap = "Purples")
+        #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color="#660033")
+        
+        su.streamplot(ax2, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color = uymag/np.max(uymag), cmap = "RdBu")
+        plt.show()
+        
+    def plot_Bfield(self):
+        import streamplot_uneven as su
+    
+        nz = self.gridnum
+        Lz = 2*np.pi/self.Q
+        z = np.linspace(0, Lz, nz, endpoint=False)
+        zz = z.reshape(nz, 1) 
+        
+        # Bz1 = - dx(A)
+        v11_A_x = domain.new_field()
+        v11_A_x.name = 'v11_A_x'
+        v11_A_x['g'] = self.saa.alpha_amp.v11_A.differentiate(0)['g']
+        
+        v22_A_x = domain.new_field()
+        v22_A_x.name = 'v22_A_x'
+        v22_A_x['g'] = self.saa.alpha_amp.v22_A.differentiate(0)['g']
+        
+        v20_A_x = domain.new_field()
+        v20_A_x.name = 'v20_psi_x'
+        v20_A_x['g'] = self.saa.alpha_amp.v20_A.differentiate(0)['g']
+        
+        self.V1_Bz1 = -self.alpha_s*v11_A_x['g']*self.eiqz
+        self.V2_Bz1 = -self.alpha_s**2*self.ei2qz*v22_A_x['g'] - (self.alpha_s*self.alpha_s.conj())*v20_A_x['g']*self.ei0qz
+        
+        self.V_Bz1 = self.eps*self.V1_Bz1 + self.eps**2*self.V2_Bz1
+        
+        # Bx1 = dz(A)
+        
+        self.V1_Bx1 = self.alpha_s*self.saa.alpha_amp.v11_A['g']*self.eiqz_z
+        self.V2_Bx1 = self.alpha_s**2*self.ei2qz_z*self.saa.alpha_amp.v22_A['g']
+        
+        self.V_Bx1 = self.eps*self.V1_Bx1 + self.eps**2*self.V2_Bx1
+        
+        fig3 = plt.figure()
+        ax3 = fig3.add_subplot(111)
+        
+
+        uymag = self.V_B.real
+        
+        #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, color = speed/speed.max(), cmap = "Purples")
+        #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color="#660033")
+        su.streamplot(ax3, self.saa.alpha_amp.x, z, self.V_Bx1.real, self.V_Bz1.real, color="#660033")
+        plt.show()        
 
