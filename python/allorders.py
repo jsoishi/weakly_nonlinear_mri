@@ -17,7 +17,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 256
+gridnum = 64#256
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -1971,14 +1971,15 @@ class SolveAmplitudeAlpha():
         self.alpha_amp.solve()
         
         #MagSq = operators.MagSquared
-        Absolute = operators.Absolute
+        #Absolute = operators.Absolute
         
         problem = ParsedProblem(axis_names=['Z'],
                            field_names=['alpha', 'alphaZ'],
-                           param_names=['a', 'b', 'c', 'h', 'g', 'Q', 'Absolute'])
+                           param_names=['a', 'b', 'c', 'h', 'g', 'Q'])#, 'MagSq'])
         
-        #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = alpha*Absolute(alpha**2)")#-c*alpha*(alpha**2)")#-c*alpha*MagSq(alpha)")
-        problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = alpha*MagSquared(alpha)")
+        problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*Absolute(alpha**2)")#-c*alpha*(alpha**2)")#-c*alpha*MagSq(alpha)")
+        #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSquared(alpha)")
+        #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSq(alpha)")
         problem.add_equation("alphaZ - dZ(alpha) = 0")
         
                 
@@ -1989,7 +1990,7 @@ class SolveAmplitudeAlpha():
         problem.parameters['g'] = self.alpha_amp.g
         problem.parameters['Q'] = self.Q
         #problem.parameters['MagSq'] = MagSq
-        problem.parameters['Absolute'] = Absolute
+        #problem.parameters['Absolute'] = Absolute
         
         lambda_crit = 2*np.pi/self.Q
         
