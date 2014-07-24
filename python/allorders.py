@@ -7,10 +7,15 @@ import pylab
 import copy
 import pickle
 import plot_tools
+import streamplot_uneven as su
 
 import matplotlib
 matplotlib.rcParams['backend'] = "Qt4Agg"
 matplotlib.rcParams.update({'figure.autolayout': True})
+
+from matplotlib import rc
+rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+rc('text', usetex=True)
 
 gridnum = 256
 x_basis = Chebyshev(gridnum)
@@ -2130,7 +2135,6 @@ class PlotContours():
         ax4.set_ylim(0, Lz - dz)
         
     def plot_streams(self):
-        import streamplot_uneven as su
     
         nz = self.gridnum
         Lz = 2*np.pi/self.Q
@@ -2170,7 +2174,6 @@ class PlotContours():
         plt.show()
         
     def plot_Bfield(self):
-        import streamplot_uneven as su
     
         nz = self.gridnum
         Lz = 2*np.pi/self.Q
@@ -2211,5 +2214,31 @@ class PlotContours():
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, color = speed/speed.max(), cmap = "Purples")
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color="#660033")
         su.streamplot(ax3, self.saa.alpha_amp.x, z, self.V_Bx1.real, self.V_Bz1.real, color="#660033")
-        plt.show()        
+        plt.show()     
+
+def plot_uy(pc_obj, oplot = True):
+
+    nz = pc_obj.gridnum
+    Lz = 2*np.pi/pc_obj.Q
+    z = np.linspace(0, Lz, nz, endpoint=False)
+    zz = z.reshape(nz, 1)
+    
+    dz = z[1] - z[0]
+
+    fig = plt.figure(figsize = (12, 8))
+    ax = fig.add_subplot(111)
+    ax.set_xlabel("x (radial)", size = 20)
+    ax.set_ylabel("z (vertical)", size = 20)
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.V_u, cmap="RdBu_r")
+    cbar = plt.colorbar(info)
+    cbar.set_label(r"$u_y$ Perturbation", size = 20)
+    
+    ax.set_ylim(0, Lz - dz)
+    
+    if oplot == True:
+        speed = np.sqrt(np.abs(pc_obj.V_ux1**2) + np.abs(pc_obj.V_uz1**2))
+        uymag = pc_obj.V_u.real
+        su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, pc_obj.V_ux1.real, pc_obj.V_uz1.real, linewidth = 3*speed/speed.max(), color = "black")
+        
+    
 
