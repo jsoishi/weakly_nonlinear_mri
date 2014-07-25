@@ -1652,10 +1652,10 @@ class AmplitudeAlpha():
         c_u = self.va.u*self.N31_u_star
         c_u = c_u.evaluate()
         
-        c_A = self.va.u*self.N31_A_star
+        c_A = self.va.A*self.N31_A_star
         c_A = c_A.evaluate()
         
-        c_B = self.va.u*self.N31_B_star
+        c_B = self.va.B*self.N31_B_star
         c_B = c_B.evaluate()
         
         call = c_psi + c_u + c_A + c_B
@@ -1971,26 +1971,35 @@ class SolveAmplitudeAlpha():
         self.alpha_amp.solve()
         
         #MagSq = operators.MagSquared
-        #Absolute = operators.Absolute
+        Absolute = operators.Absolute
         
         problem = ParsedProblem(axis_names=['Z'],
                            field_names=['alpha', 'alphaZ'],
-                           param_names=['a', 'b', 'c', 'h', 'g', 'Q'])#, 'MagSq'])
+                           param_names=['ac', 'bc', 'hc', 'gc', 'Q', 'Absolute'])
+                           #param_names=['a', 'b', 'c', 'h', 'g', 'Q', 'Absolute'])
         
-        problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*Absolute(alpha**2)")#-c*alpha*(alpha**2)")#-c*alpha*MagSq(alpha)")
+        #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*Absolute(alpha**2)")#-c*alpha*(alpha**2)")#-c*alpha*MagSq(alpha)")
         #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSquared(alpha)")
         #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSq(alpha)")
+        #problem.add_equation("-(a/c)*dt(alpha) - (b/c)*alphaZ + (h/c)*dZ(alphaZ) + (g/c)*1j*Q**3*alpha = alpha*Absolute(alpha**2)")
+        problem.add_equation("ac*dt(alpha) + bc*alphaZ - hc*dZ(alphaZ) - gc*1j*Q**3*alpha = alpha*Absolute(alpha**2)")
         problem.add_equation("alphaZ - dZ(alpha) = 0")
         
-                
-        problem.parameters['a'] = self.alpha_amp.a
-        problem.parameters['b'] = self.alpha_amp.b
-        problem.parameters['c'] = self.alpha_amp.c
-        problem.parameters['h'] = self.alpha_amp.h
-        problem.parameters['g'] = self.alpha_amp.g
+        
+        problem.parameters['ac'] = -self.alpha_amp.a/self.alpha_amp.c
+        problem.parameters['bc'] = -self.alpha_amp.b/self.alpha_amp.c
+        problem.parameters['hc'] = -self.alpha_amp.h/self.alpha_amp.c
+        problem.parameters['gc'] = -self.alpha_amp.g/self.alpha_amp.c
         problem.parameters['Q'] = self.Q
+                
+        #problem.parameters['a'] = self.alpha_amp.a
+        #problem.parameters['b'] = self.alpha_amp.b
+        #problem.parameters['c'] = self.alpha_amp.c
+        #problem.parameters['h'] = self.alpha_amp.h
+        #problem.parameters['g'] = self.alpha_amp.g
+        #problem.parameters['Q'] = self.Q
         #problem.parameters['MagSq'] = MagSq
-        #problem.parameters['Absolute'] = Absolute
+        problem.parameters['Absolute'] = Absolute
         
         lambda_crit = 2*np.pi/self.Q
         
@@ -2209,9 +2218,6 @@ class PlotContours():
         fig3 = plt.figure()
         ax3 = fig3.add_subplot(111)
         
-
-        uymag = self.V_B.real
-        
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, color = speed/speed.max(), cmap = "Purples")
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color="#660033")
         su.streamplot(ax3, self.saa.alpha_amp.x, z, self.V_Bx1.real, self.V_Bz1.real, color="#660033")
@@ -2240,6 +2246,34 @@ def plot_uy(pc_obj, oplot = True):
         speed = np.sqrt(np.abs(pc_obj.V_ux1**2) + np.abs(pc_obj.V_uz1**2))
         uymag = pc_obj.V_u.real
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, pc_obj.V_ux1.real, pc_obj.V_uz1.real, linewidth = 3*speed/speed.max(), color = "black")
+        
+def plot_By_firstorder(pc_obj, oplot = True):
+
+    nz = pc_obj.gridnum
+    Lz = 2*np.pi/pc_obj.Q
+    z = np.linspace(0, Lz, nz, endpoint=False)
+    zz = z.reshape(nz, 1)
+    
+    dz = z[1] - z[0]
+
+    fig = plt.figure(figsize = (12, 8))
+    ax = fig.add_subplot(111)
+    ax.set_xlabel("x (radial)", size = 20)
+    ax.set_ylabel("z (vertical)", size = 20)
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps*pc_obj.V1_B, cmap="RdBu_r")
+    cbar = plt.colorbar(info)
+    cbar.set_label(r"$B_y$ Perturbation", size = 20)
+    
+    # only the first order perturbations
+    V1_Bz1 = pc_obj.eps*pc_obj.V1_Bz1
+    V1_Bx1 = pc_obj.eps*pc_obj.V1_Bx1
+    
+    ax.set_ylim(0, Lz - dz)
+    
+    if oplot == True:
+        B1mag = np.sqrt(np.abs(V1_Bx1**2) + np.abs(V1_Bz1**2))
+        su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_Bx1.real, V1_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
+        
         
 def plot_By(pc_obj, oplot = True):
 

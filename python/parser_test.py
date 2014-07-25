@@ -17,16 +17,16 @@ problem = ParsedProblem(axis_names=['Z'],
 
 #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*Absolute(alpha**2)")
 #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSq(alpha)")
-#problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSquared(alpha)")
+problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = c*alpha*MagSquared(alpha)")
 problem.add_equation("alphaZ - dZ(alpha) = 0")
 
-problem.add_equation("-(a/c)*dt(alpha) - (b/c)*alphaZ + (h/c)*dZ(alphaZ) + (g/c)*1j*Q**3*alpha = alpha*MagSquared(alpha)")
+#problem.add_equation("-(a/c)*dt(alpha) - (b/c)*alphaZ + (h/c)*dZ(alphaZ) + (g/c)*1j*Q**3*alpha = alpha*Absolute(alpha**2)")
         
-problem.parameters['a'] = -0.433 + 0j
-problem.parameters['b'] = -0.00185j + 0j
-problem.parameters['c'] = 0.704 + 0.241j
-problem.parameters['h'] = -0.068 + 0j
-problem.parameters['g'] = 2.62e-05j
+problem.parameters['a'] = -0.43304107388011209+9.9502100165750874e-16j
+problem.parameters['b'] = 1.5800469117209944e-15-0.0018542860461813176j
+problem.parameters['c'] = 0.67590648491827332+5.0199606428696532e-13j
+problem.parameters['h'] = -0.06803788569729452-0.00041479168022338464j
+problem.parameters['g'] = 1.4691613554954249e-17+2.628877940581315e-05j
 problem.parameters['Q'] = Q
 #problem.parameters['MagSq'] = MagSq
 #problem.parameters['Abs'] = Abs
