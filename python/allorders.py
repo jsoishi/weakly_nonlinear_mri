@@ -8,6 +8,7 @@ import copy
 import pickle
 import plot_tools
 import streamplot_uneven as su
+import random
 
 import matplotlib
 matplotlib.rcParams['backend'] = "Qt4Agg"
@@ -17,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 256
+gridnum = 64#256
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -2019,8 +2020,9 @@ class SolveAmplitudeAlpha():
         alpha = solver.state['alpha']
         alphaZ = solver.state['alphaZ']
 
-        # Smooth triangle with support in (-1, 1)
-        alpha['g'] = 1
+        # initial conditions ... plus noise!
+        noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
+        alpha['g'] = 1 + noise
         alpha.differentiate(0, out=alphaZ)
         
         # Setup storage
@@ -2223,7 +2225,7 @@ class PlotContours():
         su.streamplot(ax3, self.saa.alpha_amp.x, z, self.V_Bx1.real, self.V_Bz1.real, color="#660033")
         plt.show()     
 
-def plot_uy_firstorder(pc_obj, oplot = True):
+def plot_uy_firstorder(pc_obj, oplot = True, labels = False):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2234,23 +2236,32 @@ def plot_uy_firstorder(pc_obj, oplot = True):
 
     fig = plt.figure(figsize = (12, 8))
     ax = fig.add_subplot(111)
-    ax.set_xlabel("x (radial)", size = 20)
-    ax.set_ylabel("z (vertical)", size = 20)
-    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps*pc_obj.V1_u, cmap="RdBu_r")
+    
+    cbarmax = np.max(pc_obj.eps*pc_obj.V1_u)
+    cbarmin = np.min(pc_obj.eps*pc_obj.V1_u)
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps*pc_obj.V1_u, cmap="RdBu_r", vmin = cbarmin, vmax = cbarmax)
     cbar = plt.colorbar(info)
-    cbar.set_label(r"$u_y$ Perturbation", size = 20)
+    cbar.ax.tick_params(labelsize = 20)
+    
+    if labels == True:
+        ax.set_xlabel("x (radial)", size = 20)
+        ax.set_ylabel("z (vertical)", size = 20)
+        cbar.set_label(r"$u_y$ Perturbation", size = 20)
     
     # only the first order perturbations
     V1_uz1 = pc_obj.eps*pc_obj.V1_uz1
     V1_ux1 = pc_obj.eps*pc_obj.V1_ux1
     
     ax.set_ylim(0, Lz - dz)
+    ax.set_xlim(-1, 1)
+    
+    plt.tick_params(labelsize = 20)
     
     if oplot == True:
         u1mag = np.sqrt(np.abs(V1_ux1**2) + np.abs(V1_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_ux1.real, V1_uz1.real, linewidth = 3*u1mag/u1mag.max(), color = "black")
         
-def plot_uy_secondorder(pc_obj, oplot = True):
+def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2261,24 +2272,37 @@ def plot_uy_secondorder(pc_obj, oplot = True):
 
     fig = plt.figure(figsize = (12, 8))
     ax = fig.add_subplot(111)
-    ax.set_xlabel("x (radial)", size = 20)
-    ax.set_ylabel("z (vertical)", size = 20)
-    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_u, cmap="RdBu_r")
+    
+    # set colorbar min/max to the same as firstorder
+    info1 = pc_obj.eps*pc_obj.V1_u
+    cbarmax = np.max(info1)
+    cbarmin = np.min(info1)
+    
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_u, cmap="RdBu_r", vmin = cbarmin, vmax = cbarmax)
+    
     cbar = plt.colorbar(info)
-    cbar.set_label(r"$u_y$ Perturbation", size = 20)
+    cbar.ax.tick_params(labelsize = 20)
+    
+    if labels == True:
+        ax.set_xlabel("x (radial)", size = 20)
+        ax.set_ylabel("z (vertical)", size = 20)
+        cbar.set_label(r"$u_y$ Perturbation", size = 20)
     
     # only the first order perturbations
     V2_uz1 = pc_obj.eps**2*pc_obj.V2_uz1
     V2_ux1 = pc_obj.eps**2*pc_obj.V2_ux1
     
     ax.set_ylim(0, Lz - dz)
+    ax.set_xlim(-1, 1)
+    
+    plt.tick_params(labelsize = 20)
     
     if oplot == True:
         u1mag = np.sqrt(np.abs(V2_ux1**2) + np.abs(V2_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V2_ux1.real, V2_uz1.real, linewidth = 3*u1mag/u1mag.max(), color = "black")
         
 
-def plot_uy(pc_obj, oplot = True):
+def plot_uy(pc_obj, oplot = True, labels = False):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2289,19 +2313,31 @@ def plot_uy(pc_obj, oplot = True):
 
     fig = plt.figure(figsize = (12, 8))
     ax = fig.add_subplot(111)
-    ax.set_xlabel("x (radial)", size = 20)
-    ax.set_ylabel("z (vertical)", size = 20)
-    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.V_u, cmap="RdBu_r")
+    
+    # set colorbar min/max to the same as firstorder
+    info1 = pc_obj.eps*pc_obj.V1_u
+    cbarmax = np.max(info1)
+    cbarmin = np.min(info1)
+    
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.V_u, cmap="RdBu_r", vmin = cbarmin, vmax = cbarmax)
     cbar = plt.colorbar(info)
-    cbar.set_label(r"$u_y$ Perturbation", size = 20)
+    cbar.ax.tick_params(labelsize = 20)
+    
+    if labels == True:
+        ax.set_xlabel("x (radial)", size = 20)
+        ax.set_ylabel("z (vertical)", size = 20)
+        cbar.set_label(r"$u_y$ Perturbation", size = 20)
     
     ax.set_ylim(0, Lz - dz)
+    ax.set_xlim(-1, 1)
+    
+    plt.tick_params(labelsize = 20)
     
     if oplot == True:
         speed = np.sqrt(np.abs(pc_obj.V_ux1**2) + np.abs(pc_obj.V_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, pc_obj.V_ux1.real, pc_obj.V_uz1.real, linewidth = 3*speed/speed.max(), color = "black")
         
-def plot_By_firstorder(pc_obj, oplot = True):
+def plot_By_firstorder(pc_obj, oplot = True, labels = False):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2312,23 +2348,33 @@ def plot_By_firstorder(pc_obj, oplot = True):
 
     fig = plt.figure(figsize = (12, 8))
     ax = fig.add_subplot(111)
-    ax.set_xlabel("x (radial)", size = 20)
-    ax.set_ylabel("z (vertical)", size = 20)
-    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps*pc_obj.V1_B, cmap="RdBu_r")
+    
+    cbarmin = np.min(pc_obj.eps*pc_obj.V1_B)
+    cbarmax = np.max(pc_obj.eps*pc_obj.V1_B)
+    
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps*pc_obj.V1_B, cmap="RdBu_r", vmin = cbarmin, vmax = cbarmax)
     cbar = plt.colorbar(info)
-    cbar.set_label(r"$B_y$ Perturbation", size = 20)
+    cbar.ax.tick_params(labelsize = 20)
+    
+    if labels == True:
+        ax.set_xlabel("x (radial)", size = 20)
+        ax.set_ylabel("z (vertical)", size = 20)
+        cbar.set_label(r"$B_y$ Perturbation", size = 20)
     
     # only the first order perturbations
     V1_Bz1 = pc_obj.eps*pc_obj.V1_Bz1
     V1_Bx1 = pc_obj.eps*pc_obj.V1_Bx1
     
     ax.set_ylim(0, Lz - dz)
+    ax.set_xlim(-1, 1)
+    
+    plt.tick_params(labelsize = 20)
     
     if oplot == True:
         B1mag = np.sqrt(np.abs(V1_Bx1**2) + np.abs(V1_Bz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_Bx1.real, V1_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
         
-def plot_By_secondorder(pc_obj, oplot = True):
+def plot_By_secondorder(pc_obj, oplot = True, labels = False):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2339,24 +2385,30 @@ def plot_By_secondorder(pc_obj, oplot = True):
 
     fig = plt.figure(figsize = (12, 8))
     ax = fig.add_subplot(111)
-    ax.set_xlabel("x (radial)", size = 20)
-    ax.set_ylabel("z (vertical)", size = 20)
     info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_B, cmap="RdBu_r")
     cbar = plt.colorbar(info)
-    cbar.set_label(r"$B_y$ Perturbation", size = 20)
+    cbar.ax.tick_params(labelsize = 20)
+    
+    if labels == True:
+        ax.set_xlabel("x (radial)", size = 20)
+        ax.set_ylabel("z (vertical)", size = 20)
+        cbar.set_label(r"$B_y$ Perturbation", size = 20)
     
     # only the first order perturbations
     V2_Bz1 = pc_obj.eps**2*pc_obj.V2_Bz1
     V2_Bx1 = pc_obj.eps**2*pc_obj.V2_Bx1
     
     ax.set_ylim(0, Lz - dz)
+    ax.set_xlim(-1, 1)
+    
+    plt.tick_params(labelsize = 20)
     
     if oplot == True:
         B1mag = np.sqrt(np.abs(V2_Bx1**2) + np.abs(V2_Bz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V2_Bx1.real, V2_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
         
 
-def plot_By(pc_obj, oplot = True):
+def plot_By(pc_obj, oplot = True, labels = False):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2365,21 +2417,44 @@ def plot_By(pc_obj, oplot = True):
     
     dz = z[1] - z[0]
 
+    #V_B = pc_obj.V_B + pc_obj.V_B.conj()
+
     fig = plt.figure(figsize = (12, 8))
     ax = fig.add_subplot(111)
-    ax.set_xlabel("x (radial)", size = 20)
-    ax.set_ylabel("z (vertical)", size = 20)
+    
+    # set colorbar min/max to the same as firstorder
+    info1 = pc_obj.eps*pc_obj.V1_B
+    cbarmax = np.max(info1)
+    cbarmin = np.min(info1)
+    
     info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.V_B, cmap="RdBu_r")
     cbar = plt.colorbar(info)
-    cbar.set_label(r"$B_y$ Perturbation", size = 20)
+    cbar.ax.tick_params(labelsize = 20)
+    
+    if labels == True:
+        ax.set_xlabel("x (radial)", size = 20)
+        ax.set_ylabel("z (vertical)", size = 20)
+        cbar.set_label(r"$B_y$ Perturbation", size = 20)
     
     ax.set_ylim(0, Lz - dz)
+    ax.set_xlim(-1, 1)
+    
+    plt.tick_params(labelsize = 20)
     
     if oplot == True:
         Bmag = np.sqrt(np.abs(pc_obj.V_Bx1**2) + np.abs(pc_obj.V_Bz1**2))
         uymag = pc_obj.V_B.real
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, pc_obj.V_Bx1.real, pc_obj.V_Bz1.real, linewidth = 3*Bmag/Bmag.max(), color = "black")
-        
+    
+    """
+    V_Bx1 = pc_obj.V_Bx1 + pc_obj.V_Bx1.conj()   
+    V_Bz1 = pc_obj.V_Bz1 + pc_obj.V_Bz1.conj()   
+    if oplot == True:
+        Bmag = np.sqrt(np.abs(V_Bx1**2) + np.abs(V_Bz1**2))
+        uymag = pc_obj.V_B.real
+        su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V_Bx1, V_Bz1)#, linewidth = 3*Bmag/Bmag.max(), color = "black")
+    """    
+    
     
 def plotN3(n3_obj):
 
