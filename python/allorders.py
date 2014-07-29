@@ -2494,3 +2494,38 @@ def plotN3(n3_obj):
     ax4.set_xlim(-1, 1)
 
     plt.tick_params(labelsize = 20)
+    
+    
+def plotOE(oe_obj):
+
+    fig = plt.figure(figsize=(10,8))
+    
+    ax1 = fig.add_subplot(221)
+    ax1.plot(oe_obj.x, oe_obj.v11_psi['g'].imag, 'o', mec='orange', mfc='none')
+    ax1.plot(oe_obj.x, oe_obj.v11_psi['g'].imag, color="grey")
+    #ax1.plot(oe_obj.x, oe_obj.psi.real, color="red")
+    #ax1.set_title(r"Im($\psi_{1}$)")
+    plt.tick_params(labelsize = 20)
+
+    ax2 = fig.add_subplot(222)
+    ax2.plot(oe_obj.x, oe_obj.v11_u['g'].real, 'o', mec='orange', mfc='none')
+    ax2.plot(oe_obj.x, oe_obj.v11_u['g'].real, color="grey")
+    #ax2.plot(oe_obj.x, oe_obj.u.imag, color="red")
+    #ax2.set_title("Re($u_{1}$)")
+    plt.tick_params(labelsize = 20)
+
+    ax3 = fig.add_subplot(223)
+    ax3.plot(oe_obj.x, oe_obj.v11_A['g'].real, 'o', mec='orange', mfc='none')
+    ax3.plot(oe_obj.x, oe_obj.v11_A['g'].real, color="grey")
+    #ax3.plot(oe_obj.x, oe_obj.A.imag, color="red")
+    #ax3.set_title("Re($A_{1}$)")
+    plt.tick_params(labelsize = 20)
+
+    ax4 = fig.add_subplot(224)
+    ax4.plot(oe_obj.x, oe_obj.v11_B['g'].imag, 'o', mec='orange', mfc='none')
+    ax4.plot(oe_obj.x, oe_obj.v11_B['g'].imag, color="grey")
+    #ax4.plot(oe_obj.x, oe_obj.B.real, color="red")
+    #ax4.set_title("Im($B_{1}$)")
+    plt.tick_params(labelsize = 20)
+    
+    
