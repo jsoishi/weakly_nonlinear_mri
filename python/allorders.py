@@ -2385,7 +2385,7 @@ def plot_By_secondorder(pc_obj, oplot = True, labels = False):
 
     fig = plt.figure(figsize = (12, 8))
     ax = fig.add_subplot(111)
-    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_B, cmap="RdBu_r")
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_B, cmap="binary")#cmap="RdBu_r")
     cbar = plt.colorbar(info)
     cbar.ax.tick_params(labelsize = 20)
     
