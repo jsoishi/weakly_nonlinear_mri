@@ -2463,7 +2463,7 @@ def plotN3(n3_obj):
     
     # plot N31
     ax1 = fig.add_subplot(2, 2, 1)
-    ax1.plot(n3_obj.x, n3_obj.N31_psi['g'].imag, 'o', mec="#FF3030", mfc='none')
+    ax1.plot(n3_obj.x, n3_obj.N31_psi['g'].imag, 'o', mec="#2c7bb6", mfc='none')
     ax1.plot(n3_obj.x, n3_obj.N31_psi['g'].imag, color="grey")
     #ax1.plot(n3_obj.x, n3_obj.N31_psi['g'].real, color="red")
     #ax1.set_title(r"$Im(N_{31}^{(\psi)})$")
@@ -2471,7 +2471,7 @@ def plotN3(n3_obj):
     plt.tick_params(labelsize = 20)
 
     ax2 = fig.add_subplot(2, 2, 2)
-    ax2.plot(n3_obj.x, n3_obj.N31_u['g'].real, 'o', mec="#FF3030", mfc='none')
+    ax2.plot(n3_obj.x, n3_obj.N31_u['g'].real, 'o', mec="#2c7bb6", mfc='none')
     ax2.plot(n3_obj.x, n3_obj.N31_u['g'].real, color="grey")
     #ax2.plot(n3_obj.x, n3_obj.N31_u['g'].imag, color="red")
     #ax2.set_title(r"$Re(N_{31}^{(u)})$")
@@ -2479,7 +2479,7 @@ def plotN3(n3_obj):
     plt.tick_params(labelsize = 20)
 
     ax3 = fig.add_subplot(2, 2, 3)
-    ax3.plot(n3_obj.x, n3_obj.N31_A['g'].real, 'o', mec="#FF3030", mfc='none')
+    ax3.plot(n3_obj.x, n3_obj.N31_A['g'].real, 'o', mec="#2c7bb6", mfc='none')
     ax3.plot(n3_obj.x, n3_obj.N31_A['g'].real, color="grey")
     #ax3.plot(n3_obj.x, n3_obj.N31_A['g'].imag, color="red")
     #ax3.set_title(r"$Re(N_{31}^{(A)})$")
@@ -2487,7 +2487,7 @@ def plotN3(n3_obj):
     plt.tick_params(labelsize = 20)
     
     ax4 = fig.add_subplot(2, 2, 4)
-    ax4.plot(n3_obj.x, n3_obj.N31_B['g'].imag, 'o', mec="#FF3030", mfc='none')
+    ax4.plot(n3_obj.x, n3_obj.N31_B['g'].imag, 'o', mec="#2c7bb6", mfc='none') #mec="#FF3030"
     ax4.plot(n3_obj.x, n3_obj.N31_B['g'].imag, color="grey")
     #ax4.plot(n3_obj.x, n3_obj.N31_B['g'].real, color="red")
     #ax4.set_title(r"$Im(N_{31}^{(B)})$")
