@@ -1522,10 +1522,10 @@ class AmplitudeAlpha():
             self.v20_B = self.o2.LEV20B.state['B20']  
             
             if norm == True:
-                v21_psi = self.o2.LEV21.state['psi21']*o2.scale   
-                v21_u = self.o2.LEV21.state['u21']*o2.scale 
-                v21_A = self.o2.LEV21.state['A21']*o2.scale 
-                v21_B = self.o2.LEV21.state['B21']*o2.scale 
+                v21_psi = self.o2.LEV21.state['psi21']*self.o2.scale   
+                v21_u = self.o2.LEV21.state['u21']*self.o2.scale 
+                v21_A = self.o2.LEV21.state['A21']*self.o2.scale 
+                v21_B = self.o2.LEV21.state['B21']*self.o2.scale 
                 
                 self.v21_psi = v21_psi.evaluate()     
                 self.v21_u = v21_u.evaluate() 
