@@ -18,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 64#256
+gridnum = 256
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -1511,21 +1511,21 @@ class AmplitudeAlpha():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2(speedy = True, o1 = v1)
-            o2.solve20()
-            o2.solve21(norm = norm)
-            o2.solve22()
+            self.o2 = OrderE2(speedy = True, o1 = v1)
+            self.o2.solve20()
+            self.o2.solve21(norm = norm)
+            self.o2.solve22()
             
-            self.v20_psi = o2.LEV20psi.state['psi20']
-            self.v20_u = o2.LEV20u.state['u20']
-            self.v20_A = o2.LEV20A.state['A20']
-            self.v20_B = o2.LEV20B.state['B20']  
+            self.v20_psi = self.o2.LEV20psi.state['psi20']
+            self.v20_u = self.o2.LEV20u.state['u20']
+            self.v20_A = self.o2.LEV20A.state['A20']
+            self.v20_B = self.o2.LEV20B.state['B20']  
             
             if norm == True:
-                v21_psi = o2.LEV21.state['psi21']*o2.scale   
-                v21_u = o2.LEV21.state['u21']*o2.scale 
-                v21_A = o2.LEV21.state['A21']*o2.scale 
-                v21_B = o2.LEV21.state['B21']*o2.scale 
+                v21_psi = self.o2.LEV21.state['psi21']*o2.scale   
+                v21_u = self.o2.LEV21.state['u21']*o2.scale 
+                v21_A = self.o2.LEV21.state['A21']*o2.scale 
+                v21_B = self.o2.LEV21.state['B21']*o2.scale 
                 
                 self.v21_psi = v21_psi.evaluate()     
                 self.v21_u = v21_u.evaluate() 
@@ -1534,20 +1534,20 @@ class AmplitudeAlpha():
             
             else: 
                 
-                self.v21_psi = o2.LEV21.state['psi21']
-                self.v21_u = o2.LEV21.state['u21']
-                self.v21_A = o2.LEV21.state['A21']
-                self.v21_B = o2.LEV21.state['B21']
+                self.v21_psi = self.o2.LEV21.state['psi21']
+                self.v21_u = self.o2.LEV21.state['u21']
+                self.v21_A = self.o2.LEV21.state['A21']
+                self.v21_B = self.o2.LEV21.state['B21']
                 
-            self.v22_psi = o2.LEV22.state['psi22']
-            self.v22_u = o2.LEV22.state['u22']
-            self.v22_A = o2.LEV22.state['A22']
-            self.v22_B = o2.LEV22.state['B22']
+            self.v22_psi = self.o2.LEV22.state['psi22']
+            self.v22_u = self.o2.LEV22.state['u22']
+            self.v22_A = self.o2.LEV22.state['A22']
+            self.v22_B = self.o2.LEV22.state['B22']
             
-            self.o3 = OrderE3(speedy = True, o2 = o2)
+            self.o3 = OrderE3(speedy = True, o2 = self.o2)
             self.o3.solve()
             
-            self.n3 = N3(speedy = True, o1 = v1, o2 = o2)
+            self.n3 = N3(speedy = True, o1 = v1, o2 = self.o2)
             self.n3.solve31()
             self.n3.solve30()
             
@@ -2454,7 +2454,46 @@ def plot_By(pc_obj, oplot = True, labels = False):
         uymag = pc_obj.V_B.real
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V_Bx1, V_Bz1)#, linewidth = 3*Bmag/Bmag.max(), color = "black")
     """    
+
+def plotN2(n2_obj):
+
+    #fig = plt.figure(figsize=(16,4))
+    fig = plt.figure(figsize=(10,8))
     
+    # plot N31
+    ax1 = fig.add_subplot(2, 2, 1)
+    ax1.plot(n2_obj.x, n2_obj.N31_psi['g'].imag, 'o', mec="#2c7bb6", mfc='none')
+    ax1.plot(n2_obj.x, n2_obj.N31_psi['g'].imag, color="grey")
+    #ax1.plot(n3_obj.x, n3_obj.N31_psi['g'].real, color="red")
+    #ax1.set_title(r"$Im(N_{31}^{(\psi)})$")
+    ax1.set_xlim(-1, 1)
+    plt.tick_params(labelsize = 20)
+
+    ax2 = fig.add_subplot(2, 2, 2)
+    ax2.plot(n2_obj.x, n2_obj.N31_u['g'].real, 'o', mec="#2c7bb6", mfc='none')
+    ax2.plot(n2_obj.x, n2_obj.N31_u['g'].real, color="grey")
+    #ax2.plot(n3_obj.x, n3_obj.N31_u['g'].imag, color="red")
+    #ax2.set_title(r"$Re(N_{31}^{(u)})$")
+    ax2.set_xlim(-1, 1)
+    plt.tick_params(labelsize = 20)
+
+    ax3 = fig.add_subplot(2, 2, 3)
+    ax3.plot(n2_obj.x, n2_obj.N31_A['g'].real, 'o', mec="#2c7bb6", mfc='none')
+    ax3.plot(n2_obj.x, n2_obj.N31_A['g'].real, color="grey")
+    #ax3.plot(n3_obj.x, n3_obj.N31_A['g'].imag, color="red")
+    #ax3.set_title(r"$Re(N_{31}^{(A)})$")
+    ax3.set_xlim(-1, 1)
+    plt.tick_params(labelsize = 20)
+    
+    ax4 = fig.add_subplot(2, 2, 4)
+    ax4.plot(n2_obj.x, n2_obj.N31_B['g'].imag, 'o', mec="#2c7bb6", mfc='none') #mec="#FF3030"
+    ax4.plot(n2_obj.x, n2_obj.N31_B['g'].imag, color="grey")
+    #ax4.plot(n3_obj.x, n3_obj.N31_B['g'].real, color="red")
+    #ax4.set_title(r"$Im(N_{31}^{(B)})$")
+    ax4.set_xlim(-1, 1)
+
+    plt.tick_params(labelsize = 20)
+
     
 def plotN3(n3_obj):
 
