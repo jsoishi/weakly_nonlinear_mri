@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  20 JUN 2014 15:23
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  12 AUG 2014 17:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2688,7 +2688,7 @@ ve/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive
 2013/texmf-dist/fonts/type1/public/amsfonts/latxfont/line10.pfb></usr/local/tex
 live/2013/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local
 /texlive/2013/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on mri_notes.pdf (35 pages, 1207623 bytes).
+Output written on mri_notes.pdf (35 pages, 1207627 bytes).
 PDF statistics:
  221 PDF objects out of 1000 (max. 8388607)
  137 compressed objects within 2 object streams

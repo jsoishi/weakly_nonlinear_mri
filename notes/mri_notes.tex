@@ -161,7 +161,7 @@ $\nabla\Phi \, = \, -\frac{1}{\rho_b}\nabla P_b + r\Omega^2 \mathbf{\hat{r}}$ \\
 
 Where $\rho_b$ and $P_b$ are the density and pressure that satisfy a barotropic relation in a steady axisymmetric solution. \\
 
-The current density is $\mathbf{J} = \frac{1}{4\pi} \nabla \times \mathbf{B}$ and thus the Lorentz force becomes: \\
+The current density is $\mathbf{J} = \frac{2}{\beta} \nabla \times \mathbf{B}$ and thus the Lorentz force becomes: \\
 
 $\frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) = \frac{1}{4 \pi \rho} \left( \nabla \times \mathbf{B} \right) \times \mathbf{B} = - \frac{1}{8 \pi \rho}\nabla B^2 + \frac{1}{4 \pi \rho} \left(\mathbf{B} \cdot \nabla\right)\mathbf{B}$ \\
 
@@ -333,13 +333,13 @@ $\frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4 \pi \rho} \left( \nab
 
 The three momentum equations become: \\
 
-$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, + \, 2 q \Omega_0 x \, - \, 2 u_{1y}\,= \, 2 q x \, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_x P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_x P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, + \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1x} \,- \, \frac{\nabla B_{1x}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1x} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
+$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, + \, 2 q \Omega_0 x \, - \, 2 u_{1y}\,= \, 2 q x \, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_x P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_x P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, + \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{2}{\beta} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1x} \,- \, \frac{\nabla B_{1x}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1x} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
 
 $\partial_t u_{1y} \, - \, q \Omega_0 u_{1x} \, - \, q \Omega_0 x \partial_y u_{1y} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1y} \,+ \, 2u_{1x} \, =  $\\
-$\, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_y P_1}{\rho_1 + \rho_b} \right) \, + \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1y} \,- \, \frac{\nabla B_{1y}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1y} \right) \, + \, \frac{1}{\reye}\nabla^2 u_y  $ \\
+$\, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_y P_1}{\rho_1 + \rho_b} \right) \, + \, \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{2}{\beta} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1y} \,- \, \frac{\nabla B_{1y}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1y} \right) \, + \, \frac{1}{\reye}\nabla^2 u_y  $ \\
 
 $\partial_t u_{1z} \, - \, q \Omega_0 x \partial_y u_{1z} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1z} \, = $\\
-$\, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_z P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_z P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, + \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1z} \,- \, \frac{\nabla B_{1z}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1z} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
+$\, - \, \frac{\varepsilon^2}{\delta^2} \left( \frac{\partial_z P_1}{\rho_1 + \rho_b} - \frac{\rho_1\partial_z P_b}{\rho_b^2 + \rho_1\rho_b}\right) \, + \frac{\varepsilon^2}{\delta^2} \frac{1}{\beta} \frac{2}{\beta} \frac{1}{\rho_b + \rho} \left( B_0 \partial_z B_{1z} \,- \, \frac{\nabla B_{1z}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1z} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
 
 In the small shearing box (SSB) limit, $\delta \ll \varepsilon \ll 1$. For a rotation law that is close to Keplerian, $\frac{1}{\rho_b}\partial_xP_b = \mathcal{O}\left(\delta^3/\varepsilon^2\right). $
 
@@ -354,12 +354,12 @@ $P_1 = P_0 + \frac{\delta^2}{\varepsilon^2}\partial_i p$ where $P_0$ is a consta
 
 This is equivalent to taking $\delta = \varepsilon^2$. Making these substitutions and taking $\rho_1 = 0$, we obtain: \\
 
-$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, - \, 2 u_{1y}\,= \, - \, \frac{1}{\rho_b}\partial_x p  \, + \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1x} \,- \, \frac{\nabla B_{1x}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1x} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
+$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1x} \, - \, 2 u_{1y}\,= \, - \, \frac{1}{\rho_b}\partial_x p  \, + \frac{1}{\beta} \frac{2}{\beta} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1x} \,- \, \frac{\nabla B_{1x}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1x} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
 
 $\partial_t u_{1y}\, - \, q \Omega_0 u_{1x}  \, - \, q \Omega_0 x \partial_y u_{1y} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1y} \,+ \, 2u_{1x} \, =  $\\
-$\, - \, \frac{1}{\rho_b}\partial_y p \, + \,  \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1y} \,- \, \frac{\nabla B_{1y}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1y} \right) \, + \, \frac{1}{\reye}\nabla^2 u_y  $ \\
+$\, - \, \frac{1}{\rho_b}\partial_y p \, + \,  \frac{1}{\beta} \frac{2}{\beta} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1y} \,- \, \frac{\nabla B_{1y}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1y} \right) \, + \, \frac{1}{\reye}\nabla^2 u_y  $ \\
 
-$\partial_t u_{1z} \, - \, q \Omega_0 x \partial_y u_{1z} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1z} \, = \, - \, \frac{1}{\rho_b}\partial_z p  \, + \frac{1}{\beta} \frac{1}{4\pi} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1z} \,- \, \frac{\nabla B_{1z}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1z} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
+$\partial_t u_{1z} \, - \, q \Omega_0 x \partial_y u_{1z} \,+ \, \left(\mathbf{u_1} \cdot \nabla\right)u_{1z} \, = \, - \, \frac{1}{\rho_b}\partial_z p  \, + \frac{1}{\beta} \frac{2}{\beta} \frac{1}{\rho_b} \left( B_0 \partial_z B_{1z} \,- \, \frac{\nabla B_{1z}^2}{2} \, + \, \mathbf{B_1}\cdot \nabla B_{1z} \right) \, + \, \frac{1}{\reye}\nabla^2 u_x  $ \\
 
 Now we reparameterize in terms of the total (gas and magnetic) pressure: \\
 
@@ -367,7 +367,7 @@ $\Pi \equiv p + \frac{1}{2\beta} B^2$ \\
 
 And take $\rho_b$ = 1. And finally, we have the perturbed, nondimensionalized momentum equation in all its glory: \\
 
-$\partial_t \mathbf{u_1} \, - \, q\Omega_0 x \partial_y \mathbf{u_1} \, + \, \left(\mathbf{u_1}\cdot \nabla\right) \mathbf{u_1} \, - \, 2 u_{1y} \mathbf{\hat{x}} \, + \, \left(2 - \Omega_0 q\right)u_{1x}\mathbf{\hat{y}} \, = \, \frac{1}{4\pi} \nabla \Pi \, + \, \frac{1}{4\pi}B_0\partial_z\mathbf{B_1} \, + \, \frac{1}{4\pi}\mathbf{B_1} \cdot \nabla \mathbf{B_1} \,+ \, \frac{1}{\reye}\nabla^2 \mathbf{u_1}$ \\
+$\partial_t \mathbf{u_1} \, - \, q\Omega_0 x \partial_y \mathbf{u_1} \, + \, \left(\mathbf{u_1}\cdot \nabla\right) \mathbf{u_1} \, - \, 2 u_{1y} \mathbf{\hat{x}} \, + \, \left(2 - \Omega_0 q\right)u_{1x}\mathbf{\hat{y}} \, = \, \frac{2}{\beta} \nabla \Pi \, + \, \frac{2}{\beta}B_0\partial_z\mathbf{B_1} \, + \, \frac{2}{\beta}\mathbf{B_1} \cdot \nabla \mathbf{B_1} \,+ \, \frac{1}{\reye}\nabla^2 \mathbf{u_1}$ \\
 
 We now formally show what happens to the energy equation. If we perform the same steps as above on our energy equation: \\
 
@@ -413,7 +413,7 @@ $\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1
 
 And finally we have our full equation set: \\
 
-$\partial_t \mathbf{u_1} \, - \, q\Omega_0 x \partial_y \mathbf{u_1} \, + \, \left(\mathbf{u_1}\cdot \nabla\right) \mathbf{u_1} \, - \, 2 u_{1y} \mathbf{\hat{x}} \, + \, \left(2 - \Omega_0 q\right)u_{1x}\mathbf{\hat{y}} \, = \, \frac{1}{4\pi} \nabla \Pi \, + \, \frac{1}{4\pi}B_0\partial_z\mathbf{B_1} \, + \, \frac{1}{4\pi}\mathbf{B_1} \cdot \nabla \mathbf{B_1}\,  + \, \frac{1}{\reye}\nabla^2 \mathbf{u_1}$ \\
+$\partial_t \mathbf{u_1} \, - \, q\Omega_0 x \partial_y \mathbf{u_1} \, + \, \left(\mathbf{u_1}\cdot \nabla\right) \mathbf{u_1} \, - \, 2 u_{1y} \mathbf{\hat{x}} \, + \, \left(2 - \Omega_0 q\right)u_{1x}\mathbf{\hat{y}} \, = \, \frac{2}{\beta} \nabla \Pi \, + \, \frac{2}{\beta}B_0\partial_z\mathbf{B_1} \, + \, \frac{2}{\beta}\mathbf{B_1} \cdot \nabla \mathbf{B_1}\,  + \, \frac{1}{\reye}\nabla^2 \mathbf{u_1}$ \\
 
 $\partial_t \mathbf{B_1} \, = \, B_0 \partial_z \mathbf{u_1} \, + \, \mathbf{B_1} \cdot \nabla \mathbf{u_1} \, + \, q \Omega_0 x \partial_y \mathbf{B_1} \, - \, \mathbf{u_1} \cdot \nabla \mathbf{B_1} \, - \, q\Omega_0 B_{1x} \mathbf{\hat{y}} \,\, + \, \frac{1}{\reym} \nabla^2 \mathbf{B_1} $ \\
 
@@ -472,15 +472,15 @@ u_{1y} \\
 
 For the x component of the momentum equation, we have: \\
 
-$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \, + \, \left(\mathbf{u_1} \cdot \nabla\right) u_{1x} \, - \, 2 u_{1y} \, = \, \frac{1}{4\pi} \partial_x \Pi \, + \, \frac{1}{4\pi} B_0 \partial_z B_{1x} \, + \, \frac{1}{4\pi} \mathbf{B_1} \cdot \nabla B_{1x} \, + \, \frac{1}{\reye}\nabla^2 u_{1x} $ \\
+$\partial_t u_{1x} \, - \, q \Omega_0 x \partial_y u_{1x} \, + \, \left(\mathbf{u_1} \cdot \nabla\right) u_{1x} \, - \, 2 u_{1y} \, = \, \frac{2}{\beta} \partial_x \Pi \, + \, \frac{2}{\beta} B_0 \partial_z B_{1x} \, + \, \frac{2}{\beta} \mathbf{B_1} \cdot \nabla B_{1x} \, + \, \frac{1}{\reye}\nabla^2 u_{1x} $ \\
 
 The $\partial_y$ terms go to zero, and this expands to become: \\
 
-$\partial_t\partial_z\Psi \, + \, \partial_z\Psi \partial_x \partial_z \Psi \, - \, \partial_x \Psi \partial_z^2\Psi \, - \, 2 u_{1y} \, = \, \frac{1}{4\pi}\partial_x \Pi \, + \, \frac{1}{4\pi} B_0 \partial_z^2 A \, + \, \frac{1}{4\pi} \partial_z A \partial_x \partial_z A \, - \, \frac{1}{4\pi} \partial_x A \partial_z^2 A \, + \, \frac{1}{\reye} \nabla^2 \partial_z \Psi$ \\
+$\partial_t\partial_z\Psi \, + \, \partial_z\Psi \partial_x \partial_z \Psi \, - \, \partial_x \Psi \partial_z^2\Psi \, - \, 2 u_{1y} \, = \, \frac{2}{\beta}\partial_x \Pi \, + \, \frac{2}{\beta} B_0 \partial_z^2 A \, + \, \frac{2}{\beta} \partial_z A \partial_x \partial_z A \, - \, \frac{2}{\beta} \partial_x A \partial_z^2 A \, + \, \frac{1}{\reye} \nabla^2 \partial_z \Psi$ \\
 
 Multiplying through by $\partial_z$ and expanding terms yields: \\
 
-$\partial_t \partial_z^2 \Psi \, + \, \partial_z^2\Psi\partial_x\partial_z\Psi \, + \, \partial_z\Psi \partial_x\partial_z^2 \Psi \, - \, \partial_z\partial_x\Psi\partial_z^2\Psi \, - \, \partial_x \Psi \partial_z^3 \Psi \, - \, 2\partial_z u_{1y} \, = \, \frac{1}{4\pi}\partial_z\partial_x\Pi \, + \, \frac{1}{4\pi} B_0\partial_z^3A \, + \, \frac{1}{4\pi}\partial_z^2 A \partial_x \partial_z A \, + \, \frac{1}{4\pi}\partial_zA\partial_x\partial_z^2 A \, - \, \frac{1}{4\pi}\partial_z\partial_x A \partial_z^2 A \, - \, \frac{1}{4\pi}\partial_xA\partial_z^3A \, + \, \frac{1}{\reye} \nabla^2 \partial_z^2 \Psi $ \\
+$\partial_t \partial_z^2 \Psi \, + \, \partial_z^2\Psi\partial_x\partial_z\Psi \, + \, \partial_z\Psi \partial_x\partial_z^2 \Psi \, - \, \partial_z\partial_x\Psi\partial_z^2\Psi \, - \, \partial_x \Psi \partial_z^3 \Psi \, - \, 2\partial_z u_{1y} \, = \, \frac{2}{\beta}\partial_z\partial_x\Pi \, + \, \frac{2}{\beta} B_0\partial_z^3A \, + \, \frac{2}{\beta}\partial_z^2 A \partial_x \partial_z A \, + \, \frac{2}{\beta}\partial_zA\partial_x\partial_z^2 A \, - \, \frac{2}{\beta}\partial_z\partial_x A \partial_z^2 A \, - \, \frac{2}{\beta}\partial_xA\partial_z^3A \, + \, \frac{1}{\reye} \nabla^2 \partial_z^2 \Psi $ \\
 
 Several terms cancel, and several can be grouped into Jacobians: \\
 
@@ -492,31 +492,31 @@ Where $J\left(f, g\right) \equiv \partial_z f \partial_x g - \partial_x f \parti
 
 The x-component of the momentum equation then becomes: \\
 
-$\partial_t\partial_z^2\Psi \, + \, J\left(\Psi, \partial_z^2\Psi\right) \, - \, 2\partial_z u_{1y} \, = \, \frac{1}{4\pi}\partial_x\partial_z\Pi \, + \, \frac{1}{4\pi}B_0 \partial_z^3A \, + \, \frac{1}{4\pi}J\left(A, \partial_z^2A\right) \, + \, \frac{1}{\reye}\nabla^2 \partial_z^2 \Psi$ \\
+$\partial_t\partial_z^2\Psi \, + \, J\left(\Psi, \partial_z^2\Psi\right) \, - \, 2\partial_z u_{1y} \, = \, \frac{2}{\beta}\partial_x\partial_z\Pi \, + \, \frac{2}{\beta}B_0 \partial_z^3A \, + \, \frac{2}{\beta}J\left(A, \partial_z^2A\right) \, + \, \frac{1}{\reye}\nabla^2 \partial_z^2 \Psi$ \\
 
 The z-component of the momentum equation is: \\
 
-$\partial_t u_{1z} \, - \, q\Omega_0x\partial_y u_{1z} \, + \, \left(\mathbf{u_1} \cdot \nabla \right) u_{1z} \, = \, \frac{1}{4\pi}\partial_z \Pi \, + \, \frac{1}{4\pi} B_0 \partial_z\partial_zB_{1z} \, + \, \frac{1}{4\pi}\mathbf{B_1}\cdot\nabla B_{1z} \, + \, \frac{1}{\reye}\nabla^2 u_{1z} $ \\
+$\partial_t u_{1z} \, - \, q\Omega_0x\partial_y u_{1z} \, + \, \left(\mathbf{u_1} \cdot \nabla \right) u_{1z} \, = \, \frac{2}{\beta}\partial_z \Pi \, + \, \frac{2}{\beta} B_0 \partial_z\partial_zB_{1z} \, + \, \frac{2}{\beta}\mathbf{B_1}\cdot\nabla B_{1z} \, + \, \frac{1}{\reye}\nabla^2 u_{1z} $ \\
 
 Which, after following the steps outlined above in the expansion of the x-component, becomes: \\
 
-$\partial_t \partial_x^2 \Psi \, + \, J\left(\Psi, \partial_x^2 \Psi\right) \, = \, -\frac{1}{4\pi}\partial_x\partial_z\Pi \, + \, \frac{1}{4\pi}B_0\partial_z\partial_x^2 A \, + \, \frac{1}{4\pi}J\left(A, \partial_x^2 A \right) \, + \, \frac{1}{\reye} \nabla^2 \partial_x^2 \Psi$ \\
+$\partial_t \partial_x^2 \Psi \, + \, J\left(\Psi, \partial_x^2 \Psi\right) \, = \, -\frac{2}{\beta}\partial_x\partial_z\Pi \, + \, \frac{2}{\beta}B_0\partial_z\partial_x^2 A \, + \, \frac{2}{\beta}J\left(A, \partial_x^2 A \right) \, + \, \frac{1}{\reye} \nabla^2 \partial_x^2 \Psi$ \\
 
 We can combine the two equations (for the x- and z-components), noting that: \\
 
 $\nabla^2 \, = \, \partial_x^2 \mathbf{\hat{x}} \, \partial_z^2 \mathbf{\hat{z}}$ \\
 
-$\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \partial_z u_{1y} \, = \, \frac{1}{4\pi} B_0 \partial_z \nabla^2 A \, + \, \frac{1}{4\pi}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi$ \\
+$\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \partial_z u_{1y} \, = \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, + \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi$ \\
 
-Where the term $\frac{1}{4\pi}\partial_x\partial_z\Pi \left(\mathbf{\hat{x}} \, - \, \mathbf{\hat{z}}\right)$ goes to zero. \\
+Where the term $\frac{2}{\beta}\partial_x\partial_z\Pi \left(\mathbf{\hat{x}} \, - \, \mathbf{\hat{z}}\right)$ goes to zero. \\
 
 The y-component of the momentum equation is even simpler: \\
 
-$\partial_t u_{1y} \, - q\Omega_0 x \partial_y u_{1y} \, + \, \left(\mathbf{u_1} \cdot \nabla \right)u_{1y} \, + \, \left(2 - \Omega_0 q\right) u_{1x} \, = \, \frac{1}{4\pi} \partial_y \Pi \, + \, \frac{1}{4\pi} B_0 \partial_z B_{1y} \, + \, \frac{1}{4\pi}\mathbf{B_1} \cdot \nabla B_{1y} \, + \, \frac{1}{\reye}\nabla^2 u_{1y}$ \\
+$\partial_t u_{1y} \, - q\Omega_0 x \partial_y u_{1y} \, + \, \left(\mathbf{u_1} \cdot \nabla \right)u_{1y} \, + \, \left(2 - \Omega_0 q\right) u_{1x} \, = \, \frac{2}{\beta} \partial_y \Pi \, + \, \frac{2}{\beta} B_0 \partial_z B_{1y} \, + \, \frac{2}{\beta}\mathbf{B_1} \cdot \nabla B_{1y} \, + \, \frac{1}{\reye}\nabla^2 u_{1y}$ \\
 
 Which becomes: \\
 
-$\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, + \, \left(2 - \Omega_0 q\right) \partial_z \Psi \, = \, \frac{1}{4\pi}B_0\partial_z B_{1y} \, + \, \frac{1}{4\pi} J\left(A, B_{1y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{1y}$ \\
+$\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, + \, \left(2 - \Omega_0 q\right) \partial_z \Psi \, = \, \frac{2}{\beta}B_0\partial_z B_{1y} \, + \, \frac{2}{\beta} J\left(A, B_{1y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{1y}$ \\
 
 
 For the induction equation, we begin with the y component: \\
@@ -577,9 +577,9 @@ Clearly, this is the equation for both the x and z components of the induction e
 
 Our final equation set is: \\
 
-$\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \partial_z u_{1y} \, = \, \frac{1}{4\pi} B_0 \partial_z \nabla^2 A \, + \, \frac{1}{4\pi}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi$ \\
+$\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \partial_z u_{1y} \, = \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, + \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi$ \\
 
-$\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, + \, \left(2 - \Omega_0 q\right) \partial_z \Psi \, = \, \frac{1}{4\pi}B_0\partial_z B_{1y} \, + \, \frac{1}{4\pi} J\left(A, B_{1y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{1y}$ \\
+$\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, + \, \left(2 - \Omega_0 q\right) \partial_z \Psi \, = \, \frac{2}{\beta}B_0\partial_z B_{1y} \, + \, \frac{2}{\beta} J\left(A, B_{1y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{1y}$ \\
 
 $\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, \frac{1}{\reym} \nabla^2 A$ \\
 
@@ -673,9 +673,9 @@ $\nabla^4 \to \partial_x^4 + \partial_x^2\partial_z^2 + \epsilon^2\partial_x^2\p
 
 We now rewrite our system of equations, grouping similar terms into matrices. The system of equations we are rewriting is: \\
 
-$\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, \frac{1}{4\pi}J\left(A, \nabla^2 A \right) \, =  \, 2 \partial_z u_{1y} \,+ \, \frac{1}{4\pi} B_0 \partial_z \nabla^2 A \, + \, \frac{1}{\reye}\nabla^4 \Psi$ \\
+$\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, =  \, 2 \partial_z u_{1y} \,+ \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, + \, \frac{1}{\reye}\nabla^4 \Psi$ \\
 
-$\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, - \, \frac{1}{4\pi} J\left(A, B_{1y}\right) \, + \, \left(2 - \Omega_0 q\right) \partial_z \Psi \, = \, \frac{1}{4\pi}B_0\partial_z B_{1y} \, + \, \frac{1}{\reye} \nabla^2 u_{1y}$ \\
+$\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, - \, \frac{2}{\beta} J\left(A, B_{1y}\right) \, + \, \left(2 - \Omega_0 q\right) \partial_z \Psi \, = \, \frac{2}{\beta}B_0\partial_z B_{1y} \, + \, \frac{1}{\reye} \nabla^2 u_{1y}$ \\
 
 $\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, \frac{1}{Rm} \nabla^2 A$ \\
 
@@ -683,8 +683,8 @@ $\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, J\left(A, u_{1y}\right)
 
 First we have a vector of nonlinear terms:\\
 
-$\mathbf{N} = \left[ \begin{matrix}  J(\Psi, \nabla^2 \Psi) - \frac{1}{4\pi}J(A, \nabla^2 A)\\
-J(\Psi, u_{1y}) - \frac{1}{4\pi} J(A, B_{1y}) \\ 
+$\mathbf{N} = \left[ \begin{matrix}  J(\Psi, \nabla^2 \Psi) - \frac{2}{\beta}J(A, \nabla^2 A)\\
+J(\Psi, u_{1y}) - \frac{2}{\beta} J(A, B_{1y}) \\ 
 -J(A, \Psi) \\
 J(\Psi, B_{1y}) - J(A, u_{1y}) \\
 \end{matrix} \right]$ \\
@@ -706,8 +706,8 @@ $RHS = \left[\begin{matrix}
 0 & 0 & \frac{1}{\reym}\nabla^2 & 0 \\
 0 & 0 & 0 & \frac{1}{\reym}\nabla^2 \\ 
 \end{matrix}\right] + \left[\begin{matrix}
-0 & 0 & \frac{1}{4\pi}B_0 \partial_z \nabla^2 & 0 \\
-0 & 0 & 0 & \frac{1}{4\pi} B_0 \partial_z \\
+0 & 0 & \frac{2}{\beta}B_0 \partial_z \nabla^2 & 0 \\
+0 & 0 & 0 & \frac{2}{\beta} B_0 \partial_z \\
 B_0 \partial_z & 0 & 0 & 0 \\
 0 & B_0 \partial_z & 0 & 0 \\ \end{matrix}\right]$ \\
 
@@ -768,21 +768,21 @@ Clearly these three matrices are 0th, 2nd, and 4th order in $\partial_z$, respec
 The second matrix in $RHS$ involves $B_0$, which we rewrite in terms of the tuning parameter $\epsilon^2 \equiv 1 - B_0$. \\
 
 $\left[\begin{matrix}
-0 & 0 & \frac{1}{4\pi}B_0 \partial_z \nabla^2 & 0 \\
-0 & 0 & 0 & \frac{1}{4\pi} B_0 \partial_z \\
+0 & 0 & \frac{2}{\beta}B_0 \partial_z \nabla^2 & 0 \\
+0 & 0 & 0 & \frac{2}{\beta} B_0 \partial_z \\
 B_0 \partial_z & 0 & 0 & 0 \\
 0 & B_0 \partial_z & 0 & 0 \\ \end{matrix}\right] = (1 - \epsilon^2) \left[\begin{matrix}
-0 & 0 & \frac{1}{4\pi}\partial_z(\partial_x^2 + \partial_z^2) & 0 \\
-0 & 0 & 0 & \frac{1}{4\pi}\partial_z \\
+0 & 0 & \frac{2}{\beta}\partial_z(\partial_x^2 + \partial_z^2) & 0 \\
+0 & 0 & 0 & \frac{2}{\beta}\partial_z \\
 \partial_z & 0 & 0 & 0 \\
 0 & \partial_z & 0 & 0 \\ \end{matrix}\right] $ \\
 
 $ = (1 - \epsilon^2)\partial_z\left[\begin{matrix}
-0 & 0 & \frac{1}{4\pi}\partial_x^2 & 0 \\
-0 & 0 & 0 & \frac{1}{4\pi} \\
+0 & 0 & \frac{2}{\beta}\partial_x^2 & 0 \\
+0 & 0 & 0 & \frac{2}{\beta} \\
 1 & 0 & 0 & 0 \\
 0 & 1 & 0 & 0 \\ \end{matrix} \right] + (1 - \epsilon^2)\partial_z^3 \left[\begin{matrix}
-0 & 0 & \frac{1}{4\pi} & 0 \\
+0 & 0 & \frac{2}{\beta} & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\ \end{matrix} \right] $ \\
@@ -804,8 +804,8 @@ $\mathcal{L}_0 = \left[\begin{matrix}
 \vspace{2mm}
 
 $\mathcal{L}_1 = \left[\begin{matrix}
-0 & 2 & \frac{1}{4\pi}\partial_x^2 & 0 \\
-(\Omega_0 - 2)q & 0 & 0 & \frac{1}{4\pi} \\
+0 & 2 & \frac{2}{\beta}\partial_x^2 & 0 \\
+(\Omega_0 - 2)q & 0 & 0 & \frac{2}{\beta} \\
 1 & 0 & 0 & 0 \\
 0 & 1 & -q\Omega_0 & 0 \\ \end{matrix}\right] \\$
 
@@ -820,7 +820,7 @@ $\mathcal{L}_2 = \left[\begin{matrix}
 \vspace{2mm}
 
 $\mathcal{L}_3 = \left[\begin{matrix}
-0 & 0 & \frac{1}{4\pi} & 0 \\
+0 & 0 & \frac{2}{\beta} & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\ \end{matrix} \right] $
@@ -836,8 +836,8 @@ $\mathcal{L}_4 = \left[\begin{matrix}
 \vspace{2mm}
 
 $\mathcal{X} = \left[\begin{matrix}
-0 & 0 & \frac{1}{4\pi}\partial_x^2 & 0 \\
-0 & 0 & 0 & \frac{1}{4\pi} \\
+0 & 0 & \frac{2}{\beta}\partial_x^2 & 0 \\
+0 & 0 & 0 & \frac{2}{\beta} \\
 1 & 0 & 0 & 0 \\
 0 & 1 & 0 & 0 \\ \end{matrix} \right]$ \\
 
@@ -952,17 +952,17 @@ $J(\Psi, \nabla^2\Psi) \to \epsilon^2 J(\Psi_1, \nabla^2 \Psi_1) + \epsilon^3 J(
 
 The second term behaves similarly, and thus $N^{(\Psi)}$ becomes: \\
 
-$N^{(\Psi)} \to \epsilon^2 J(\Psi_1, \nabla^2 \Psi_1) \,-\, \epsilon^2 \frac{1}{4\pi}J(A_1, \nabla^2 A_1) \,+\, \epsilon^3 J(\Psi_1, \nabla^2\Psi_2) \, - \epsilon^3\frac{1}{4\pi}J(A_1, \nabla^2 A_2) \,+\, \epsilon^3 J(\Psi_2, \nabla^2\Psi_1) \, - \, \epsilon^3 \frac{1}{4\pi}J(A_2, \nabla^2 A_1) \,+\, 2\epsilon^3 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, - \, 2\epsilon^3 \frac{1}{4\pi}J(A_1, \partial_z\partial_Z A_1) \,+\, \epsilon^3\widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \, \epsilon^3 \frac{1}{4\pi}\widetilde{J}(A_1, \nabla^2 A_1) \, + \, \mathcal{O}(\epsilon^4)$ \\
+$N^{(\Psi)} \to \epsilon^2 J(\Psi_1, \nabla^2 \Psi_1) \,-\, \epsilon^2 \frac{2}{\beta}J(A_1, \nabla^2 A_1) \,+\, \epsilon^3 J(\Psi_1, \nabla^2\Psi_2) \, - \epsilon^3\frac{2}{\beta}J(A_1, \nabla^2 A_2) \,+\, \epsilon^3 J(\Psi_2, \nabla^2\Psi_1) \, - \, \epsilon^3 \frac{2}{\beta}J(A_2, \nabla^2 A_1) \,+\, 2\epsilon^3 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, - \, 2\epsilon^3 \frac{2}{\beta}J(A_1, \partial_z\partial_Z A_1) \,+\, \epsilon^3\widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \, \epsilon^3 \frac{2}{\beta}\widetilde{J}(A_1, \nabla^2 A_1) \, + \, \mathcal{O}(\epsilon^4)$ \\
 
 Note that this is the same as Umurhan+ except for a sign on one term: they have a typo in their Eq. B19. \\
 
-Now we expand $N^{(u_{1y})} = J(\Psi, u_{1y}) - \frac{1}{4\pi} J(A, B_{1y})$: \\
+Now we expand $N^{(u_{1y})} = J(\Psi, u_{1y}) - \frac{2}{\beta} J(A, B_{1y})$: \\
 
-$= J(\Psi, u_{1y}) + \epsilon \widetilde{J}(\Psi, u_{1y}) - \frac{1}{4\pi}J(A, B_{1y}) \, - \, \frac{1}{4\pi}\epsilon \widetilde{J}(A, B_{1y})$ \\
+$= J(\Psi, u_{1y}) + \epsilon \widetilde{J}(\Psi, u_{1y}) - \frac{2}{\beta}J(A, B_{1y}) \, - \, \frac{2}{\beta}\epsilon \widetilde{J}(A, B_{1y})$ \\
 
 For the purposes of the perturbation series expansions, we will rewrite $u_{1y} \equiv u$ and $B_{1y} \equiv B$, with the understanding that $u$ and $B$ are the y-components of the velocity and magnetic field, respectively. \\
 
-$N^{(u_{1y})} \to \epsilon^2 J(\Psi_1, u_1) \, - \, \frac{1}{4\pi} \epsilon^2 J(A_1, B_1) \, + \, \epsilon^3 J(\Psi_1, u_2) \, + \, \epsilon^3 J(\Psi_2, u_1) \, + \, \epsilon^3 \widetilde{J}(\Psi_1, u_1) \, - \, \frac{1}{4\pi} \epsilon^3 J(A_1, B_2) \, - \, \frac{1}{4\pi} \epsilon^3 J(A_2, B_1) \, - \, \frac{1}{4\pi}\epsilon^3 \widetilde{J}(A_1, B_1) \, + \, \mathcal{O}(\epsilon^4)$ \\
+$N^{(u_{1y})} \to \epsilon^2 J(\Psi_1, u_1) \, - \, \frac{2}{\beta} \epsilon^2 J(A_1, B_1) \, + \, \epsilon^3 J(\Psi_1, u_2) \, + \, \epsilon^3 J(\Psi_2, u_1) \, + \, \epsilon^3 \widetilde{J}(\Psi_1, u_1) \, - \, \frac{2}{\beta} \epsilon^3 J(A_1, B_2) \, - \, \frac{2}{\beta} \epsilon^3 J(A_2, B_1) \, - \, \frac{2}{\beta}\epsilon^3 \widetilde{J}(A_1, B_1) \, + \, \mathcal{O}(\epsilon^4)$ \\
 
 The $N^{(A)}$ term is simple: \\
 
@@ -989,9 +989,9 @@ $N^{(B)} = \epsilon^2 N_2^{(B)} \, + \, \epsilon^3 N_3^{(B)} \, + \, \mathcal{O}
 
 And: \\
 
-$N_2^{(\Psi)} = J(\Psi_1, \nabla^2 \Psi_1) \,-\, \frac{1}{4\pi}J(A_1, \nabla^2 A_1) $ \\
+$N_2^{(\Psi)} = J(\Psi_1, \nabla^2 \Psi_1) \,-\, \frac{2}{\beta}J(A_1, \nabla^2 A_1) $ \\
 
-$N_2^{(u)} = J(\Psi_1, u_1) \, - \, \frac{1}{4\pi} J(A_1, B_1) $ \\
+$N_2^{(u)} = J(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_1) $ \\
 
 $N_2^{(A)} = - J(A_1, \Psi_1)$ \\
 
@@ -999,9 +999,9 @@ $N_2^{(B)} =  J(\Psi_1, B_1) \, - \, J(A_1, u_1)$\\
 
 And: \\
 
-$N_3^{(\Psi)} = J(\Psi_1, \nabla^2\Psi_2) \, - \, \frac{1}{4\pi}J(A_1, \nabla^2 A_2) \,+\, J(\Psi_2, \nabla^2\Psi_1) \, - \, \frac{1}{4\pi}J(A_2, \nabla^2 A_1) \,+\, 2 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, - \, 2 \frac{1}{4\pi}J(A_1, \partial_z\partial_Z A_1) \,+\, \widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \,  \frac{1}{4\pi}\widetilde{J}(A_1, \nabla^2 A_1) $ \\
+$N_3^{(\Psi)} = J(\Psi_1, \nabla^2\Psi_2) \, - \, \frac{2}{\beta}J(A_1, \nabla^2 A_2) \,+\, J(\Psi_2, \nabla^2\Psi_1) \, - \, \frac{2}{\beta}J(A_2, \nabla^2 A_1) \,+\, 2 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, - \, 2 \frac{2}{\beta}J(A_1, \partial_z\partial_Z A_1) \,+\, \widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \,  \frac{2}{\beta}\widetilde{J}(A_1, \nabla^2 A_1) $ \\
 
-$N_3^{(u)} = J(\Psi_1, u_2) \, + \, J(\Psi_2, u_1) \, + \, \widetilde{J}(\Psi_1, u_1) \, - \, \frac{1}{4\pi} J(A_1, B_2) \, - \, \frac{1}{4\pi} J(A_2, B_1) \, - \, \frac{1}{4\pi} \widetilde{J}(A_1, B_1)$ \\
+$N_3^{(u)} = J(\Psi_1, u_2) \, + \, J(\Psi_2, u_1) \, + \, \widetilde{J}(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_2) \, - \, \frac{2}{\beta} J(A_2, B_1) \, - \, \frac{2}{\beta} \widetilde{J}(A_1, B_1)$ \\
 
 $N_3^{(A)} = - J(A_1, \Psi_2) \, - \, J(A_2, \Psi_1) \, - \, \widetilde{J}(A_1, \Psi_1) \,$ \\
 
@@ -1188,14 +1188,14 @@ And $\mathcal{L}_0^T = \mathcal{L}_0$, $\mathcal{L}_2^T = \mathcal{L}_2$, $\math
 $\mathcal{L}_1^T = \left[\begin{matrix}
 0 & 2-q & 1 & 0 \\
 2 & 0 & 0 & 1 \\
-\frac{1}{4\pi} \partial_x^2 & 0 & 0 & -q\\
-0 & \frac{1}{4\pi} & 0 & 0 \\
+\frac{2}{\beta} \partial_x^2 & 0 & 0 & -q\\
+0 & \frac{2}{\beta} & 0 & 0 \\
 \end{matrix}\right]$ \\
 
 $\mathcal{L}_3^T = \left[\begin{matrix}
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
-\frac{1}{4\pi} & 0 & 0 & 0\\
+\frac{2}{\beta} & 0 & 0 & 0\\
 0 & 0 & 0 & 0 \\
 \end{matrix}\right]$ \\
 
@@ -1205,9 +1205,9 @@ $\frac{1}{\reye}\partial_x^4 \Psi^\dagger \, - \, (2-q)\partial_z u^\dagger \, -
 
 $\frac{1}{\reye}\partial_x^2 u^\dagger \, - \, 2 \partial_z \Psi^\dagger \, - \, \partial_z B^\dagger, \, + \, \frac{1}{\reye}\partial_z^2 u^\dagger \, = \, 0$ \\
 
-$\frac{1}{\reym} \partial_x^2 A^\dagger \, - \, \frac{1}{4\pi} \partial_x^2 \partial_z \Psi^\dagger \, + \, q \partial_z B^\dagger  \,+ \, \frac{1}{\reym} \partial_z^2 A^\dagger \, - \, \frac{1}{4\pi} \partial_z^3 \Psi^\dagger \, = \, 0$ \\
+$\frac{1}{\reym} \partial_x^2 A^\dagger \, - \, \frac{2}{\beta} \partial_x^2 \partial_z \Psi^\dagger \, + \, q \partial_z B^\dagger  \,+ \, \frac{1}{\reym} \partial_z^2 A^\dagger \, - \, \frac{2}{\beta} \partial_z^3 \Psi^\dagger \, = \, 0$ \\
 
-$\frac{1}{\reym} \partial_x^2 B^\dagger \, - \, \frac{1}{4\pi} \partial_z u^\dagger \, + \, \frac{1}{\reym} \partial_z^2 B^\dagger \, = \, 0$ \\
+$\frac{1}{\reym} \partial_x^2 B^\dagger \, - \, \frac{2}{\beta} \partial_z u^\dagger \, + \, \frac{1}{\reym} \partial_z^2 B^\dagger \, = \, 0$ \\
 
 We will use the linear eigenvalue solver in Dedalus to determine $\mathbf{V}^\dagger$. \\
 
@@ -1217,9 +1217,9 @@ $\frac{1}{\reye}\partial_x^4 \Psi^\dagger \, - \, (2 - q) i Q u^\dagger \, - \, 
 
 $\frac{1}{\reye}\partial_x^2 u^\dagger \, - \, 2 i Q \Psi^\dagger \, - \, i Q B \, - \frac{1}{\reye} Q^2 u^\dagger \, = \, 0$ \\
 
-$\frac{1}{\reym} \partial_x^2 A^\dagger \, - \, \frac{1}{4\pi} i Q \partial_x^2 \Psi^\dagger \, + \, q i Q B^\dagger \, - \, Q^2 \frac{1}{\reym} A^\dagger \, + \, i Q^3 \frac{1}{4\pi} \Psi^\dagger \, = \, 0$ \\
+$\frac{1}{\reym} \partial_x^2 A^\dagger \, - \, \frac{2}{\beta} i Q \partial_x^2 \Psi^\dagger \, + \, q i Q B^\dagger \, - \, Q^2 \frac{1}{\reym} A^\dagger \, + \, i Q^3 \frac{2}{\beta} \Psi^\dagger \, = \, 0$ \\
 
-$\frac{1}{\reym} \partial_x^2 B^\dagger \, - \, \frac{1}{4\pi} i Q u^\dagger \, - \, Q^2 \frac{1}{\reym} B^\dagger \, = \, 0$ \\
+$\frac{1}{\reym} \partial_x^2 B^\dagger \, - \, \frac{2}{\beta} i Q u^\dagger \, - \, Q^2 \frac{1}{\reym} B^\dagger \, = \, 0$ \\
 
 The above is coded up in \texttt{adjoint\_homogenous.py}. \\
 
