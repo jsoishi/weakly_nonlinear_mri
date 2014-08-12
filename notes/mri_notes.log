@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  12 AUG 2014 17:50
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  12 AUG 2014 18:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -746,7 +746,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 355--356
  []
 
 
-Overfull \hbox (31.61996pt too wide) in paragraph at lines 357--358
+Overfull \hbox (27.38239pt too wide) in paragraph at lines 357--358
 []$\OML/cmm/m/it/12 @[]u[]  \OMS/cmsy/m/n/12 ^^@  \OML/cmm/m/it/12 q\OT1/cmr/m/
 n/12 
 []\OML/cmm/m/it/12 x@[]u[]  \OT1/cmr/m/n/12 +  [] \OML/cmm/m/it/12 u[]  \OMS/cm
@@ -1044,12 +1044,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 487--488
 
  []
 
-
+[11]
 Underfull \hbox (badness 10000) in paragraph at lines 491--492
 
  []
 
-[11]
+
 Underfull \hbox (badness 10000) in paragraph at lines 493--494
 
  []
@@ -1149,12 +1149,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 532--533
 
  []
 
-
+[12]
 Underfull \hbox (badness 10000) in paragraph at lines 534--535
 
  []
 
-[12]
+
 Underfull \hbox (badness 10000) in paragraph at lines 536--537
 
  []
@@ -1254,12 +1254,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 574--575
 
  []
 
-
+[13]
 Underfull \hbox (badness 10000) in paragraph at lines 576--577
 
  []
 
-[13]
+
 Underfull \hbox (badness 10000) in paragraph at lines 578--579
 
  []
@@ -1319,12 +1319,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 626--627
 
  []
 
-
+[14]
 Underfull \hbox (badness 10000) in paragraph at lines 628--629
 
  []
 
-[14]
+
 Underfull \hbox (badness 10000) in paragraph at lines 630--631
 
  []
@@ -1394,12 +1394,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 661--662
 
  []
 
-
+[15]
 Underfull \hbox (badness 10000) in paragraph at lines 663--664
 
  []
 
-[15]
+
 Underfull \hbox (badness 10000) in paragraph at lines 665--666
 
  []
@@ -1464,12 +1464,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 703--713
 
  []
 
-
+[16]
 Underfull \hbox (badness 10000) in paragraph at lines 714--719
 
  []
 
-[16]
+
 Underfull \hbox (badness 10000) in paragraph at lines 720--721
 
  []
@@ -1524,7 +1524,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 790--791
 
  []
 
-
+[17]
 Underfull \hbox (badness 10000) in paragraph at lines 792--793
 
  []
@@ -1534,7 +1534,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 794--795
 
  []
 
-[17]
+
 Underfull \hbox (badness 10000) in paragraph at lines 796--797
 
  []
@@ -1579,7 +1579,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 852--853
 
  []
 
-
+[18]
 Underfull \hbox (badness 10000) in paragraph at lines 854--855
 
  []
@@ -1589,7 +1589,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 856--857
 
  []
 
-[18]
+
 Underfull \hbox (badness 10000) in paragraph at lines 858--859
 
  []
@@ -1669,7 +1669,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 899--900
 
  []
 
-
+[19]
 Underfull \hbox (badness 10000) in paragraph at lines 901--902
 
  []
@@ -1679,7 +1679,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 903--904
 
  []
 
-[19]
+
 Underfull \hbox (badness 10000) in paragraph at lines 905--906
 
  []
@@ -1779,7 +1779,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 937--938
 
  []
 
-
+[20]
 Underfull \hbox (badness 10000) in paragraph at lines 939--940
 
  []
@@ -1789,7 +1789,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 941--942
 
  []
 
-[20]
+
 Underfull \hbox (badness 10000) in paragraph at lines 943--944
 
  []
@@ -1820,7 +1820,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 953--954
  []
 
 
-Overfull \hbox (45.6649pt too wide) in paragraph at lines 955--956
+Overfull \hbox (37.18974pt too wide) in paragraph at lines 955--956
 []$\OML/cmm/m/it/12 N[] \OMS/cmsy/m/n/12 ! \OML/cmm/m/it/12 ^^O[]J\OT1/cmr/m/n/
 12 (	[]\OML/cmm/m/it/12 ; \OMS/cmsy/m/n/12 r[]\OT1/cmr/m/n/12 	[])  \OMS/cmsy/m
 /n/12 ^^@  \OML/cmm/m/it/12 ^^O[][]J\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 A[]; \OMS
@@ -1833,7 +1833,7 @@ m/m/it/12 ^^O[]J\OT1/cmr/m/n/12 (	[]\OML/cmm/m/it/12 ; \OMS/cmsy/m/n/12 r[]\OT1
  []
 
 
-Overfull \hbox (28.24518pt too wide) in paragraph at lines 955--956
+Overfull \hbox (15.53244pt too wide) in paragraph at lines 955--956
 \OML/cmm/m/it/12 ^^O[][]J\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 A[]; \OMS/cmsy/m/n/1
 2 r[]\OML/cmm/m/it/12 A[]\OT1/cmr/m/n/12 )  +  2\OML/cmm/m/it/12 ^^O[]J\OT1/cmr
 /m/n/12 (	[]\OML/cmm/m/it/12 ; @[]@[]\OT1/cmr/m/n/12 	[])  \OMS/cmsy/m/n/12 ^^@
@@ -1889,7 +1889,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 971--972
 
  []
 
-
+[21]
 Underfull \hbox (badness 10000) in paragraph at lines 973--974
 
  []
@@ -1899,7 +1899,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 975--976
 
  []
 
-[21]
+
 Underfull \hbox (badness 10000) in paragraph at lines 977--978
 
  []
@@ -1955,7 +1955,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1000--1001
  []
 
 
-Overfull \hbox (12.47836pt too wide) in paragraph at lines 1002--1003
+Overfull \hbox (4.0032pt too wide) in paragraph at lines 1002--1003
 []$\OML/cmm/m/it/12 N[] \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 J\OT1/cmr/m/n/12 (	[
 ]\OML/cmm/m/it/12 ; \OMS/cmsy/m/n/12 r[]\OT1/cmr/m/n/12 	[])  \OMS/cmsy/m/n/12 
 ^^@  []\OML/cmm/m/it/12 J\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 A[]; \OMS/cmsy/m/n/1
@@ -1992,12 +1992,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 1012--1013
 
  []
 
-
+[22]
 Underfull \hbox (badness 10000) in paragraph at lines 1014--1015
 
  []
 
-[22]
+
 Underfull \hbox (badness 10000) in paragraph at lines 1016--1017
 
  []
@@ -2097,7 +2097,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1054--1055
 
  []
 
-
+[23]
 Underfull \hbox (badness 10000) in paragraph at lines 1056--1057
 
  []
@@ -2107,7 +2107,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1058--1059
 
  []
 
-[23]
+
 Underfull \hbox (badness 10000) in paragraph at lines 1060--1061
 
  []
@@ -2201,7 +2201,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1092--1093
 
  []
 
-
+[24]
 Underfull \hbox (badness 10000) in paragraph at lines 1094--1095
 
  []
@@ -2211,7 +2211,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1096--1097
 
  []
 
-[24]
+
 Underfull \hbox (badness 10000) in paragraph at lines 1098--1099
 
  []
@@ -2291,12 +2291,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 1130--1131
 
  []
 
-
+[25]
 Underfull \hbox (badness 10000) in paragraph at lines 1132--1133
 
  []
 
-[25]
+
 Underfull \hbox (badness 10000) in paragraph at lines 1134--1135
 
  []
@@ -2376,12 +2376,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 1164--1167
 
  []
 
-
+[26]
 Underfull \hbox (badness 10000) in paragraph at lines 1168--1169
 
  []
 
-[26]
+
 Underfull \hbox (badness 10000) in paragraph at lines 1170--1171
 
  []
@@ -2456,7 +2456,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1208--1209
 
  []
 
-
+[27]
 Underfull \hbox (badness 10000) in paragraph at lines 1210--1211
 
  []
@@ -2466,7 +2466,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1212--1213
 
  []
 
-[27]
+
 Underfull \hbox (badness 10000) in paragraph at lines 1214--1215
 
  []
@@ -2548,14 +2548,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 1255--1256
 
  []
 
-<marginal_solution.png, id=115, 941.6781pt x 535.5207pt>
+[29 <./s_Re_Im_Co_finegrid3.png> <./adjoint_soln_incorrect.png>]
+<marginal_solution.png, id=120, 941.6781pt x 535.5207pt>
 File: marginal_solution.png Graphic file (type png)
 
 <use marginal_solution.png>
 Package pdftex.def Info: marginal_solution.png used on input line 1261.
 (pdftex.def)             Requested size: 469.75499pt x 267.14684pt.
- [29 <./s_Re_Im_Co_finegrid3.png> <./adjoint_soln_incorrect.png>] [30 <./margin
-al_solution.png>]
+ [30 <./marginal_solution.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 1267--1268
 
  []
@@ -2663,7 +2663,7 @@ Package natbib Warning: There were undefined citations.
 Here is how much of TeX's memory you used:
  2843 strings out of 493315
  38861 string characters out of 6137904
- 118154 words of memory out of 5000000
+ 120154 words of memory out of 5000000
  6229 multiletter control sequences out of 15000+600000
  13579 words of font info for 52 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -2688,7 +2688,7 @@ ve/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive
 2013/texmf-dist/fonts/type1/public/amsfonts/latxfont/line10.pfb></usr/local/tex
 live/2013/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local
 /texlive/2013/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on mri_notes.pdf (35 pages, 1207627 bytes).
+Output written on mri_notes.pdf (35 pages, 1207557 bytes).
 PDF statistics:
  221 PDF objects out of 1000 (max. 8388607)
  137 compressed objects within 2 object streams

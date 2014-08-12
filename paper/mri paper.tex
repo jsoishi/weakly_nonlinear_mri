@@ -1,0 +1,123 @@
+\documentclass[12pt]{emulateapj}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\hyd}    {{\rm H}}
+\newcommand{\vobs}{v_{\rm obs}}
+\newcommand{\hi}{H{\sc i}~}
+\newcommand{\hii}{H{\sc ii}~}
+\newcommand{\hia}{H{\sc i}}
+\newcommand{\hiia}{H{\sc ii}}
+
+\usepackage[colorlinks,urlcolor=blue,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{gensymb}
+\usepackage{amsmath}
+\usepackage{color}
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt}
+\setlength{\@fpsep}{0pt}
+\makeatother
+
+\newcommand{\citei}[1]{\citeauthor{#1} \citeyear{#1}}
+\newcommand{\unit}[1]{\textrm{ #1}}
+\newcommand{\kms}{km ${\rm s^{-1}}$}
+\newcommand{\kmsa}{km ${\rm s^{-1}}$}
+\newcommand{\citeia}[2]{\citeauthor{#1}~(\citeyear{#1};~#2)}
+
+\newcommand\reye{\mathrel{Re}}
+\newcommand\reym{\mathrel{Rm}}
+
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+
+\begin{document}
+
+\title{The Weakly Nonlinear Saturation of the Magnetorotational Instability}
+\author{Clark, S.E.\altaffilmark{1}}
+\author{Oishi, J. S. \altaffilmark{2,}\altaffilmark{3}}
+\author{Mac Low, M.-M.\altaffilmark{1,}\altaffilmark{2}}
+\altaffiltext{1}{Department of Astronomy, Columbia University, New York, NY} 
+\altaffiltext{2}{Department of Astrophysics, American Museum of Natural History, New York, NY}
+\altaffiltext{3}{Department of Physics, SUNY Farmingdale}
+
+
+\begin{abstract}
+The MRI saturates.
+\end{abstract}
+
+
+
+\section{Introduction}
+
+The magnetorotational instability (MRI) arises in a differentially rotating disk with a vertical magnetic field.
+
+\section{Set-Up}
+
+Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment. The experimental apparatus is tall, in one of many attributes designed to mitigate the meridional flows introduced by the endcaps. We use periodic vertical boundary conditions. On the radial boundaries of our domain --  the inner and outer cylinders -- we apply no-slip, perfectly conducting boundary conditions.
+
+\section{Weakly Nonlinear Analysis}
+
+We solve the equations of non-ideal, axisymmetric, incompressible magnetized Taylor Couette flow. We solve the momentum equation:
+
+\beq
+\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = 
+\eeq
+
+$\, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, + \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right)$
+
+
+and the induction equation:
+
+\beq
+\partial_t \mathbf{B} = \nabla \times \left(\mathbf{u} \times \mathbf{B}\right) + \eta\nabla^2\mathbf{B}
+\eeq
+
+Subject to the magnetic solenoid and incompressibility constraints:
+
+\beq
+\nabla \cdot \mathbf{B} = 0
+\eeq
+
+\beq
+\nabla \cdot \mathbf{u} = 0
+\eeq
+
+We perturb the fluid quantities with three-dimensional, axisymmetric perturbations. We nondimensionalize the equations according to [...]
+The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the perturbed quantities.
+
+We define the flux function $\mathbf{A}$ and streamfunction $\mathbf{\Psi}$. These are scalar fields defined as the curl of the magnetic field and velocity, respectively, and so automatically satisfy our constraints.
+
+$\mathbf{A}$ is thus related to the magnetic field as
+
+\beq
+\mathbf{B} \, = \, \left[\begin{matrix}
+\partial_zA \\
+B_{y} \\
+-\partial_xA \\
+\end{matrix}\right],\eeq \\
+
+and $\mathbf{\Psi}$ is defined analogously.
+
+The perturbed, nondimensionalized equations which will be the focus of this equation are as follows:
+
+Our final equation set is: \\
+
+$\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \partial_z u_{1y} \, = \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, + \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi$ \\
+
+$\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, = \, \frac{2}{\beta}B_0\partial_z B_{1y} \, + \, \frac{2}{\beta} J\left(A, B_{1y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{1y}$ \\
+
+$\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, \frac{1}{\reym} \nabla^2 A$ \\
+
+$\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, J\left(A, u_{1y}\right) \, - \, J\left(\Psi, B_{1y}\right) \, + \, \frac{1}{\reym} \nabla^2 B_{1y}  \, - \, q \Omega_0 \partial_z A$ \\
+
+Note that working in terms of the flux function raises the order of the first momentum equation.
+
+
+
+\section{Conclusions}
+
+
+
+\end{document}
