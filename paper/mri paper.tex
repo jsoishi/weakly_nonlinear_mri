@@ -87,9 +87,9 @@ Subject to the magnetic solenoid and incompressibility constraints:
 We perturb the fluid quantities with three-dimensional, axisymmetric perturbations. We nondimensionalize the equations according to [...]
 The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the perturbed quantities.
 
-We define the flux function $\mathbf{A}$ and streamfunction $\mathbf{\Psi}$. These are scalar fields defined as the curl of the magnetic field and velocity, respectively, and so automatically satisfy our constraints.
+We define the flux function $A$ and streamfunction $\Psi$. These are scalar fields defined as the curl of the magnetic field and velocity, respectively, and so automatically satisfy our constraints.
 
-$\mathbf{A}$ is thus related to the magnetic field as
+$A$ is thus related to the magnetic field as
 
 \beq
 \mathbf{B} \, = \, \left[\begin{matrix}
@@ -134,6 +134,73 @@ J\left(f, g\right) \equiv \partial_z f\partial_x g - \partial_x f \partial_z g.
 
 Note that working in terms of the flux function raises the order of the first momentum equation.
 
+$B_0$ appears in Equations \ref{eqset1} - \ref{eqset4} because it is the nondimensionalized background field strength. That is, $B = B_0 \equiv 1$. In order to study our system in the weakly nonlinear regime, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting $B = B_0\left(1 - \epsilon^2\right)$. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ weakening of the background magnetic field destabilizes a band of wave modes with width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly.
+
+The destabilizing substitution is made, and Equations \ref{eqset1} - \ref{eqset4} are rewritten such that the fluid variables are contained in a state vector $\mathbf{V} = \left[\Psi, u_y, A, B\right]^\mathrm{T}$. This yields the following system of equations.
+
+\beq
+\mathcal{D}\partial_t \mathbf{V} + \mathbf{N} = \mathcal{L} \mathbf{V} - \epsilon^2\partial_z\mathcal{X} \mathbf{V} - \epsilon^2 \partial_z^3 \mathcal{L}_3\mathbf{V}
+\eeq
+
+Where $\mathcal{L} \equiv \mathcal{L}_0 + \mathcal{L}_1\partial_z + \mathcal{L}_2\partial_z^2 + \mathcal{L}_3\partial_z^3 + \mathcal{L}_4\partial_z^4$ \\
+
+And: \\
+
+$\mathcal{D} = \left[\begin{matrix}
+\nabla^2 & 0 & 0 & 0 \\
+0 & 1& 0 & 0 \\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1 \\
+\end{matrix}\right]$ \\
+
+$\mathcal{L}_0 = \left[\begin{matrix}
+\frac{1}{\reye}\partial_x^4 & 0 & 0 & 0 \\
+0 & \frac{1}{\reye}\partial_x^2 & 0 &0 \\
+0 & 0 & \frac{1}{\reym}\partial_x^2 & 0 \\
+0 & 0 & 0 & \frac{1}{\reym}\partial_x^2 \\ \end{matrix}\right] $ \\
+
+\vspace{2mm}
+
+$\mathcal{L}_1 = \left[\begin{matrix}
+0 & 2 & \frac{2}{\beta}\partial_x^2 & 0 \\
+(\Omega_0 - 2)q & 0 & 0 & \frac{2}{\beta} \\
+1 & 0 & 0 & 0 \\
+0 & 1 & -q\Omega_0 & 0 \\ \end{matrix}\right] \\$
+
+\vspace{2mm}
+
+$\mathcal{L}_2 = \left[\begin{matrix}
+2\frac{1}{\reye} \partial_x^2 & 0 & 0 & 0 \\
+0 & \frac{1}{\reye} & 0 & 0 \\
+0 & 0 & \frac{1}{\reym} & 0 \\
+0 & 0 & 0 & \frac{1}{\reym} \\ \end{matrix}\right]$
+
+\vspace{2mm}
+
+$\mathcal{L}_3 = \left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\ \end{matrix} \right] $
+
+\vspace{2mm}
+
+$\mathcal{L}_4 = \left[\begin{matrix}
+\frac{1}{\reye} & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\ \end{matrix}\right] $ \\
+
+\vspace{2mm}
+
+$\mathcal{X} = \left[\begin{matrix}
+0 & 0 & \frac{2}{\beta}\partial_x^2 & 0 \\
+0 & 0 & 0 & \frac{2}{\beta} \\
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\ \end{matrix} \right].$ \\
+
+
+
 We conduct a formal multiscale analysis. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on fast and slow scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$. The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are: 
 
 \beq
@@ -142,7 +209,6 @@ X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \
 
 Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow.
 
-$B_0$ appears in Equations \ref{eqset1} - \ref{eqset4} because it is the nondimensionalized background field strength. That is, $B = B_0 \equiv 1$. In order to study our system in the weakly nonlinear regime, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting $B = B_0\left(1 - \epsilon^2\right)$. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ weakening of the background magnetic field destabilizes a band of wave modes with width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly.
 
 
 
