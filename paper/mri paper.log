@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  12 AUG 2014 18:47
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  13 AUG 2014 11:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -508,55 +508,30 @@ Underfull \hbox (badness 10000) in paragraph at lines 99--100
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 105--106
-
+Underfull \hbox (badness 10000) detected at line 122
+ []$[]  \OML/cmm/m/it/10 @[]A  \OT1/cmr/m/n/10 =  \OML/cmm/m/it/10 B[]@[]\OT1/c
+mr/m/n/10 	  +  \OML/cmm/m/it/10 J []  \OT1/cmr/m/n/10 +  []\OMS/cmsy/m/n/10 r[
+]\OML/cmm/m/it/10 A$ [][][]  
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 107--108
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 109--110
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 111--112
-
- []
-
-
-Underfull \hbox (badness 1616) in paragraph at lines 113--114
-[]$\OML/cmm/m/it/10 @[]B[]  \OT1/cmr/m/n/10 =  \OML/cmm/m/it/10 B[]@[]u[]  \OT1
-/cmr/m/n/10 +  \OML/cmm/m/it/10 J []  \OMS/cmsy/m/n/10 ^^@  \OML/cmm/m/it/10 J 
-[]  \OT1/cmr/m/n/10 +
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 113--114
-
- []
-
-No file "mri paper".bbl.
 [1{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 129.
-
-(./mri paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 129.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 129.
+No file "mri paper".bbl.
+[2]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 153.
+ (./mri paper.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 153.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 153.
 Package rerunfilecheck Info: File `"mri paper".out' has not changed.
 (rerunfilecheck)             Checksum: FAB6B75AC0158213AFF9B102DBA5EB05;248.
  ) 
 Here is how much of TeX's memory you used:
- 8381 strings out of 493315
- 117104 string characters out of 6137904
- 243223 words of memory out of 5000000
- 11715 multiletter control sequences out of 15000+600000
+ 8396 strings out of 493315
+ 117282 string characters out of 6137904
+ 231427 words of memory out of 5000000
+ 11724 multiletter control sequences out of 15000+600000
  13148 words of font info for 54 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 35i,7n,29p,661b,388s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 35i,8n,29p,719b,388s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb
 ></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
@@ -571,10 +546,10 @@ ive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive
 /2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/20
 13/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/201
 3/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on "mri paper.pdf" (1 page, 160789 bytes).
+Output written on "mri paper.pdf" (2 pages, 163702 bytes).
 PDF statistics:
- 99 PDF objects out of 1000 (max. 8388607)
- 81 compressed objects within 1 object stream
- 13 named destinations out of 1000 (max. 500000)
+ 111 PDF objects out of 1000 (max. 8388607)
+ 92 compressed objects within 1 object stream
+ 19 named destinations out of 1000 (max. 500000)
  41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
