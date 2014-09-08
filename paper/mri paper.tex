@@ -134,6 +134,8 @@ J\left(f, g\right) \equiv \partial_z f\partial_x g - \partial_x f \partial_z g.
 
 Note that working in terms of the flux function raises the order of the first momentum equation.
 
+The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where most unstable linear MRI mode neither grows nor decays, for a given set of dimensionless parameters. 
+
 $B_0$ appears in Equations \ref{eqset1} - \ref{eqset4} because it is the nondimensionalized background field strength. That is, $B = B_0 \equiv 1$. In order to study our system in the weakly nonlinear regime, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting $B = B_0\left(1 - \epsilon^2\right)$. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ weakening of the background magnetic field destabilizes a band of wave modes with width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly.
 
 The destabilizing substitution is made, and Equations \ref{eqset1} - \ref{eqset4} are rewritten such that the fluid variables are contained in a state vector $\mathbf{V} = \left[\Psi, u_y, A, B\right]^\mathrm{T}$. This yields the following system of equations.
@@ -209,11 +211,34 @@ X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \
 
 Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
 
+After the multiscale expansion our system becomes
+
+\begin{multline}
+\label{multiscale_system}
+\epsilon^2 \mathcal{D}\partial_T\mathbf{V} \, + \, \mathbf{N} \, = \, \mathcal{L}\mathbf{V} \, + \, \epsilon\widetilde{\mathcal{L}}_1\partial_Z\mathbf{V} \, + \, \epsilon^2\widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V} \, \\
+ - \, \epsilon^2\partial_z\mathcal{X}\mathbf{V} \, - \, \epsilon^2\partial_z^3\mathcal{L}_3\mathbf{V} \, + \, \mathcal{O}(\epsilon^3)
+\end{multline}
+
+Where
+
+\beq
+\widetilde{\mathcal{L}}_1 = \mathcal{L}_1 + 2\mathcal{L}_2\partial_z + 3\mathcal{L}_3\partial_z^2 + 4\mathcal{L}_4\partial_z^3
+\eeq
+
+\beq
+\widetilde{\mathcal{L}}_2 = \mathcal{L}_2 + 3\mathcal{L}_3\partial_z + 6\mathcal{L}_4\partial_z^2
+\eeq
+
+
+% perturbation expansion
 The state vector is expanded in orders of $\epsilon$:
 
 \beq
+\label{pert_exp}
 \mathbf{V} = \epsilon\mathbf{V_1} + \epsilon^2\mathbf{V_2} + \epsilon^3\mathbf{V_3} + ...
 \eeq
+
+Substituting Equation \ref{pert_exp} into Equation \ref{multiscale_system}
 
 
 \section{Conclusions}
