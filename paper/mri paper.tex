@@ -36,7 +36,7 @@
 
 \title{The Weakly Nonlinear Saturation of the Magnetorotational Instability}
 \author{Clark, S.E.\altaffilmark{1}}
-\author{Oishi, J. S. \altaffilmark{2,}\altaffilmark{3}}
+\author{Oishi, J.S. \altaffilmark{2,}\altaffilmark{3}}
 \author{Mac Low, M.-M.\altaffilmark{1,}\altaffilmark{2}}
 \altaffiltext{1}{Department of Astronomy, Columbia University, New York, NY} 
 \altaffiltext{2}{Department of Astrophysics, American Museum of Natural History, New York, NY}
@@ -146,61 +146,64 @@ The destabilizing substitution is made, and Equations \ref{eqset1} - \ref{eqset4
 
 Where $\mathcal{L} \equiv \mathcal{L}_0 + \mathcal{L}_1\partial_z + \mathcal{L}_2\partial_z^2 + \mathcal{L}_3\partial_z^3 + \mathcal{L}_4\partial_z^4$ \\
 
-And: \\
+And:
 
-$\mathcal{D} = \left[\begin{matrix}
+\beq
+\mathcal{D} = \left[\begin{matrix}
 \nabla^2 & 0 & 0 & 0 \\
 0 & 1& 0 & 0 \\
 0 & 0 & 1 & 0\\
 0 & 0 & 0 & 1 \\
-\end{matrix}\right]$ \\
+\end{matrix}\right]
+\eeq
 
-$\mathcal{L}_0 = \left[\begin{matrix}
+\beq
+\mathcal{L}_0 = \left[\begin{matrix}
 \frac{1}{\reye}\partial_x^4 & 0 & 0 & 0 \\
 0 & \frac{1}{\reye}\partial_x^2 & 0 &0 \\
 0 & 0 & \frac{1}{\reym}\partial_x^2 & 0 \\
-0 & 0 & 0 & \frac{1}{\reym}\partial_x^2 \\ \end{matrix}\right] $ \\
+0 & 0 & 0 & \frac{1}{\reym}\partial_x^2 \\ \end{matrix}\right]
+\eeq
 
-\vspace{2mm}
-
-$\mathcal{L}_1 = \left[\begin{matrix}
+\beq
+\mathcal{L}_1 = \left[\begin{matrix}
 0 & 2 & \frac{2}{\beta}\partial_x^2 & 0 \\
 (\Omega_0 - 2)q & 0 & 0 & \frac{2}{\beta} \\
 1 & 0 & 0 & 0 \\
-0 & 1 & -q\Omega_0 & 0 \\ \end{matrix}\right] \\$
+0 & 1 & -q\Omega_0 & 0 \\ \end{matrix}\right] 
+\eeq
 
-\vspace{2mm}
-
-$\mathcal{L}_2 = \left[\begin{matrix}
+\beq
+\mathcal{L}_2 = \left[\begin{matrix}
 2\frac{1}{\reye} \partial_x^2 & 0 & 0 & 0 \\
 0 & \frac{1}{\reye} & 0 & 0 \\
 0 & 0 & \frac{1}{\reym} & 0 \\
-0 & 0 & 0 & \frac{1}{\reym} \\ \end{matrix}\right]$
+0 & 0 & 0 & \frac{1}{\reym} \\ \end{matrix}\right]
+\eeq
 
-\vspace{2mm}
-
-$\mathcal{L}_3 = \left[\begin{matrix}
+\beq
+\mathcal{L}_3 = \left[\begin{matrix}
 0 & 0 & \frac{2}{\beta} & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\ \end{matrix} \right] $
+0 & 0 & 0 & 0 \\ \end{matrix} \right]
+\eeq
 
-\vspace{2mm}
-
-$\mathcal{L}_4 = \left[\begin{matrix}
+\beq
+\mathcal{L}_4 = \left[\begin{matrix}
 \frac{1}{\reye} & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\ \end{matrix}\right] $ \\
+0 & 0 & 0 & 0 \\ \end{matrix}\right] 
+\eeq
 
-\vspace{2mm}
-
-$\mathcal{X} = \left[\begin{matrix}
+\beq
+\mathcal{X} = \left[\begin{matrix}
 0 & 0 & \frac{2}{\beta}\partial_x^2 & 0 \\
 0 & 0 & 0 & \frac{2}{\beta} \\
 1 & 0 & 0 & 0 \\
-0 & 1 & 0 & 0 \\ \end{matrix} \right].$ \\
-
+0 & 1 & 0 & 0 \\ \end{matrix} \right]. 
+\eeq
 
 
 We conduct a formal multiscale analysis. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on fast and slow scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for axisymmetric perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$. The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are: 
@@ -211,7 +214,7 @@ X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \
 
 Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
 
-After the multiscale expansion our system becomes
+Because we investigate the system at marginality, where the growth rate $\sigma = 0$, the $\partial_t$ terms drop out. Thus after the multiscale expansion our system becomes
 
 \begin{multline}
 \label{multiscale_system}
@@ -238,8 +241,28 @@ The state vector is expanded in orders of $\epsilon$:
 \mathbf{V} = \epsilon\mathbf{V_1} + \epsilon^2\mathbf{V_2} + \epsilon^3\mathbf{V_3} + ...
 \eeq
 
-Substituting Equation \ref{pert_exp} into Equation \ref{multiscale_system}
+Substituting Equation \ref{pert_exp} into Equation \ref{multiscale_system} yields the perturbed, expanded equations. We solve these successively in increasing orders of $\epsilon$.
 
+To $\mathcal{O}(\epsilon)$, we have
+
+\beq
+\mathcal{L}\mathbf{V_1} = 0
+\eeq
+
+To $\mathcal{O}(\epsilon^2)$: 
+
+\beq
+\mathcal{L}\mathbf{V_2} \, = \, \mathbf{N_2} \, - \, \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}
+\eeq
+
+To $\mathcal{O}(\epsilon^3)$: 
+
+\begin{multline}
+\mathcal{D}\partial_T \mathbf{V_1} \, + \, \mathbf{N_3} \, = \, \mathcal{L} \mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} \, \\
+- \partial_Z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1}
+\end{multline}
+
+The $\mathcal{O}(\epsilon)$ equation is the equation for the linear MRI at marginality.
 
 \section{Conclusions}
 
