@@ -17,7 +17,7 @@ problem = ParsedProblem(axis_names=['Z'],
 
 #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*Absolute(alpha**2)")
 #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSq(alpha)")
-problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = c*alpha*MagSquared(alpha)")
+problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSquared(alpha)")
 problem.add_equation("alphaZ - dZ(alpha) = 0")
 
 #problem.add_equation("-(a/c)*dt(alpha) - (b/c)*alphaZ + (h/c)*dZ(alphaZ) + (g/c)*1j*Q**3*alpha = alpha*Absolute(alpha**2)")
