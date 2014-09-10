@@ -282,12 +282,17 @@ The partial differential equations that comprise Equations \ref{ordere} to \ref{
 \Psi = \partial_x \Psi = u_y = A = \partial_x B_y = 0
 \eeq
 
-The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even significant structure in the boundary layers of our domain, because we need only resolve it in one dimension.
+The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even significant structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. CITE). 
 
+We solve the system up to $\mathcal{O}(\epsilon^3)$ in order to close the solution at $\mathcal{O}(\epsilon^2)$. 
 
 \section{Results}
 
-
+\begin{figure*}[h!]
+\centering
+\includegraphics[scale=0.3]{firstorder_velocity.eps}
+\caption{First order velocity perturbations. Streamlines represent velocity in the vertical-radial plane, with thicker streamlines corresponding to faster speeds. The colorbar represents azimuthal velocity.}
+\end{figure*}
 
 \section{Conclusions}
 
