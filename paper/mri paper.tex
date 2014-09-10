@@ -44,7 +44,7 @@
 
 
 \begin{abstract}
-The MRI saturates.
+The magnetorotational instability (MRI) is a fundamental process of accretion disk physics, but its saturation mechanism remains poorly understood. We present an analytic analysis of the nonideal MRI in the weakly nonlinear regime -- that is, when the MRI system is just unstable to its most unstable mode. 
 \end{abstract}
 
 
@@ -217,10 +217,11 @@ Note that these are the same scalings as apply to Rayleigh-B\'enard convection a
 The multiple scale dependencies of our solution are encoded into an ansatz for the linear MRI solution at marginality,
 
 \beq
+\label{V1_ansatz}
 \mathbf{V_1} = \alpha(T, Z) \mathbb{V}_{11}(x) e^{i k_c z} + c.c.,
 \eeq
 
-where $\alpha$ is a slowly-varying amplitude equation.
+where $\alpha$ is a slowly-varying amplitude equation. The $x$ dependence is contained in $\mathbb{V}_{11}$, and must be solved for subject to the radial boundary conditions. The periodic vertical boundary conditions allow us to posit the $z$ dependence, where $k_c$ is the value of the vertical wavenumber at marginality. 
 
 Because we investigate the system at marginality, where the growth rate $\sigma = 0$, the $\partial_t$ terms drop out. Thus after the multiscale expansion our system becomes
 
@@ -254,23 +255,34 @@ Substituting Equation \ref{pert_exp} into Equation \ref{multiscale_system} yield
 To $\mathcal{O}(\epsilon)$, we have
 
 \beq
+\label{ordere}
 \mathcal{L}\mathbf{V_1} = 0
 \eeq
 
 To $\mathcal{O}(\epsilon^2)$: 
 
 \beq
+\label{ordere2}
 \mathcal{L}\mathbf{V_2} \, = \, \mathbf{N_2} \, - \, \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}
 \eeq
 
 To $\mathcal{O}(\epsilon^3)$: 
 
 \begin{multline}
+\label{ordere3}
 \mathcal{D}\partial_T \mathbf{V_1} \, + \, \mathbf{N_3} \, = \, \mathcal{L} \mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} \, \\
 - \partial_Z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1}
 \end{multline}
 
-The $\mathcal{O}(\epsilon)$ equation is the equation for the linear MRI at marginality.
+The $\mathcal{O}(\epsilon)$ equation is the equation for the linear MRI at marginality. This is the equation that is solved to find the $\mathbb{V}_{11}$ component of Equation \ref{V1_ansatz}. 
+
+The partial differential equations that comprise Equations \ref{ordere} to \ref{ordere3} are solved in succession subject to no-slip, perfectly conducting radial boundary conditions, defined as:
+
+
+
+\section{Results}
+
+
 
 \section{Conclusions}
 
