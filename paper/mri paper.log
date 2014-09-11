@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  10 SEP 2014 16:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  11 SEP 2014 14:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -528,14 +528,14 @@ Package epstopdf Info: Source file: <firstorder_velocity.eps>
 (epstopdf)                    size: 304452 bytes
 (epstopdf)             Command: <repstopdf --outfile=firstorder_velocity-eps-co
 nverted-to.pdf firstorder_velocity.eps>
-(epstopdf)             \includegraphics on input line 293.
+(epstopdf)             \includegraphics on input line 307.
 Package epstopdf Info: Output file is already uptodate.
- <firstorder_velocity-eps-converted-to.pdf, id=91, 1027.84pt x 770.88pt>
+ <firstorder_velocity-eps-converted-to.pdf, id=93, 1027.84pt x 770.88pt>
 File: firstorder_velocity-eps-converted-to.pdf Graphic file (type pdf)
 
 <use firstorder_velocity-eps-converted-to.pdf>
 Package pdftex.def Info: firstorder_velocity-eps-converted-to.pdf used on input
- line 293.
+ line 307.
 (pdftex.def)             Requested size: 308.35437pt x 231.26578pt.
 
 
@@ -543,16 +543,16 @@ Class revtex4-1 Warning: Float cannot be placed.
 
 No file "mri paper".bbl.
 [3] [4 <./firstorder_velocity-eps-converted-to.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 301.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 315.
  (./mri paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 301.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 301.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 315.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 315.
 Package rerunfilecheck Info: File `"mri paper".out' has not changed.
 (rerunfilecheck)             Checksum: 7DA2B88A5F35904920FDB630BE17A15B;290.
  ) 
 Here is how much of TeX's memory you used:
- 8440 strings out of 493117
- 117961 string characters out of 6135433
+ 8442 strings out of 493117
+ 117987 string characters out of 6135433
  239583 words of memory out of 5000000
  11756 multiletter control sequences out of 15000+600000
  13148 words of font info for 54 fonts, out of 8000000 for 9000
@@ -572,12 +572,13 @@ live/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texliv
 e/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
 014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2014
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2014/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2014/te
-xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on "mri paper.pdf" (4 pages, 472091 bytes).
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2014/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2014/texm
+f-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on "mri paper.pdf" (4 pages, 480852 bytes).
 PDF statistics:
- 177 PDF objects out of 1000 (max. 8388607)
- 150 compressed objects within 2 object streams
- 40 named destinations out of 1000 (max. 500000)
+ 185 PDF objects out of 1000 (max. 8388607)
+ 157 compressed objects within 2 object streams
+ 42 named destinations out of 1000 (max. 500000)
  54 words of extra memory for PDF output out of 10000 (max. 10000000)
 
