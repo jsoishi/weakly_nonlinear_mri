@@ -298,7 +298,31 @@ has a nontrivial solution, the solvability criterion
 \left< \mathbf{V}^\dagger \cdot \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}\right> = 0 
 \eeq
 
-must be satisfied in order for Equation \ref{ordere2} to have a solution.
+must be satisfied in order for Equation \ref{ordere2} to have a solution. In the above, 
+
+\beq
+\mathbf{V}^\dagger = \mathbb{V}^\dagger e^{iQz} + c.c.
+\eeq
+
+The elimination of this inner product must also be enforced the terms in Equation \ref{ordere3} that are resonant with $e^{i k_c z}$, yielding
+
+\beq
+\label{ampeq1}
+a \partial_T \alpha \, + \, c \alpha \left|\alpha^2\right| \, + \, \widetilde{c} \alpha \partial_Z \beta \, = \, - b \partial_Z \alpha \, + \, h \partial_Z^2 \alpha \, + \, g i Q^3 \alpha
+\eeq
+
+Where
+
+\begin{multline}
+a \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{D}\mathbb{V}^*_{11}\right> \\
+c \equiv \left< \mathbb{V}^\dagger \cdot \mathbf{N}^*_{31}\right> \\
+\widetilde{c} \equiv \left< \mathbb{V}^\dagger \cdot \widetilde{\mathbf{N}}^*_{31}\right> \\
+b \equiv \left< \mathbb{V}^\dagger \cdot \left(\mathcal{X}\mathbb{V}_{11}\right)^* \right> \\
+h \equiv \left< \mathbb{V}^\dagger \cdot \left(\widetilde{\mathcal{L}}_2\mathbb{V}_{11} \, - \, \widetilde{\mathcal{L}}_1\mathbb{V}_{21} \right)^* \right> \\
+g \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{L}_{3} \mathbb{V}_{11} \right> \\
+\end{multline}
+
+Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variables $Z$ and $T$. We solve this initial value problem using Dedalus to obtain the asymptotic behavior of $\alpha$. This is the saturation amplitude.
 
 \section{Results}
 
