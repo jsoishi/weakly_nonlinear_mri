@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  11 SEP 2014 15:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  11 SEP 2014 15:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -520,29 +520,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 147--148
  []
 
 [2]
-Package epstopdf Info: Source file: <firstorder_velocity.eps>
-(epstopdf)                    date: 2014-09-10 16:13:39
-(epstopdf)                    size: 3031510 bytes
-(epstopdf)             Output file: <firstorder_velocity-eps-converted-to.pdf>
-(epstopdf)                    date: 2014-09-10 16:13:44
-(epstopdf)                    size: 304452 bytes
-(epstopdf)             Command: <repstopdf --outfile=firstorder_velocity-eps-co
-nverted-to.pdf firstorder_velocity.eps>
+Package epstopdf Info: Source file: <twoorders_velocity.eps>
+(epstopdf)                    date: 2014-09-11 15:37:26
+(epstopdf)                    size: 3990138 bytes
+(epstopdf)             Output file: <twoorders_velocity-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-09-11 15:37:36
+(epstopdf)                    size: 708396 bytes
+(epstopdf)             Command: <repstopdf --outfile=twoorders_velocity-eps-con
+verted-to.pdf twoorders_velocity.eps>
 (epstopdf)             \includegraphics on input line 331.
 Package epstopdf Info: Output file is already uptodate.
- <firstorder_velocity-eps-converted-to.pdf, id=95, 1027.84pt x 770.88pt>
-File: firstorder_velocity-eps-converted-to.pdf Graphic file (type pdf)
+ <twoorders_velocity-eps-converted-to.pdf, id=95, 988.69376pt x 337.26pt>
+File: twoorders_velocity-eps-converted-to.pdf Graphic file (type pdf)
 
-<use firstorder_velocity-eps-converted-to.pdf>
-Package pdftex.def Info: firstorder_velocity-eps-converted-to.pdf used on input
- line 331.
-(pdftex.def)             Requested size: 308.35437pt x 231.26578pt.
+<use twoorders_velocity-eps-converted-to.pdf>
+Package pdftex.def Info: twoorders_velocity-eps-converted-to.pdf used on input 
+line 331.
+(pdftex.def)             Requested size: 494.34567pt x 168.62958pt.
 
 
 Class revtex4-1 Warning: Float cannot be placed.
 
 No file "mri paper".bbl.
-[3] [4 <./firstorder_velocity-eps-converted-to.pdf>]
+[3] [4 <./twoorders_velocity-eps-converted-to.pdf>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 339.
  (./mri paper.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 339.
@@ -552,7 +552,7 @@ Package rerunfilecheck Info: File `"mri paper".out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  8446 strings out of 493117
- 118034 string characters out of 6135433
+ 118029 string characters out of 6135433
  239636 words of memory out of 5000000
  11757 multiletter control sequences out of 15000+600000
  13148 words of font info for 54 fonts, out of 8000000 for 9000
@@ -575,9 +575,9 @@ e/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
 texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2014/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2014/texm
 f-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on "mri paper.pdf" (4 pages, 484806 bytes).
+Output written on "mri paper.pdf" (4 pages, 891432 bytes).
 PDF statistics:
- 191 PDF objects out of 1000 (max. 8388607)
+ 193 PDF objects out of 1000 (max. 8388607)
  163 compressed objects within 2 object streams
  45 named destinations out of 1000 (max. 500000)
  54 words of extra memory for PDF output out of 10000 (max. 10000000)
