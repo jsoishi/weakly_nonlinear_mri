@@ -1,4 +1,4 @@
-\documentclass[12pt]{emulateapj}
+\documentclass{emulateapj}
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 \newcommand{\hyd}    {{\rm H}}
@@ -51,7 +51,7 @@ The magnetorotational instability (MRI) is a fundamental process of accretion di
 
 \section{Introduction}
 
-The magnetorotational instability (MRI) is the leading candidate for rapid angular momentum transport in astrophysical disks. The instability arises when a differentially rotating disk is threaded by a vertical magnetic field (\citei{CHANDRASEKHAR:1960wh}). The presence of the magnetic field destabilizes the disk gas, driving turbulence and angular momentum transport.
+For matter to accrete from disks onto their central objects, some mechanism for angular momentum transport beyond mere molecular viscosity must be invoked. Since its discovery by \citeauthor{Chandrasekhar:1960wh} (\citeyear{Chandrasekhar:1960wh}) and subsequent rediscovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}), the MRI remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field destabilizes the disk gas, driving turbulence and angular momentum transport.
 
 The MRI evolves via a period of linear growth, followed by nonlinear saturation. The saturation mechanism is not well understood. 
 
@@ -339,7 +339,21 @@ We conduct a full study of the MRI parameter space, focussed on the behavior wit
 
 \section{Conclusions}
 
-%\bibliographystyle{yahapj}
-\bibliography{mri.bib}
+%\bibliographystyle{plain}
+%\bibliography{mri_refs2}
+
+\bibliographystyle{plain}
+
+\begin{thebibliography}{53}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Chandrasekhar(1960)}]{Chandrasekhar:1960wh}
+Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the United States of America, 46, 253
+
+\bibitem[{Balbus(1991)}]{Balbus:1991vs}
+Balbus, S A and Hawley, J F, The Astrophysical Journal, 376, 214
+
+
+\end{thebibliography}
 
 \end{document}
