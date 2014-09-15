@@ -351,7 +351,7 @@ We conduct a full study of the MRI parameter space, focussed on the behavior wit
 \begin{widetext}
 \section*{Appendix A.}
 
-Second order nonlinear term: \\
+Second order nonlinear terms: \\
 
 \beq
 \begin{split}
@@ -360,7 +360,40 @@ N_{22}^{(\Psi)} = & \, i Q \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11} - Q^2 \p
 \end{split}
 \eeq
 
-Third order nonlinear term: \\
+\beq
+\begin{split}
+N_{22}^{(u)} = & \, i Q \Psi_{11} \cdot \partial_x u_{11} - \partial_x \Psi_{11} \cdot i Q u_{11} - \frac{2}{\beta} i Q A_{11} \cdot \partial_x B_{11} + \frac{2}{\beta} \partial_x A_{11} \cdot i Q B_{11}
+\end{split}
+\eeq
+
+\beq
+N_{22}^{(A)} = - i Q A_{11} \cdot \partial_x \Psi_{11} + \partial_x A_{11} \cdot i Q \Psi_{11}
+\eeq
+
+\beq
+N_{22}^{(B)} = i Q \Psi_{11} \cdot \partial_x B_{11} - \partial_x \Psi_{11} \cdot i Q B_{11} - i Q A_{11} \cdot \partial_x u_{11} + \partial_x A_{11} \cdot i Q u_{11}
+\eeq
+
+\beq
+\begin{split}
+N_{20}^{(\Psi)} = & \, i Q \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - Q^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i Q \partial_x^2 \Psi_{11}^* - i Q^3 \Psi_{11}^*\right) \\
+& \frac{2}{\beta} \partial_x A_{11} \cdot \left(i Q \partial_x^2 A_{11}^* - i Q^3 A_{11}^*\right) - \frac{2}{\beta} i Q A_{11} \cdot \left(\partial_x^3 A_{11}^* - Q^2 \partial_x A_{11}^*\right)
+\end{split}
+\eeq
+
+\beq
+N_{20}^{(u)} = i Q \Psi_{11} \cdot \partial_x u_{11}^* - \partial_x \Psi_{11} \cdot i Q u_{11}^* - \frac{2}{\beta} i Q A_{11} \cdot \partial_x B_{11}^* + \frac{2}{\beta} \partial_x A_{11} \cdot i Q B_{11}^*
+\eeq
+
+\beq
+N_{20}^{(A)} = - i Q A_{11} \cdot \partial_x \Psi_{11}^* - \partial_x A_{11} \cdot i Q \Psi_{11}^*
+\eeq
+
+\beq
+N_{20}^{(B)} = i Q \Psi_{11} \cdot \partial_x B_{11}^* - \partial_x \Psi_{11} \cdot i Q B_{11}^* - i Q A_{11} \cdot \partial_x u_{11}^* + \partial_x A_{11} \cdot i Q u_{11}^*
+\eeq \\
+
+Third order nonlinear terms: \\
 
 \beq
 \begin{split}
