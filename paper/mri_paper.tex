@@ -12,6 +12,9 @@
 \usepackage{gensymb}
 \usepackage{amsmath}
 \usepackage{color}
+%\usepackage{appendix}
+\usepackage[titletoc,title]{appendix}
+
 
 \makeatletter
 \setlength{\@fptop}{0pt}
@@ -61,7 +64,7 @@ This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear
 
 \section{Set-Up}
 
-Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment. The experimental apparatus is tall, one of many attributes designed to mitigate the meridional flows introduced by the endcaps. We use periodic vertical boundary conditions. On the radial boundaries of our domain --  the inner and outer cylinders -- we apply no-slip, perfectly conducting boundary conditions.
+Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment (\citei{Ji:2001kd}). The experimental apparatus is tall, one of many attributes designed to mitigate the meridional flows introduced by the endcaps. We use periodic vertical boundary conditions, so our set-up represents an idealized domain where endcap contamination does not exist. On the radial boundaries of our domain --  the inner and outer cylinders -- we apply no-slip, perfectly conducting boundary conditions.
 
 \section{Weakly Nonlinear Analysis}
 
@@ -307,10 +310,10 @@ has a nontrivial solution, the solvability criterion
 must be satisfied in order for Equation \ref{ordere2} to have a solution. In the above, 
 
 \beq
-\mathbf{V}^\dagger = \mathbb{V}^\dagger e^{iQz} + c.c.
+\mathbf{V}^\dagger = \mathbb{V}^\dagger(x) e^{iQz} + c.c.
 \eeq
 
-The elimination of this inner product must also be enforced the terms in Equation \ref{ordere3} that are resonant with $e^{i k_c z}$, yielding
+where, again, $\mathbb{V}^\dagger$ contains the radial contribution. The elimination of this inner product must also be enforced the terms in Equation \ref{ordere3} that are resonant with $e^{i k_c z}$, yielding
 
 \beq
 \label{ampeq1}
@@ -343,6 +346,19 @@ We conduct a full study of the MRI parameter space, focussed on the behavior wit
 
 \section{Conclusions}
 
+\newpage
+\begin{appendices}
+\begin{widetext}
+\section*{Appendix A.}
+\begin{multline}
+N_{31}^{(A)} = -i Q \left(A_{11}\cdot\partial_x \Psi_{20}\right) - i Q \left(A_{11} \cdot \partial_x \Psi_{20}^*\right)
+ + i Q \left(A_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 Q \left(\partial_x A_{11}^* \cdot \Psi_{22}\right) \\
+ + i Q \left(\Psi_{11} \cdot \partial_x A_{20}\right) + i Q \left(\Psi_{11} \cdot \partial_x A_{20}^*\right) - i Q \left(\Psi_{11}^* \cdot \partial_x A_{22} \right) - i 2 Q \left(\partial_x \Psi_{11}^* \cdot A_{22}\right)
+\end{multline}
+
+\end{widetext}
+\end{appendices}
+
 %\bibliographystyle{plain}
 %\bibliography{mri_refs2}
 
@@ -351,20 +367,24 @@ We conduct a full study of the MRI parameter space, focussed on the behavior wit
 \begin{thebibliography}{53}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
+\bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
+Balbus, S A and Hawley, J F, The Astrophysical Journal, 376, 214
+
 \bibitem[{Chandrasekhar(1960)}]{Chandrasekhar:1960wh}
 Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the United States of America, 46, 253
 
-\bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
-Balbus, S A and Hawley, J F, The Astrophysical Journal, 376, 214
+\bibitem[{Ji et al.(2001)}]{Ji:2001kd}
+Ji, H, Goodman, J, Kageyama, A, Mon. Not. R. Astron. Soc., 325, 1
 
 \bibitem[{Shakura \& Sunyaev(1973)}]{Shakura:1973wg}
 Shakura, N I and Sunyaev, R A, Astronomy \& Astrophysics, 24, 337
 
+\bibitem[{Umurhan et al.(2007a)}]{Umurhan:2007dz}
+Umurhan, O M, Regev, O, Menou, K, Phys. Rev. Letters, 98, 034501
+
 \bibitem[{Umurhan et al.(2007b)}]{Umurhan:2007hs}
 Umurhan, O M, Regev, O, Menou, K, Phys. Rev. E, 76, 036310
 
-\bibitem[{Umurhan et al.(2007a)}]{Umurhan:2007dz}
-Umurhan, O M, Regev, O, Menou, K, Phys. Rev. Letters, 98, 034501
 
 \end{thebibliography}
 
