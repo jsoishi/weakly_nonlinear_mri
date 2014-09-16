@@ -310,14 +310,14 @@ has a nontrivial solution, the solvability criterion
 must be satisfied in order for Equation \ref{ordere2} to have a solution. In the above, 
 
 \beq
-\mathbf{V}^\dagger = \mathbb{V}^\dagger(x) e^{iQz} + c.c.
+\mathbf{V}^\dagger = \mathbb{V}^\dagger(x) e^{i k_c z} + c.c.
 \eeq
 
 where, again, $\mathbb{V}^\dagger$ contains the radial contribution. The elimination of this inner product must also be enforced the terms in Equation \ref{ordere3} that are resonant with $e^{i k_c z}$, yielding
 
 \beq
 \label{ampeq1}
-a \partial_T \alpha \, + \, c \alpha \left|\alpha^2\right| \, + \, \widetilde{c} \alpha \partial_Z \beta \, = \, - b \partial_Z \alpha \, + \, h \partial_Z^2 \alpha \, + \, g i Q^3 \alpha
+a \partial_T \alpha \, + \, c \alpha \left|\alpha^2\right| \, + \, \widetilde{c} \alpha \partial_Z \beta \, = \, - b \partial_Z \alpha \, + \, h \partial_Z^2 \alpha \, + \, g i k_c^3 \alpha
 \eeq
 
 Where
@@ -354,6 +354,7 @@ We conduct a full study of the MRI parameter space, focussed on the behavior wit
 
 Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment (\citei{Ji:2001kd}). A challenge for all MRI experiments is to reduce all extraneous flows which may stabilize the MRI or obscure its detection. In particular, care must be taken to mitigate meridional flows introduced by the endcaps of the experimental apparatus. The PPPL MRI experiment employs a novel design using concentric, differentially rotating rings as endcaps (\citei{Schartman:2009df}). In this investigation, we use periodic vertical boundary conditions, so our set-up represents an idealized domain where endcap contamination does not exist. Future work will address specifically our predictions for the PPPL MRI experiment.
 
+One advantage of our 
 
 \newpage
 \begin{appendices}
@@ -364,81 +365,81 @@ Second order nonlinear terms: \\
 
 \beq
 \begin{split}
-N_{22}^{(\Psi)} = & \, i Q \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11} - Q^2 \partial_x \Psi_{11}\right) - \partial_x \Psi_{11} \cdot \left(i Q \partial_x^2 \Psi_{11} - i Q^3 \Psi_{11}\right) \\
-& + \frac{2}{\beta}\partial_x A_{11} \cdot \left(i Q \partial_x^2 A_{11} - i Q^3 A_{11}\right) - \frac{2}{\beta} i Q A_{11} \cdot \left(\partial_x^3 A_{11} - Q^2 \partial_x A_{11}\right)
+N_{22}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11} - k_c^2 \partial_x \Psi_{11}\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11} - i k_c^3 \Psi_{11}\right) \\
+& + \frac{2}{\beta}\partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11} - i k_c^3 A_{11}\right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11} - k_c^2 \partial_x A_{11}\right)
 \end{split}
 \eeq
 
 \beq
 \begin{split}
-N_{22}^{(u)} = & \, i Q \Psi_{11} \cdot \partial_x u_{11} - \partial_x \Psi_{11} \cdot i Q u_{11} - \frac{2}{\beta} i Q A_{11} \cdot \partial_x B_{11} + \frac{2}{\beta} \partial_x A_{11} \cdot i Q B_{11}
+N_{22}^{(u)} = & \, i k_c \Psi_{11} \cdot \partial_x u_{11} - \partial_x \Psi_{11} \cdot i k_c u_{11} - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11} + \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}
 \end{split}
 \eeq
 
 \beq
-N_{22}^{(A)} = - i Q A_{11} \cdot \partial_x \Psi_{11} + \partial_x A_{11} \cdot i Q \Psi_{11}
+N_{22}^{(A)} = - i k_c A_{11} \cdot \partial_x \Psi_{11} + \partial_x A_{11} \cdot i k_c \Psi_{11}
 \eeq
 
 \beq
-N_{22}^{(B)} = i Q \Psi_{11} \cdot \partial_x B_{11} - \partial_x \Psi_{11} \cdot i Q B_{11} - i Q A_{11} \cdot \partial_x u_{11} + \partial_x A_{11} \cdot i Q u_{11}
+N_{22}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11} - \partial_x \Psi_{11} \cdot i k_c B_{11} - i k_c A_{11} \cdot \partial_x u_{11} + \partial_x A_{11} \cdot i k_c u_{11}
 \eeq
 
 \beq
 \begin{split}
-N_{20}^{(\Psi)} = & \, i Q \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - Q^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i Q \partial_x^2 \Psi_{11}^* - i Q^3 \Psi_{11}^*\right) \\
-& \frac{2}{\beta} \partial_x A_{11} \cdot \left(i Q \partial_x^2 A_{11}^* - i Q^3 A_{11}^*\right) - \frac{2}{\beta} i Q A_{11} \cdot \left(\partial_x^3 A_{11}^* - Q^2 \partial_x A_{11}^*\right)
+N_{20}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - k_c^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11}^* - i k_c^3 \Psi_{11}^*\right) \\
+& \frac{2}{\beta} \partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11}^* - i k_c^3 A_{11}^*\right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11}^* - k_c^2 \partial_x A_{11}^*\right)
 \end{split}
 \eeq
 
 \beq
-N_{20}^{(u)} = i Q \Psi_{11} \cdot \partial_x u_{11}^* - \partial_x \Psi_{11} \cdot i Q u_{11}^* - \frac{2}{\beta} i Q A_{11} \cdot \partial_x B_{11}^* + \frac{2}{\beta} \partial_x A_{11} \cdot i Q B_{11}^*
+N_{20}^{(u)} = i k_c \Psi_{11} \cdot \partial_x u_{11}^* - \partial_x \Psi_{11} \cdot i k_c u_{11}^* - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11}^* + \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}^*
 \eeq
 
 \beq
-N_{20}^{(A)} = - i Q A_{11} \cdot \partial_x \Psi_{11}^* - \partial_x A_{11} \cdot i Q \Psi_{11}^*
+N_{20}^{(A)} = - i k_c A_{11} \cdot \partial_x \Psi_{11}^* - \partial_x A_{11} \cdot i k_c \Psi_{11}^*
 \eeq
 
 \beq
-N_{20}^{(B)} = i Q \Psi_{11} \cdot \partial_x B_{11}^* - \partial_x \Psi_{11} \cdot i Q B_{11}^* - i Q A_{11} \cdot \partial_x u_{11}^* + \partial_x A_{11} \cdot i Q u_{11}^*
+N_{20}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11}^* - \partial_x \Psi_{11} \cdot i k_c B_{11}^* - i k_c A_{11} \cdot \partial_x u_{11}^* + \partial_x A_{11} \cdot i k_c u_{11}^*
 \eeq \\
 
 Third order nonlinear terms: \\
 
 \beq
 \begin{split}
-N_{31}^{(\Psi)} = &  \, i Q \left(\Psi_{11} \cdot \partial_x^3 \Psi_{20}\right) + i Q \left(\Psi_{11} \cdot \partial_x^3\Psi_{20}^*\right) - i Q \left(\Psi_{11}^* \cdot \partial_x^3 \Psi_{22}\right) - i 2 Q \left(\partial_x \Psi_{11}^* \cdot \partial_x^2 \Psi_{22}\right) \\
-& + i 8 Q^3 \left(\partial_x\Psi_{11}^* \cdot \Psi_{22}\right) + i 4 Q^3 \left(\Psi_{11}^* \cdot \partial_x \Psi_{22}\right) + \frac{2}{\beta}\left[ - i Q \left(A_{11} \cdot \partial^3 A_{20}\right) - i Q \left(A_{11} \cdot \partial_x^3 A_{20}^*\right) \right]\\
-& + \frac{2}{\beta}\left[i Q \left(A_{11}^* \cdot \partial_x^3 A_{22}\right) + i 2 Q \left(\partial_x A_{11}^* \cdot \partial_x^2 A_{22}\right) - i 8 Q^3 \left(\partial_x A_{11}^* \cdot A_{22}\right) - i 4 Q^3 \left(A_{11}^* \cdot \partial_x A_{22}\right)\right] \\
-& + i 2 Q \left(\Psi_{22} \cdot \partial_x^3 \Psi_{11}^*\right) - i 2 Q^3\left(\Psi_{22} \cdot \partial_x \Psi_{11}^* \right) - i Q \left(\partial_x \Psi_{20} \cdot \partial_x^2 \Psi_{11}\right) + i Q \left(\partial_x \Psi_{22} \cdot \partial_x^2 \Psi_{11}^*\right) \\
-& - i Q \left(\partial_x \Psi_{20}^* \cdot \partial_x^2 \Psi_{11}\right) + i Q^3 \left(\partial_x \Psi_{20} \cdot \Psi_{11}\right) + i Q^3 \left(\partial_x \Psi_{20}^* \cdot \Psi_{11}\right) - i Q^3 \left(\partial_x \Psi_{22} \cdot \Psi_{11}^*\right) \\
-& + \frac{2}{\beta} \left[ - i 2 Q \left(A_{22} \cdot \partial_x^3 A_{11}^*\right) + i 2 Q^3 \left(A_{22} \cdot \partial_x A_{11}^*\right) + i Q \left(\partial_x A_{20} \cdot \partial_x^2 A_{11}\right) - i Q \left(\partial_x A_{22} \cdot \partial_x^2 A_{11}^*\right) \right] \\
-& + \frac{2}{\beta} \left[ i Q \left(\partial_x A_{20}^* \cdot \partial_x^2 A_{11}\right) - i Q^3 \left(\partial_x A_{20} \cdot A_{11}\right) - i Q^3 \left(\partial_x A_{20}^* \cdot A_{11}\right) + i Q^3 \left(\partial_x A_{22} \cdot A_{11}^*\right)\right]
+N_{31}^{(\Psi)} = &  \, i k_c \left(\Psi_{11} \cdot \partial_x^3 \Psi_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x^3\Psi_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x^3 \Psi_{22}\right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot \partial_x^2 \Psi_{22}\right) \\
+& + i 8 k_c^3 \left(\partial_x\Psi_{11}^* \cdot \Psi_{22}\right) + i 4 k_c^3 \left(\Psi_{11}^* \cdot \partial_x \Psi_{22}\right) + \frac{2}{\beta}\left[ - i k_c \left(A_{11} \cdot \partial^3 A_{20}\right) - i k_c \left(A_{11} \cdot \partial_x^3 A_{20}^*\right) \right]\\
+& + \frac{2}{\beta}\left[i k_c \left(A_{11}^* \cdot \partial_x^3 A_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot \partial_x^2 A_{22}\right) - i 8 k_c^3 \left(\partial_x A_{11}^* \cdot A_{22}\right) - i 4 k_c^3 \left(A_{11}^* \cdot \partial_x A_{22}\right)\right] \\
+& + i 2 k_c \left(\Psi_{22} \cdot \partial_x^3 \Psi_{11}^*\right) - i 2 k_c^3\left(\Psi_{22} \cdot \partial_x \Psi_{11}^* \right) - i k_c \left(\partial_x \Psi_{20} \cdot \partial_x^2 \Psi_{11}\right) + i k_c \left(\partial_x \Psi_{22} \cdot \partial_x^2 \Psi_{11}^*\right) \\
+& - i k_c \left(\partial_x \Psi_{20}^* \cdot \partial_x^2 \Psi_{11}\right) + i k_c^3 \left(\partial_x \Psi_{20} \cdot \Psi_{11}\right) + i k_c^3 \left(\partial_x \Psi_{20}^* \cdot \Psi_{11}\right) - i k_c^3 \left(\partial_x \Psi_{22} \cdot \Psi_{11}^*\right) \\
+& + \frac{2}{\beta} \left[ - i 2 k_c \left(A_{22} \cdot \partial_x^3 A_{11}^*\right) + i 2 k_c^3 \left(A_{22} \cdot \partial_x A_{11}^*\right) + i k_c \left(\partial_x A_{20} \cdot \partial_x^2 A_{11}\right) - i k_c \left(\partial_x A_{22} \cdot \partial_x^2 A_{11}^*\right) \right] \\
+& + \frac{2}{\beta} \left[ i k_c \left(\partial_x A_{20}^* \cdot \partial_x^2 A_{11}\right) - i k_c^3 \left(\partial_x A_{20} \cdot A_{11}\right) - i k_c^3 \left(\partial_x A_{20}^* \cdot A_{11}\right) + i k_c^3 \left(\partial_x A_{22} \cdot A_{11}^*\right)\right]
 \end{split}
 \eeq
 
 \beq
 \begin{split}
-N_{31}^{(u)} = \, & i Q \left(\Psi_{11} \cdot \partial_x u_{20}\right) + i Q \left(\Psi_{11} \cdot \partial_x u_{20}^*\right) - i Q \left(\Psi_{11}^* \cdot \partial_x u_{22}\right) - i 2 Q \left(\partial_x \Psi_{11}^* \cdot u_{22}\right) \\
-& - i Q \left(u_{11} \cdot \partial_x \Psi_{20} \right) - i Q \left(u_{11} \cdot \partial_x \Psi_{20}^*\right) + i Q \left(u_{11}^* \cdot \partial_x \Psi_{22} \right) + i 2 Q \left(\partial_x u_{11}^* \cdot \Psi_{22}\right) \\
-& +\frac{2}{\beta}\left[- i Q \left(A_{11} \cdot \partial_x B_{20}\right) - i Q \left(A_{11} \cdot \partial_x B_{20}^*\right) + i Q \left(A_{11}^* \cdot \partial_x B_{22}\right) + i 2 Q \left(\partial_x A_{11}^* \cdot B_{22}\right)\right] \\
-& +\frac{2}{\beta}\left[ i Q \left(B_{11} \cdot \partial_x A_{20}\right) + i Q \left(B_{11} \cdot \partial_x A_{20}^*\right) - i Q \left(B_{11}^* \cdot \partial_x A_{20}\right) - i 2 Q \left(\partial_x B_{11}^* \cdot A_{22}\right)\right]
+N_{31}^{(u)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x u_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x u_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x u_{22}\right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot u_{22}\right) \\
+& - i k_c \left(u_{11} \cdot \partial_x \Psi_{20} \right) - i k_c \left(u_{11} \cdot \partial_x \Psi_{20}^*\right) + i k_c \left(u_{11}^* \cdot \partial_x \Psi_{22} \right) + i 2 k_c \left(\partial_x u_{11}^* \cdot \Psi_{22}\right) \\
+& +\frac{2}{\beta}\left[- i k_c \left(A_{11} \cdot \partial_x B_{20}\right) - i k_c \left(A_{11} \cdot \partial_x B_{20}^*\right) + i k_c \left(A_{11}^* \cdot \partial_x B_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot B_{22}\right)\right] \\
+& +\frac{2}{\beta}\left[ i k_c \left(B_{11} \cdot \partial_x A_{20}\right) + i k_c \left(B_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(B_{11}^* \cdot \partial_x A_{20}\right) - i 2 k_c \left(\partial_x B_{11}^* \cdot A_{22}\right)\right]
 \end{split}
 \eeq
 
 \beq
 \begin{split}
-N_{31}^{(A)} =\, & -i Q \left(A_{11}\cdot\partial_x \Psi_{20}\right) - i Q \left(A_{11} \cdot \partial_x \Psi_{20}^*\right)
- + i Q \left(A_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 Q \left(\partial_x A_{11}^* \cdot \Psi_{22}\right) \\
- & + i Q \left(\Psi_{11} \cdot \partial_x A_{20}\right) + i Q \left(\Psi_{11} \cdot \partial_x A_{20}^*\right) - i Q \left(\Psi_{11}^* \cdot \partial_x A_{22} \right) - i 2 Q \left(\partial_x \Psi_{11}^* \cdot A_{22}\right)
+N_{31}^{(A)} =\, & -i k_c \left(A_{11}\cdot\partial_x \Psi_{20}\right) - i k_c \left(A_{11} \cdot \partial_x \Psi_{20}^*\right)
+ + i k_c \left(A_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot \Psi_{22}\right) \\
+ & + i k_c \left(\Psi_{11} \cdot \partial_x A_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x A_{22} \right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot A_{22}\right)
 \end{split}
 \eeq
 
 \beq
 \begin{split}
-N_{31}^{(B)} = \, & i Q \left(\Psi_{11} \cdot \partial_x B_{20}\right) + i Q \left(\Psi_{11} \cdot \partial_x B_{20}^*\right) - i Q \left(\Psi_{11}^* \cdot \partial_x B_{22}\right) - i 2 Q\left(\partial_x \Psi_{11}^* \cdot B_{22}\right) \\
-& - i Q \left(B_{11} \cdot \partial_x \Psi_{20}\right) - i Q \left(B_{11} \cdot \partial_x \Psi_{20}^*\right) + i Q\left(B_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 Q \left(\partial_x B_{11}^* \cdot \Psi_{22}\right) \\
-& - i Q \left(A_{11} \cdot \partial_x u_{20}\right) - i Q \left(A_{11} \cdot \partial_x u_{20}^*\right) + i Q \left(A_{11}^* \cdot \partial_x u_{22}\right) + i 2 Q \left(\partial_x A_{11}^* \cdot u_{22}\right) \\
-& i Q \left(u_{11} \cdot \partial_x A_{20} \right) + i Q \left(u_{11} \cdot \partial_x A_{20}^*\right) - i Q \left(u_{11}^* \cdot \partial_x A_{22}\right) - i 2 Q \left(\partial_x u_{11}^* \cdot A_{22}\right)
+N_{31}^{(B)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x B_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x B_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x B_{22}\right) - i 2 k_c\left(\partial_x \Psi_{11}^* \cdot B_{22}\right) \\
+& - i k_c \left(B_{11} \cdot \partial_x \Psi_{20}\right) - i k_c \left(B_{11} \cdot \partial_x \Psi_{20}^*\right) + i k_c\left(B_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 k_c \left(\partial_x B_{11}^* \cdot \Psi_{22}\right) \\
+& - i k_c \left(A_{11} \cdot \partial_x u_{20}\right) - i k_c \left(A_{11} \cdot \partial_x u_{20}^*\right) + i k_c \left(A_{11}^* \cdot \partial_x u_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot u_{22}\right) \\
+& i k_c \left(u_{11} \cdot \partial_x A_{20} \right) + i k_c \left(u_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(u_{11}^* \cdot \partial_x A_{22}\right) - i 2 k_c \left(\partial_x u_{11}^* \cdot A_{22}\right)
 \end{split}
 \eeq
 
