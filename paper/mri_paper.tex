@@ -56,26 +56,45 @@ The magnetorotational instability (MRI) is a fundamental process of accretion di
 
 For matter to accrete from a disk onto a central object, angular momentum must be transported radially outward in the disk. The transport mechanism is likely turbulent (\citei{Shakura:1973wg}). Since its discovery by \citeauthor{Chandrasekhar:1960wh} (\citeyear{Chandrasekhar:1960wh}) and subsequent rediscovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}), the MRI remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field destabilizes the disk gas, driving turbulence and angular momentum transport.
 
-The MRI evolves via a period of linear growth, followed by nonlinear saturation. The nonlinear evolution of the MRI is a complex process, and an understanding of the mechanism by which the MRI saturates remains elusive. Most previous works on MRI saturation have studied the problem in simulation. Indeed, only a few works have tackled MRI saturation analytically. We will briefly summarize a few of these analytic contributions.
+The MRI evolves via a period of linear growth, followed by nonlinear saturation. The nonlinear evolution of the MRI is a complex process, and an understanding of the mechanism by which the MRI saturates remains elusive. Most previous works on MRI saturation have studied the problem in simulation. Indeed, only a few works have tackled MRI saturation analytically. We briefly summarize a few of these analytic contributions.
 
+%examples of simulations papers
 %more mention of other analytic works
 
-This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime.
+This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime. Umurhan et al. find for the second-order perturbation envelope a real Ginzburg-Landau Equation (GLE). We will show that the system does not, in fact, yield a GLE, and comment on the implications of this in \S\ref{discussion}.
+
+We develop this investigation with the goal of providing a rigorous analytical framework that will be used to make predictions for laboratory MRI experiments. In recent years much progress has been made toward the goal of observing MRI in a laboratory setting, although no experiment has yet yielded a confirmed detection. Of most immediate interest to this work is the Princeton Plasma Physics Laboratory (PPPL) MRI experiment, which has a design roughly analogous to the set-up investigated here (see \S\ref{setup} for further details). The Madison plasma dynamo experiment is a multi-purpose plasma device which may be a vehicle for MRI studies in the near future (\citei{Cooper:2013to}). The helical MRI, an instability related to the standard MRI but easier to excite in the laboratory, is the focus of the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE) in Dresden. PROMISE has already detected helical MRI in the laboratory (e.g. \citei{Stefani:2006iv}), and we discuss possible applications of our framework to the helical MRI in \S\ref{discussion}.
+
+%relation to hTC and R-B
+%explanation of WNA
 
 \section{Set-Up}
 
-We analyze a magnetized Taylor Couette flow, representing a differentially rotating, conducting fluid between two cylinders which are driven at different speeds. We initialize an angular velocity profile which decreases outward from the axis of rotation, and a weak vertical magnetic field. These are the only two conditions required to excite MRI. 
 
-Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment (see \S\ref{discussion} for further discussion). We use periodic vertical boundary conditions. On the radial boundaries of our domain --  the inner and outer cylinders -- we apply no-slip, perfectly conducting boundary conditions.
-
-\begin{figure}[h!]
+\begin{figure}[h!]\label{setup}
 \centering
 \includegraphics[trim=5cm 0cm 0cm 0cm, scale=.35]{setup_diagram.eps}
 \caption{Schematic diagram of our set-up, an axisymmetric magnetized Taylor Couette flow. We investigate a 2D slice of the X-Z (radial-vertical) plane. Our domain is the bolded black box, of width L. The radial dimension is solved with a basis of Chebyshev polynomials, and the vertical dimension is solved on a Fourier basis (see \S\ref{discussion}.) }
 \end{figure}
 
+We analyze a magnetized Taylor Couette flow, representing a differentially rotating, conducting fluid between two cylinders which are driven at different speeds. We initialize an angular velocity profile which decreases outward from the axis of rotation, and a weak vertical magnetic field. These are the only two conditions required to excite MRI. The differential rotation profile is
 
-\section{Weakly Nonlinear Analysis}
+\beq
+\Omega\left(r\right) \propto \Omega_0\left(\frac{r}{r_0}\right)^{-q},
+\eeq
+
+where $q$, the shear parameter, is $3/2$ for Keplerian rotation. The initial background magnetic field is
+
+\beq
+\mathbf{B} = B_0 \hat{z},
+\eeq
+
+a constant, vertical field.
+
+Our domain is designed to be relevant to the design of the PPPL MRI experiment (see \S\ref{discussion} for further discussion). We use periodic vertical boundary conditions. On the radial boundaries of our domain --  the inner and outer cylinders -- we apply no-slip, perfectly conducting boundary conditions. The choice of boundary conditions dictates the functional bases on which our system is spectrally solved. This is explained further in \S\ref{wna}. A diagram of our set-up is shown in Figure \ref{setup}.
+
+
+\section{Weakly Nonlinear Analysis}\label{wna}
 
 We solve the equations of non-ideal, axisymmetric, incompressible magnetized Taylor Couette flow. We solve the momentum equation:
 
@@ -369,6 +388,9 @@ We compute the solutions to our derived equations pseudospectrally, using Dedalu
 
 % Jeff's sims!!!!!
 
+% hMRI
+% reduction in background shear not possible in astrophysical disks
+
 \newpage
 \begin{appendices}
 \begin{widetext}
@@ -473,14 +495,20 @@ Balbus, S A and Hawley, J F, The Astrophysical Journal, 376, 214
 \bibitem[{Chandrasekhar(1960)}]{Chandrasekhar:1960wh}
 Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the United States of America, 46, 253
 
+\bibitem[{Cooper et al.(2014)}]{Cooper:2013to}
+Cooper, C M, Wallace, J, Brookhart, M, Clark, M, Collins, C, Ding, W X, Flanagan, K, Khalzov, I, Li, Y, Milhone, J, Nornberg, M, Nonn, P, Weisberg, D, Whyte, D G, Zweibel, E, Forest, C B, Physics of Plasmas, 21, 013505
+
 \bibitem[{Ji et al.(2001)}]{Ji:2001kd}
 Ji, H, Goodman, J, Kageyama, A, Mon. Not. R. Astron. Soc., 325, 1
+
+\bibitem[{Schartman et al.(2009)}]{Schartman:2009df}
+Schartman, E, Ji, H, Burin, M J, Rev Sci Instrum, 80, 024501
 
 \bibitem[{Shakura \& Sunyaev(1973)}]{Shakura:1973wg}
 Shakura, N I and Sunyaev, R A, Astronomy \& Astrophysics, 24, 337
 
-\bibitem[{Schartman, et al.}]{Schartman:2009df}
-Schartman, E, Ji, H, Burin, M J, Rev Sci Instrum, 80, 024501
+\bibitem[{Stefani et al.(2006)}]{Stefani:2006iv}
+Stefani, F, Gundrum, T, Gerbeth, G, RŸdiger, G, Schultz, M, Szklarski, J, Hollerbach, R, Phys Rev Lett, 97, 184502
 
 \bibitem[{Umurhan et al.(2007a)}]{Umurhan:2007dz}
 Umurhan, O M, Regev, O, Menou, K, Phys. Rev. Letters, 98, 034501
