@@ -63,7 +63,7 @@ The MRI evolves via a period of linear growth, followed by nonlinear saturation.
 
 This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime. Umurhan et al. find for the second-order perturbation envelope a real Ginzburg-Landau Equation (GLE). We will show that the system does not, in fact, yield a GLE, and comment on the implications of this in \S\ref{discussion}.
 
-We develop this investigation with the goal of providing a rigorous analytical framework that will be used to make predictions for laboratory MRI experiments. In recent years much progress has been made toward the goal of observing MRI in a laboratory setting, although no experiment has yet yielded a confirmed detection. Of most immediate interest to this work is the Princeton Plasma Physics Laboratory (PPPL) MRI experiment, which has a design roughly analogous to the set-up investigated here (see \S\ref{setup} for further details). The Madison plasma dynamo experiment is a multi-purpose plasma device which may be a vehicle for MRI studies in the near future (\citei{Cooper:2013to}). The helical MRI, an instability related to the standard MRI but easier to excite in the laboratory, is the focus of the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE) in Dresden. PROMISE has already detected helical MRI in the laboratory (e.g. \citei{Stefani:2006iv}), and we discuss possible applications of our framework to the helical MRI in \S\ref{discussion}. A spherical Couette experiment claimed to have detected MRI in 2004 (\citeauthor{Sisan:2004ig}), but most likely detected unrelated MHD instabilities instead (CITECITE).
+We develop this investigation with the goal of providing a rigorous analytical framework that will be used to make predictions for laboratory MRI experiments. Observing MRI in a laboratory setting would open a new avenue for studying MRI dynamics and saturation. In recent years much experimental progress has been made, although no experiment has yet yielded a confirmed detection. Of most immediate interest to this work is the Princeton Plasma Physics Laboratory (PPPL) MRI experiment, which has a design roughly analogous to the set-up investigated here (see \S\ref{setup} for further details). The Madison plasma dynamo experiment is a multi-purpose plasma device which may be a vehicle for MRI studies in the near future (\citei{Cooper:2013to}). The helical MRI, an instability related to the standard MRI but easier to excite in the laboratory, is the focus of the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE) in Dresden. PROMISE has already detected helical MRI in the laboratory (e.g. \citei{Stefani:2006iv}), and we discuss possible applications of our framework to the helical MRI in \S\ref{discussion}. A spherical Couette experiment claimed to have detected MRI in 2004 (\citeauthor{Sisan:2004ig}), but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}; \citei{Gissinger:2011td}).
 
 %relation to hTC and R-B
 %explanation of WNA
@@ -384,9 +384,11 @@ We conduct a full study of the MRI parameter space, focussed on the behavior wit
 
 Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment (\citei{Ji:2001kd}). A challenge for all MRI experiments is to reduce all extraneous flows which may stabilize the MRI or obscure its detection. In particular, care must be taken to mitigate meridional flows introduced by the endcaps of the experimental apparatus. The PPPL MRI experiment employs a novel design using concentric, differentially rotating rings as endcaps (\citei{Schartman:2009df}). In this investigation, we use periodic vertical boundary conditions, so our set-up represents an idealized domain where endcap contamination does not exist. Future work will address specifically our predictions for the PPPL MRI experiment.
 
-We compute the solutions to our derived equations pseudospectrally, using Dedalus. One advantage to using Dedalus for these computations is that the code can compute the evolution of the fully nonlinear MRI system on the same grid. 
+We compute the solutions to our derived equations pseudospectrally, using Dedalus. One advantage to using Dedalus for these computations is that the code can compute the evolution of the fully nonlinear MRI system on the same Fourier/Chebyshev grid. This allows us to directly compare simulation and theory. 
 
 % Jeff's sims!!!!!
+
+The present configuration, that of magnetized Taylor Couette flow with a purely axial magnetic field, represents the initial conditions for the standard MRI. The helical MRI is a related, but separate, MHD instability. 
 
 % hMRI
 % reduction in background shear not possible in astrophysical disks
@@ -490,34 +492,40 @@ N_{31}^{(B)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x B_{20}\right) + i k_c
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
-Balbus, S A and Hawley, J F, The Astrophysical Journal, 376, 214
+Balbus, S A and Hawley, J F, 1991, The Astrophysical Journal, 376, 214
 
 \bibitem[{Chandrasekhar(1960)}]{Chandrasekhar:1960wh}
 Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the United States of America, 46, 253
 
 \bibitem[{Cooper et al.(2014)}]{Cooper:2013to}
-Cooper, C M, Wallace, J, Brookhart, M, Clark, M, Collins, C, Ding, W X, Flanagan, K, Khalzov, I, Li, Y, Milhone, J, Nornberg, M, Nonn, P, Weisberg, D, Whyte, D G, Zweibel, E, Forest, C B, Physics of Plasmas, 21, 013505
+Cooper, C M, Wallace, J, Brookhart, M, Clark, M, Collins, C, Ding, W X, Flanagan, K, Khalzov, I, Li, Y, Milhone, J, Nornberg, M, Nonn, P, Weisberg, D, Whyte, D G, Zweibel, E, Forest, C B, Physics of Plasmas, 2013, 21, 013505
+
+\bibitem[{Gissinger et al.(2011)}]{Gissinger:2011td}
+Gissinger, C, Ji, H, Goodman, J, Phys. Rev. E, 2011, 84, 026308
+
+\bibitem[{Hollerback(2009)}]{Hollerbach:2009ig}
+Hollerback, R, Proc. R. Soc. A, 2009, 465, 2107
 
 \bibitem[{Ji et al.(2001)}]{Ji:2001kd}
-Ji, H, Goodman, J, Kageyama, A, Mon. Not. R. Astron. Soc., 325, 1
+Ji, H, Goodman, J, Kageyama, A, Mon. Not. R. Astron. Soc., 2001, 325, 1
 
 \bibitem[{Schartman et al.(2009)}]{Schartman:2009df}
-Schartman, E, Ji, H, Burin, M J, Rev Sci Instrum, 80, 024501
+Schartman, E, Ji, H, Burin, M J, Rev Sci Instrum, 2009, 80, 024501
 
 \bibitem[{Shakura \& Sunyaev(1973)}]{Shakura:1973wg}
-Shakura, N I and Sunyaev, R A, Astronomy \& Astrophysics, 24, 337
+Shakura, N I and Sunyaev, R A, Astronomy \& Astrophysics, 1973, 24, 337
 
 \bibitem[{Sisan et al.(2004)}]{Sisan:2004ig}
-Sisan, D R, Mujica, N, Tillotson, W A, Huang Y-M, Dorland, W, Hassam, A B, Antonsen, T M, Lathrop, D P, Phys Rev Lett, 93, 11
+Sisan, D R, Mujica, N, Tillotson, W A, Huang Y-M, Dorland, W, Hassam, A B, Antonsen, T M, Lathrop, D P, Phys Rev Lett, 2004, 93, 11
 
 \bibitem[{Stefani et al.(2006)}]{Stefani:2006iv}
-Stefani, F, Gundrum, T, Gerbeth, G, RŸdiger, G, Schultz, M, Szklarski, J, Hollerbach, R, Phys Rev Lett, 97, 184502
+Stefani, F, Gundrum, T, Gerbeth, G, RŸdiger, G, Schultz, M, Szklarski, J, Hollerbach, R, Phys Rev Lett, 2006, 97, 184502
 
 \bibitem[{Umurhan et al.(2007a)}]{Umurhan:2007dz}
-Umurhan, O M, Regev, O, Menou, K, Phys. Rev. Letters, 98, 034501
+Umurhan, O M, Regev, O, Menou, K, 2007, Phys. Rev. Letters, 98, 034501
 
 \bibitem[{Umurhan et al.(2007b)}]{Umurhan:2007hs}
-Umurhan, O M, Regev, O, Menou, K, Phys. Rev. E, 76, 036310
+Umurhan, O M, Regev, O, Menou, K, 2007, Phys. Rev. E, 76, 036310
 
 
 \end{thebibliography}
