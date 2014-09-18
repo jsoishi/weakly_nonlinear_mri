@@ -106,6 +106,8 @@ Our domain is designed to be relevant to the design of the PPPL MRI experiment (
 
 \section{Weakly Nonlinear Analysis}\label{wna}
 
+We perform a weakly nonlinear analysis following the lead of \citeauthor{Umurhan:2007hs}, and use much of the same notation, with some changes for added simplicity.
+
 We solve the equations of non-ideal, axisymmetric, incompressible magnetized Taylor Couette flow. We solve the momentum equation,
 
 \beq\label{momentum}
@@ -149,20 +151,18 @@ B_{y} \\
 
 and $\mathbf{\Psi}$ is defined analogously.
 
-The perturbed, nondimensionalized equations which will be the focus of this equation are as follows:
-
-Our final equation set is: 
+Our final equation set is
 
 \begin{multline}
 \label{eqset1}
-\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \partial_z u_{1y} \, = \\
+\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \partial_z u_{y} \, = \\
 \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, + \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi
 \end{multline}
 
 \begin{multline}
 \label{eqset2}
-\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, = \\
-\, \frac{2}{\beta}B_0\partial_z B_{1y} \, + \, \frac{2}{\beta} J\left(A, B_{1y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{1y}
+\partial_t u_{1y} \, + \, J\left(\Psi, u_{y}\right) \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, = \\
+\, \frac{2}{\beta}B_0\partial_z B_{y} \, + \, \frac{2}{\beta} J\left(A, B_{y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{y}
 \end{multline}
 
 \begin{multline}
@@ -172,11 +172,11 @@ Our final equation set is:
 
 \begin{multline}
 \label{eqset4}
-\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, J\left(A, u_{1y}\right) \, - \, J\left(\Psi, B_{1y}\right) \, \\
-+ \, \frac{1}{\reym} \nabla^2 B_{1y}  \, - \, q \Omega_0 \partial_z A
+\partial_t B_{y} \, = \, B_0 \partial_z u_{y} \, + \, J\left(A, u_{y}\right) \, - \, J\left(\Psi, B_{y}\right) \, \\
++ \, \frac{1}{\reym} \nabla^2 B_{y}  \, - \, q \Omega_0 \partial_z A,
 \end{multline}
 
-Where $J$ is the Jacobian operator, 
+where $J$ is the Jacobian operator, 
 \beq
 J\left(f, g\right) \equiv \partial_z f\partial_x g - \partial_x f \partial_z g.
 \eeq  
@@ -185,17 +185,17 @@ Note that working in terms of the flux function raises the order of the first mo
 
 The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where the most unstable linear MRI mode neither grows nor decays, for a given set of dimensionless parameters. 
 
-$B_0$ appears in Equations \ref{eqset1} - \ref{eqset4} because it is the nondimensionalized background field strength. That is, $B = B_0 \equiv 1$. In order to study our system in the weakly nonlinear regime, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting $B = B_0\left(1 - \epsilon^2\right)$. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ weakening of the background magnetic field destabilizes a band of wave modes with width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly.
+$B_0$ appears in Equations \ref{eqset1} - \ref{eqset4} because it is the nondimensionalized background field strength. Because we nondimensionalize $B$ by the magnitude of the background field strength, $B_0 \equiv 1$. In order to study our system in the weakly nonlinear regime, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting $B = B_0\left(1 - \epsilon^2\right)$. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ weakening of the background magnetic field destabilizes a band of wave modes with width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly.
 
-The destabilizing substitution is made, and Equations \ref{eqset1} - \ref{eqset4} are rewritten such that the fluid variables are contained in a state vector $\mathbf{V} = \left[\Psi, u_y, A, B_y\right]^\mathrm{T}$. This yields the following system of equations.
+The destabilizing substitution is made, and Equations \ref{eqset1} - \ref{eqset4} are rewritten such that the fluid variables are contained in a state vector $\mathbf{V} = \left[\Psi, u_y, A, B_y\right]^\mathrm{T}$. This yields the system of equations
 
 \beq
-\mathcal{D}\partial_t \mathbf{V} + \mathbf{N} = \mathcal{L} \mathbf{V} - \epsilon^2\partial_z\mathcal{X} \mathbf{V} - \epsilon^2 \partial_z^3 \mathcal{L}_3\mathbf{V}
+\mathcal{D}\partial_t \mathbf{V} + \mathbf{N} = \mathcal{L} \mathbf{V} - \epsilon^2\partial_z\mathcal{X} \mathbf{V} - \epsilon^2 \partial_z^3 \mathcal{L}_3\mathbf{V},
 \eeq
 
-Where $\mathcal{L} \equiv \mathcal{L}_0 + \mathcal{L}_1\partial_z + \mathcal{L}_2\partial_z^2 + \mathcal{L}_3\partial_z^3 + \mathcal{L}_4\partial_z^4$ \\
+where $\mathcal{L} \equiv \mathcal{L}_0 + \mathcal{L}_1\partial_z + \mathcal{L}_2\partial_z^2 + \mathcal{L}_3\partial_z^3 + \mathcal{L}_4\partial_z^4$, \\
 
-And:
+and
 
 \beq
 \mathcal{D} = \left[\begin{matrix}
@@ -255,10 +255,10 @@ And:
 \eeq
 
 
-We conduct a formal multiscale analysis. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on fast and slow scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for axisymmetric perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$. The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are: 
+We conduct a formal multiscale analysis. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on fast and slow scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for axisymmetric perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$. The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are
 
 \beq
-X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t
+X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t.
 \eeq
 
 Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
@@ -270,29 +270,31 @@ The multiple scale dependencies of our solution are encoded into an ansatz for t
 \mathbf{V_1} = \alpha(T, Z) \mathbb{V}_{11}(x) e^{i k_c z} + c.c.,
 \eeq
 
-where $\alpha$ is a slowly-varying amplitude equation. The $x$ dependence is contained in $\mathbb{V}_{11}$, and must be solved for subject to the radial boundary conditions. The periodic vertical boundary conditions allow us to posit the $z$ dependence, where $k_c$ is the value of the vertical wavenumber at marginality. 
+where $\alpha$ is a slowly-varying amplitude equation and $c.c.$ denotes the complex conjugate. The $x$ dependence is contained in $\mathbb{V}_{11}$, and must be solved for subject to the radial boundary conditions. The periodic vertical boundary conditions allow us to posit the $z$ dependence, where $k_c$ is the value of the vertical wavenumber at marginality. 
 
 Because we investigate the system at marginality, where the growth rate $\sigma = 0$, the $\partial_t$ terms drop out. Thus after the multiscale expansion our system becomes
 
 \begin{multline}
 \label{multiscale_system}
 \epsilon^2 \mathcal{D}\partial_T\mathbf{V} \, + \, \mathbf{N} \, = \, \mathcal{L}\mathbf{V} \, + \, \epsilon\widetilde{\mathcal{L}}_1\partial_Z\mathbf{V} \, + \, \epsilon^2\widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V} \, \\
- - \, \epsilon^2\partial_z\mathcal{X}\mathbf{V} \, - \, \epsilon^2\partial_z^3\mathcal{L}_3\mathbf{V} \, + \, \mathcal{O}(\epsilon^3)
+ - \, \epsilon^2\partial_z\mathcal{X}\mathbf{V} \, - \, \epsilon^2\partial_z^3\mathcal{L}_3\mathbf{V} \, + \, \mathcal{O}(\epsilon^3),
 \end{multline}
 
-Where
+where
 
 \beq
 \widetilde{\mathcal{L}}_1 = \mathcal{L}_1 + 2\mathcal{L}_2\partial_z + 3\mathcal{L}_3\partial_z^2 + 4\mathcal{L}_4\partial_z^3
 \eeq
 
+and
+
 \beq
-\widetilde{\mathcal{L}}_2 = \mathcal{L}_2 + 3\mathcal{L}_3\partial_z + 6\mathcal{L}_4\partial_z^2
+\widetilde{\mathcal{L}}_2 = \mathcal{L}_2 + 3\mathcal{L}_3\partial_z + 6\mathcal{L}_4\partial_z^2.
 \eeq
 
 
 % perturbation expansion
-The state vector is expanded in orders of $\epsilon$:
+The state vector is expanded a perturbation series in orders of $\epsilon$,
 
 \beq
 \label{pert_exp}
@@ -305,30 +307,30 @@ To $\mathcal{O}(\epsilon)$, we have
 
 \beq
 \label{ordere}
-\mathcal{L}\mathbf{V_1} = 0
+\mathcal{L}\mathbf{V_1} = 0.
 \eeq
 
-To $\mathcal{O}(\epsilon^2)$: 
+To $\mathcal{O}(\epsilon^2)$,
 
 \beq
 \label{ordere2}
-\mathcal{L}\mathbf{V_2} \, = \, \mathbf{N_2} \, - \, \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}
+\mathcal{L}\mathbf{V_2} \, = \, \mathbf{N_2} \, - \, \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}.
 \eeq
 
-To $\mathcal{O}(\epsilon^3)$: 
+To $\mathcal{O}(\epsilon^3)$,
 
 \begin{multline}
 \label{ordere3}
 \mathcal{D}\partial_T \mathbf{V_1} \, + \, \mathbf{N_3} \, = \, \mathcal{L} \mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} \, \\
-- \partial_Z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1}
+- \partial_Z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1}.
 \end{multline}
 
 The $\mathcal{O}(\epsilon)$ equation is the equation for the linear MRI at marginality. This is the equation that is solved to find the $\mathbb{V}_{11}$ component of Equation \ref{V1_ansatz}. 
 
-The partial differential equations that comprise Equations \ref{ordere} to \ref{ordere3} are solved in succession subject to no-slip, perfectly conducting radial boundary conditions, defined as:
+The partial differential equations that comprise Equations \ref{ordere} to \ref{ordere3} are solved in succession subject to no-slip, perfectly conducting radial boundary conditions, defined as
 
 \beq
-\Psi = \partial_x \Psi = u_y = A = \partial_x B_y = 0
+\Psi = \partial_x \Psi = u_y = A = \partial_x B_y = 0.
 \eeq
 
 The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even significant structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). 
@@ -350,17 +352,17 @@ has a nontrivial solution, the solvability criterion
 must be satisfied in order for Equation \ref{ordere2} to have a solution. In the above, 
 
 \beq
-\mathbf{V}^\dagger = \mathbb{V}^\dagger(x) e^{i k_c z} + c.c.
+\mathbf{V}^\dagger = \mathbb{V}^\dagger(x) e^{i k_c z} + c.c.,
 \eeq
 
-where, again, $\mathbb{V}^\dagger$ contains the radial contribution. The elimination of this inner product must also be enforced the terms in Equation \ref{ordere3} that are resonant with $e^{i k_c z}$, yielding
+where, again, $\mathbb{V}^\dagger$ contains the radial contribution. The elimination of this inner product must also be enforced on the terms in Equation \ref{ordere3} that are resonant with $e^{i k_c z}$, yielding
 
 \beq
 \label{ampeq1}
-a \partial_T \alpha \, + \, c \alpha \left|\alpha^2\right| \, + \, \widetilde{c} \alpha \partial_Z \beta \, = \, - b \partial_Z \alpha \, + \, h \partial_Z^2 \alpha \, + \, g i k_c^3 \alpha
+a \partial_T \alpha \, = - \, c \alpha \left|\alpha^2\right| \, - \, \widetilde{c} \alpha \partial_Z \beta \,  - b i k_c \alpha \, + \, h \partial_Z^2 \alpha \, + \, g i k_c^3 \alpha,
 \eeq
 
-Where
+where
 
 \beq
 \begin{split}
@@ -369,7 +371,7 @@ c & \equiv \left< \mathbb{V}^\dagger \cdot \mathbf{N}^*_{31}\right> \\
 \widetilde{c} & \equiv \left< \mathbb{V}^\dagger \cdot \widetilde{\mathbf{N}}^*_{31}\right> \\
 b & \equiv \left< \mathbb{V}^\dagger \cdot \left(\mathcal{X}\mathbb{V}_{11}\right)^* \right> \\
 h & \equiv \left< \mathbb{V}^\dagger \cdot \left(\widetilde{\mathcal{L}}_2\mathbb{V}_{11} \, - \, \widetilde{\mathcal{L}}_1\mathbb{V}_{21} \right)^* \right> \\
-g & \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{L}_{3} \mathbb{V}_{11} \right> \\
+g & \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{L}_{3} \mathbb{V}_{11} \right>. \\
 \end{split}
 \eeq
 
