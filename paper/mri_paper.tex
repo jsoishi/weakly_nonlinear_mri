@@ -65,6 +65,8 @@ This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear
 
 We develop this investigation with the goal of providing a rigorous analytical framework that will be used to make predictions for laboratory MRI experiments. Observing MRI in a laboratory setting would open a new avenue for studying MRI dynamics and saturation. In recent years much experimental progress has been made, although no experiment has yet yielded a confirmed detection. Of most immediate interest to this work is the Princeton Plasma Physics Laboratory (PPPL) MRI experiment, which has a design roughly analogous to the set-up investigated here (see \S\ref{setup} for further details). The Madison plasma dynamo experiment is a multi-purpose plasma device which may be a vehicle for MRI studies in the near future (\citei{Cooper:2013to}). The helical MRI, an instability related to the standard MRI but easier to excite in the laboratory, is the focus of the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE) in Dresden. PROMISE has already detected helical MRI in the laboratory (e.g. \citei{Stefani:2006iv}), and we discuss possible applications of our framework to the helical MRI in \S\ref{discussion}. A spherical Couette experiment claimed to have detected MRI in 2004 (\citeauthor{Sisan:2004ig}), but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}; \citei{Gissinger:2011td}).
 
+The focus of this work is the weakly nonlinear regime of the MRI. This is where the initial linear growth phase of the instability begins to give way to nonlinear saturation. Weakly nonlinear analysis is the perturbation analysis of a system that is just unstable to its most unstable mode. The system in its marginal state, when the most unstable mode neither grows nor decays, is tuned slightly into instability. This excites a band of wavemodes around the most unstable mode, which interact nonlinearly. 
+
 %relation to hTC and R-B
 %explanation of WNA
 
@@ -171,7 +173,7 @@ J\left(f, g\right) \equiv \partial_z f\partial_x g - \partial_x f \partial_z g.
 
 Note that working in terms of the flux function raises the order of the first momentum equation.
 
-The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where most unstable linear MRI mode neither grows nor decays, for a given set of dimensionless parameters. 
+The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where the most unstable linear MRI mode neither grows nor decays, for a given set of dimensionless parameters. 
 
 $B_0$ appears in Equations \ref{eqset1} - \ref{eqset4} because it is the nondimensionalized background field strength. That is, $B = B_0 \equiv 1$. In order to study our system in the weakly nonlinear regime, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting $B = B_0\left(1 - \epsilon^2\right)$. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ weakening of the background magnetic field destabilizes a band of wave modes with width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly.
 
@@ -388,7 +390,7 @@ We compute the solutions to our derived equations pseudospectrally, using Dedalu
 
 % Jeff's sims!!!!!
 
-This work analyzes Taylor Couette flow in the thin-gap limit, where the channel width is radially narrow compared to its distance from the center of rotation. This simplifies the math by allowing curvature terms to drop out at lowest order. The relaxation of the thin-gap approximation is an obvious next step for this work, 
+This work analyzes Taylor Couette flow in the thin-gap limit, where the channel width is radially narrow compared to its distance from the center of rotation. This simplifies the math by allowing curvature terms to drop out at lowest order. The relaxation of the thin-gap approximation is an obvious next step for this work. The term expansion in the weakly nonlinear analysis will be more formidable in the wide-gap regime, but could prove informative for comparison to experiments.
 
 The present configuration, that of magnetized Taylor Couette flow with a purely axial magnetic field, represents the initial conditions for the standard MRI. The helical MRI is a related, but separate, MHD instability, and was first discovered by Hollerbach and R\"udiger (CITE). It arises in the presence of combined axial and azimuthal fields. To seed helical MRI in our current set-up, we need only add an azimuthal component to our initial background magnetic field. This will be an avenue of future study, and will yield an analytic theory relevant to the above-mentioned PROMISE experiment. 
 
