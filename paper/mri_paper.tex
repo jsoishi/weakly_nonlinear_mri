@@ -321,7 +321,7 @@ The partial differential equations that comprise Equations \ref{ordere} to \ref{
 \Psi = \partial_x \Psi = u_y = A = \partial_x B_y = 0
 \eeq
 
-The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even significant structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. CITE). 
+The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even significant structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). 
 
 We solve the system up to $\mathcal{O}(\epsilon^3)$ in order to close the solution at $\mathcal{O}(\epsilon^2)$. 
 
@@ -392,7 +392,7 @@ We compute the solutions to our derived equations pseudospectrally, using Dedalu
 
 This work analyzes Taylor Couette flow in the thin-gap limit, where the channel width is radially narrow compared to its distance from the center of rotation. This simplifies the math by allowing curvature terms to drop out at lowest order. The relaxation of the thin-gap approximation is an obvious next step for this work. The term expansion in the weakly nonlinear analysis will be more formidable in the wide-gap regime, but could prove informative for comparison to experiments.
 
-The present configuration, that of magnetized Taylor Couette flow with a purely axial magnetic field, represents the initial conditions for the standard MRI. The helical MRI is a related, but separate, MHD instability, and was first discovered by Hollerbach and R\"udiger (CITE). It arises in the presence of combined axial and azimuthal fields. To seed helical MRI in our current set-up, we need only add an azimuthal component to our initial background magnetic field. This will be an avenue of future study, and will yield an analytic theory relevant to the above-mentioned PROMISE experiment. 
+The present configuration, that of magnetized Taylor Couette flow with a purely axial magnetic field, represents the initial conditions for the standard MRI. The helical MRI is a related, but separate, MHD instability, and was first discovered by Hollerbach and R\"udiger (\citeyear{Hollerbach:2005tr}). It arises in the presence of combined axial and azimuthal fields. To seed helical MRI in our current set-up, we need only add an azimuthal component to our initial background magnetic field. This will be an avenue of future study, and will yield an analytic theory relevant to the above-mentioned PROMISE experiment. 
 
 Our results suggest that the primary driver of saturation is reduction of the background shear. We note that while shear modification is relevant in the experimental regime, the gravitational pull of the central body will tend to enforce a Keplerian rotation profile in any astrophysical disk. Thus a modification of the rotation profile is of little relevance as a saturation mechanism to the astrophysical regime. Nevertheless, understanding laboratory MRI experiments is crucial for allowing experimental results to inform our astrophysical understanding of the MRI. %^this sentence sucks
 
@@ -503,6 +503,9 @@ N_{31}^{(B)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x B_{20}\right) + i k_c
 \bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
 Balbus, S A and Hawley, J F, 1991, The Astrophysical Journal, 376, 214
 
+\bibitem[{Boyd(2001)}]{Boyd:2001aa}
+Boyd, J P, 2001, Chebyshev and Fourier Spectral Methods, New York, Dover
+
 \bibitem[{Chandrasekhar(1960)}]{Chandrasekhar:1960wh}
 Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the United States of America, 46, 253
 
@@ -512,8 +515,11 @@ Cooper, C M, Wallace, J, Brookhart, M, Clark, M, Collins, C, Ding, W X, Flanagan
 \bibitem[{Gissinger et al.(2011)}]{Gissinger:2011td}
 Gissinger, C, Ji, H, Goodman, J, Phys. Rev. E, 2011, 84, 026308
 
-\bibitem[{Hollerback(2009)}]{Hollerbach:2009ig}
-Hollerback, R, Proc. R. Soc. A, 2009, 465, 2107
+\bibitem[{Hollerbach(2009)}]{Hollerbach:2009ig}
+Hollerbach, R, Proc. R. Soc. A, 2009, 465, 2107
+
+\bibitem[{Hollerbach \& R\"udiger(2005)}]{Hollerbach:2005tr}
+Hollerbach, R, RŸdiger, G, Phys. Rev. Lett, 2005, 95, 124501
 
 \bibitem[{Ji et al.(2001)}]{Ji:2001kd}
 Ji, H, Goodman, J, Kageyama, A, Mon. Not. R. Astron. Soc., 2001, 325, 1
