@@ -416,8 +416,42 @@ c & \equiv \left< \mathbb{V}^\dagger \cdot \mathbf{N}^*_{31}\right> \\
 \widetilde{c} & \equiv \left< \mathbb{V}^\dagger \cdot \widetilde{\mathbf{N}}^*_{31}\right> \\
 b & \equiv \left< \mathbb{V}^\dagger \cdot \left(\mathcal{X}\mathbb{V}_{11}\right)^* \right> \\
 h & \equiv \left< \mathbb{V}^\dagger \cdot \left(\widetilde{\mathcal{L}}_2\mathbb{V}_{11} \, - \, \widetilde{\mathcal{L}}_1\mathbb{V}_{21} \right)^* \right> \\
-g & \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{L}_{3} \mathbb{V}_{11} \right>. \\
+g & \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{L}_{3} \mathbb{V}_{11} \right>, \\
 \end{split}
+\eeq
+
+but $\widetilde{c}$ is equal to zero and drops out of the equation. This is the well-known Ginzburg-Landau equation, and is with only slight modification the same amplitude equation derived in \citeauthor{Umurhan:2007hs}.
+
+There exists a second amplitude equation, corresponding to the neutral mode, which comes from the solvability condition that must be imposed on all terms in Equation \ref{ordere3} that have no $z$ dependence. These terms are
+
+\beq
+\begin{split}
+\mathcal{D}\mathbb{U}_{11} \partial_T \beta \, & = \, \mathcal{L}\mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1 \mathbb{V}_{20} 2 \left|\alpha\right| \partial_Z \alpha \, - \, \widetilde{\mathcal{L}}_1 \mathbb{U}_{20} \partial_Z^2 \beta \, \\
+& + \, \widetilde{\mathcal{L}}_2 \mathbb{U}_{11} \partial_Z^2 \beta \, - \, \mathcal{X} \mathbb{U}_{11} \partial_Z \beta,
+\end{split}
+\eeq
+
+and taking the inner product of these terms with the adjoint homogenous solution $\mathbb{U}_{11}$ yields
+
+\beq
+\partial_T \beta = k 2 \left|\alpha\right| \partial_Z \alpha - m \partial_Z^2 \beta + \frac{1}{\reym} \partial_Z^2 \beta - p \alpha^* \partial_Z \alpha,
+\eeq
+
+where
+
+\beq
+\begin{split}
+n & \equiv \left< \mathbb{U}_{11} \cdot \left(\mathcal{L} \mathbb{V}_{30}\right)^*\right> \\
+k & \equiv \left< \mathbb{U}_{11} \cdot \left(\widetilde{\mathcal{L}}_1 \mathbb{V}_{20}\right)^*\right> \\
+m & \equiv \left< \mathbb{U}_{11} \cdot \left(\widetilde{\mathcal{L}}_1 \mathbb{U}_{20}\right)^*\right> \\
+p & \equiv \left< \mathbb{U}_{11} \cdot N_{30}^*\right>, \\
+\end{split}
+\eeq
+
+but both $k$ and $p$ are equal to zero, so this amplitude equation decouples from Equation \ref{ampeq1}, and reveals itself to be a simple diffusion equation,
+
+\beq\label{ampeq2}
+\partial_T \beta = - m \partial_Z^2 \beta + \frac{1}{\reym} \partial_Z^2 \beta.
 \eeq
 
 Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variables $Z$ and $T$. We solve this initial value problem using Dedalus to obtain the asymptotic behavior of $\alpha$. This is the saturation amplitude. We use the saturation amplitude as $\alpha$ and the radial component of computed on the Chebyshev grid to plot $\mathbf{V}$. We show both first order ($\epsilon\mathbf{V}_1$), second order ($\epsilon^2\mathbf{V}_2$), and combined first and second order fluid perturbations ($\epsilon\mathbf{V}_1$ + ($\epsilon^2\mathbf{V}_2$). Figure \ref{allorders_velocity} shows the velocity perturbations, and Figure \ref{allorders_Bfield} shows the magnetic field perturbations.
