@@ -265,6 +265,15 @@ and
 0 & 1 & 0 & 0 \\ \end{matrix} \right]. 
 \eeq
 
+The nonlinear terms are contained in a vector $\mathbf{N}$, where
+
+\beq
+\mathbf{N} = \left[ \begin{matrix}  J(\Psi, \nabla^2 \Psi) - \frac{2}{\beta}J(A, \nabla^2 A)\\
+J(\Psi, u_{1y}) - \frac{2}{\beta} J(A, B_{1y}) \\ 
+-J(A, \Psi) \\
+J(\Psi, B_{1y}) - J(A, u_{1y}) \\
+\end{matrix} \right].
+\eeq
 
 We conduct a formal multiscale analysis. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on fast and slow scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for axisymmetric perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$. The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are
 
@@ -272,7 +281,7 @@ We conduct a formal multiscale analysis. Our perturbations are characterized in 
 X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t.
 \eeq
 
-Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
+Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. In analogy to these problems, we posit slow variation in both $Z$ and $T$. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
 
 The multiple scale dependencies of our solution are encoded into an ansatz for the linear MRI solution at marginality,
 
