@@ -265,13 +265,13 @@ and
 0 & 1 & 0 & 0 \\ \end{matrix} \right]. 
 \eeq
 
-The nonlinear terms are contained in a vector $\mathbf{N}$, where
+The nonlinear terms are contained in a vector $\mathbf{N} = \left[N^{(\Psi)}, N^{(u_y)}, N^{(A)}, N^{(B_y)}\right]^\mathrm{T}$, where
 
 \beq
 \mathbf{N} = \left[ \begin{matrix}  J(\Psi, \nabla^2 \Psi) - \frac{2}{\beta}J(A, \nabla^2 A)\\
-J(\Psi, u_{1y}) - \frac{2}{\beta} J(A, B_{1y}) \\ 
+J(\Psi, u_{y}) - \frac{2}{\beta} J(A, B_{y}) \\ 
 -J(A, \Psi) \\
-J(\Psi, B_{1y}) - J(A, u_{1y}) \\
+J(\Psi, B_{y}) - J(A, u_{y}) \\
 \end{matrix} \right].
 \eeq
 
@@ -312,7 +312,6 @@ and
 \widetilde{\mathcal{L}}_2 = \mathcal{L}_2 + 3\mathcal{L}_3\partial_z + 6\mathcal{L}_4\partial_z^2.
 \eeq
 
-
 % perturbation expansion
 The state vector is expanded a perturbation series in orders of $\epsilon$,
 
@@ -320,6 +319,19 @@ The state vector is expanded a perturbation series in orders of $\epsilon$,
 \label{pert_exp}
 \mathbf{V} = \epsilon\mathbf{V_1} + \epsilon^2\mathbf{V_2} + \epsilon^3\mathbf{V_3} + ...
 \eeq
+
+The multiscale expansion of the operators and the perturbation series expansion of the fluid quantities combine to make the expansion of the nonlinear vector $\mathbf{N}$ expansive, and we relegate the expansion to Appendix (REF). $\mathbf{N}$ becomes 
+
+\beq
+\mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4),
+\eeq
+
+where 
+
+\beq
+\mathbf{N_2} = \alpha^2\mathbb{N}_{22} e^{i2 k_c z} + \left|\alpha\right|^2 \mathbb{N}_{20} + c.c.
+\eeq
+
 
 Substituting Equation \ref{pert_exp} into Equation \ref{multiscale_system} yields the perturbed, expanded equations. We solve these successively in increasing orders of $\epsilon$.
 
@@ -438,6 +450,49 @@ Our results suggest that the primary driver of saturation is reduction of the ba
 \begin{appendices}
 \begin{widetext}
 \section*{Appendix A.}
+
+\beq
+\mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4)
+\eeq
+
+where
+
+\beq
+N_2^{(\Psi)} = J(\Psi_1, \nabla^2 \Psi_1) \,-\, \frac{2}{\beta}J(A_1, \nabla^2 A_1) 
+\eeq
+
+\beq
+N_2^{(u)} = J(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_1) 
+\eeq
+
+\beq
+N_2^{(A)} = - J(A_1, \Psi_1) 
+\eeq
+
+\beq
+N_2^{(B)} =  J(\Psi_1, B_1) \, - \, J(A_1, u_1)
+\eeq
+
+and
+
+\beq
+\begin{split}
+N_3^{(\Psi)} & = J(\Psi_1, \nabla^2\Psi_2) \, - \, \frac{2}{\beta}J(A_1, \nabla^2 A_2) \,+\, J(\Psi_2, \nabla^2\Psi_1) - \, \frac{2}{\beta}J(A_2, \nabla^2 A_1) \,+\, 2 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, \\
+& - \, 2 \frac{2}{\beta}J(A_1, \partial_z\partial_Z A_1) \,+\, \widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \,  \frac{2}{\beta}\widetilde{J}(A_1, \nabla^2 A_1)\\
+\end{split}
+\eeq
+
+\beq
+N_3^{(u)} = J(\Psi_1, u_2) \, + \, J(\Psi_2, u_1) \, + \, \widetilde{J}(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_2) \, - \, \frac{2}{\beta} J(A_2, B_1) \, - \, \frac{2}{\beta} \widetilde{J}(A_1, B_1)
+\eeq
+
+\beq
+N_3^{(A)} = - J(A_1, \Psi_2) \, - \, J(A_2, \Psi_1) \, - \, \widetilde{J}(A_1, \Psi_1)
+\eeq
+
+\beq
+N_3^{(B)} = \, J(\Psi_1, B_2) \, + \, J(\Psi_2, B_1) \, + \, \widetilde{J}(\Psi_1, B_1) \, - \, J(A_1, u_2) \, - \,  J(A_2, u_1) \, - \, \widetilde{J}(A_1, u_1)
+\eeq
 
 Second order nonlinear terms: \\
 
