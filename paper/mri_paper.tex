@@ -136,7 +136,7 @@ and
 \nabla \cdot \mathbf{u} = 0.
 \eeq
 
-We perturb the fluid quantities with three-dimensional, axisymmetric perturbations. We nondimensionalize the equations, with lengths nondimensionalized by $L$, velocities by $\Omega_0 L$, magnetic fields by $B_0$, and pressure by $\Omega_0^2 L^2 \rho_0$, where $L$ is the channel width, $\Omega_0$ is the rotation rate at the center of the channel, and $\rho_0$ is the constant pressure in the base state (see Figure \ref{setup}). We define the nondimensional Reynolds number,
+We axisymmetrically perturb all three vector components of each of the fluid quantities. We nondimensionalize the equations, with lengths nondimensionalized by $L$, velocities by $\Omega_0 L$, magnetic fields by $B_0$, and pressure by $\Omega_0^2 L^2 \rho_0$, where $L$ is the channel width, $\Omega_0$ is the rotation rate at the center of the channel, and $\rho_0$ is the constant pressure in the base state (see Figure \ref{setup}). We define the nondimensional Reynolds number,
 
 \beq
 \reye \equiv \frac{\Omega_0 r_0^2 \delta^2}{\nu},
@@ -285,6 +285,12 @@ We conduct a formal multiscale analysis. Our perturbations are characterized in 
 \label{figscalings}
 \end{figure}
 
+\begin{figure*}
+\centering
+\includegraphics[trim=0cm 10cm 0cm 5cm, scale=.5]{N20fig.eps}
+\caption{Example of a nonlinear term solved on a 256-point Chebyshev grid. Circles represent values on the Chebyshev grid, grey lines are fits.}\label{N20fig}
+\end{figure*}
+
 \beq\label{scalings}
 X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t.
 \eeq
@@ -378,7 +384,7 @@ The partial differential equations that comprise Equations \ref{ordere} to \ref{
 \Psi = \partial_x \Psi = u_y = A = \partial_x B_y = 0.
 \eeq
 
-The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even small-scale structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). The nonuniform spacing of the Chebyshev grid allows us to resolve the boundary structures very well on 256-point grid.
+The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even small-scale structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). The nonuniform spacing of the Chebyshev grid allows us to resolve the boundary structures very well on 256-point grid. See Figure \ref{N20fig} for an example of the boundary-layer resolution we achieve in a nonlinear term.
 
 We solve the system up to $\mathcal{O}(\epsilon^3)$ in order to close the solution at $\mathcal{O}(\epsilon^2)$. 
 
