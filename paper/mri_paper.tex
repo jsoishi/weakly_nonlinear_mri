@@ -282,13 +282,14 @@ We conduct a formal multiscale analysis. Our perturbations are characterized in 
 \centering
 \includegraphics[trim=6cm 3cm 3cm 0cm, scale=0.35]{slowfast.eps}
 \caption{Cartoon illustrating fast and slow-moving variables (Equation \ref{scalings}).}\label{allorders_velocity}
+\label{figscalings}
 \end{figure}
 
 \beq\label{scalings}
 X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t.
 \eeq
 
-Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. In analogy to these problems, we posit slow variation in both $Z$ and $T$. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
+See Figure \ref{figscalings}. Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. In analogy to these problems, we posit slow variation in both $Z$ and $T$. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
 
 The multiple scale dependencies of our solution are encoded into an ansatz for the linear MRI solution at marginality,
 
@@ -321,14 +322,14 @@ and
 
 \begin{figure*}[h!]
 \centering
-\includegraphics[scale=0.45]{allorders_velocity.eps}
+\includegraphics[trim=0cm 1cm 0cm 5cm, scale=0.45]{allorders_velocity.eps}
 \caption{First order (left) and second order (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. The colorbar represents azimuthal velocity.}\label{allorders_velocity}
 \end{figure*}
 
 \begin{figure*}[h!]
 \centering
 \includegraphics[scale=0.45]{allorders_Bfield.eps}
-\caption{First order (left) and second order (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. The colorbar represents azimuthal velocity.}\label{allorders_Bfield}
+\caption{First order (left) and second order (right) magnetic field perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to higher magnetic field strengths. The colorbar represents azimuthal velocity.}\label{allorders_Bfield}
 \end{figure*}
 
 % perturbation expansion
@@ -420,6 +421,8 @@ g & \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{L}_{3} \mathbb{V}_{11} \righ
 \eeq
 
 Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variables $Z$ and $T$. We solve this initial value problem using Dedalus to obtain the asymptotic behavior of $\alpha$. This is the saturation amplitude. We use the saturation amplitude as $\alpha$ and the radial component of computed on the Chebyshev grid to plot $\mathbf{V}$. We show both first order ($\epsilon\mathbf{V}_1$), second order ($\epsilon^2\mathbf{V}_2$), and combined first and second order fluid perturbations ($\epsilon\mathbf{V}_1$ + ($\epsilon^2\mathbf{V}_2$). Figure \ref{allorders_velocity} shows the velocity perturbations, and Figure \ref{allorders_Bfield} shows the magnetic field perturbations.
+
+Our analytic formulation is advantageous because we can now analyze the contributions of each fluid quantity at each order. This allows us to directly identify the source of saturation. Equation \ref{ampeq1} asymptotically approaches a value, so the system is clearly saturating, and our approach now allows us to quantify the individual contribution of each term. In Figure \ref{allorders_velocity}, we see significant fluid action in the second-order velocity plot. By contrast, the second-order magnetic field perturbations are two orders of magnitude smaller than the first-order perturbations (Figure \ref{allorders_Bfield}). It appears that the second-order velocity perturbations are instrumental in the saturation of the MRI. The likely mechanism is a reduction in the background shear. 
 
 \section{Parameter Space}
 
