@@ -14,6 +14,7 @@
 \usepackage{color}
 %\usepackage{appendix}
 \usepackage[titletoc,title]{appendix}
+\usepackage{cleveref}
 
 
 \makeatletter
@@ -320,18 +321,11 @@ The state vector is expanded a perturbation series in orders of $\epsilon$,
 \mathbf{V} = \epsilon\mathbf{V_1} + \epsilon^2\mathbf{V_2} + \epsilon^3\mathbf{V_3} + ...
 \eeq
 
-The multiscale expansion of the operators and the perturbation series expansion of the fluid quantities combine to make the expansion of the nonlinear vector $\mathbf{N}$ expansive, and we relegate the expansion to Appendix (REF). $\mathbf{N}$ becomes 
+The multiscale expansion of the operators and the perturbation series expansion of the fluid quantities combine to make the expansion of the nonlinear vector $\mathbf{N}$ expansive, and we relegate the expansion to Appendix \ref{app:appendix_nonlinear}. $\mathbf{N}$ becomes 
 
 \beq
-\mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4),
+\mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4).
 \eeq
-
-where 
-
-\beq
-\mathbf{N_2} = \alpha^2\mathbb{N}_{22} e^{i2 k_c z} + \left|\alpha\right|^2 \mathbb{N}_{20} + c.c.
-\eeq
-
 
 Substituting Equation \ref{pert_exp} into Equation \ref{multiscale_system} yields the perturbed, expanded equations. We solve these successively in increasing orders of $\epsilon$.
 
@@ -447,9 +441,9 @@ Our results suggest that the primary driver of saturation is reduction of the ba
 % reduction in background shear not possible in astrophysical disks
 
 \newpage
-\begin{appendices}
+\begin{subappendices}
 \begin{widetext}
-\section*{Appendix A.}
+\section*{Appendix A. Nonlinear term expansion}\label{app:appendix_nonlinear}
 
 \beq
 \mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4)
@@ -494,7 +488,19 @@ N_3^{(A)} = - J(A_1, \Psi_2) \, - \, J(A_2, \Psi_1) \, - \, \widetilde{J}(A_1, \
 N_3^{(B)} = \, J(\Psi_1, B_2) \, + \, J(\Psi_2, B_1) \, + \, \widetilde{J}(\Psi_1, B_1) \, - \, J(A_1, u_2) \, - \,  J(A_2, u_1) \, - \, \widetilde{J}(A_1, u_1)
 \eeq
 
-Second order nonlinear terms: \\
+$\mathbf{N_2}$ and $\mathbf{N_3}$ expand to become
+
+\beq
+\mathbf{N_2} = \alpha^2\mathbb{N}_{22} e^{i2 k_c z} + \left|\alpha\right|^2 \mathbb{N}_{20} + c.c.
+\eeq
+
+and
+
+\beq
+\mathbf{N_3} = \alpha^3 \mathbb{N}_{33} e^{i 3 k_c z} + \alpha\partial_Z\alpha \mathbb{N}_{32} e^{i 2 k_c z} + \alpha\left|\alpha\right|^2 \mathbb{N}_{31} e^{i k_c z} + \alpha \partial_Z  \beta \mathbb{\widetilde{N}}_{31} e^{i k_c z} + \alpha^*\partial_Z \alpha \mathbb{N}_{30} + c.c.
+\eeq
+
+The second order nonlinear terms are \\
 
 \beq
 \begin{split}
@@ -536,7 +542,7 @@ N_{20}^{(A)} = - i k_c A_{11} \cdot \partial_x \Psi_{11}^* - \partial_x A_{11} \
 N_{20}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11}^* - \partial_x \Psi_{11} \cdot i k_c B_{11}^* - i k_c A_{11} \cdot \partial_x u_{11}^* + \partial_x A_{11} \cdot i k_c u_{11}^*
 \eeq \\
 
-Third order nonlinear terms: \\
+and the third order nonlinear terms become \\
 
 \beq
 \begin{split}
@@ -577,7 +583,7 @@ N_{31}^{(B)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x B_{20}\right) + i k_c
 \eeq
 
 \end{widetext}
-\end{appendices}
+\end{subappendices}
 
 %\bibliographystyle{plain}
 %\bibliography{mri_refs2}
