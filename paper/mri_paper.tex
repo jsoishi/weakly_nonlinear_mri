@@ -276,7 +276,7 @@ J(\Psi, B_{y}) - J(A, u_{y}) \\
 \end{matrix} \right].
 \eeq
 
-We conduct a formal multiscale analysis. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on fast and slow scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for axisymmetric perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$. The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are
+We conduct a formal multiscale analysis. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on fast and slow scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for axisymmetric perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$ (Appendix \ref{app:dispersion}). The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are
 
 \beq
 X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t.
@@ -321,7 +321,7 @@ The state vector is expanded a perturbation series in orders of $\epsilon$,
 \mathbf{V} = \epsilon\mathbf{V_1} + \epsilon^2\mathbf{V_2} + \epsilon^3\mathbf{V_3} + ...
 \eeq
 
-The multiscale expansion of the operators and the perturbation series expansion of the fluid quantities combine to make the expansion of the nonlinear vector $\mathbf{N}$ expansive, and we relegate the expansion to Appendix \ref{app:appendix_nonlinear}. $\mathbf{N}$ becomes 
+The multiscale expansion of the operators and the perturbation series expansion of the fluid quantities combine to make the expansion of the nonlinear vector $\mathbf{N}$ expansive, and we relegate the expansion to Appendix \ref{app:nonlinear}. $\mathbf{N}$ becomes 
 
 \beq
 \mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4).
@@ -401,20 +401,19 @@ g & \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{L}_{3} \mathbb{V}_{11} \righ
 \end{split}
 \eeq
 
-Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variables $Z$ and $T$. We solve this initial value problem using Dedalus to obtain the asymptotic behavior of $\alpha$. This is the saturation amplitude.
+Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variables $Z$ and $T$. We solve this initial value problem using Dedalus to obtain the asymptotic behavior of $\alpha$. This is the saturation amplitude. We use the saturation amplitude as $\alpha$ and the radial component of computed on the Chebyshev grid to plot $\mathbf{V}$. We show both first order ($\epsilon\mathbf{V}_1$), second order ($\epsilon^2\mathbf{V}_2$), and combined first and second order fluid perturbations ($\epsilon\mathbf{V}_1$ + ($\epsilon^2\mathbf{V}_2$). Figure \ref{allorders_velocity} shows the velocity perturbations, and Figure \ref{allorders_Bfield} shows the magnetic field perturbations.
 
-\section{Results}
+\section{Parameter Space}
 
 We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. This analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of [TBD!].
-
 
 \begin{figure*}[h!]
 \centering
 \includegraphics[scale=0.5]{allorders_velocity.eps}
-\caption{First order (left) and second order (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. The colorbar represents azimuthal velocity.}
+\caption{First order (left) and second order (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. The colorbar represents azimuthal velocity.}\label{allorders_velocity}
 \end{figure*}
 
-\begin{figure*}[h!]
+\begin{figure*}[h!]\label{allorders_Bfield}
 \centering
 \includegraphics[scale=0.5]{allorders_Bfield.eps}
 \caption{First order (left) and second order (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. The colorbar represents azimuthal velocity.}
@@ -440,8 +439,26 @@ Our results suggest that the primary driver of saturation is reduction of the ba
 % hMRI
 % reduction in background shear not possible in astrophysical disks
 
+\clearpage
 \appendix
-\section{Expansion of Nonlinear Terms}
+
+\section{A. Linear dispersion relation}\label{app:dispersion}
+%Note: I don't expect this to go in the actual paper, but it could be useful in the meeting.
+
+The linear dispersion relation, which determines the variable scalings in the multiscale analysis. \\
+
+\beq
+\begin{split}
+& \frac{B_{0}^{4} k_{x}^{2} k_{z}^{4}}{16 \pi^{2}} + \frac{B_{0}^{4} k_{z}^{6}}{16 \pi^{2}} - \frac{B_{0}^{2} \Omega_{0} k_{z}^{4} q}{2 \pi} - 2 \Omega_{0} k_{z}^{2} q \sigma^{2} - \frac{4 \sigma}{\reym} \Omega_{0} k_{x}^{2} k_{z}^{2} q - \frac{4 \sigma}{\reym} \Omega_{0} k_{z}^{4} q - \frac{2 \Omega_{0}}{\reym^{2}} k_{x}^{4} k_{z}^{2} q - \frac{4 \Omega_{0}}{\reym^{2}} k_{x}^{2} k_{z}^{4} q - \frac{2 \Omega_{0}}{\reym^{2}} k_{z}^{6} q \\
+& - k_{x}^{2} \sigma^{4} - k_{z}^{2} \sigma^{4} + 4 k_{z}^{2} \sigma^{2} - \frac{2 \sigma^{3}}{\reym} k_{x}^{4} - \frac{4 \sigma^{3}}{\reym} k_{x}^{2} k_{z}^{2} + \frac{8 \sigma}{\reym} k_{x}^{2} k_{z}^{2} - \frac{2 \sigma^{3}}{\reym} k_{z}^{4} + \frac{8 \sigma}{\reym} k_{z}^{4} - \frac{k_{x}^{6} \sigma^{2}}{\reym^{2}} - \frac{3 \sigma^{2}}{\reym^{2}} k_{x}^{4} k_{z}^{2} + \frac{4 k_{x}^{4}}{\reym^{2}} k_{z}^{2} \\
+& - \frac{3 \sigma^{2}}{\reym^{2}} k_{x}^{2} k_{z}^{4} + \frac{8 k_{x}^{2}}{\reym^{2}} k_{z}^{4} - \frac{k_{z}^{6} \sigma^{2}}{\reym^{2}} + \frac{4 k_{z}^{6}}{\reym^{2}} - \frac{2 \sigma^{3}}{\reye} k_{x}^{4} - \frac{4 \sigma^{3}}{\reye} k_{x}^{2} k_{z}^{2} - \frac{2 \sigma^{3}}{\reye} k_{z}^{4} - \frac{4 k_{x}^{6} \sigma^{2}}{\reye \reym} -  \frac{12 k_{x}^{4} k_{z}^{2} \sigma^{2}}{\reye \reym} - \frac{12 k_{x}^{2} k_{z}^{4} \sigma^{2}}{\reye \reym} \\
+& - \frac{4 k_{z}^{6} \sigma^{2}}{\reye \reym} - \frac{2 k_{x}^{8} \sigma}{\reye \reym^{2}} - \frac{8 k_{x}^{6} k_{z}^{2} \sigma}{\reye \reym^{2}} - \frac{12 k_{x}^{4} k_{z}^{4} \sigma}{\reye \reym^{2}} - \frac{8 k_{x}^{2} k_{z}^{6} \sigma}{\reye \reym^{2}} - \frac{2 k_{z}^{8} \sigma}{\reye \reym^{2}} - \frac{k_{x}^{6} \sigma^{2}}{\reye^{2}} - \frac{3 \sigma^{2}}{\reye^{2}} k_{x}^{4} k_{z}^{2} - \frac{3 \sigma^{2}}{\reye^{2}} k_{x}^{2} k_{z}^{4} - \frac{k_{z}^{6} \sigma^{2}}{\reye^{2}} \\
+& - \frac{2 k_{x}^{8} \sigma}{\reye^{2} \reym} - \frac{8 k_{x}^{6} k_{z}^{2} \sigma}{\reye^{2} \reym} - \frac{12 k_{x}^{4} k_{z}^{4} \sigma}{\reye^{2} \reym} - \frac{8 k_{x}^{2} k_{z}^{6} \sigma}{\reye^{2} \reym} - \frac{2 k_{z}^{8} \sigma}{\reye^{2} \reym} - \frac{k_{x}^{10}}{\reye^{2} \reym^{2}} - \frac{5 k_{x}^{8} k_{z}^{2}}{\reye^{2} \reym^{2}} - \frac{10 k_{x}^{6} k_{z}^{4}}{\reye^{2} \reym^{2}} - \frac{10 k_{x}^{4} k_{z}^{6}}{\reye^{2} \reym^{2}} \\
+& - \frac{5 k_{x}^{2} k_{z}^{8}}{\reye^{2} \reym^{2}} - \frac{k_{z}^{10}}{\reye^{2} \reym^{2}} = 0
+\end{split}
+\eeq
+
+\section{B. Expansion of Nonlinear Terms}\label{app:nonlinear}
 \beq
 \mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4)
 \eeq
@@ -482,7 +499,7 @@ N_3^{(A)} = - J(A_1, \Psi_2) \, - \, J(A_2, \Psi_1) \, - \, \widetilde{J}(A_1, \
 \eeq
 
 \beq
-N_3^{(B)} = \, J(\Psi_1, B_2) \, + \, J(\Psi_2, B_1) \, + \, \widetilde{J}(\Psi_1, B_1) \, - \, J(A_1, u_2) \, - \,  J(A_2, u_1) \, - \, \widetilde{J}(A_1, u_1)
+N_3^{(B)} = \, J(\Psi_1, B_2) \, + \, J(\Psi_2, B_1) \, + \, \widetilde{J}(\Psi_1, B_1) \, - \, J(A_1, u_2) \, - \,  J(A_2, u_1) \, - \, \widetilde{J}(A_1, u_1).\\
 \eeq
 
 $\mathbf{N_2}$ and $\mathbf{N_3}$ expand to become

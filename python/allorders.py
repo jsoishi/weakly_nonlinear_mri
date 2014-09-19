@@ -2394,7 +2394,7 @@ def plot_By_secondorder(pc_obj, oplot = True, labels = False):
         ax.set_ylabel("z (vertical)", size = 20)
         cbar.set_label(r"$B_y$ Perturbation", size = 20)
     
-    # only the first order perturbations
+    # only the second order perturbations
     V2_Bz1 = pc_obj.eps**2*pc_obj.V2_Bz1
     V2_Bx1 = pc_obj.eps**2*pc_obj.V2_Bx1
     
