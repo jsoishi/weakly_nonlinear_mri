@@ -57,22 +57,22 @@ The magnetorotational instability (MRI) is a fundamental process of accretion di
 
 For matter to accrete from a disk onto a central object, angular momentum must be transported radially outward in the disk. The transport mechanism is likely turbulent (\citei{Shakura:1973wg}). Since its discovery by \citeauthor{Chandrasekhar:1960wh} (\citeyear{Chandrasekhar:1960wh}) and subsequent rediscovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}), the MRI remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field destabilizes the disk gas, driving turbulence and angular momentum transport.
 
-The MRI evolves via a period of linear growth, followed by nonlinear saturation. The nonlinear evolution of the MRI is a complex process, and an understanding of the mechanism by which the MRI saturates remains elusive. Most previous works on MRI saturation have studied the problem in simulation. Indeed, only a few works have tackled MRI saturation analytically. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They find that this saturation proceeds via modification of the background shear. Another notable analytic work is that of \citeauthor{Pessah:2010ic} (\citeyear{Pessah:2010ic}), who presents an analysis of MRI saturation via secondary instabilities. This work suggests that MRI saturation can be caused by parasite instabilities growing off of the primary MRI modes, in particular by Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime.
+The MRI evolves via a period of linear growth, followed by nonlinear saturation. The nonlinear evolution of the MRI is a complex process, and an understanding of the mechanism by which the MRI saturates remains elusive. Most previous works on MRI saturation have studied the problem in simulation. Indeed, only a few works have tackled MRI saturation analytically. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They find that this saturation proceeds via modification of the background shear. Another notable analytic work is that of \citeauthor{Pessah:2010ic} (\citeyear{Pessah:2010ic}), who presents an analysis of MRI saturation via secondary instabilities. This work suggests that MRI saturation can be caused by parasitic instabilities growing off of the primary MRI modes, in particular by Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime.
 
 %examples of simulations papers
 %more mention of other analytic works
 
 This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime. The present work adds to this foundation both in subject, with our additional analysis of the helical MRI, as well as in scope, with a detailed analysis of MRI saturation properties across parameter space. In particular, we attempt to elucidate the role of boundary layers in the saturation of the MRI, as this is of fundamental importance to laboratory MRI work.
 
-We develop this investigation with the goal of providing a rigorous analytical framework that will be used to make predictions for laboratory MRI experiments. Observing MRI in a laboratory setting would open a new avenue for studying MRI dynamics and saturation. In recent years much experimental progress has been made, although no experiment has yet yielded a confirmed detection. Of most immediate interest to this work is the Princeton Plasma Physics Laboratory (PPPL) MRI experiment, which has a design roughly analogous to the set-up investigated here (see \S\ref{setup} for further details). The Madison plasma dynamo experiment is a multi-purpose plasma device which may be a vehicle for MRI studies in the near future (\citei{Cooper:2013to}). The helical MRI, an instability related to the standard MRI but easier to excite in the laboratory, is the focus of the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE) in Dresden. PROMISE has already detected helical MRI in the laboratory (e.g. \citei{Stefani:2006iv}), and we discuss possible applications of our framework to the helical MRI in \S\ref{discussion}. A spherical Couette experiment claimed to have detected MRI in 2004 (\citeauthor{Sisan:2004ig}), but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}; \citei{Gissinger:2011td}).
+We develop this investigation with the goal of providing a rigorous analytical framework that will be used to make predictions for laboratory MRI experiments. Observing MRI in a laboratory setting would open a new avenue for studying MRI dynamics and saturation. In recent years much experimental progress has been made, although no experiment has yet yielded a confirmed detection. Of most immediate interest to this work is the Princeton Plasma Physics Laboratory (PPPL) MRI experiment, which has a design roughly analogous to the set-up investigated here (see \S\ref{sec:setup} for further details). The Madison plasma dynamo experiment is a multi-purpose plasma device which may be a vehicle for MRI studies in the near future (\citei{Cooper:2013to}). The helical MRI, an instability related to the standard MRI but easier to excite in the laboratory, is the focus of the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE) in Dresden. PROMISE has already detected helical MRI in the laboratory (e.g. \citei{Stefani:2006iv}), and we discuss possible applications of our framework to the helical MRI in \S\ref{discussion}. A spherical Couette experiment claimed to have detected MRI in 2004 (\citeauthor{Sisan:2004ig}), but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}; \citei{Gissinger:2011td}).
 
-The focus of this work is the weakly nonlinear regime of the MRI. This is where the initial linear growth phase of the instability begins to give way to nonlinear saturation. Weakly nonlinear analysis is the perturbation analysis of a system that is just unstable to its most unstable mode. The system in its marginal state, when the most unstable mode neither grows nor decays, is tuned slightly into instability. This excites a band of wavemodes around the most unstable mode, which interact nonlinearly. In order to track the evolution of the system on both rapid and slow scales, we conduct a formal multiscale analysis. 
+The focus of this work is the weakly nonlinear regime of the MRI. This is where the initial linear growth phase of the instability begins to give way to nonlinear saturation. Weakly nonlinear analysis is the perturbation analysis of a system that is just unstable to its most unstable mode. The system in its marginal state, when the most unstable mode neither grows nor decays, is tuned slightly into instability. This excites a band of wavemodes around the most unstable mode, which interact nonlinearly. In order to track the evolution of the system on both rapid and slow scales, we conduct a formal multiscale analysis. We develop and solve this framework in \S\ref{wna}, conduct a full parameter space study in \S\ref{sec:pspace}, and explore the implications of our findings in \S\ref{discussion}.
 
 %relation to hTC and R-B
 %explanation of WNA
 
 \section{Set-Up}
-
+\label{sec:setup}
 
 \begin{figure}[h!]
 \centering
@@ -102,21 +102,21 @@ We analyze this system in the thin-gap regime, where the channel is radially nar
 
 where $R_1$ is the radius of the inner cylinder and $R_2$ is the radius of the outer cylinder, such that the width of the channel is small compared to its distance from the center of rotation. The imposition of the thin-gap approximation eliminates channel modes, the axisymmetric MRI modes that are exact solutions of the incompressible MRI in the shearing box approximation (\citei{Goodman:1994ul}). Implications of this approximation are discussed further in \S\ref{discussion}.
 
-Our domain is designed to be relevant to the design of the PPPL MRI experiment (see \S\ref{discussion} for further discussion). We use periodic vertical boundary conditions. On the radial boundaries of our domain --  the inner and outer cylinders -- we apply no-slip, perfectly conducting boundary conditions. The choice of boundary conditions dictates the functional bases on which our system is spectrally solved. This is explained further in \S\ref{wna}. A diagram of our set-up is shown in Figure \ref{setup}.
+Our domain is designed to be relevant to the apparatus of the PPPL MRI experiment (see \S\ref{discussion} for further discussion). We use periodic vertical boundary conditions. On the radial boundaries of our domain --  the inner and outer cylinders -- we apply no-slip, perfectly conducting boundary conditions. The choice of boundary conditions dictates the functional bases on which our system is spectrally solved. This is explained further in \S\ref{wna}. A diagram of our set-up is shown in Figure \ref{setup}.
 
 
 \section{Weakly Nonlinear Analysis}\label{wna}
 
-We perform a weakly nonlinear analysis following the lead of \citeauthor{Umurhan:2007hs}, and use much of the same notation, with some changes for added simplicity.
+We perform a weakly nonlinear analysis following the lead of \citeauthor{Umurhan:2007hs}, and use much of the same notation, with some changes for added clarity.
 
 We solve the equations of non-ideal, axisymmetric, incompressible magnetized Taylor Couette flow. We solve the momentum equation,
 
 \beq\label{momentum}
-\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = 
+\begin{split}
+& \partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = \, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, \\
+& + \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right), \\
+\end{split}
 \eeq
-
-$\, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, + \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right)$
-
 
 and the induction equation,
 
@@ -139,13 +139,13 @@ and
 We axisymmetrically perturb all three vector components of each of the fluid quantities. We nondimensionalize the equations, with lengths nondimensionalized by $L$, velocities by $\Omega_0 L$, magnetic fields by $B_0$, and pressure by $\Omega_0^2 L^2 \rho_0$, where $L$ is the channel width, $\Omega_0$ is the rotation rate at the center of the channel, and $\rho_0$ is the constant pressure in the base state (see Figure \ref{setup}). We define the nondimensional Reynolds number,
 
 \beq
-\reye \equiv \frac{\Omega_0 r_0^2 \delta^2}{\nu},
+\reye \equiv \frac{\Omega_0 L^2}{\nu},
 \eeq
 
 and magnetic Reynolds number,
 
 \beq
-\reym \equiv \frac{\Omega_0 r_0^2 \delta^2}{\eta}.
+\reym \equiv \frac{\Omega_0 L^2}{\eta}.
 \eeq
 
 The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the nondimensional, perturbed quantities.
@@ -304,7 +304,7 @@ The multiple scale dependencies of our solution are encoded into an ansatz for t
 \mathbf{V_1} = \alpha(T, Z) \mathbb{V}_{11}(x) e^{i k_c z} + c.c. + \beta(T, Z)\mathbb{U}_{11}(x)\\
 \eeq
 
-where $\alpha$ is a slowly-varying amplitude equation and $c.c.$ denotes the complex conjugate. The $x$ dependence is contained in $\mathbb{V}_{11} = (\Psi_{11}, u_{11}, A_{11}, B_{11})^\mathbf{T}$, and must be solved for subject to the radial boundary conditions. The periodic vertical boundary conditions allow us to posit the $z$ dependence, where $k_c$ is the value of the vertical wavenumber at marginality. As noted by \citeauthor{Umurhan:2007hs}, there exists a spatially constant neutral mode solution to the $B_y$ equation, with $\mathbb{U}_{11} = (0, 0, 0, 1)^\mathbf{T}$. The slowly-varying amplitude $\beta$ encodes the slow evolution of this mode.
+where $\alpha$ is a slowly-varying amplitude equation and $c.c.$ denotes the complex conjugate. The $x$ dependence is contained in $\mathbb{V}_{11} = (\Psi_{11}, u_{11}, A_{11}, B_{11})^\mathbf{T}$, and must be solved subject to the radial boundary conditions. The periodic vertical boundary conditions allow us to posit the $z$ dependence, where $k_c$ is the value of the vertical wavenumber at marginality. As noted by \citeauthor{Umurhan:2007hs}, there exists a spatially constant neutral mode solution to the $B_y$ equation, with $\mathbb{U}_{11} = (0, 0, 0, 1)^\mathbf{T}$. The slowly-varying amplitude $\beta$ encodes the slow evolution of this mode.
 
 Because we investigate the system at marginality, where the growth rate $\sigma = 0$, the $\partial_t$ terms drop out. Thus after the multiscale expansion our system becomes
 
@@ -335,18 +335,18 @@ and
 \begin{figure*}[h!]
 \centering
 \includegraphics[scale=0.45]{allorders_Bfield.eps}
-\caption{First order (left) and second order (right) magnetic field perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to higher magnetic field strengths. The colorbar represents azimuthal velocity.}\label{allorders_Bfield}
+\caption{First order (left) and second order (right) magnetic field perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to higher magnetic field strengths. The colorbar represents azimuthal magnetic field strength.}\label{allorders_Bfield}
 \end{figure*}
 
 % perturbation expansion
-The state vector is expanded a perturbation series in orders of $\epsilon$,
+The state vector is expanded in a perturbation series in orders of $\epsilon$,
 
 \beq
 \label{pert_exp}
 \mathbf{V} = \epsilon\mathbf{V_1} + \epsilon^2\mathbf{V_2} + \epsilon^3\mathbf{V_3} + ...
 \eeq
 
-The multiscale expansion of the operators and the perturbation series expansion of the fluid quantities combine to make the expansion of the nonlinear vector $\mathbf{N}$ expansive, and we relegate the expansion to Appendix \ref{app:nonlinear}. $\mathbf{N}$ becomes 
+The multiscale expansion of the operators and the perturbation series expansion of the fluid quantities combine to make the expansion of the nonlinear vector $\mathbf{N}$ formidable, and we relegate the expansion to Appendix \ref{app:nonlinear}. $\mathbf{N}$ becomes 
 
 \beq
 \mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4).
@@ -376,6 +376,15 @@ To $\mathcal{O}(\epsilon^3)$,
 - \partial_Z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1}.
 \end{multline}
 
+In the above, we find that $\mathbf{V_2}$ takes the form
+
+\beq
+\begin{split}
+\mathbf{V_2} \, & = \, \alpha^2 e^{i2Qz} \mathbb{V}_{22}(x) \, + \, \left|\alpha\right|^2 \mathbb{V}_{20}(x) \, \\
+&- \, \partial_Z \alpha \mathbb{V}_{21}(x) e^{iQz} \,- \, \partial_Z \beta \mathbb{U}_{20}(x) + c.c.
+\end{split}
+\eeq
+
 The $\mathcal{O}(\epsilon)$ equation is the equation for the linear MRI at marginality. This is the equation that is solved to find the $\mathbb{V}_{11}$ component of Equation \ref{V1_ansatz}. 
 
 The partial differential equations that comprise Equations \ref{ordere} to \ref{ordere3} are solved in succession subject to no-slip, perfectly conducting radial boundary conditions, defined as
@@ -384,7 +393,7 @@ The partial differential equations that comprise Equations \ref{ordere} to \ref{
 \Psi = \partial_x \Psi = u_y = A = \partial_x B_y = 0.
 \eeq
 
-The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even small-scale structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). The nonuniform spacing of the Chebyshev grid allows us to resolve the boundary structures very well on 256-point grid. See Figure \ref{N20fig} for an example of the boundary-layer resolution we achieve in a nonlinear term.
+The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even small-scale structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). The nonuniform spacing of the Chebyshev grid allows us to resolve the boundary structures well on a 256-point grid. See Figure \ref{N20fig} for an example of the boundary-layer resolution we achieve in a nonlinear term.
 
 We solve the system up to $\mathcal{O}(\epsilon^3)$ in order to close the solution at $\mathcal{O}(\epsilon^2)$. 
 
@@ -406,7 +415,17 @@ must be satisfied in order for Equation \ref{ordere2} to have a solution. In the
 \mathbf{V}^\dagger = \mathbb{V}^\dagger(x) e^{i k_c z} + c.c.,
 \eeq
 
-where, again, $\mathbb{V}^\dagger$ contains the radial contribution. The elimination of this inner product must also be enforced on the terms in Equation \ref{ordere3} that are resonant with $e^{i k_c z}$, yielding
+where, again, $\mathbb{V}^\dagger$ contains the radial contribution. The elimination of this inner product must also be enforced on the terms in Equation \ref{ordere3} that are resonant with $e^{i k_c z}$, which are
+
+\beq
+\begin{split}
+& \mathcal{D} \mathbb{V}_{11} e^{iQz}\partial_T \alpha \, + \, \alpha \left| \alpha^2 \right| \mathbf{N}_{31} e^{iQz} \, + \, \alpha \partial_Z \beta \widetilde{\mathbf{N}}_{31} e^{iQz} \, =  \\
+& \, - \partial_Z^2 \alpha \widetilde{\mathcal{L}}_1 \mathbb{V}_{21} e^{iQz} \, + \, \partial_Z^2 \alpha \widetilde{\mathcal{L}}_2 \mathbb{V}_{11} e^{iQz} \, - \, \partial_Z \alpha \mathbb{V}_{11}\mathcal{X}e^{iQz} \, \\
+& + \, iQ^3 \alpha \mathcal{L}_3 \mathbb{V}_{11} e^{iQz}.
+\end{split}
+\eeq
+
+Taking the inner product yields the amplitude equation 
 
 \beq
 \label{ampeq1}
@@ -426,7 +445,7 @@ g & \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{L}_{3} \mathbb{V}_{11} \righ
 \end{split}
 \eeq
 
-but $\widetilde{c}$ is equal to zero and drops out of the equation. This is the well-known Ginzburg-Landau equation, and is with only slight modification the same amplitude equation derived in \citeauthor{Umurhan:2007hs}.
+where ${}^*$ denotes a complex conjugate, but $\widetilde{c}$ is equal to zero and drops out of the equation. This is the well-known Ginzburg-Landau equation, and is with only slight modification the same amplitude equation derived in \citeauthor{Umurhan:2007hs}
 
 There exists a second amplitude equation, corresponding to the neutral mode, which comes from the solvability condition that must be imposed on all terms in Equation \ref{ordere3} that have no $z$ dependence. These terms are
 
@@ -454,7 +473,7 @@ p & \equiv \left< \mathbb{U}_{11} \cdot N_{30}^*\right>, \\
 \end{split}
 \eeq
 
-but both $k$ and $p$ are equal to zero, so this amplitude equation decouples from Equation \ref{ampeq1}, and reveals itself to be a simple diffusion equation,
+but both $k$ and $p$ are equal to zero. Thus this amplitude equation decouples from Equation \ref{ampeq1}, and reveals itself to be a simple diffusion equation,
 
 \beq\label{ampeq2}
 \partial_T \beta = - m \partial_Z^2 \beta + \frac{1}{\reym} \partial_Z^2 \beta.
@@ -464,7 +483,7 @@ Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variabl
 
 Our analytic formulation is advantageous because we can now analyze the contributions of each fluid quantity at each order. This allows us to directly identify the source of saturation. Equation \ref{ampeq1} asymptotically approaches a value, so the system is clearly saturating, and our approach now allows us to quantify the individual contribution of each term. In Figure \ref{allorders_velocity}, we see significant fluid action in the second-order velocity plot. By contrast, the second-order magnetic field perturbations are two orders of magnitude smaller than the first-order perturbations (Figure \ref{allorders_Bfield}). It appears that the second-order velocity perturbations are instrumental in the saturation of the MRI. The likely mechanism is a reduction in the background shear. 
 
-\section{Parameter Space}
+\section{Parameter Space}\label{sec:pspace}
 
 We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. This analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of [TBD!].
 
