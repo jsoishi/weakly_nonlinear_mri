@@ -28,8 +28,8 @@
 \newcommand{\kmsa}{km ${\rm s^{-1}}$}
 \newcommand{\citeia}[2]{\citeauthor{#1}~(\citeyear{#1};~#2)}
 
-\newcommand\reye{\mathrel{Re}}
-\newcommand\reym{\mathrel{Rm}}
+\newcommand\reye{\mathrm{Re}}
+\newcommand\reym{\mathrm{Rm}}
 
 \renewcommand{\topfraction}{0.85}
 \renewcommand{\textfraction}{0.1}
@@ -61,7 +61,7 @@ The MRI evolves via a period of linear growth, followed by nonlinear saturation.
 %examples of simulations papers
 %more mention of other analytic works
 
-This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime. The present work adds to this foundation both in problems analyzed, with our analysis of the helical MRI, as well as in scope, with a detailed analysis of MRI saturation properties across parameter space. In particular, we attempt to elucidate the role of boundary layers in the saturation of the MRI, as this is of fundamental importance to laboratory MRI work.
+This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime. The present work adds to this foundation both in subject, with our additional analysis of the helical MRI, as well as in scope, with a detailed analysis of MRI saturation properties across parameter space. In particular, we attempt to elucidate the role of boundary layers in the saturation of the MRI, as this is of fundamental importance to laboratory MRI work.
 
 We develop this investigation with the goal of providing a rigorous analytical framework that will be used to make predictions for laboratory MRI experiments. Observing MRI in a laboratory setting would open a new avenue for studying MRI dynamics and saturation. In recent years much experimental progress has been made, although no experiment has yet yielded a confirmed detection. Of most immediate interest to this work is the Princeton Plasma Physics Laboratory (PPPL) MRI experiment, which has a design roughly analogous to the set-up investigated here (see \S\ref{setup} for further details). The Madison plasma dynamo experiment is a multi-purpose plasma device which may be a vehicle for MRI studies in the near future (\citei{Cooper:2013to}). The helical MRI, an instability related to the standard MRI but easier to excite in the laboratory, is the focus of the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE) in Dresden. PROMISE has already detected helical MRI in the laboratory (e.g. \citei{Stefani:2006iv}), and we discuss possible applications of our framework to the helical MRI in \S\ref{discussion}. A spherical Couette experiment claimed to have detected MRI in 2004 (\citeauthor{Sisan:2004ig}), but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}; \citei{Gissinger:2011td}).
 
@@ -76,7 +76,7 @@ The focus of this work is the weakly nonlinear regime of the MRI. This is where 
 \begin{figure}[h!]
 \centering
 \includegraphics[trim=5cm 0cm 0cm 0cm, scale=.35]{setup_diagram.eps}
-\caption{Schematic diagram of our set-up, an axisymmetric magnetized Taylor Couette flow. We investigate a 2D slice of the X-Z (radial-vertical) plane. Our domain is the bolded black box, of width L. The radial dimension is solved with a basis of Chebyshev polynomials, and the vertical dimension is solved on a Fourier basis (see \S\ref{discussion}.) }\label{setup}
+\caption{Schematic diagram of our set-up, an axisymmetric magnetized Taylor Couette flow. We investigate a 2D slice of the X-Z (radial-vertical) plane. Our domain is represented by the bolded black box, of width L. The radial dimension is solved with a basis of Chebyshev polynomials, and the vertical dimension is solved on a Fourier basis (see \S\ref{discussion}.) }\label{setup}
 \end{figure}
 
 We analyze a magnetized Taylor Couette flow, representing a differentially rotating, conducting fluid between two cylinders which are driven at different speeds. We initialize an angular velocity profile which decreases outward from the axis of rotation, and a weak vertical magnetic field. These are the only two conditions required to excite MRI. The differential rotation profile is
@@ -96,10 +96,10 @@ a constant, vertical field.
 We analyze this system in the thin-gap regime, where the channel is radially narrow. Formally, this means
 
 \beq
-thin gap equation,
+\left(R_2 - R_1\right) \ll \frac{1}{2}\left(R_2 + R_1\right),
 \eeq
 
-the width of the channel is small compared to its distance from the center of rotation. The imposition of the thin-gap approximation eliminates channel modes, the axisymmetric MRI modes that are exact solutions of the incompressible MRI in the shearing box approximation (\citei{Goodman:1994ul}). Implications of this approximation are discussed further in \S\ref{discussion}.
+where $R_1$ is the radius of the inner cylinder and $R_2$ is the radius of the outer cylinder, such that the width of the channel is small compared to its distance from the center of rotation. The imposition of the thin-gap approximation eliminates channel modes, the axisymmetric MRI modes that are exact solutions of the incompressible MRI in the shearing box approximation (\citei{Goodman:1994ul}). Implications of this approximation are discussed further in \S\ref{discussion}.
 
 Our domain is designed to be relevant to the design of the PPPL MRI experiment (see \S\ref{discussion} for further discussion). We use periodic vertical boundary conditions. On the radial boundaries of our domain --  the inner and outer cylinders -- we apply no-slip, perfectly conducting boundary conditions. The choice of boundary conditions dictates the functional bases on which our system is spectrally solved. This is explained further in \S\ref{wna}. A diagram of our set-up is shown in Figure \ref{setup}.
 
@@ -135,8 +135,19 @@ and
 \nabla \cdot \mathbf{u} = 0.
 \eeq
 
-We perturb the fluid quantities with three-dimensional, axisymmetric perturbations. We nondimensionalize the equations according to [...]
-The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the perturbed quantities.
+We perturb the fluid quantities with three-dimensional, axisymmetric perturbations. We nondimensionalize the equations, with lengths nondimensionalized by $L$, velocities by $\Omega_0 L$, magnetic fields by $B_0$, and pressure by $\Omega_0^2 L^2 \rho_0$, where $L$ is the channel width, $\Omega_0$ is the rotation rate at the center of the channel, and $\rho_0$ is the constant pressure in the base state (see Figure \ref{setup}). We define the nondimensional Reynolds number,
+
+\beq
+\reye \equiv \frac{\Omega_0 r_0^2 \delta^2}{\nu},
+\eeq
+
+and magnetic Reynolds number,
+
+\beq
+\reym \equiv \frac{\Omega_0 r_0^2 \delta^2}{\eta}.
+\eeq
+
+The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the nondimensional, perturbed quantities.
 
 We define the flux function $A$ and streamfunction $\Psi$. $A$ is the familiar two-dimensional vector potential. $A$ and $\Psi$ are scalar fields defined as the curl of the magnetic field and velocity, respectively, and so automatically satisfy our constraints.
 
