@@ -1983,7 +1983,7 @@ class SolveAmplitudeAlpha():
         #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSquared(alpha)")
         #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSq(alpha)")
         #problem.add_equation("-(a/c)*dt(alpha) - (b/c)*alphaZ + (h/c)*dZ(alphaZ) + (g/c)*1j*Q**3*alpha = alpha*Absolute(alpha**2)")
-        problem.add_equation("ac*dt(alpha) + bc*alphaZ - hc*dZ(alphaZ) - gc*1j*Q**3*alpha = alpha*Absolute(alpha**2)")
+        problem.add_equation("ac*dt(alpha) + bc*1j*Q*alpha - hc*dZ(alphaZ) - gc*1j*Q**3*alpha = alpha*Absolute(alpha**2)") #fixed to be gle
         problem.add_equation("alphaZ - dZ(alpha) = 0")
         
         
