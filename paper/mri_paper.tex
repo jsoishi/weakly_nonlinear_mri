@@ -12,6 +12,10 @@
 \usepackage{gensymb}
 \usepackage{amsmath}
 \usepackage{color}
+%\usepackage{appendix}
+\usepackage[titletoc,title]{appendix}
+\usepackage{cleveref}
+
 
 \makeatletter
 \setlength{\@fptop}{0pt}
@@ -25,8 +29,8 @@
 \newcommand{\kmsa}{km ${\rm s^{-1}}$}
 \newcommand{\citeia}[2]{\citeauthor{#1}~(\citeyear{#1};~#2)}
 
-\newcommand\reye{\mathrel{Re}}
-\newcommand\reym{\mathrel{Rm}}
+\newcommand\reye{\mathrm{Re}}
+\newcommand\reym{\mathrm{Rm}}
 
 \renewcommand{\topfraction}{0.85}
 \renewcommand{\textfraction}{0.1}
@@ -53,47 +57,100 @@ The magnetorotational instability (MRI) is a fundamental process of accretion di
 
 For matter to accrete from a disk onto a central object, angular momentum must be transported radially outward in the disk. The transport mechanism is likely turbulent (\citei{Shakura:1973wg}). Since its discovery by \citeauthor{Chandrasekhar:1960wh} (\citeyear{Chandrasekhar:1960wh}) and subsequent rediscovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}), the MRI remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field destabilizes the disk gas, driving turbulence and angular momentum transport.
 
-The MRI evolves via a period of linear growth, followed by nonlinear saturation. The nonlinear evolution of the MRI is a complex process, and an understanding of the mechanism by which the MRI saturates remains elusive. Most previous works on MRI saturation have studied the problem in simulation. Indeed, only a few works have tackled MRI saturation analytically. 
+The MRI evolves via a period of linear growth, followed by nonlinear saturation. The nonlinear evolution of the MRI is a complex process, and an understanding of the mechanism by which the MRI saturates remains elusive. Most previous works on MRI saturation have studied the problem in simulation. Indeed, only a few works have tackled MRI saturation analytically. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They find that this saturation proceeds via modification of the background shear. Another notable analytic work is that of \citeauthor{Pessah:2010ic} (\citeyear{Pessah:2010ic}), who presents an analysis of MRI saturation via secondary instabilities. This work suggests that MRI saturation can be caused by parasitic instabilities growing off of the primary MRI modes, in particular by Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime.
 
+%examples of simulations papers
 %more mention of other analytic works
 
-This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime.
+This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime. The present work adds to this foundation both in subject, with our additional analysis of the helical MRI, as well as in scope, with a detailed analysis of MRI saturation properties across parameter space. In particular, we attempt to elucidate the role of boundary layers in the saturation of the MRI, as this is of fundamental importance to laboratory MRI work.
+
+We develop this investigation with the goal of providing a rigorous analytical framework that will be used to make predictions for laboratory MRI experiments. Observing MRI in a laboratory setting would open a new avenue for studying MRI dynamics and saturation. In recent years much experimental progress has been made, although no experiment has yet yielded a confirmed detection. Of most immediate interest to this work is the Princeton Plasma Physics Laboratory (PPPL) MRI experiment, which has a design roughly analogous to the set-up investigated here (see \S\ref{sec:setup} for further details). The Madison plasma dynamo experiment is a multi-purpose plasma device which may be a vehicle for MRI studies in the near future (\citei{Cooper:2013to}). The helical MRI, an instability related to the standard MRI but easier to excite in the laboratory, is the focus of the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE) in Dresden. PROMISE has already detected helical MRI in the laboratory (e.g. \citei{Stefani:2006iv}), and we discuss possible applications of our framework to the helical MRI in \S\ref{discussion}. A spherical Couette experiment claimed to have detected MRI in 2004 (\citeauthor{Sisan:2004ig}), but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}; \citei{Gissinger:2011td}).
+
+The focus of this work is the weakly nonlinear regime of the MRI. This is where the initial linear growth phase of the instability begins to give way to nonlinear saturation. Weakly nonlinear analysis is the perturbation analysis of a system that is just unstable to its most unstable mode. The system in its marginal state, when the most unstable mode neither grows nor decays, is tuned slightly into instability. This excites a band of wavemodes around the most unstable mode, which interact nonlinearly. In order to track the evolution of the system on both rapid and slow scales, we conduct a formal multiscale analysis. We develop and solve this framework in \S\ref{wna}, conduct a full parameter space study in \S\ref{sec:pspace}, and explore the implications of our findings in \S\ref{discussion}.
+
+%relation to hTC and R-B
+%explanation of WNA
 
 \section{Set-Up}
+\label{sec:setup}
 
-Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment. The experimental apparatus is tall, one of many attributes designed to mitigate the meridional flows introduced by the endcaps. We use periodic vertical boundary conditions. On the radial boundaries of our domain --  the inner and outer cylinders -- we apply no-slip, perfectly conducting boundary conditions.
+\begin{figure}[h!]
+\centering
+\includegraphics[trim=5cm 0cm 0cm 0cm, scale=.35]{setup_diagram.eps}
+\caption{Schematic diagram of our set-up, an axisymmetric magnetized Taylor Couette flow. We investigate a 2D slice of the X-Z (radial-vertical) plane. Our domain is represented by the bolded black box, of width L. The radial dimension is solved with a basis of Chebyshev polynomials, and the vertical dimension is solved on a Fourier basis (see \S\ref{discussion}.) }\label{setup}
+\end{figure}
 
-\section{Weakly Nonlinear Analysis}
-
-We solve the equations of non-ideal, axisymmetric, incompressible magnetized Taylor Couette flow. We solve the momentum equation:
-
-\beq
-\partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = 
-\eeq
-
-$\, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, + \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right)$
-
-
-and the induction equation:
+We analyze a magnetized Taylor Couette flow, representing a differentially rotating, conducting fluid between two cylinders which are driven at different speeds. We initialize an angular velocity profile which decreases outward from the axis of rotation, and a weak vertical magnetic field. These are the only two conditions required to excite MRI. The differential rotation profile is
 
 \beq
-\partial_t \mathbf{B} = \nabla \times \left(\mathbf{u} \times \mathbf{B}\right) + \eta\nabla^2\mathbf{B}
+\Omega\left(r\right) \propto \Omega_0\left(\frac{r}{r_0}\right)^{-q},
 \eeq
 
-Subject to the magnetic solenoid and incompressibility constraints:
+where $q$, the shear parameter, is $3/2$ for Keplerian rotation. The initial background magnetic field is
+
+\beq
+\mathbf{B} = B_0 \hat{z},
+\eeq
+
+a constant, vertical field.
+
+We analyze this system in the thin-gap regime, where the channel is radially narrow. Formally, this means
+
+\beq
+\left(R_2 - R_1\right) \ll \frac{1}{2}\left(R_2 + R_1\right),
+\eeq
+
+where $R_1$ is the radius of the inner cylinder and $R_2$ is the radius of the outer cylinder, such that the width of the channel is small compared to its distance from the center of rotation. The imposition of the thin-gap approximation eliminates channel modes, the axisymmetric MRI modes that are exact solutions of the incompressible MRI in the shearing box approximation (\citei{Goodman:1994ul}). Implications of this approximation are discussed further in \S\ref{discussion}.
+
+Our domain is designed to be relevant to the apparatus of the PPPL MRI experiment (see \S\ref{discussion} for further discussion). We use periodic vertical boundary conditions. On the radial boundaries of our domain --  the inner and outer cylinders -- we apply no-slip, perfectly conducting boundary conditions. The choice of boundary conditions dictates the functional bases on which our system is spectrally solved. This is explained further in \S\ref{wna}. A diagram of our set-up is shown in Figure \ref{setup}.
+
+
+\section{Weakly Nonlinear Analysis}\label{wna}
+
+We perform a weakly nonlinear analysis following the lead of \citeauthor{Umurhan:2007hs}, and use much of the same notation, with some changes for added clarity.
+
+We solve the equations of non-ideal, axisymmetric, incompressible magnetized Taylor Couette flow. We solve the momentum equation,
+
+\beq\label{momentum}
+\begin{split}
+& \partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = \, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, \\
+& + \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right), \\
+\end{split}
+\eeq
+
+and the induction equation,
+
+\beq\label{induction}
+\partial_t \mathbf{B} = \nabla \times \left(\mathbf{u} \times \mathbf{B}\right) + \eta\nabla^2\mathbf{B}.
+\eeq
+
+Equations \ref{momentum} and \ref{induction} are subject to the magnetic solenoid and incompressibility constraints,
 
 \beq
 \nabla \cdot \mathbf{B} = 0
 \eeq
 
+and
+
 \beq
-\nabla \cdot \mathbf{u} = 0
+\nabla \cdot \mathbf{u} = 0.
 \eeq
 
-We perturb the fluid quantities with three-dimensional, axisymmetric perturbations. We nondimensionalize the equations according to [...]
-The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the perturbed quantities.
+We axisymmetrically perturb all three vector components of each of the fluid quantities. We nondimensionalize the equations, with lengths nondimensionalized by $L$, velocities by $\Omega_0 L$, magnetic fields by $B_0$, and pressure by $\Omega_0^2 L^2 \rho_0$, where $L$ is the channel width, $\Omega_0$ is the rotation rate at the center of the channel, and $\rho_0$ is the constant pressure in the base state (see Figure \ref{setup}). We define the nondimensional Reynolds number,
 
-We define the flux function $A$ and streamfunction $\Psi$. These are scalar fields defined as the curl of the magnetic field and velocity, respectively, and so automatically satisfy our constraints.
+\beq
+\reye \equiv \frac{\Omega_0 L^2}{\nu},
+\eeq
+
+and magnetic Reynolds number,
+
+\beq
+\reym \equiv \frac{\Omega_0 L^2}{\eta}.
+\eeq
+
+The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the nondimensional, perturbed quantities.
+
+We define the flux function $A$ and streamfunction $\Psi$. $A$ is the familiar two-dimensional vector potential. $A$ and $\Psi$ are scalar fields defined as the curl of the magnetic field and velocity, respectively, and so automatically satisfy our constraints.
 
 $A$ is thus related to the magnetic field as
 
@@ -106,20 +163,18 @@ B_{y} \\
 
 and $\mathbf{\Psi}$ is defined analogously.
 
-The perturbed, nondimensionalized equations which will be the focus of this equation are as follows:
-
-Our final equation set is: 
+Our final equation set is
 
 \begin{multline}
 \label{eqset1}
-\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \partial_z u_{1y} \, = \\
+\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \partial_z u_{y} \, = \\
 \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, + \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi
 \end{multline}
 
 \begin{multline}
 \label{eqset2}
-\partial_t u_{1y} \, + \, J\left(\Psi, u_{1y}\right) \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, = \\
-\, \frac{2}{\beta}B_0\partial_z B_{1y} \, + \, \frac{2}{\beta} J\left(A, B_{1y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{1y}
+\partial_t u_{1y} \, + \, J\left(\Psi, u_{y}\right) \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, = \\
+\, \frac{2}{\beta}B_0\partial_z B_{y} \, + \, \frac{2}{\beta} J\left(A, B_{y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{y}
 \end{multline}
 
 \begin{multline}
@@ -129,30 +184,30 @@ Our final equation set is:
 
 \begin{multline}
 \label{eqset4}
-\partial_t B_{1y} \, = \, B_0 \partial_z u_{1y} \, + \, J\left(A, u_{1y}\right) \, - \, J\left(\Psi, B_{1y}\right) \, \\
-+ \, \frac{1}{\reym} \nabla^2 B_{1y}  \, - \, q \Omega_0 \partial_z A
+\partial_t B_{y} \, = \, B_0 \partial_z u_{y} \, + \, J\left(A, u_{y}\right) \, - \, J\left(\Psi, B_{y}\right) \, \\
++ \, \frac{1}{\reym} \nabla^2 B_{y}  \, - \, q \Omega_0 \partial_z A,
 \end{multline}
 
-Where $J$ is the Jacobian operator, 
+where $J$ is the Jacobian operator, 
 \beq
 J\left(f, g\right) \equiv \partial_z f\partial_x g - \partial_x f \partial_z g.
 \eeq  
 
 Note that working in terms of the flux function raises the order of the first momentum equation.
 
-The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where most unstable linear MRI mode neither grows nor decays, for a given set of dimensionless parameters. 
+The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where the most unstable linear MRI mode neither grows nor decays, for a given set of dimensionless parameters. 
 
-$B_0$ appears in Equations \ref{eqset1} - \ref{eqset4} because it is the nondimensionalized background field strength. That is, $B = B_0 \equiv 1$. In order to study our system in the weakly nonlinear regime, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting $B = B_0\left(1 - \epsilon^2\right)$. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ weakening of the background magnetic field destabilizes a band of wave modes with width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly.
+$B_0$ appears in Equations \ref{eqset1} - \ref{eqset4} because it is the nondimensionalized background field strength. Because we nondimensionalize $B$ by the magnitude of the background field strength, $B_0 \equiv 1$. In order to study our system in the weakly nonlinear regime, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting $B = B_0\left(1 - \epsilon^2\right)$. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ weakening of the background magnetic field destabilizes a band of wave modes with width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly.
 
-The destabilizing substitution is made, and Equations \ref{eqset1} - \ref{eqset4} are rewritten such that the fluid variables are contained in a state vector $\mathbf{V} = \left[\Psi, u_y, A, B_y\right]^\mathrm{T}$. This yields the following system of equations.
+The destabilizing substitution is made, and Equations \ref{eqset1} - \ref{eqset4} are rewritten such that the fluid variables are contained in a state vector $\mathbf{V} = \left[\Psi, u_y, A, B_y\right]^\mathrm{T}$. This yields the system of equations
 
 \beq
-\mathcal{D}\partial_t \mathbf{V} + \mathbf{N} = \mathcal{L} \mathbf{V} - \epsilon^2\partial_z\mathcal{X} \mathbf{V} - \epsilon^2 \partial_z^3 \mathcal{L}_3\mathbf{V}
+\mathcal{D}\partial_t \mathbf{V} + \mathbf{N} = \mathcal{L} \mathbf{V} - \epsilon^2\partial_z\mathcal{X} \mathbf{V} - \epsilon^2 \partial_z^3 \mathcal{L}_3\mathbf{V},
 \eeq
 
-Where $\mathcal{L} \equiv \mathcal{L}_0 + \mathcal{L}_1\partial_z + \mathcal{L}_2\partial_z^2 + \mathcal{L}_3\partial_z^3 + \mathcal{L}_4\partial_z^4$ \\
+where $\mathcal{L} \equiv \mathcal{L}_0 + \mathcal{L}_1\partial_z + \mathcal{L}_2\partial_z^2 + \mathcal{L}_3\partial_z^3 + \mathcal{L}_4\partial_z^4$, \\
 
-And:
+and
 
 \beq
 \mathcal{D} = \left[\begin{matrix}
@@ -211,49 +266,90 @@ And:
 0 & 1 & 0 & 0 \\ \end{matrix} \right]. 
 \eeq
 
-
-We conduct a formal multiscale analysis. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on fast and slow scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for axisymmetric perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$. The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are: 
+The nonlinear terms are contained in a vector $\mathbf{N} = \left[N^{(\Psi)}, N^{(u_y)}, N^{(A)}, N^{(B_y)}\right]^\mathrm{T}$, where
 
 \beq
-X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t
+\mathbf{N} = \left[ \begin{matrix}  J(\Psi, \nabla^2 \Psi) - \frac{2}{\beta}J(A, \nabla^2 A)\\
+J(\Psi, u_{y}) - \frac{2}{\beta} J(A, B_{y}) \\ 
+-J(A, \Psi) \\
+J(\Psi, B_{y}) - J(A, u_{y}) \\
+\end{matrix} \right].
 \eeq
 
-Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
+We conduct a formal multiscale analysis. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on fast and slow scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for axisymmetric perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$ (Appendix \ref{app:dispersion}). The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are
+
+\begin{figure}[h!]
+\centering
+\includegraphics[trim=6cm 3cm 3cm 0cm, scale=0.35]{slowfast.eps}
+\caption{Cartoon illustrating fast and slow-moving variables (Equation \ref{scalings}).}\label{allorders_velocity}
+\label{figscalings}
+\end{figure}
+
+\begin{figure*}
+\centering
+\includegraphics[trim=0cm 10cm 0cm 5cm, scale=.5]{N20fig.eps}
+\caption{Example of a nonlinear term solved on a 256-point Chebyshev grid. Circles represent values on the Chebyshev grid, grey lines are fits.}\label{N20fig}
+\end{figure*}
+
+\beq\label{scalings}
+X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t.
+\eeq
+
+See Figure \ref{figscalings}. Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. In analogy to these problems, we posit slow variation in both $Z$ and $T$. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
 
 The multiple scale dependencies of our solution are encoded into an ansatz for the linear MRI solution at marginality,
 
 \beq
 \label{V1_ansatz}
-\mathbf{V_1} = \alpha(T, Z) \mathbb{V}_{11}(x) e^{i k_c z} + c.c.,
+\mathbf{V_1} = \alpha(T, Z) \mathbb{V}_{11}(x) e^{i k_c z} + c.c. + \beta(T, Z)\mathbb{U}_{11}(x)\\
 \eeq
 
-where $\alpha$ is a slowly-varying amplitude equation. The $x$ dependence is contained in $\mathbb{V}_{11}$, and must be solved for subject to the radial boundary conditions. The periodic vertical boundary conditions allow us to posit the $z$ dependence, where $k_c$ is the value of the vertical wavenumber at marginality. 
+where $\alpha$ is a slowly-varying amplitude equation and $c.c.$ denotes the complex conjugate. The $x$ dependence is contained in $\mathbb{V}_{11} = (\Psi_{11}, u_{11}, A_{11}, B_{11})^\mathbf{T}$, and must be solved subject to the radial boundary conditions. The periodic vertical boundary conditions allow us to posit the $z$ dependence, where $k_c$ is the value of the vertical wavenumber at marginality. As noted by \citeauthor{Umurhan:2007hs}, there exists a spatially constant neutral mode solution to the $B_y$ equation, with $\mathbb{U}_{11} = (0, 0, 0, 1)^\mathbf{T}$. The slowly-varying amplitude $\beta$ encodes the slow evolution of this mode.
 
 Because we investigate the system at marginality, where the growth rate $\sigma = 0$, the $\partial_t$ terms drop out. Thus after the multiscale expansion our system becomes
 
 \begin{multline}
 \label{multiscale_system}
 \epsilon^2 \mathcal{D}\partial_T\mathbf{V} \, + \, \mathbf{N} \, = \, \mathcal{L}\mathbf{V} \, + \, \epsilon\widetilde{\mathcal{L}}_1\partial_Z\mathbf{V} \, + \, \epsilon^2\widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V} \, \\
- - \, \epsilon^2\partial_z\mathcal{X}\mathbf{V} \, - \, \epsilon^2\partial_z^3\mathcal{L}_3\mathbf{V} \, + \, \mathcal{O}(\epsilon^3)
+ - \, \epsilon^2\partial_z\mathcal{X}\mathbf{V} \, - \, \epsilon^2\partial_z^3\mathcal{L}_3\mathbf{V} \, + \, \mathcal{O}(\epsilon^3),
 \end{multline}
 
-Where
+where
 
 \beq
 \widetilde{\mathcal{L}}_1 = \mathcal{L}_1 + 2\mathcal{L}_2\partial_z + 3\mathcal{L}_3\partial_z^2 + 4\mathcal{L}_4\partial_z^3
 \eeq
 
+and
+
 \beq
-\widetilde{\mathcal{L}}_2 = \mathcal{L}_2 + 3\mathcal{L}_3\partial_z + 6\mathcal{L}_4\partial_z^2
+\widetilde{\mathcal{L}}_2 = \mathcal{L}_2 + 3\mathcal{L}_3\partial_z + 6\mathcal{L}_4\partial_z^2.
 \eeq
 
+\begin{figure*}[h!]
+\centering
+\includegraphics[trim=0cm 1cm 0cm 5cm, scale=0.45]{allorders_velocity.eps}
+\caption{First order (left) and second order (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. The colorbar represents azimuthal velocity.}\label{allorders_velocity}
+\end{figure*}
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[scale=0.45]{allorders_Bfield.eps}
+\caption{First order (left) and second order (right) magnetic field perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to higher magnetic field strengths. The colorbar represents azimuthal magnetic field strength.}\label{allorders_Bfield}
+\end{figure*}
 
 % perturbation expansion
-The state vector is expanded in orders of $\epsilon$:
+The state vector is expanded in a perturbation series in orders of $\epsilon$,
 
 \beq
 \label{pert_exp}
 \mathbf{V} = \epsilon\mathbf{V_1} + \epsilon^2\mathbf{V_2} + \epsilon^3\mathbf{V_3} + ...
+\eeq
+
+The multiscale expansion of the operators and the perturbation series expansion of the fluid quantities combine to make the expansion of the nonlinear vector $\mathbf{N}$ formidable, and we relegate the expansion to Appendix \ref{app:nonlinear}. $\mathbf{N}$ becomes 
+
+\beq
+\mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4).
 \eeq
 
 Substituting Equation \ref{pert_exp} into Equation \ref{multiscale_system} yields the perturbed, expanded equations. We solve these successively in increasing orders of $\epsilon$.
@@ -262,37 +358,46 @@ To $\mathcal{O}(\epsilon)$, we have
 
 \beq
 \label{ordere}
-\mathcal{L}\mathbf{V_1} = 0
+\mathcal{L}\mathbf{V_1} = 0.
 \eeq
 
-To $\mathcal{O}(\epsilon^2)$: 
+To $\mathcal{O}(\epsilon^2)$,
 
 \beq
 \label{ordere2}
-\mathcal{L}\mathbf{V_2} \, = \, \mathbf{N_2} \, - \, \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}
+\mathcal{L}\mathbf{V_2} \, = \, \mathbf{N_2} \, - \, \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}.
 \eeq
 
-To $\mathcal{O}(\epsilon^3)$: 
+To $\mathcal{O}(\epsilon^3)$,
 
 \begin{multline}
 \label{ordere3}
 \mathcal{D}\partial_T \mathbf{V_1} \, + \, \mathbf{N_3} \, = \, \mathcal{L} \mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} \, \\
-- \partial_Z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1}
+- \partial_Z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1}.
 \end{multline}
+
+In the above, we find that $\mathbf{V_2}$ takes the form
+
+\beq
+\begin{split}
+\mathbf{V_2} \, & = \, \alpha^2 e^{i2Qz} \mathbb{V}_{22}(x) \, + \, \left|\alpha\right|^2 \mathbb{V}_{20}(x) \, \\
+&- \, \partial_Z \alpha \mathbb{V}_{21}(x) e^{iQz} \,- \, \partial_Z \beta \mathbb{U}_{20}(x) + c.c.
+\end{split}
+\eeq
 
 The $\mathcal{O}(\epsilon)$ equation is the equation for the linear MRI at marginality. This is the equation that is solved to find the $\mathbb{V}_{11}$ component of Equation \ref{V1_ansatz}. 
 
-The partial differential equations that comprise Equations \ref{ordere} to \ref{ordere3} are solved in succession subject to no-slip, perfectly conducting radial boundary conditions, defined as:
+The partial differential equations that comprise Equations \ref{ordere} to \ref{ordere3} are solved in succession subject to no-slip, perfectly conducting radial boundary conditions, defined as
 
 \beq
-\Psi = \partial_x \Psi = u_y = A = \partial_x B_y = 0
+\Psi = \partial_x \Psi = u_y = A = \partial_x B_y = 0.
 \eeq
 
-The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even significant structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. CITE). 
+The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even small-scale structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). The nonuniform spacing of the Chebyshev grid allows us to resolve the boundary structures well on a 256-point grid. See Figure \ref{N20fig} for an example of the boundary-layer resolution we achieve in a nonlinear term.
 
 We solve the system up to $\mathcal{O}(\epsilon^3)$ in order to close the solution at $\mathcal{O}(\epsilon^2)$. 
 
-To find a bounded solution at each order, we eliminate secular terms -- terms which are resonant with solutions to the homogenous equation, and cause the solution to grow without bound. The elimination of secular terms requires enforcement of solvability criteria, which arise as a consequence of the Fredholm alternative (e.g. Guenther \& Lee 1988). The solvability criterion is found by forcing the inner product of the equation with its adjoint homogenous solution to be zero. For instance, Equation \ref{ordere2} contains a term $\widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}$ that is resonant with $e^{i k_c z}$. Because the adjoint homogenous equation
+To find a bounded solution at each order, we eliminate secular terms: terms which are resonant with solutions to the homogenous equation and cause the solution to grow without bound. The elimination of secular terms requires enforcement of solvability criteria, which arise as a consequence of the Fredholm alternative (e.g. Guenther \& Lee 1988). The solvability criterion is found by forcing the inner product of the equation with its adjoint homogenous solution to be zero. For instance, Equation \ref{ordere2} contains a term $\widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1}$ that is resonant with $e^{i k_c z}$. Because the adjoint homogenous equation
 
 \beq
 \mathcal{L}^\dagger \mathbf{V}^\dagger = 0
@@ -307,41 +412,257 @@ has a nontrivial solution, the solvability criterion
 must be satisfied in order for Equation \ref{ordere2} to have a solution. In the above, 
 
 \beq
-\mathbf{V}^\dagger = \mathbb{V}^\dagger e^{iQz} + c.c.
+\mathbf{V}^\dagger = \mathbb{V}^\dagger(x) e^{i k_c z} + c.c.,
 \eeq
 
-The elimination of this inner product must also be enforced the terms in Equation \ref{ordere3} that are resonant with $e^{i k_c z}$, yielding
+where, again, $\mathbb{V}^\dagger$ contains the radial contribution. The elimination of this inner product must also be enforced on the terms in Equation \ref{ordere3} that are resonant with $e^{i k_c z}$, which are
+
+\beq
+\begin{split}
+& \mathcal{D} \mathbb{V}_{11} e^{iQz}\partial_T \alpha \, + \, \alpha \left| \alpha^2 \right| \mathbf{N}_{31} e^{iQz} \, + \, \alpha \partial_Z \beta \widetilde{\mathbf{N}}_{31} e^{iQz} \, =  \\
+& \, - \partial_Z^2 \alpha \widetilde{\mathcal{L}}_1 \mathbb{V}_{21} e^{iQz} \, + \, \partial_Z^2 \alpha \widetilde{\mathcal{L}}_2 \mathbb{V}_{11} e^{iQz} \, - \, \partial_Z \alpha \mathbb{V}_{11}\mathcal{X}e^{iQz} \, \\
+& + \, iQ^3 \alpha \mathcal{L}_3 \mathbb{V}_{11} e^{iQz}.
+\end{split}
+\eeq
+
+Taking the inner product yields the amplitude equation 
 
 \beq
 \label{ampeq1}
-a \partial_T \alpha \, + \, c \alpha \left|\alpha^2\right| \, + \, \widetilde{c} \alpha \partial_Z \beta \, = \, - b \partial_Z \alpha \, + \, h \partial_Z^2 \alpha \, + \, g i Q^3 \alpha
+a \partial_T \alpha \, = - \, c \alpha \left|\alpha^2\right| \, - \, \widetilde{c} \alpha \partial_Z \beta \,  - b i k_c \alpha \, + \, h \partial_Z^2 \alpha \, + \, g i k_c^3 \alpha,
 \eeq
 
-Where
+where
 
-\begin{multline}
-a \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{D}\mathbb{V}^*_{11}\right> \\
-c \equiv \left< \mathbb{V}^\dagger \cdot \mathbf{N}^*_{31}\right> \\
-\widetilde{c} \equiv \left< \mathbb{V}^\dagger \cdot \widetilde{\mathbf{N}}^*_{31}\right> \\
-b \equiv \left< \mathbb{V}^\dagger \cdot \left(\mathcal{X}\mathbb{V}_{11}\right)^* \right> \\
-h \equiv \left< \mathbb{V}^\dagger \cdot \left(\widetilde{\mathcal{L}}_2\mathbb{V}_{11} \, - \, \widetilde{\mathcal{L}}_1\mathbb{V}_{21} \right)^* \right> \\
-g \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{L}_{3} \mathbb{V}_{11} \right> \\
-\end{multline}
+\beq
+\begin{split}
+a & \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{D}\mathbb{V}^*_{11}\right> \\
+c & \equiv \left< \mathbb{V}^\dagger \cdot \mathbf{N}^*_{31}\right> \\
+\widetilde{c} & \equiv \left< \mathbb{V}^\dagger \cdot \widetilde{\mathbf{N}}^*_{31}\right> \\
+b & \equiv \left< \mathbb{V}^\dagger \cdot \left(\mathcal{X}\mathbb{V}_{11}\right)^* \right> \\
+h & \equiv \left< \mathbb{V}^\dagger \cdot \left(\widetilde{\mathcal{L}}_2\mathbb{V}_{11} \, - \, \widetilde{\mathcal{L}}_1\mathbb{V}_{21} \right)^* \right> \\
+g & \equiv \left< \mathbb{V}^\dagger \cdot \mathcal{L}_{3} \mathbb{V}_{11} \right>, \\
+\end{split}
+\eeq
 
-Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variables $Z$ and $T$. We solve this initial value problem using Dedalus to obtain the asymptotic behavior of $\alpha$. This is the saturation amplitude.
+where ${}^*$ denotes a complex conjugate, but $\widetilde{c}$ is equal to zero and drops out of the equation. This is the well-known Ginzburg-Landau equation, and is with only slight modification the same amplitude equation derived in \citeauthor{Umurhan:2007hs}
 
-\section{Results}
+There exists a second amplitude equation, corresponding to the neutral mode, which comes from the solvability condition that must be imposed on all terms in Equation \ref{ordere3} that have no $z$ dependence. These terms are
 
-We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. This analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of [....].
+\beq
+\begin{split}
+\mathcal{D}\mathbb{U}_{11} \partial_T \beta \, & = \, \mathcal{L}\mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1 \mathbb{V}_{20} 2 \left|\alpha\right| \partial_Z \alpha \, - \, \widetilde{\mathcal{L}}_1 \mathbb{U}_{20} \partial_Z^2 \beta \, \\
+& + \, \widetilde{\mathcal{L}}_2 \mathbb{U}_{11} \partial_Z^2 \beta \, - \, \mathcal{X} \mathbb{U}_{11} \partial_Z \beta,
+\end{split}
+\eeq
+
+and taking the inner product of these terms with the adjoint homogenous solution $\mathbb{U}_{11}$ yields
+
+\beq
+\partial_T \beta = k 2 \left|\alpha\right| \partial_Z \alpha - m \partial_Z^2 \beta + \frac{1}{\reym} \partial_Z^2 \beta - p \alpha^* \partial_Z \alpha,
+\eeq
+
+where
+
+\beq
+\begin{split}
+n & \equiv \left< \mathbb{U}_{11} \cdot \left(\mathcal{L} \mathbb{V}_{30}\right)^*\right> \\
+k & \equiv \left< \mathbb{U}_{11} \cdot \left(\widetilde{\mathcal{L}}_1 \mathbb{V}_{20}\right)^*\right> \\
+m & \equiv \left< \mathbb{U}_{11} \cdot \left(\widetilde{\mathcal{L}}_1 \mathbb{U}_{20}\right)^*\right> \\
+p & \equiv \left< \mathbb{U}_{11} \cdot N_{30}^*\right>, \\
+\end{split}
+\eeq
+
+but both $k$ and $p$ are equal to zero. Thus this amplitude equation decouples from Equation \ref{ampeq1}, and reveals itself to be a simple diffusion equation,
+
+\beq\label{ampeq2}
+\partial_T \beta = - m \partial_Z^2 \beta + \frac{1}{\reym} \partial_Z^2 \beta.
+\eeq
+
+Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variables $Z$ and $T$. We solve this initial value problem using Dedalus to obtain the asymptotic behavior of $\alpha$. This is the saturation amplitude. We use the saturation amplitude as $\alpha$ and the radial component of computed on the Chebyshev grid to plot $\mathbf{V}$. We show both first order ($\epsilon\mathbf{V}_1$), second order ($\epsilon^2\mathbf{V}_2$), and combined first and second order fluid perturbations ($\epsilon\mathbf{V}_1$ + ($\epsilon^2\mathbf{V}_2$). Figure \ref{allorders_velocity} shows the velocity perturbations, and Figure \ref{allorders_Bfield} shows the magnetic field perturbations.
+
+Our analytic formulation is advantageous because we can now analyze the contributions of each fluid quantity at each order. This allows us to directly identify the source of saturation. Equation \ref{ampeq1} asymptotically approaches a value, so the system is clearly saturating, and our approach now allows us to quantify the individual contribution of each term. In Figure \ref{allorders_velocity}, we see significant fluid action in the second-order velocity plot. By contrast, the second-order magnetic field perturbations are two orders of magnitude smaller than the first-order perturbations (Figure \ref{allorders_Bfield}). It appears that the second-order velocity perturbations are instrumental in the saturation of the MRI. The likely mechanism is a reduction in the background shear. 
+
+\section{Parameter Space}\label{sec:pspace}
+
+We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. This analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of [TBD!].
+
+\section{Discussion}\label{discussion}
+
+Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment (\citei{Ji:2001kd}). A challenge for all MRI experiments is to reduce all extraneous flows which may stabilize the MRI or obscure its detection. In particular, care must be taken to mitigate meridional flows introduced by the endcaps of the experimental apparatus. The PPPL MRI experiment employs a novel design using concentric, differentially rotating rings as endcaps (\citei{Schartman:2009df}). In this investigation, we use periodic vertical boundary conditions, so our set-up represents an idealized domain where endcap contamination does not exist. Future work will address specifically our predictions for the PPPL MRI experiment.
+
+We compute the solutions to our derived equations pseudospectrally, using Dedalus. One advantage to using Dedalus for these computations is that the code can compute the evolution of the fully nonlinear MRI system on the same Fourier/Chebyshev grid. This allows us to directly compare simulation and theory. 
+
+% Jeff's sims!!!!!
+
+This work analyzes Taylor Couette flow in the thin-gap limit, where the channel width is radially narrow compared to its distance from the center of rotation. This simplifies the math by allowing curvature terms to drop out at lowest order. The relaxation of the thin-gap approximation is an obvious next step for this work. The term expansion in the weakly nonlinear analysis will be more formidable in the wide-gap regime, but could prove informative for comparison to experiments.
+
+The present configuration, that of magnetized Taylor Couette flow with a purely axial magnetic field, represents the initial conditions for the standard MRI. The helical MRI is a related, but separate, MHD instability, and was first discovered by Hollerbach and R\"udiger (\citeyear{Hollerbach:2005tr}). It arises in the presence of combined axial and azimuthal fields. To seed helical MRI in our current set-up, we need only add an azimuthal component to our initial background magnetic field. This will be an avenue of future study, and will yield an analytic theory relevant to the above-mentioned PROMISE experiment. 
+
+Our results suggest that the primary driver of saturation is reduction of the background shear. We note that while shear modification is relevant in the experimental regime, the gravitational pull of the central body will tend to enforce a Keplerian rotation profile in any astrophysical disk. Thus a modification of the rotation profile is of little relevance as a saturation mechanism to the astrophysical regime. Nevertheless, understanding laboratory MRI experiments is crucial for allowing experimental results to inform our astrophysical understanding of the MRI. %^this sentence sucks
 
 
-\begin{figure*}[h!]
-\centering
-\includegraphics[scale=0.5]{twoorders_velocity.eps}
-\caption{First order (left) and second order (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. The colorbar represents azimuthal velocity.}
-\end{figure*}
 
-\section{Conclusions}
+% curvature terms
+% hMRI
+% reduction in background shear not possible in astrophysical disks
+
+\clearpage
+\appendix
+
+\section{A. Linear dispersion relation}\label{app:dispersion}
+%Note: I don't expect this to go in the actual paper, but it could be useful in the meeting.
+
+The linear dispersion relation, which determines the variable scalings in the multiscale analysis. \\
+
+\beq
+\begin{split}
+& \frac{B_{0}^{4} k_{x}^{2} k_{z}^{4}}{16 \pi^{2}} + \frac{B_{0}^{4} k_{z}^{6}}{16 \pi^{2}} - \frac{B_{0}^{2} \Omega_{0} k_{z}^{4} q}{2 \pi} - 2 \Omega_{0} k_{z}^{2} q \sigma^{2} - \frac{4 \sigma}{\reym} \Omega_{0} k_{x}^{2} k_{z}^{2} q - \frac{4 \sigma}{\reym} \Omega_{0} k_{z}^{4} q - \frac{2 \Omega_{0}}{\reym^{2}} k_{x}^{4} k_{z}^{2} q - \frac{4 \Omega_{0}}{\reym^{2}} k_{x}^{2} k_{z}^{4} q - \frac{2 \Omega_{0}}{\reym^{2}} k_{z}^{6} q \\
+& - k_{x}^{2} \sigma^{4} - k_{z}^{2} \sigma^{4} + 4 k_{z}^{2} \sigma^{2} - \frac{2 \sigma^{3}}{\reym} k_{x}^{4} - \frac{4 \sigma^{3}}{\reym} k_{x}^{2} k_{z}^{2} + \frac{8 \sigma}{\reym} k_{x}^{2} k_{z}^{2} - \frac{2 \sigma^{3}}{\reym} k_{z}^{4} + \frac{8 \sigma}{\reym} k_{z}^{4} - \frac{k_{x}^{6} \sigma^{2}}{\reym^{2}} - \frac{3 \sigma^{2}}{\reym^{2}} k_{x}^{4} k_{z}^{2} + \frac{4 k_{x}^{4}}{\reym^{2}} k_{z}^{2} \\
+& - \frac{3 \sigma^{2}}{\reym^{2}} k_{x}^{2} k_{z}^{4} + \frac{8 k_{x}^{2}}{\reym^{2}} k_{z}^{4} - \frac{k_{z}^{6} \sigma^{2}}{\reym^{2}} + \frac{4 k_{z}^{6}}{\reym^{2}} - \frac{2 \sigma^{3}}{\reye} k_{x}^{4} - \frac{4 \sigma^{3}}{\reye} k_{x}^{2} k_{z}^{2} - \frac{2 \sigma^{3}}{\reye} k_{z}^{4} - \frac{4 k_{x}^{6} \sigma^{2}}{\reye \reym} -  \frac{12 k_{x}^{4} k_{z}^{2} \sigma^{2}}{\reye \reym} - \frac{12 k_{x}^{2} k_{z}^{4} \sigma^{2}}{\reye \reym} \\
+& - \frac{4 k_{z}^{6} \sigma^{2}}{\reye \reym} - \frac{2 k_{x}^{8} \sigma}{\reye \reym^{2}} - \frac{8 k_{x}^{6} k_{z}^{2} \sigma}{\reye \reym^{2}} - \frac{12 k_{x}^{4} k_{z}^{4} \sigma}{\reye \reym^{2}} - \frac{8 k_{x}^{2} k_{z}^{6} \sigma}{\reye \reym^{2}} - \frac{2 k_{z}^{8} \sigma}{\reye \reym^{2}} - \frac{k_{x}^{6} \sigma^{2}}{\reye^{2}} - \frac{3 \sigma^{2}}{\reye^{2}} k_{x}^{4} k_{z}^{2} - \frac{3 \sigma^{2}}{\reye^{2}} k_{x}^{2} k_{z}^{4} - \frac{k_{z}^{6} \sigma^{2}}{\reye^{2}} \\
+& - \frac{2 k_{x}^{8} \sigma}{\reye^{2} \reym} - \frac{8 k_{x}^{6} k_{z}^{2} \sigma}{\reye^{2} \reym} - \frac{12 k_{x}^{4} k_{z}^{4} \sigma}{\reye^{2} \reym} - \frac{8 k_{x}^{2} k_{z}^{6} \sigma}{\reye^{2} \reym} - \frac{2 k_{z}^{8} \sigma}{\reye^{2} \reym} - \frac{k_{x}^{10}}{\reye^{2} \reym^{2}} - \frac{5 k_{x}^{8} k_{z}^{2}}{\reye^{2} \reym^{2}} - \frac{10 k_{x}^{6} k_{z}^{4}}{\reye^{2} \reym^{2}} - \frac{10 k_{x}^{4} k_{z}^{6}}{\reye^{2} \reym^{2}} \\
+& - \frac{5 k_{x}^{2} k_{z}^{8}}{\reye^{2} \reym^{2}} - \frac{k_{z}^{10}}{\reye^{2} \reym^{2}} = 0
+\end{split}
+\eeq
+
+\section{B. Expansion of Nonlinear Terms}\label{app:nonlinear}
+\beq
+\mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4)
+\eeq
+
+where
+
+\beq
+N_2^{(\Psi)} = J(\Psi_1, \nabla^2 \Psi_1) \,-\, \frac{2}{\beta}J(A_1, \nabla^2 A_1) 
+\eeq
+
+\beq
+N_2^{(u)} = J(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_1) 
+\eeq
+
+\beq
+N_2^{(A)} = - J(A_1, \Psi_1) 
+\eeq
+
+\beq
+N_2^{(B)} =  J(\Psi_1, B_1) \, - \, J(A_1, u_1)
+\eeq
+
+and
+
+\beq
+\begin{split}
+N_3^{(\Psi)} & = J(\Psi_1, \nabla^2\Psi_2) \, - \, \frac{2}{\beta}J(A_1, \nabla^2 A_2) \,+\, J(\Psi_2, \nabla^2\Psi_1) - \, \frac{2}{\beta}J(A_2, \nabla^2 A_1) \,+\, 2 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, \\
+& - \, 2 \frac{2}{\beta}J(A_1, \partial_z\partial_Z A_1) \,+\, \widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \,  \frac{2}{\beta}\widetilde{J}(A_1, \nabla^2 A_1)\\
+\end{split}
+\eeq
+
+\beq
+N_3^{(u)} = J(\Psi_1, u_2) \, + \, J(\Psi_2, u_1) \, + \, \widetilde{J}(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_2) \, - \, \frac{2}{\beta} J(A_2, B_1) \, - \, \frac{2}{\beta} \widetilde{J}(A_1, B_1)
+\eeq
+
+\beq
+N_3^{(A)} = - J(A_1, \Psi_2) \, - \, J(A_2, \Psi_1) \, - \, \widetilde{J}(A_1, \Psi_1)
+\eeq
+
+\beq
+N_3^{(B)} = \, J(\Psi_1, B_2) \, + \, J(\Psi_2, B_1) \, + \, \widetilde{J}(\Psi_1, B_1) \, - \, J(A_1, u_2) \, - \,  J(A_2, u_1) \, - \, \widetilde{J}(A_1, u_1).\\
+\eeq
+
+$\mathbf{N_2}$ and $\mathbf{N_3}$ expand to become
+
+\beq
+\mathbf{N_2} = \alpha^2\mathbb{N}_{22} e^{i2 k_c z} + \left|\alpha\right|^2 \mathbb{N}_{20} + c.c.
+\eeq
+
+and
+
+\beq
+\mathbf{N_3} = \alpha^3 \mathbb{N}_{33} e^{i 3 k_c z} + \alpha\partial_Z\alpha \mathbb{N}_{32} e^{i 2 k_c z} + \alpha\left|\alpha\right|^2 \mathbb{N}_{31} e^{i k_c z} + \alpha \partial_Z  \beta \mathbb{\widetilde{N}}_{31} e^{i k_c z} + \alpha^*\partial_Z \alpha \mathbb{N}_{30} + c.c.
+\eeq
+
+The second order nonlinear terms are \\
+
+\beq
+\begin{split}
+N_{22}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11} - k_c^2 \partial_x \Psi_{11}\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11} - i k_c^3 \Psi_{11}\right) \\
+& + \frac{2}{\beta}\partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11} - i k_c^3 A_{11}\right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11} - k_c^2 \partial_x A_{11}\right)
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{22}^{(u)} = & \, i k_c \Psi_{11} \cdot \partial_x u_{11} - \partial_x \Psi_{11} \cdot i k_c u_{11} - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11} + \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}
+\end{split}
+\eeq
+
+\beq
+N_{22}^{(A)} = - i k_c A_{11} \cdot \partial_x \Psi_{11} + \partial_x A_{11} \cdot i k_c \Psi_{11}
+\eeq
+
+\beq
+N_{22}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11} - \partial_x \Psi_{11} \cdot i k_c B_{11} - i k_c A_{11} \cdot \partial_x u_{11} + \partial_x A_{11} \cdot i k_c u_{11}
+\eeq
+
+\beq
+\begin{split}
+N_{20}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - k_c^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11}^* - i k_c^3 \Psi_{11}^*\right) \\
+& \frac{2}{\beta} \partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11}^* - i k_c^3 A_{11}^*\right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11}^* - k_c^2 \partial_x A_{11}^*\right)
+\end{split}
+\eeq
+
+\beq
+N_{20}^{(u)} = i k_c \Psi_{11} \cdot \partial_x u_{11}^* - \partial_x \Psi_{11} \cdot i k_c u_{11}^* - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11}^* + \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}^*
+\eeq
+
+\beq
+N_{20}^{(A)} = - i k_c A_{11} \cdot \partial_x \Psi_{11}^* - \partial_x A_{11} \cdot i k_c \Psi_{11}^*
+\eeq
+
+\beq
+N_{20}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11}^* - \partial_x \Psi_{11} \cdot i k_c B_{11}^* - i k_c A_{11} \cdot \partial_x u_{11}^* + \partial_x A_{11} \cdot i k_c u_{11}^*
+\eeq \\
+
+and the third order nonlinear terms become \\
+
+\beq
+\begin{split}
+N_{31}^{(\Psi)} = &  \, i k_c \left(\Psi_{11} \cdot \partial_x^3 \Psi_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x^3\Psi_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x^3 \Psi_{22}\right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot \partial_x^2 \Psi_{22}\right) \\
+& + i 8 k_c^3 \left(\partial_x\Psi_{11}^* \cdot \Psi_{22}\right) + i 4 k_c^3 \left(\Psi_{11}^* \cdot \partial_x \Psi_{22}\right) + \frac{2}{\beta}\left[ - i k_c \left(A_{11} \cdot \partial^3 A_{20}\right) - i k_c \left(A_{11} \cdot \partial_x^3 A_{20}^*\right) \right]\\
+& + \frac{2}{\beta}\left[i k_c \left(A_{11}^* \cdot \partial_x^3 A_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot \partial_x^2 A_{22}\right) - i 8 k_c^3 \left(\partial_x A_{11}^* \cdot A_{22}\right) - i 4 k_c^3 \left(A_{11}^* \cdot \partial_x A_{22}\right)\right] \\
+& + i 2 k_c \left(\Psi_{22} \cdot \partial_x^3 \Psi_{11}^*\right) - i 2 k_c^3\left(\Psi_{22} \cdot \partial_x \Psi_{11}^* \right) - i k_c \left(\partial_x \Psi_{20} \cdot \partial_x^2 \Psi_{11}\right) + i k_c \left(\partial_x \Psi_{22} \cdot \partial_x^2 \Psi_{11}^*\right) \\
+& - i k_c \left(\partial_x \Psi_{20}^* \cdot \partial_x^2 \Psi_{11}\right) + i k_c^3 \left(\partial_x \Psi_{20} \cdot \Psi_{11}\right) + i k_c^3 \left(\partial_x \Psi_{20}^* \cdot \Psi_{11}\right) - i k_c^3 \left(\partial_x \Psi_{22} \cdot \Psi_{11}^*\right) \\
+& + \frac{2}{\beta} \left[ - i 2 k_c \left(A_{22} \cdot \partial_x^3 A_{11}^*\right) + i 2 k_c^3 \left(A_{22} \cdot \partial_x A_{11}^*\right) + i k_c \left(\partial_x A_{20} \cdot \partial_x^2 A_{11}\right) - i k_c \left(\partial_x A_{22} \cdot \partial_x^2 A_{11}^*\right) \right] \\
+& + \frac{2}{\beta} \left[ i k_c \left(\partial_x A_{20}^* \cdot \partial_x^2 A_{11}\right) - i k_c^3 \left(\partial_x A_{20} \cdot A_{11}\right) - i k_c^3 \left(\partial_x A_{20}^* \cdot A_{11}\right) + i k_c^3 \left(\partial_x A_{22} \cdot A_{11}^*\right)\right]
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{31}^{(u)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x u_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x u_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x u_{22}\right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot u_{22}\right) \\
+& - i k_c \left(u_{11} \cdot \partial_x \Psi_{20} \right) - i k_c \left(u_{11} \cdot \partial_x \Psi_{20}^*\right) + i k_c \left(u_{11}^* \cdot \partial_x \Psi_{22} \right) + i 2 k_c \left(\partial_x u_{11}^* \cdot \Psi_{22}\right) \\
+& +\frac{2}{\beta}\left[- i k_c \left(A_{11} \cdot \partial_x B_{20}\right) - i k_c \left(A_{11} \cdot \partial_x B_{20}^*\right) + i k_c \left(A_{11}^* \cdot \partial_x B_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot B_{22}\right)\right] \\
+& +\frac{2}{\beta}\left[ i k_c \left(B_{11} \cdot \partial_x A_{20}\right) + i k_c \left(B_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(B_{11}^* \cdot \partial_x A_{20}\right) - i 2 k_c \left(\partial_x B_{11}^* \cdot A_{22}\right)\right]
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{31}^{(A)} =\, & -i k_c \left(A_{11}\cdot\partial_x \Psi_{20}\right) - i k_c \left(A_{11} \cdot \partial_x \Psi_{20}^*\right)
+ + i k_c \left(A_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot \Psi_{22}\right) \\
+ & + i k_c \left(\Psi_{11} \cdot \partial_x A_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x A_{22} \right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot A_{22}\right)
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{31}^{(B)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x B_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x B_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x B_{22}\right) - i 2 k_c\left(\partial_x \Psi_{11}^* \cdot B_{22}\right) \\
+& - i k_c \left(B_{11} \cdot \partial_x \Psi_{20}\right) - i k_c \left(B_{11} \cdot \partial_x \Psi_{20}^*\right) + i k_c\left(B_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 k_c \left(\partial_x B_{11}^* \cdot \Psi_{22}\right) \\
+& - i k_c \left(A_{11} \cdot \partial_x u_{20}\right) - i k_c \left(A_{11} \cdot \partial_x u_{20}^*\right) + i k_c \left(A_{11}^* \cdot \partial_x u_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot u_{22}\right) \\
+& i k_c \left(u_{11} \cdot \partial_x A_{20} \right) + i k_c \left(u_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(u_{11}^* \cdot \partial_x A_{22}\right) - i 2 k_c \left(\partial_x u_{11}^* \cdot A_{22}\right)
+\end{split}
+\eeq
 
 %\bibliographystyle{plain}
 %\bibliography{mri_refs2}
@@ -351,20 +672,57 @@ We conduct a full study of the MRI parameter space, focussed on the behavior wit
 \begin{thebibliography}{53}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
+\bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
+Balbus, S A and Hawley, J F, 1991, The Astrophysical Journal, 376, 214
+
+\bibitem[{Boyd(2001)}]{Boyd:2001aa}
+Boyd, J P, 2001, Chebyshev and Fourier Spectral Methods, New York, Dover
+
 \bibitem[{Chandrasekhar(1960)}]{Chandrasekhar:1960wh}
 Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the United States of America, 46, 253
 
-\bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
-Balbus, S A and Hawley, J F, The Astrophysical Journal, 376, 214
+\bibitem[{Cooper et al.(2014)}]{Cooper:2013to}
+Cooper, C M, Wallace, J, Brookhart, M, Clark, M, Collins, C, Ding, W X, Flanagan, K, Khalzov, I, Li, Y, Milhone, J, Nornberg, M, Nonn, P, Weisberg, D, Whyte, D G, Zweibel, E, Forest, C B, Physics of Plasmas, 2013, 21, 013505
+
+\bibitem[{Gissinger et al.(2011)}]{Gissinger:2011td}
+Gissinger, C, Ji, H, Goodman, J, Phys. Rev. E, 2011, 84, 026308
+
+\bibitem[Goodman \& Xu(1994)]{Goodman:1994ul}
+Goodman, J, Xu, G, 1994, ApJ, 432, 213
+
+\bibitem[{Hollerbach(2009)}]{Hollerbach:2009ig}
+Hollerbach, R, Proc. R. Soc. A, 2009, 465, 2107
+
+\bibitem[{Hollerbach \& R\"udiger(2005)}]{Hollerbach:2005tr}
+Hollerbach, R, RŸdiger, G, Phys. Rev. Lett, 2005, 95, 124501
+
+\bibitem[{Ji et al.(2001)}]{Ji:2001kd}
+Ji, H, Goodman, J, Kageyama, A, Mon. Not. R. Astron. Soc., 2001, 325, 1
+
+\bibitem[{Knobloch \& Julien(2005)}]{Knobloch:2005ba}
+Knobloch, E, Julien K, 2005, Physics of Fluids, 17, 094106
+
+\bibitem[Pessah(2010)]{Pessah:2010ic}
+Pessah, M, 2010, ApJ, 716, 1012
+
+\bibitem[{Schartman et al.(2009)}]{Schartman:2009df}
+Schartman, E, Ji, H, Burin, M J, Rev Sci Instrum, 2009, 80, 024501
 
 \bibitem[{Shakura \& Sunyaev(1973)}]{Shakura:1973wg}
-Shakura, N I and Sunyaev, R A, Astronomy \& Astrophysics, 24, 337
+Shakura, N I and Sunyaev, R A, Astronomy \& Astrophysics, 1973, 24, 337
 
-\bibitem[{Umurhan et al.(2007b)}]{Umurhan:2007hs}
-Umurhan, O M, Regev, O, Menou, K, Phys. Rev. E, 76, 036310
+\bibitem[{Sisan et al.(2004)}]{Sisan:2004ig}
+Sisan, D R, Mujica, N, Tillotson, W A, Huang Y-M, Dorland, W, Hassam, A B, Antonsen, T M, Lathrop, D P, Phys Rev Lett, 2004, 93, 11
+
+\bibitem[{Stefani et al.(2006)}]{Stefani:2006iv}
+Stefani, F, Gundrum, T, Gerbeth, G, RŸdiger, G, Schultz, M, Szklarski, J, Hollerbach, R, Phys Rev Lett, 2006, 97, 184502
 
 \bibitem[{Umurhan et al.(2007a)}]{Umurhan:2007dz}
-Umurhan, O M, Regev, O, Menou, K, Phys. Rev. Letters, 98, 034501
+Umurhan, O M, Regev, O, Menou, K, 2007, Phys. Rev. Letters, 98, 034501
+
+\bibitem[{Umurhan et al.(2007b)}]{Umurhan:2007hs}
+Umurhan, O M, Regev, O, Menou, K, 2007, Phys. Rev. E, 76, 036310
+
 
 \end{thebibliography}
 
