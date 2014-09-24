@@ -1,5 +1,15 @@
-import dedalus2.public as de
 import numpy as np
+import time
+import os
+import sys
+import checkpointing
+
+import logging
+logger = logging.getLogger(__name__)
+
+import dedalus2.public as de
+from dedalus2.tools import post
+from dedalus2.extras import flow_tools
 
 gridnum = 256
 x_basis = de.Chebyshev(gridnum)
@@ -30,4 +40,16 @@ mri.add_equation("u_x + dx(u) = 0")
 mri.add_equation("A_x + dx(A) = 0")
 mri.add_equation("A_xx + dx(A_x) = 0")
 mri.add_equation("b_x + dx(b) = 0")
+
+# ten boundary conditions
+mri.add_left_bc("u = 0")
+mri.add_right_bc("u = 0")
+mri.add_left_bc("dz(psi) = 0")
+mri.add_right_bc("dz(psi) = 0")
+mri.add_left_bc("psi_x = 0")
+mri.add_right_bc("psi_x = 0")
+mri.add_left_bc("dz(A) = 0")
+mri.add_right_bc("dz(A) = 0")
+mri.add_left_bc("A_x = 0")
+mri.add_right_bc("A_x = 0")
 
