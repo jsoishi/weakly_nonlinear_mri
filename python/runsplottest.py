@@ -2,8 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pylab
 import pickle
+import matplotlib
+matplotlib.rcParams['backend'] = "Qt4Agg"
 
-testdata = pickle.load(open("results_test.p", "rb"))
+testdata = pickle.load(open("multirun_Rm_50.p", "rb"))
 
 Rms = np.zeros(len(testdata))
 Qs = np.zeros(len(testdata))
@@ -32,3 +34,6 @@ fig.colorbar(cb2)
 ax2.set_title("Imaginary")
 ax2.set_xlabel("Q")
 ax2.set_ylabel("Rm")
+
+plt.show()
+pylab.savefig("multirun_Rm_50.png")

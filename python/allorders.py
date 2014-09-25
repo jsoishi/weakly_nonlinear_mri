@@ -18,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 256
+gridnum = 32#256
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -676,7 +676,10 @@ class OrderE2():
         self.psi20 = LEV20psi.state['psi20']['g']
         self.u20 = LEV20u.state['u20']['g'] #+ beta*R*(self.x**2 - 1) #+ LEV20utwiddle.state['u20twiddle']['g']
         self.A20 = LEV20A.state['A20']['g']
-        self.B20 = LEV20B.state['B20']['g']
+        self.B20 = LEV20B.state['B20']['g'] # this is nan
+        
+        print("o2.B20")
+        print(self.B20)
             
     def solve21(self, gridnum = gridnum, save = True, norm = True):
     
@@ -1030,7 +1033,7 @@ class OrderE3():
             self.v20_psi = o2.LEV20psi.state['psi20']
             self.v20_u = o2.LEV20u.state['u20']
             self.v20_A = o2.LEV20A.state['A20']
-            self.v20_B = o2.LEV20B.state['B20']  
+            self.v20_B = o2.LEV20B.state['B20']  #this is nan
             
             if norm == True:
                 v21_psi = o2.LEV21.state['psi21']*o2.scale   
@@ -1412,7 +1415,9 @@ class N3():
         
         self.N31_A = N31_A.evaluate()
         
+        # B_my1 is nan. Only first 2 terms. Cause is self.v20_B_x and self.v20_B_star_x
         N31_B_my1 = 1j*self.Q*(self.v11_psi*self.v20_B_x) + 1j*self.Q*(self.v11_psi*self.v20_B_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_B_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_B)
+        
         N31_B_my2 = -1j*self.Q*(self.v11_B*self.v20_psi_x) - 1j*self.Q*(self.v11_B*self.v20_psi_star_x) + 1j*self.Q*(self.v11_B_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_B_star_x*self.v22_psi)
         N31_B_my3 = -1j*self.Q*(self.v11_A*self.v20_u_x) - 1j*self.Q*(self.v11_A*self.v20_u_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_u_x) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_u)
         N31_B_my4 = 1j*self.Q*(self.v11_u*self.v20_A_x) + 1j*self.Q*(self.v11_u*self.v20_A_star_x) - 1j*self.Q*(self.v11_u_star*self.v22_A_x) - 1j*2*self.Q*(self.v11_u_star_x*self.v22_A)
@@ -1656,7 +1661,7 @@ class AmplitudeAlpha():
         c_A = self.va.A*self.N31_A_star
         c_A = c_A.evaluate()
         
-        c_B = self.va.B*self.N31_B_star
+        c_B = self.va.B*self.N31_B_star # N31 B_star and u_star are nan
         c_B = c_B.evaluate()
         
         call = c_psi + c_u + c_A + c_B
@@ -2021,8 +2026,8 @@ class SolveAmplitudeAlpha():
         alphaZ = solver.state['alphaZ']
 
         # initial conditions ... plus noise!
-        noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
-        alpha['g'] = 1 + noise
+        #noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
+        alpha['g'] = 1# + noise
         alpha.differentiate(0, out=alphaZ)
         
         # Setup storage
@@ -2185,6 +2190,8 @@ class PlotContours():
         su.streamplot(ax2, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color = uymag/np.max(uymag), cmap = "RdBu")
         plt.show()
         
+        pylab.savefig("vel1.png")
+        
     def plot_Bfield(self):
     
         nz = self.gridnum
@@ -2224,6 +2231,8 @@ class PlotContours():
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color="#660033")
         su.streamplot(ax3, self.saa.alpha_amp.x, z, self.V_Bx1.real, self.V_Bz1.real, color="#660033")
         plt.show()     
+        
+        pylab.savefig("Bfield1.png")
 
 def plot_uy_firstorder(pc_obj, oplot = True, labels = False):
 
@@ -2260,6 +2269,8 @@ def plot_uy_firstorder(pc_obj, oplot = True, labels = False):
     if oplot == True:
         u1mag = np.sqrt(np.abs(V1_ux1**2) + np.abs(V1_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_ux1.real, V1_uz1.real, linewidth = 3*u1mag/u1mag.max(), color = "black")
+        
+    pylab.savefig("uy_firstorder1.png")
         
 def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
 
@@ -2301,6 +2312,7 @@ def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
         u1mag = np.sqrt(np.abs(V2_ux1**2) + np.abs(V2_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V2_ux1.real, V2_uz1.real, linewidth = 3*u1mag/u1mag.max(), color = "black")
         
+    pylab.savefig("uy_secondorder1.png")
 
 def plot_uy(pc_obj, oplot = True, labels = False):
 
@@ -2336,6 +2348,8 @@ def plot_uy(pc_obj, oplot = True, labels = False):
     if oplot == True:
         speed = np.sqrt(np.abs(pc_obj.V_ux1**2) + np.abs(pc_obj.V_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, pc_obj.V_ux1.real, pc_obj.V_uz1.real, linewidth = 3*speed/speed.max(), color = "black")
+        
+    pylab.savefig("uy_bothorders1.png")
         
 def plot_By_firstorder(pc_obj, oplot = True, labels = False):
 
@@ -2374,6 +2388,8 @@ def plot_By_firstorder(pc_obj, oplot = True, labels = False):
         B1mag = np.sqrt(np.abs(V1_Bx1**2) + np.abs(V1_Bz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_Bx1.real, V1_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
         
+    pylab.savefig("By_firstorder1.png")
+        
 def plot_By_secondorder(pc_obj, oplot = True, labels = False):
 
     nz = pc_obj.gridnum
@@ -2407,6 +2423,7 @@ def plot_By_secondorder(pc_obj, oplot = True, labels = False):
         B1mag = np.sqrt(np.abs(V2_Bx1**2) + np.abs(V2_Bz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V2_Bx1.real, V2_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
         
+    pylab.savefig("By_secondorder1.png")
 
 def plot_By(pc_obj, oplot = True, labels = False):
 
@@ -2454,6 +2471,8 @@ def plot_By(pc_obj, oplot = True, labels = False):
         uymag = pc_obj.V_B.real
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V_Bx1, V_Bz1)#, linewidth = 3*Bmag/Bmag.max(), color = "black")
     """    
+
+    pylab.savefig("By_bothorders1.png")
 
 def plotN2(n2_obj):
 
