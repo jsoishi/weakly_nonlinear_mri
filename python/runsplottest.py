@@ -36,4 +36,4 @@ ax2.set_xlabel("Q")
 ax2.set_ylabel("Rm")
 
 plt.show()
-pylab.savefig("multirun_Rm_50.png")
+pylab.savefig("multirun_Rm_500_highQ_3.png")
