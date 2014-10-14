@@ -28,8 +28,12 @@ import pickle
 #Rmsearch = np.arange(45, 45.5, 0.1)#Q=2.3, Rm=45.1
 
 # coarse grid for Rm ~ 500
-Qsearch = np.arange(10, 200, 10) #Q 0-150 Rm 360-460, #Q 10-140 Rm 460-530
-Rmsearch = np.arange(530, 660, 10)
+#Qsearch = np.arange(5, 40, 5) #Q 0-150 Rm 360-460, #Q 10-140 Rm 460-530
+#Rmsearch = np.arange(200, 600, 10)
+
+#Pm = 0.0001, so Rm ~ 0.5
+Rmsearch = np.arange(0.2, 1.2, 0.1)
+Qsearch = np.arange(0.45, 0.55, 0.01) 
 
 run_script = "multirun_linear_MRI.py"
 

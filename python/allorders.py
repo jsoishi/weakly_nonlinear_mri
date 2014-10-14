@@ -18,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 32#256
+gridnum = 256
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -669,6 +669,7 @@ class OrderE2():
         
         self.lv20B = lv20B
         self.LEV20B = LEV20B
+        self.LEV20B.state['B20']['g'] = np.zeros(gridnum) # An elegant hack!
 
         # set state
         self.x = domain.grid(0)
@@ -677,9 +678,7 @@ class OrderE2():
         self.u20 = LEV20u.state['u20']['g'] #+ beta*R*(self.x**2 - 1) #+ LEV20utwiddle.state['u20twiddle']['g']
         self.A20 = LEV20A.state['A20']['g']
         self.B20 = LEV20B.state['B20']['g'] # this is nan
-        
-        print("o2.B20")
-        print(self.B20)
+        #self.B20 = np.zeros(gridnum)
             
     def solve21(self, gridnum = gridnum, save = True, norm = True):
     
@@ -1786,17 +1785,17 @@ class AmplitudeAlpha():
         
         
         # print all the coefficients
-        print("a :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.a))
+        print("a :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.a))
         
-        print("c :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.c))
+        print("c :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.c))
         
-        print("c~ :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.c_twiddle))
+        print("c~ :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.c_twiddle))
         
-        print("b :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.b))
+        print("b :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.b))
         
-        print("h :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.h))
+        print("h :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.h))
         
-        print("g :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.g))
+        print("g :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.g))
         
         
 class AmplitudeBeta():
@@ -1823,10 +1822,10 @@ class AmplitudeBeta():
         
         if run == True:
         
-            self.va = AdjointHomogenous()
+            self.va = AdjointHomogenous(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
             self.va.solve(save = False, norm = True)
         
-            v1 = OrderE()
+            v1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
             v1.solve(save=False)
             
             if norm == True:
@@ -1849,7 +1848,7 @@ class AmplitudeBeta():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2()
+            o2 = OrderE2(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1886,7 +1885,7 @@ class AmplitudeBeta():
             self.n3.solve31()
             self.n3.solve30()
             
-            self.o3 = OrderE3()
+            self.o3 = OrderE3(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
             self.o3.solve()
             
             
@@ -1939,13 +1938,13 @@ class AmplitudeBeta():
         pp = self.N30_B_star.integrate(x_basis)
         self.p = pp['g'][0]
         
-        print("n :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.n))
+        print("n :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.n))
         
-        print("k :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.k))
+        print("k :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.k))
         
-        print("m :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.m))
+        print("m :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.m))
         
-        print("p :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.p))
+        print("p :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.p))
     
     
 class SolveAmplitudeAlpha():
@@ -1973,7 +1972,7 @@ class SolveAmplitudeAlpha():
         self.gridnum = gridnum
 
         # obtain amplitude coefficients
-        self.alpha_amp = AmplitudeAlpha()
+        self.alpha_amp = AmplitudeAlpha(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
         self.alpha_amp.solve()
         
         #MagSq = operators.MagSquared
@@ -2077,6 +2076,8 @@ class PlotContours():
         self.q = q
         self.beta = beta
         
+        print(Q, Rm, Pm, q)
+        
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
 
@@ -2086,7 +2087,7 @@ class PlotContours():
         
         self.gridnum = gridnum
         
-        self.saa = SolveAmplitudeAlpha()
+        self.saa = SolveAmplitudeAlpha(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
         #alpha_amp = AmplitudeAlpha()
         #beta_amp = AmplitudeBeta()
         
@@ -2270,7 +2271,7 @@ def plot_uy_firstorder(pc_obj, oplot = True, labels = False):
         u1mag = np.sqrt(np.abs(V1_ux1**2) + np.abs(V1_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_ux1.real, V1_uz1.real, linewidth = 3*u1mag/u1mag.max(), color = "black")
         
-    pylab.savefig("uy_firstorder1.png")
+    pylab.savefig("uy_firstorder_Q2p3_Rm45.png")
         
 def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
 
@@ -2289,7 +2290,7 @@ def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
     cbarmax = np.max(info1)
     cbarmin = np.min(info1)
     
-    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_u, cmap="RdBu_r", vmin = cbarmin, vmax = cbarmax)
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_u, cmap="RdBu_r")#, vmin = cbarmin, vmax = cbarmax)
     
     cbar = plt.colorbar(info)
     cbar.ax.tick_params(labelsize = 20)
@@ -2312,7 +2313,7 @@ def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
         u1mag = np.sqrt(np.abs(V2_ux1**2) + np.abs(V2_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V2_ux1.real, V2_uz1.real, linewidth = 3*u1mag/u1mag.max(), color = "black")
         
-    pylab.savefig("uy_secondorder1.png")
+    pylab.savefig("uy_secondorder_Q2p3_Rm45.png")
 
 def plot_uy(pc_obj, oplot = True, labels = False):
 
@@ -2349,7 +2350,7 @@ def plot_uy(pc_obj, oplot = True, labels = False):
         speed = np.sqrt(np.abs(pc_obj.V_ux1**2) + np.abs(pc_obj.V_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, pc_obj.V_ux1.real, pc_obj.V_uz1.real, linewidth = 3*speed/speed.max(), color = "black")
         
-    pylab.savefig("uy_bothorders1.png")
+    pylab.savefig("uy_bothorders_Q2p3_Rm45.png")
         
 def plot_By_firstorder(pc_obj, oplot = True, labels = False):
 
@@ -2388,7 +2389,7 @@ def plot_By_firstorder(pc_obj, oplot = True, labels = False):
         B1mag = np.sqrt(np.abs(V1_Bx1**2) + np.abs(V1_Bz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_Bx1.real, V1_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
         
-    pylab.savefig("By_firstorder1.png")
+    pylab.savefig("By_firstorder_Q2p3_Rm45.png")
         
 def plot_By_secondorder(pc_obj, oplot = True, labels = False):
 
@@ -2401,7 +2402,7 @@ def plot_By_secondorder(pc_obj, oplot = True, labels = False):
 
     fig = plt.figure(figsize = (12, 8))
     ax = fig.add_subplot(111)
-    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_B, cmap="binary")#cmap="RdBu_r")
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_B, cmap="RdBu_r")
     cbar = plt.colorbar(info)
     cbar.ax.tick_params(labelsize = 20)
     
@@ -2423,7 +2424,7 @@ def plot_By_secondorder(pc_obj, oplot = True, labels = False):
         B1mag = np.sqrt(np.abs(V2_Bx1**2) + np.abs(V2_Bz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V2_Bx1.real, V2_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
         
-    pylab.savefig("By_secondorder1.png")
+    pylab.savefig("By_secondorder_Q2p3_Rm45.png")
 
 def plot_By(pc_obj, oplot = True, labels = False):
 
@@ -2472,7 +2473,7 @@ def plot_By(pc_obj, oplot = True, labels = False):
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V_Bx1, V_Bz1)#, linewidth = 3*Bmag/Bmag.max(), color = "black")
     """    
 
-    pylab.savefig("By_bothorders1.png")
+    pylab.savefig("By_bothorders_Q2p3_Rm45.png")
 
 def plotN2(n2_obj):
 
