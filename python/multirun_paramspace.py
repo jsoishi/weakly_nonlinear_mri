@@ -46,11 +46,14 @@ for Rm in Rmsearch:
         processes[Rm, Q] = subprocess.Popen(proc_args, stdout=subprocess.PIPE)
         processes[Rm, Q].wait()
 
+print(processes)
 results = {}
 for k,proc in processes.items():
     res = proc.communicate()
+    print(res)
     if res is not None:
         str = res[0].decode("utf-8")
+        print(str)
         results[k] = complex(str)
 
 print(results)
