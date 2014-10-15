@@ -50,13 +50,13 @@ print(processes)
 results = {}
 for k,proc in processes.items():
     res = proc.communicate()
-    print(res)
+    #print(res)
     if res is not None:
         str = res[0].decode("utf-8")
-        print(str)
+        print("str", str)
         results[k] = complex(str)
 
-print(results)
+#print(results)
 
 pickle.dump(results, open("multirun_Rm_50.p", "wb"))
 

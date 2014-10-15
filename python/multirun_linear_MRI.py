@@ -101,7 +101,7 @@ e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
 
 val = evals[e0]
 
-if len(val) < 1:
-    val = [99]
+#if len(val) < 1:
+#    val = [99]
 
 print(val[0])
