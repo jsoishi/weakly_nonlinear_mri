@@ -39,6 +39,9 @@
 \newcommand\araa{ ARA\&A }
 \newcommand\nat{ Nature }
 
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+
 \newcommand\reye{\mathrel{Re}}
 \newcommand\reym{\mathrel{Rm}}
 
@@ -1332,6 +1335,32 @@ The base state becomes:
 \begin{equation}
 \mathbf{B} = B_0 \hat{z} + \xi B_0 \left(\frac{x_1}{x}\right) \hat{y} + \mathbf{B}_1
 \end{equation}
+
+The Lorentz term in the momentum equation is the only term that will change. It becomes
+
+\beq
+\left(\nabla \times \left(B_0 \hat{z} + \xi B_0 \left(\frac{x_1}{x}\right) \hat{y} + \mathbf{B}_1
+\right) \right) \times \left(B_0 \hat{z} + \xi B_0 \left(\frac{x_1}{x}\right) \hat{y} + \mathbf{B}_1
+\right)
+\eeq
+
+and we gain a potential 5 terms that were not present before, since there are 5 terms in this expansion that involve the azimuthal term. These are as follows.
+
+\beq
+\left(\nabla \times B_0 \hat{z} \right) \times \xi B_0 \left(\frac{x_1}{x}\right)\hat{y} = 0
+\eeq
+
+because of the constant term.
+
+\beq
+\left(\nabla \times \xi B_0 \left(\frac{x_1}{x}\right) \hat{y} \right) \times B_0 \hat{z} = \left(\partial_x \left(\xi B_0 \left(\frac{x_1}{x}\right)\right)\hat{z}\right) \times B_0 \hat{z} = 0
+\eeq
+
+because $\hat{z} \times \hat{z} = 0$.
+
+\beq
+\left(\nabla \times \xi B_0 \frac{x_1}{x} \hat{y} \right) \times \left( \xi B_0 \frac{x_1}{x}\hat{y}\right) = \xi^2 B_0^2 \frac{x_1^2}{x^3} \hat{x}
+\eeq
 
 
 

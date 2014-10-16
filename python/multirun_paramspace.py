@@ -54,6 +54,9 @@ for k,proc in processes.items():
     if res is not None:
         str = res[0].decode("utf-8")
         print("str", str)
+        if str == '' or str == None:
+            str = 99
+        
         results[k] = complex(str)
 
 #print(results)
