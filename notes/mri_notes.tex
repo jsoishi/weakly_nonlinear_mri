@@ -1362,6 +1362,23 @@ because $\hat{z} \times \hat{z} = 0$.
 \left(\nabla \times \xi B_0 \frac{x_1}{x} \hat{y} \right) \times \left( \xi B_0 \frac{x_1}{x}\hat{y}\right) = \xi^2 B_0^2 \frac{x_1^2}{x^3} \hat{x}
 \eeq
 
+And
+
+\beq
+\left(\nabla \times \xi B_0 \frac{x_1}{x} \hat{y}\right) \times \mathbf{B_1} = -\xi B_0 \frac{x_1}{x^2} \left(B_{1x} \hat{y} - B_{1y} \hat{x}\right)
+\eeq
+
+And finally,
+
+\beq
+\left(\nabla \times \mathbf{B}_1 \right) \times \left(\xi B_0 \frac{x_1}{x} \hat{y}\right) = - \partial_z B_{1y} \xi B_0 \frac{x_1}{x} \hat{z} - \partial_x B_{1y} \xi B_0 \frac{x_1}{x} \hat{x}
+\eeq
+
+So our final added terms to the momentum equation are:
+
+\beq
+\xi^2 B_0^2 \frac{x_1^2}{x^3} \hat{x} \, - \,  \xi B_0 \frac{x_1}{x^2} B_{1x} \hat{y} \, + \, \xi B_0 \frac{x_1}{x^2} B_{1y} \hat{x} \, - \, \partial_z B_{1y} \xi B_0 \frac{x_1}{x} \hat{z} \, - \, \partial_x B_{1y} \xi B_0 \frac{x_1}{x} \hat{x}
+\eeq
 
 
 \bibliography{mri.bib}
