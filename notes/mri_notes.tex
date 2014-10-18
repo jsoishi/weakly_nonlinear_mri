@@ -1380,6 +1380,25 @@ So our final added terms to the momentum equation are:
 \xi^2 B_0^2 \frac{x_1^2}{x^3} \hat{x} \, - \,  \xi B_0 \frac{x_1}{x^2} B_{1x} \hat{y} \, + \, \xi B_0 \frac{x_1}{x^2} B_{1y} \hat{x} \, - \, \partial_z B_{1y} \xi B_0 \frac{x_1}{x} \hat{z} \, - \, \partial_x B_{1y} \xi B_0 \frac{x_1}{x} \hat{x}
 \eeq
 
+For the induction equation, we have:
+
+\beq
+\partial_t \mathbf{B} = \left(\mathbf{B} \cdot \nabla \right) \mathbf{u} - \left(\mathbf{u} \cdot \nabla \right) \mathbf{B} + \frac{1}{\reym} \nabla^2 \mathbf{B}
+\eeq
+
+The first term on the righthand side becomes:
+
+\beq
+\partial_t \mathbf{B} = \left( \left( \mathbf{B_0} \hat{z} + \xi B_0 \frac{x_1}{x} \hat{y} + \mathbf{B_1} \right) \cdot \nabla \right) \left(-q \Omega_0 x \hat{y} + \mathbf{u_1}\right) = \xi B_0 \frac{x_1}{x} \partial_y \mathbf{u_1}
+\eeq
+
+The second term becomes:
+
+\beq
+\xi B_0 u_{1x} \frac{x_1}{x^2} \hat{y}
+\eeq
+
+
 
 \bibliography{mri.bib}
 
