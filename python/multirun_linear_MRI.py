@@ -34,7 +34,7 @@ domain = Domain([x_basis])
 iRm = 1./Rm
 
 #Parameter values from Umurhan+:
-Pm = 0.0001 #0.001 #Pm = Rm/R
+Pm = 0.00001 #0.0001 #0.001 #Pm = Rm/R
 R = Rm/Pm
 iR = 1./R
 q = 3/2.

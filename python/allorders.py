@@ -186,6 +186,7 @@ class OrderE():
         self.q = q
         self.beta = beta
         
+        print("first order", Q, Rm, Pm, q)
     
     def solve(self, gridnum = gridnum, save = False, norm = True):
 
