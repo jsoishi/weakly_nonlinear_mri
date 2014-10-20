@@ -32,8 +32,12 @@ import pickle
 #Rmsearch = np.arange(200, 600, 10)
 
 #Pm = 0.0001, so Rm ~ 0.5
-Rmsearch = np.arange(0.2, 1.2, 0.1)
-Qsearch = np.arange(0.45, 0.55, 0.01) 
+#Rmsearch = np.arange(0.2, 1.2, 0.1)
+#Rmsearch = np.arange(3.2, 4.2, 0.1)
+#Qsearch = np.arange(0.45, 0.55, 0.01)
+Rmsearch = np.arange(3.5, 5.5, 0.1) 
+Qsearch = np.arange(0.2, 3, 0.2)
+#Qsearch = np.arange(0.15, 0.25, 0.01) 
 
 run_script = "multirun_linear_MRI.py"
 
@@ -61,7 +65,7 @@ for k,proc in processes.items():
 
 #print(results)
 
-pickle.dump(results, open("multirun_Rm_50.p", "wb"))
+pickle.dump(results, open("multirun_Rm_p5_big.p", "wb"))
 
 #np.save("results_Qrange"+str(Qsearch[0])+"_to_"+str(Qsearch[-1])+"Rrange"+str(Rmsearch[0])+"_to_"+str(Rmsearch[-1])+".npy", results)
 #np.save("results_test.npy", results)
