@@ -1140,7 +1140,7 @@ class N3():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2()
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1481,6 +1481,8 @@ class AmplitudeAlpha():
         self.q = q
         self.beta = beta
         
+        print("amplitude alpha params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
 
@@ -1493,7 +1495,7 @@ class AmplitudeAlpha():
             self.va = AdjointHomogenous()
             self.va.solve(save = False, norm = True)
         
-            v1 = OrderE()
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             v1.solve(save=False)
             
             if norm == True:
@@ -1516,7 +1518,7 @@ class AmplitudeAlpha():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            self.o2 = OrderE2(speedy = True, o1 = v1)
+            self.o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = v1)
             self.o2.solve20()
             self.o2.solve21(norm = norm)
             self.o2.solve22()
@@ -1549,10 +1551,10 @@ class AmplitudeAlpha():
             self.v22_A = self.o2.LEV22.state['A22']
             self.v22_B = self.o2.LEV22.state['B22']
             
-            self.o3 = OrderE3(speedy = True, o2 = self.o2)
+            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o2 = self.o2)
             self.o3.solve()
             
-            self.n3 = N3(speedy = True, o1 = v1, o2 = self.o2)
+            self.n3 = N3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = v1, o2 = self.o2)
             self.n3.solve31()
             self.n3.solve30()
             
@@ -1814,6 +1816,8 @@ class AmplitudeBeta():
         self.q = q
         self.beta = beta
         
+        print("amplitude beta params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
 
@@ -1823,10 +1827,10 @@ class AmplitudeBeta():
         
         if run == True:
         
-            self.va = AdjointHomogenous(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
+            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             self.va.solve(save = False, norm = True)
         
-            v1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             v1.solve(save=False)
             
             if norm == True:
@@ -1849,7 +1853,7 @@ class AmplitudeBeta():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1886,7 +1890,7 @@ class AmplitudeBeta():
             self.n3.solve31()
             self.n3.solve30()
             
-            self.o3 = OrderE3(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
+            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             self.o3.solve()
             
             
@@ -1963,6 +1967,8 @@ class SolveAmplitudeAlpha():
         self.q = q
         self.beta = beta
         
+        print("saa params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
 
@@ -1973,7 +1979,7 @@ class SolveAmplitudeAlpha():
         self.gridnum = gridnum
 
         # obtain amplitude coefficients
-        self.alpha_amp = AmplitudeAlpha(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
+        self.alpha_amp = AmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
         self.alpha_amp.solve()
         
         #MagSq = operators.MagSquared
@@ -2088,7 +2094,7 @@ class PlotContours():
         
         self.gridnum = gridnum
         
-        self.saa = SolveAmplitudeAlpha(Q = Q, Rm = Rm, Pm = Pm, q = 1.5, beta = 25.0)
+        self.saa = SolveAmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
         #alpha_amp = AmplitudeAlpha()
         #beta_amp = AmplitudeBeta()
         

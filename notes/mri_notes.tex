@@ -1418,7 +1418,55 @@ Because the $\partial_y$ terms go to zero, the induction equation only picks up 
 \xi B_0 \frac{x_1}{x^2} \partial_z \Psi \hat{y} + \frac{1}{\reym} \xi B_0 \frac{2 x_1}{x^3} \hat{y}
 \eeq 
 
-We can now inspect Equation \ref{momeq_added} and see that the $\hat{y}$ component of the momentum equation will pick up a term analogous to the the first term of Equation \ref{induc_eq_added} -- a tantalizing $\partial_z$ term, which has the ability to lend a $\partial_Z$ term in the $\mathcal{O}\left(\epsilon^2\right)$ equation! But Equation \ref{momeq_added} can no longer be written in terms of flux/stream functions, because contributions to the $\hat{x}$ and $\hat{z}$ components are uneven. Should I rewrite all the equations in terms of primitive variables to proceed?
+%We can now inspect Equation \ref{momeq_added} and see that the $\hat{y}$ component of the momentum equation will pick up a term analogous to the the first term of Equation \ref{induc_eq_added} -- a tantalizing $\partial_z$ term, which has the ability to lend a $\partial_Z$ term in the $\mathcal{O}\left(\epsilon^2\right)$ equation! But Equation \ref{momeq_added} can no longer be written in terms of flux/stream functions, because contributions to the $\hat{x}$ and $\hat{z}$ components are uneven. Should I rewrite all the equations in terms of primitive variables to proceed?
+
+For the momentum equation, we now take $\partial_z$ of the x component and $\partial_x$ of the z component, to obtain, for each component:
+
+\beq
+[x]: \xi B_0 \frac{x_0}{x^2} \partial_z B_{1y} - \partial_x\partial_z B_{1y} \xi B_0 \frac{x_0}{x}
+\eeq
+
+\beq
+[y]: - \xi B_0 \frac{x_0}{x^2} B_{1x}
+\eeq
+
+\beq
+[z]: \xi B_0 \frac{x_0}{x^2} \partial_z B_{1y} - \partial_x\partial_z B_{1y} \xi B_0 \frac{x_0}{x}
+\eeq
+
+Rewritten in terms of flux functions:
+
+\beq
+[x]: \xi B_0 \frac{x_0}{x^2} \partial_z B_{y} - \partial_x\partial_z B_{y} \xi B_0 \frac{x_0}{x}
+\eeq
+
+\beq
+[y]: - \xi B_0 \frac{x_0}{x^2} \partial_z A
+\eeq
+
+\beq
+[z]: \xi B_0 \frac{x_0}{x^2} \partial_z B_{y} - \partial_x\partial_z B_{y} \xi B_0 \frac{x_0}{x}
+\eeq
+
+This means that the total added contributions to the final equation set, in $\left[\Psi, u_y, A, B_y\right]^T$ order, are:
+
+\beq
+[\Psi]: \xi B_0 \frac{x_0}{x^2} \partial_z B_{y} - \xi B_0 \partial_x\partial_z B_{y} \frac{x_0}{x}
+\eeq
+
+\beq
+[u_y]: - \xi B_0 \frac{x_0}{x^2} \partial_z A
+\eeq
+
+\beq
+[A]: 0
+\eeq
+
+\beq
+[B]: \xi B_0 \frac{x_1}{x^2} \partial_z \Psi + \frac{1}{\reym} \xi B_0 \frac{2 x_1}{x^3}
+\eeq
+
+Two exciting things are happening. We have some first-order $\partial_z$ terms, and some linear coupling between the velocity and magnetic field equations.
 
 
 \bibliography{mri.bib}
