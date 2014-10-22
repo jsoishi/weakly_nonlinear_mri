@@ -1468,6 +1468,32 @@ This means that the total added contributions to the final equation set, in $\le
 
 Two exciting things are happening. We have some first-order $\partial_z$ terms, and some linear coupling between the velocity and magnetic field equations.
 
+We now rewrite these terms in matrix form. We will have a matrix for the variable terms and a constant vector.
+
+\beq
+\mathbf{H} = \left[ \begin{matrix}  0 & 0 & 0 & x_0\left(\frac{1}{x^2} - \frac{1}{x}\partial_x\right)\\
+0 & 0 & -\frac{x_0}{x^2} & 0 \\ 
+0 & 0 & 0 & 0 \\
+\frac{x_0}{x^2} & 0 & 0 & 0 \\
+\end{matrix} \right] \\
+\eeq
+
+and
+
+\beq
+\mathbf{C} = \left[\begin{matrix} 0 \\
+0 \\
+0 \\
+\frac{1}{\reym} \frac{2 x_0}{x^3} \\
+\end{matrix} \right] \\
+\eeq
+
+And our additional terms become:
+
+\beq
+\xi B_0 \mathbf{H} \partial_z \mathbf{V} + \xi B_0 \mathbf{C}
+\eeq
+
 
 \bibliography{mri.bib}
 
