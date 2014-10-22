@@ -1494,6 +1494,24 @@ And our additional terms become:
 \xi B_0 \mathbf{H} \partial_z \mathbf{V} + \xi B_0 \mathbf{C}
 \eeq
 
+Destabilizing substitution $B_0 = 1 - \epsilon^2$:
+
+\beq
+\xi \left(1 - \epsilon^2\right) \mathbf{H} \partial_z \mathbf{V} + \xi \left(1 - \epsilon^2\right) \mathbf{C}
+\eeq
+
+\beq
+= \xi \mathbf{H} \partial_z \mathbf{V}  - \epsilon^2 \xi \mathbf{H} \partial_z \mathbf{V} + \xi \mathbf{C} - \xi \epsilon^2 \mathbf{C}
+\eeq
+
+Multiscale expansion ($\partial_z \rightarrow \partial_z + \epsilon \partial_Z$):
+
+\beq
+= \xi \mathbf{H} \partial_z \mathbf{V} + \epsilon \xi \mathbf{H} \partial_Z \mathbf{V} - \epsilon^2 \xi \mathbf{H} \partial_z \mathbf{V} - \epsilon^3 \xi \mathbf{H} \partial_Z \mathbf{V} + \xi \mathbf{C} - \xi \epsilon^2 \mathbf{C}
+\eeq
+
+And finally, the perturbation series expansion
+
 
 \bibliography{mri.bib}
 
