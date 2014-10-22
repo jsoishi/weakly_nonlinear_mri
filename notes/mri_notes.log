@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  22 OCT 2014 14:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  22 OCT 2014 16:05
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2655,7 +2655,12 @@ Package pdftex.def Info: ah_allpos_fixed.png used on input line 1324.
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [34 <./ah_nodz.png> <./nonadjoint_redonly.png>] [35 <./ah_allpos_fixed.png>]
-[36] [37] (./mri_notes.bbl)
+[36] [37]
+Underfull \hbox (badness 10000) in paragraph at lines 1546--1547
+
+ []
+
+(./mri_notes.bbl)
 
 Package natbib Warning: There were undefined citations.
 
@@ -2688,7 +2693,7 @@ xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/tex
 live/2014/texmf-dist/fonts/type1/public/amsfonts/latxfont/line10.pfb></usr/loca
 l/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/
 local/texlive/2014/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on mri_notes.pdf (38 pages, 1217159 bytes).
+Output written on mri_notes.pdf (38 pages, 1217508 bytes).
 PDF statistics:
  233 PDF objects out of 1000 (max. 8388607)
  146 compressed objects within 2 object streams
