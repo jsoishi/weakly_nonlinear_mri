@@ -1333,52 +1333,52 @@ Instead of the standard MRI, we initialize an azimuthal field in addition to the
 The base state becomes:
 
 \begin{equation}
-\mathbf{B} = B_0 \hat{z} + \xi B_0 \left(\frac{x_1}{x}\right) \hat{y} + \mathbf{B}_1
+\mathbf{B} = B_0 \hat{z} + \xi B_0 \left(\frac{x_0}{x}\right) \hat{y} + \mathbf{B}_1
 \end{equation}
 
 The Lorentz term in the momentum equation is the only term that will change. It becomes
 
 \beq
-\left(\nabla \times \left(B_0 \hat{z} + \xi B_0 \left(\frac{x_1}{x}\right) \hat{y} + \mathbf{B}_1
-\right) \right) \times \left(B_0 \hat{z} + \xi B_0 \left(\frac{x_1}{x}\right) \hat{y} + \mathbf{B}_1
+\left(\nabla \times \left(B_0 \hat{z} + \xi B_0 \left(\frac{x_0}{x}\right) \hat{y} + \mathbf{B}_1
+\right) \right) \times \left(B_0 \hat{z} + \xi B_0 \left(\frac{x_0}{x}\right) \hat{y} + \mathbf{B}_1
 \right)
 \eeq
 
 and we gain a potential 5 terms that were not present before, since there are 5 terms in this expansion that involve the azimuthal term. These are as follows.
 
 \beq
-\left(\nabla \times B_0 \hat{z} \right) \times \xi B_0 \left(\frac{x_1}{x}\right)\hat{y} = 0
+\left(\nabla \times B_0 \hat{z} \right) \times \xi B_0 \left(\frac{x_0}{x}\right)\hat{y} = 0
 \eeq
 
 because of the constant term.
 
 \beq
-\left(\nabla \times \xi B_0 \left(\frac{x_1}{x}\right) \hat{y} \right) \times B_0 \hat{z} = \left(\partial_x \left(\xi B_0 \left(\frac{x_1}{x}\right)\right)\hat{z}\right) \times B_0 \hat{z} = 0
+\left(\nabla \times \xi B_0 \left(\frac{x_0}{x}\right) \hat{y} \right) \times B_0 \hat{z} = \left(\partial_x \left(\xi B_0 \left(\frac{x_0}{x}\right)\right)\hat{z}\right) \times B_0 \hat{z} = 0
 \eeq
 
 because $\hat{z} \times \hat{z} = 0$.
 
 \beq
-\left(\nabla \times \xi B_0 \frac{x_1}{x} \hat{y} \right) \times \left( \xi B_0 \frac{x_1}{x}\hat{y}\right) = \xi^2 B_0^2 \frac{x_1^2}{x^3} \hat{x}
+\left(\nabla \times \xi B_0 \frac{x_0}{x} \hat{y} \right) \times \left( \xi B_0 \frac{x_0}{x}\hat{y}\right) = \xi^2 B_0^2 \frac{x_0^2}{x^3} \hat{x}
 \eeq
 
 And
 
 \beq
-\left(\nabla \times \xi B_0 \frac{x_1}{x} \hat{y}\right) \times \mathbf{B_1} = -\xi B_0 \frac{x_1}{x^2} \left(B_{1x} \hat{y} - B_{1y} \hat{x}\right)
+\left(\nabla \times \xi B_0 \frac{x_0}{x} \hat{y}\right) \times \mathbf{B_1} = -\xi B_0 \frac{x_0}{x^2} \left(B_{1x} \hat{y} - B_{1y} \hat{x}\right)
 \eeq
 
 And finally,
 
 \beq
-\left(\nabla \times \mathbf{B}_1 \right) \times \left(\xi B_0 \frac{x_1}{x} \hat{y}\right) = - \partial_z B_{1y} \xi B_0 \frac{x_1}{x} \hat{z} - \partial_x B_{1y} \xi B_0 \frac{x_1}{x} \hat{x}
+\left(\nabla \times \mathbf{B}_1 \right) \times \left(\xi B_0 \frac{x_0}{x} \hat{y}\right) = - \partial_z B_{1y} \xi B_0 \frac{x_0}{x} \hat{z} - \partial_x B_{1y} \xi B_0 \frac{x_0}{x} \hat{x}
 \eeq
 
 So our final added terms to the momentum equation are:
 
 \beq
 \label{momeq_added}
-\xi^2 B_0^2 \frac{x_1^2}{x^3} \hat{x} \, - \,  \xi B_0 \frac{x_1}{x^2} B_{1x} \hat{y} \, + \, \xi B_0 \frac{x_1}{x^2} B_{1y} \hat{x} \, - \, \partial_z B_{1y} \xi B_0 \frac{x_1}{x} \hat{z} \, - \, \partial_x B_{1y} \xi B_0 \frac{x_1}{x} \hat{x}
+\xi^2 B_0^2 \frac{x_0^2}{x^3} \hat{x} \, - \,  \xi B_0 \frac{x_0}{x^2} B_{1x} \hat{y} \, + \, \xi B_0 \frac{x_0}{x^2} B_{1y} \hat{x} \, - \, \partial_z B_{1y} \xi B_0 \frac{x_0}{x} \hat{z} \, - \, \partial_x B_{1y} \xi B_0 \frac{x_0}{x} \hat{x}
 \eeq
 
 For the induction equation, we have:
@@ -1390,32 +1390,32 @@ For the induction equation, we have:
 The first term on the righthand side becomes:
 
 \beq
-\left( \left( \mathbf{B_0} \hat{z} + \xi B_0 \frac{x_1}{x} \hat{y} + \mathbf{B_1} \right) \cdot \nabla \right) \left(-q \Omega_0 x \hat{y} + \mathbf{u_1}\right) = \xi B_0 \frac{x_1}{x} \partial_y \mathbf{u_1}
+\left( \left( \mathbf{B_0} \hat{z} + \xi B_0 \frac{x_0}{x} \hat{y} + \mathbf{B_1} \right) \cdot \nabla \right) \left(-q \Omega_0 x \hat{y} + \mathbf{u_1}\right) = \xi B_0 \frac{x_0}{x} \partial_y \mathbf{u_1}
 \eeq
 
 The second term becomes:
 
 \beq
--\left( \left( -q \Omega_0 x \hat{y} + \mathbf{u_1}\right) \cdot \nabla\right) \left( B_0 \hat{z} + \xi B_0 \frac{x_1}{x} \hat{y} + \mathbf{B_1}\right)   \, = \, \xi B_0 u_{1x} \frac{x_1}{x^2} \hat{y}
+-\left( \left( -q \Omega_0 x \hat{y} + \mathbf{u_1}\right) \cdot \nabla\right) \left( B_0 \hat{z} + \xi B_0 \frac{x_0}{x} \hat{y} + \mathbf{B_1}\right)   \, = \, \xi B_0 u_{1x} \frac{x_0}{x^2} \hat{y}
 \eeq
 
 And the third term on the righthandside becomes
 
 \beq
-\frac{1}{\reym} \xi B_0 \left( \frac{2 x_1}{x^3}\right) \hat{y}
+\frac{1}{\reym} \xi B_0 \left( \frac{2 x_0}{x^3}\right) \hat{y}
 \eeq
 
 So that all told, the induction equation gains the terms:
 
 \beq
-\xi B_0 \frac{x_1}{x} \partial_y \mathbf{u_1} \, + \, \xi B_0 u_{1x} \frac{x_1}{x^2} \hat{y} \, + \, \frac{1}{\reym} \xi B_0 \left( \frac{2 x_1}{x^3}\right) \hat{y}
+\xi B_0 \frac{x_0}{x} \partial_y \mathbf{u_1} \, + \, \xi B_0 u_{1x} \frac{x_0}{x^2} \hat{y} \, + \, \frac{1}{\reym} \xi B_0 \left( \frac{2 x_0}{x^3}\right) \hat{y}
 \eeq
 
 Because the $\partial_y$ terms go to zero, the induction equation only picks up terms in its $y$ component (the first term above goes to zero). Rewritten to use the stream function, these terms are:
 
 \beq
 \label{induc_eq_added}
-\xi B_0 \frac{x_1}{x^2} \partial_z \Psi \hat{y} + \frac{1}{\reym} \xi B_0 \frac{2 x_1}{x^3} \hat{y}
+\xi B_0 \frac{x_0}{x^2} \partial_z \Psi \hat{y} + \frac{1}{\reym} \xi B_0 \frac{2 x_0}{x^3} \hat{y}
 \eeq 
 
 %We can now inspect Equation \ref{momeq_added} and see that the $\hat{y}$ component of the momentum equation will pick up a term analogous to the the first term of Equation \ref{induc_eq_added} -- a tantalizing $\partial_z$ term, which has the ability to lend a $\partial_Z$ term in the $\mathcal{O}\left(\epsilon^2\right)$ equation! But Equation \ref{momeq_added} can no longer be written in terms of flux/stream functions, because contributions to the $\hat{x}$ and $\hat{z}$ components are uneven. Should I rewrite all the equations in terms of primitive variables to proceed?
@@ -1463,7 +1463,7 @@ This means that the total added contributions to the final equation set, in $\le
 \eeq
 
 \beq
-[B]: \xi B_0 \frac{x_1}{x^2} \partial_z \Psi + \frac{1}{\reym} \xi B_0 \frac{2 x_1}{x^3}
+[B]: \xi B_0 \frac{x_0}{x^2} \partial_z \Psi + \frac{1}{\reym} \xi B_0 \frac{2 x_0}{x^3}
 \eeq
 
 Two exciting things are happening. We have some first-order $\partial_z$ terms, and some linear coupling between the velocity and magnetic field equations.

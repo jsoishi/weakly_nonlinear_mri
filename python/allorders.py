@@ -22,6 +22,8 @@ gridnum = 256
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
+outname=False
+
 class AdjointHomogenous():
 
     """
@@ -37,6 +39,8 @@ class AdjointHomogenous():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        
+        print("adjoint params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
         
     
     def solve(self, gridnum = gridnum, save = False, norm = True):
@@ -186,7 +190,7 @@ class OrderE():
         self.q = q
         self.beta = beta
         
-        print("first order", Q, Rm, Pm, q)
+        print("first order params", self.Q, self.Rm, self.Pm, self.q)
     
     def solve(self, gridnum = gridnum, save = False, norm = True):
 
@@ -334,9 +338,11 @@ class N2():
         self.q = q
         self.beta = beta
         
+        print("N2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        
         # either run or load the data in from saved files (needs implementing)
         if run == True:
-            v1 = OrderE()
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             v1.solve(save=False)
             
             if norm == True:
@@ -520,10 +526,12 @@ class OrderE2():
         self.q = q
         self.beta = beta
         
+        print("order e 2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        
         
         if (run == True) and (speedy == False):
             
-            v1 = OrderE()
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             v1.solve(save=False)
             
             if norm == True:
@@ -568,7 +576,7 @@ class OrderE2():
                 self.A_1 = o1.LEV.state['A']
                 self.B_1 = o1.LEV.state['B']
                  
-        n2 = N2()
+        n2 = N2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
         n2.solve()
         self.n22_psi = n2.N22_psi
         self.n22_u = n2.N22_u
@@ -998,9 +1006,11 @@ class OrderE3():
         self.beta = beta
         self.R = self.Rm/self.Pm
         
+        print("order 3 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, self.R)
+        
         if (run == True) and (speedy == False):
             
-            o2 = OrderE2()
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1492,7 +1502,7 @@ class AmplitudeAlpha():
         
         if run == True:
         
-            self.va = AdjointHomogenous()
+            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             self.va.solve(save = False, norm = True)
         
             v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
@@ -2242,7 +2252,7 @@ class PlotContours():
         
         pylab.savefig("Bfield1.png")
 
-def plot_uy_firstorder(pc_obj, oplot = True, labels = False):
+def plot_uy_firstorder(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2278,9 +2288,12 @@ def plot_uy_firstorder(pc_obj, oplot = True, labels = False):
         u1mag = np.sqrt(np.abs(V1_ux1**2) + np.abs(V1_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_ux1.real, V1_uz1.real, linewidth = 3*u1mag/u1mag.max(), color = "black")
         
-    pylab.savefig("uy_firstorder_Q2p3_Rm45.png")
+    if outname:
+        pylab.savefig("uy_firstorder_"+outname+".png")
+    else:    
+        pylab.savefig("uy_firstorder_Q2p3_Rm45.png")
         
-def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
+def plot_uy_secondorder(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2319,10 +2332,13 @@ def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
     if oplot == True:
         u1mag = np.sqrt(np.abs(V2_ux1**2) + np.abs(V2_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V2_ux1.real, V2_uz1.real, linewidth = 3*u1mag/u1mag.max(), color = "black")
-        
-    pylab.savefig("uy_secondorder_Q2p3_Rm45.png")
+       
+    if outname:
+        pylab.savefig("uy_secondorder_"+outname+".png")
+    else: 
+        pylab.savefig("uy_secondorder_Q2p3_Rm45.png")
 
-def plot_uy(pc_obj, oplot = True, labels = False):
+def plot_uy(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2357,9 +2373,12 @@ def plot_uy(pc_obj, oplot = True, labels = False):
         speed = np.sqrt(np.abs(pc_obj.V_ux1**2) + np.abs(pc_obj.V_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, pc_obj.V_ux1.real, pc_obj.V_uz1.real, linewidth = 3*speed/speed.max(), color = "black")
         
-    pylab.savefig("uy_bothorders_Q2p3_Rm45.png")
+    if outname:
+        pylab.savefig("uy_bothorders_"+outname+".png")
+    else:
+        pylab.savefig("uy_bothorders_Q2p3_Rm45.png")
         
-def plot_By_firstorder(pc_obj, oplot = True, labels = False):
+def plot_By_firstorder(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2396,9 +2415,12 @@ def plot_By_firstorder(pc_obj, oplot = True, labels = False):
         B1mag = np.sqrt(np.abs(V1_Bx1**2) + np.abs(V1_Bz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_Bx1.real, V1_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
         
-    pylab.savefig("By_firstorder_Q2p3_Rm45.png")
+    if outname:
+        pylab.savefig("By_firstorder_"+outname+".png")
+    else:
+        pylab.savefig("By_firstorder_Q2p3_Rm45.png")
         
-def plot_By_secondorder(pc_obj, oplot = True, labels = False):
+def plot_By_secondorder(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2431,9 +2453,12 @@ def plot_By_secondorder(pc_obj, oplot = True, labels = False):
         B1mag = np.sqrt(np.abs(V2_Bx1**2) + np.abs(V2_Bz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V2_Bx1.real, V2_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
         
-    pylab.savefig("By_secondorder_Q2p3_Rm45.png")
+    if outname:
+        pylab.savefig("By_secondorder_"+outname+".png")
+    else:
+        pylab.savefig("By_secondorder_Q2p3_Rm45.png")
 
-def plot_By(pc_obj, oplot = True, labels = False):
+def plot_By(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2480,7 +2505,10 @@ def plot_By(pc_obj, oplot = True, labels = False):
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V_Bx1, V_Bz1)#, linewidth = 3*Bmag/Bmag.max(), color = "black")
     """    
 
-    pylab.savefig("By_bothorders_Q2p3_Rm45.png")
+    if outname:
+        pylab.savefig("By_bothorders_"+outname+".png")
+    else:
+        pylab.savefig("By_bothorders_Q2p3_Rm45.png")
 
 def plotN2(n2_obj):
 
