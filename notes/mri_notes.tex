@@ -1510,8 +1510,38 @@ Multiscale expansion ($\partial_z \rightarrow \partial_z + \epsilon \partial_Z$)
 = \xi \mathbf{H} \partial_z \mathbf{V} + \epsilon \xi \mathbf{H} \partial_Z \mathbf{V} - \epsilon^2 \xi \mathbf{H} \partial_z \mathbf{V} - \epsilon^3 \xi \mathbf{H} \partial_Z \mathbf{V} + \xi \mathbf{C} - \xi \epsilon^2 \mathbf{C}
 \eeq
 
-And finally, the perturbation series expansion
+And finally, the perturbation series expansion $\mathbf{V} = \epsilon \mathbf{V_1} + \epsilon^2 \mathbf{V_2} + \epsilon^3 \mathbf{V_3}$. I include terms up to $\epsilon^3$:
 
+\beq
+\epsilon \xi \mathbf{H} \partial_z \mathbf{V_1} + \epsilon^2 \xi \mathbf{H} \partial_z \mathbf{V_2} + \epsilon^3 \xi \mathbf{H} \partial_z \mathbf{V_3} + \epsilon^2 \xi \mathbf{H} \partial_Z \mathbf{V_1} + \epsilon^3 \xi \mathbf{H} \partial_Z \mathbf{V_2} - \epsilon^3 \xi \mathbf{H} \partial_z \mathbf{V_1} + \xi \mathbf{C} - \xi \epsilon^2 \mathbf{C}
+\eeq
+
+Separated by order:
+
+$\mathcal{O}(0)$:
+
+\beq
+\xi \mathbf{C}
+\eeq
+
+$\mathcal{O}(\epsilon)$:
+
+\beq
+\epsilon \xi \mathbf{H} \partial_z \mathbf{V_1}
+\eeq
+
+
+$\mathcal{O}(\epsilon^2)$:
+
+\beq
+\epsilon^2 \xi \mathbf{H} \partial_z \mathbf{V_2} + \epsilon^2 \xi \mathbf{H} \partial_Z \mathbf{V_1} - \xi \epsilon^2 \mathbf{C}
+\eeq
+
+$\mathcal{O}(\epsilon^3)$:
+
+\beq
+\epsilon^3 \xi \mathbf{H} \partial_z \mathbf{V_3} + \epsilon^3 \xi \mathbf{H} \partial_Z \mathbf{V_2} - \epsilon^3 \xi \mathbf{H} \partial_z \mathbf{V_1}
+\eeq
 
 \bibliography{mri.bib}
 
