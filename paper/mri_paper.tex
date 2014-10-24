@@ -124,7 +124,7 @@ and the induction equation,
 \partial_t \mathbf{B} = \nabla \times \left(\mathbf{u} \times \mathbf{B}\right) + \eta\nabla^2\mathbf{B}.
 \eeq
 
-Equations \ref{momentum} and \ref{induction} are subject to the magnetic solenoid and incompressibility constraints,
+In the above, $\nu$ is the kinematic viscosity, $\eta$ is the microscopic diffusivity, the current density $\mathbf{J} = \frac{2}{\beta}\Phi\times\mathbf{B}$, and $\nabla\Phi$ is the gravitational force per unit mass. Equations \ref{momentum} and \ref{induction} are subject to the magnetic solenoid and incompressibility constraints,
 
 \beq
 \nabla \cdot \mathbf{B} = 0
@@ -146,6 +146,18 @@ and magnetic Reynolds number,
 
 \beq
 \reym \equiv \frac{\Omega_0 L^2}{\eta}.
+\eeq
+
+We also define a plasma beta parameter,
+
+\beq
+\beta \equiv \frac{\Omega_0^2r_0^2}{v_A^2},
+\eeq
+
+where the Alfv\'en sped $v_A$ is 
+
+\beq
+v_A^2 = \frac{B_0^2}{\rho_0}.
 \eeq
 
 The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the nondimensional, perturbed quantities.

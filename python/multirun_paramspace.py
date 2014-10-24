@@ -16,9 +16,31 @@ import pickle
 #Rmsearch = np.arange(4.6, 5.4, 0.1)
 
 # coarse grid for Rm ~ 50
-Qsearch = np.arange(0.1, 1.5, 0.1)
-Rmsearch = np.arange(46, 54, 1.0)
+#Qsearch = np.arange(0.1, 1.5, 0.1)
 
+#Qsearch = np.arange(1, 15, 1.0)
+#Rmsearch = np.arange(46, 54, 1.0)
+
+#Qsearch = np.arange(1.5, 3.5, 0.25)
+#Rmsearch = np.arange(43, 46, 0.2)
+
+#Qsearch = np.arange(2.0, 2.5, 0.1)
+#Rmsearch = np.arange(45, 45.5, 0.1)#Q=2.3, Rm=45.1
+
+# coarse grid for Rm ~ 500
+#Qsearch = np.arange(5, 40, 5) #Q 0-150 Rm 360-460, #Q 10-140 Rm 460-530
+#Rmsearch = np.arange(200, 600, 10)
+
+#Pm = 0.0001, so Rm ~ 0.5
+#Rmsearch = np.arange(0.2, 1.2, 0.1)
+#Rmsearch = np.arange(3.2, 4.2, 0.1)
+#Qsearch = np.arange(0.45, 0.55, 0.01)
+
+#Rmsearch = np.arange(3.5, 5.5, 0.1) 
+#Qsearch = np.arange(0.2, 2, 0.2) # there's a marginal case between Rm 4.8 - 5.0, Q 0.6-1.0 for Pm = 0.0001
+
+Rmsearch = np.arange(3.5, 5.5, 0.1)
+Qsearch = np.arange(0.2, 2, 0.2)
 
 run_script = "multirun_linear_MRI.py"
 
@@ -31,16 +53,22 @@ for Rm in Rmsearch:
         processes[Rm, Q] = subprocess.Popen(proc_args, stdout=subprocess.PIPE)
         processes[Rm, Q].wait()
 
+print(processes)
 results = {}
 for k,proc in processes.items():
     res = proc.communicate()
+    #print(res)
     if res is not None:
         str = res[0].decode("utf-8")
+        print("str", str)
+        if str == '' or str == None:
+            str = 99
+        
         results[k] = complex(str)
 
-print(results)
+#print(results)
 
-pickle.dump(results, open("multirun_Rm_50.p", "wb"))
+pickle.dump(results, open("multirun_Pm_00001.p", "wb"))
 
 #np.save("results_Qrange"+str(Qsearch[0])+"_to_"+str(Qsearch[-1])+"Rrange"+str(Rmsearch[0])+"_to_"+str(Rmsearch[-1])+".npy", results)
 #np.save("results_test.npy", results)

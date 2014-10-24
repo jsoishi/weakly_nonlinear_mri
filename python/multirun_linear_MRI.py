@@ -27,20 +27,22 @@ lv1 = ParsedProblem(['x'],
                       field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
                       param_names=['Q', 'iR', 'iRm', 'q', 'B0', 'beta', 'Co'])
                   
-x_basis = Chebyshev(64)
+x_basis = Chebyshev(32)
 domain = Domain([x_basis])
 
 #Rm is an input parameter
 iRm = 1./Rm
 
 #Parameter values from Umurhan+:
-Pm = 0.001 #Pm = Rm/R
+Pm = 0.00001 #0.0001 #0.001 #Pm = Rm/R
 R = Rm/Pm
 iR = 1./R
 q = 3/2.
 Co = 0.08
 B0 = 1.#np.sqrt(Co)
 beta = 2./Co
+
+#print('Pm', Pm, 'Re', R, 'beta', beta)
 
 #multiply by -1j and add dt's:
 #lv1.add_equation("-dt(psixx) - Q**2*dt(psi) - iR*(dx(psixxx) + 2*psixx*Q**2 + Q**4*psi) + 2*1j*Q*u + B0*ifourpi*1j*Q*(-dx(Ax) - Q**2*A) = 0")
@@ -98,4 +100,8 @@ indx = np.arange(len(evals))
 e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
 
 val = evals[e0]
+
+#if len(val) < 1:
+#    val = [99]
+
 print(val[0])

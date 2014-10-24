@@ -22,6 +22,8 @@ gridnum = 256
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
+outname=False
+
 class AdjointHomogenous():
 
     """
@@ -37,6 +39,8 @@ class AdjointHomogenous():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        
+        print("adjoint params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
         
     
     def solve(self, gridnum = gridnum, save = False, norm = True):
@@ -186,6 +190,7 @@ class OrderE():
         self.q = q
         self.beta = beta
         
+        print("first order params", self.Q, self.Rm, self.Pm, self.q)
     
     def solve(self, gridnum = gridnum, save = False, norm = True):
 
@@ -333,9 +338,11 @@ class N2():
         self.q = q
         self.beta = beta
         
+        print("N2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        
         # either run or load the data in from saved files (needs implementing)
         if run == True:
-            v1 = OrderE()
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             v1.solve(save=False)
             
             if norm == True:
@@ -519,10 +526,12 @@ class OrderE2():
         self.q = q
         self.beta = beta
         
+        print("order e 2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        
         
         if (run == True) and (speedy == False):
             
-            v1 = OrderE()
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             v1.solve(save=False)
             
             if norm == True:
@@ -567,7 +576,7 @@ class OrderE2():
                 self.A_1 = o1.LEV.state['A']
                 self.B_1 = o1.LEV.state['B']
                  
-        n2 = N2()
+        n2 = N2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
         n2.solve()
         self.n22_psi = n2.N22_psi
         self.n22_u = n2.N22_u
@@ -669,6 +678,7 @@ class OrderE2():
         
         self.lv20B = lv20B
         self.LEV20B = LEV20B
+        self.LEV20B.state['B20']['g'] = np.zeros(gridnum) # An elegant hack!
 
         # set state
         self.x = domain.grid(0)
@@ -676,7 +686,8 @@ class OrderE2():
         self.psi20 = LEV20psi.state['psi20']['g']
         self.u20 = LEV20u.state['u20']['g'] #+ beta*R*(self.x**2 - 1) #+ LEV20utwiddle.state['u20twiddle']['g']
         self.A20 = LEV20A.state['A20']['g']
-        self.B20 = LEV20B.state['B20']['g']
+        self.B20 = LEV20B.state['B20']['g'] # this is nan
+        #self.B20 = np.zeros(gridnum)
             
     def solve21(self, gridnum = gridnum, save = True, norm = True):
     
@@ -995,9 +1006,11 @@ class OrderE3():
         self.beta = beta
         self.R = self.Rm/self.Pm
         
+        print("order 3 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, self.R)
+        
         if (run == True) and (speedy == False):
             
-            o2 = OrderE2()
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1030,7 +1043,7 @@ class OrderE3():
             self.v20_psi = o2.LEV20psi.state['psi20']
             self.v20_u = o2.LEV20u.state['u20']
             self.v20_A = o2.LEV20A.state['A20']
-            self.v20_B = o2.LEV20B.state['B20']  
+            self.v20_B = o2.LEV20B.state['B20']  #this is nan
             
             if norm == True:
                 v21_psi = o2.LEV21.state['psi21']*o2.scale   
@@ -1137,7 +1150,7 @@ class N3():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2()
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1412,7 +1425,9 @@ class N3():
         
         self.N31_A = N31_A.evaluate()
         
+        # B_my1 is nan. Only first 2 terms. Cause is self.v20_B_x and self.v20_B_star_x
         N31_B_my1 = 1j*self.Q*(self.v11_psi*self.v20_B_x) + 1j*self.Q*(self.v11_psi*self.v20_B_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_B_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_B)
+        
         N31_B_my2 = -1j*self.Q*(self.v11_B*self.v20_psi_x) - 1j*self.Q*(self.v11_B*self.v20_psi_star_x) + 1j*self.Q*(self.v11_B_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_B_star_x*self.v22_psi)
         N31_B_my3 = -1j*self.Q*(self.v11_A*self.v20_u_x) - 1j*self.Q*(self.v11_A*self.v20_u_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_u_x) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_u)
         N31_B_my4 = 1j*self.Q*(self.v11_u*self.v20_A_x) + 1j*self.Q*(self.v11_u*self.v20_A_star_x) - 1j*self.Q*(self.v11_u_star*self.v22_A_x) - 1j*2*self.Q*(self.v11_u_star_x*self.v22_A)
@@ -1476,6 +1491,8 @@ class AmplitudeAlpha():
         self.q = q
         self.beta = beta
         
+        print("amplitude alpha params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
 
@@ -1485,10 +1502,10 @@ class AmplitudeAlpha():
         
         if run == True:
         
-            self.va = AdjointHomogenous()
+            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             self.va.solve(save = False, norm = True)
         
-            v1 = OrderE()
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             v1.solve(save=False)
             
             if norm == True:
@@ -1511,7 +1528,7 @@ class AmplitudeAlpha():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            self.o2 = OrderE2(speedy = True, o1 = v1)
+            self.o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = v1)
             self.o2.solve20()
             self.o2.solve21(norm = norm)
             self.o2.solve22()
@@ -1544,10 +1561,10 @@ class AmplitudeAlpha():
             self.v22_A = self.o2.LEV22.state['A22']
             self.v22_B = self.o2.LEV22.state['B22']
             
-            self.o3 = OrderE3(speedy = True, o2 = self.o2)
+            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o2 = self.o2)
             self.o3.solve()
             
-            self.n3 = N3(speedy = True, o1 = v1, o2 = self.o2)
+            self.n3 = N3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = v1, o2 = self.o2)
             self.n3.solve31()
             self.n3.solve30()
             
@@ -1656,7 +1673,7 @@ class AmplitudeAlpha():
         c_A = self.va.A*self.N31_A_star
         c_A = c_A.evaluate()
         
-        c_B = self.va.B*self.N31_B_star
+        c_B = self.va.B*self.N31_B_star # N31 B_star and u_star are nan
         c_B = c_B.evaluate()
         
         call = c_psi + c_u + c_A + c_B
@@ -1781,17 +1798,17 @@ class AmplitudeAlpha():
         
         
         # print all the coefficients
-        print("a :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.a))
+        print("a :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.a))
         
-        print("c :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.c))
+        print("c :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.c))
         
-        print("c~ :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.c_twiddle))
+        print("c~ :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.c_twiddle))
         
-        print("b :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.b))
+        print("b :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.b))
         
-        print("h :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.h))
+        print("h :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.h))
         
-        print("g :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.g))
+        print("g :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.g))
         
         
 class AmplitudeBeta():
@@ -1809,6 +1826,8 @@ class AmplitudeBeta():
         self.q = q
         self.beta = beta
         
+        print("amplitude beta params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
 
@@ -1818,10 +1837,10 @@ class AmplitudeBeta():
         
         if run == True:
         
-            self.va = AdjointHomogenous()
+            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             self.va.solve(save = False, norm = True)
         
-            v1 = OrderE()
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             v1.solve(save=False)
             
             if norm == True:
@@ -1844,7 +1863,7 @@ class AmplitudeBeta():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2()
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1881,7 +1900,7 @@ class AmplitudeBeta():
             self.n3.solve31()
             self.n3.solve30()
             
-            self.o3 = OrderE3()
+            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             self.o3.solve()
             
             
@@ -1934,13 +1953,13 @@ class AmplitudeBeta():
         pp = self.N30_B_star.integrate(x_basis)
         self.p = pp['g'][0]
         
-        print("n :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.n))
+        print("n :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.n))
         
-        print("k :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.k))
+        print("k :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.k))
         
-        print("m :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.m))
+        print("m :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.m))
         
-        print("p :", "{num.real:+0.04f} {num.imag:+0.04f}j".format(num=self.p))
+        print("p :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.p))
     
     
 class SolveAmplitudeAlpha():
@@ -1958,6 +1977,8 @@ class SolveAmplitudeAlpha():
         self.q = q
         self.beta = beta
         
+        print("saa params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
 
@@ -1968,7 +1989,7 @@ class SolveAmplitudeAlpha():
         self.gridnum = gridnum
 
         # obtain amplitude coefficients
-        self.alpha_amp = AmplitudeAlpha()
+        self.alpha_amp = AmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
         self.alpha_amp.solve()
         
         #MagSq = operators.MagSquared
@@ -2021,8 +2042,8 @@ class SolveAmplitudeAlpha():
         alphaZ = solver.state['alphaZ']
 
         # initial conditions ... plus noise!
-        noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
-        alpha['g'] = 1 + noise
+        #noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
+        alpha['g'] = 1# + noise
         alpha.differentiate(0, out=alphaZ)
         
         # Setup storage
@@ -2072,6 +2093,8 @@ class PlotContours():
         self.q = q
         self.beta = beta
         
+        print(Q, Rm, Pm, q)
+        
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
 
@@ -2081,7 +2104,7 @@ class PlotContours():
         
         self.gridnum = gridnum
         
-        self.saa = SolveAmplitudeAlpha()
+        self.saa = SolveAmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
         #alpha_amp = AmplitudeAlpha()
         #beta_amp = AmplitudeBeta()
         
@@ -2185,6 +2208,8 @@ class PlotContours():
         su.streamplot(ax2, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color = uymag/np.max(uymag), cmap = "RdBu")
         plt.show()
         
+        pylab.savefig("vel1.png")
+        
     def plot_Bfield(self):
     
         nz = self.gridnum
@@ -2224,8 +2249,10 @@ class PlotContours():
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color="#660033")
         su.streamplot(ax3, self.saa.alpha_amp.x, z, self.V_Bx1.real, self.V_Bz1.real, color="#660033")
         plt.show()     
+        
+        pylab.savefig("Bfield1.png")
 
-def plot_uy_firstorder(pc_obj, oplot = True, labels = False):
+def plot_uy_firstorder(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2261,7 +2288,12 @@ def plot_uy_firstorder(pc_obj, oplot = True, labels = False):
         u1mag = np.sqrt(np.abs(V1_ux1**2) + np.abs(V1_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_ux1.real, V1_uz1.real, linewidth = 3*u1mag/u1mag.max(), color = "black")
         
-def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
+    if outname:
+        pylab.savefig("uy_firstorder_"+outname+".png")
+    else:    
+        pylab.savefig("uy_firstorder_Q2p3_Rm45.png")
+        
+def plot_uy_secondorder(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2278,7 +2310,7 @@ def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
     cbarmax = np.max(info1)
     cbarmin = np.min(info1)
     
-    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_u, cmap="RdBu_r", vmin = cbarmin, vmax = cbarmax)
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_u, cmap="RdBu_r")#, vmin = cbarmin, vmax = cbarmax)
     
     cbar = plt.colorbar(info)
     cbar.ax.tick_params(labelsize = 20)
@@ -2300,9 +2332,13 @@ def plot_uy_secondorder(pc_obj, oplot = True, labels = False):
     if oplot == True:
         u1mag = np.sqrt(np.abs(V2_ux1**2) + np.abs(V2_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V2_ux1.real, V2_uz1.real, linewidth = 3*u1mag/u1mag.max(), color = "black")
-        
+       
+    if outname:
+        pylab.savefig("uy_secondorder_"+outname+".png")
+    else: 
+        pylab.savefig("uy_secondorder_Q2p3_Rm45.png")
 
-def plot_uy(pc_obj, oplot = True, labels = False):
+def plot_uy(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2337,7 +2373,12 @@ def plot_uy(pc_obj, oplot = True, labels = False):
         speed = np.sqrt(np.abs(pc_obj.V_ux1**2) + np.abs(pc_obj.V_uz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, pc_obj.V_ux1.real, pc_obj.V_uz1.real, linewidth = 3*speed/speed.max(), color = "black")
         
-def plot_By_firstorder(pc_obj, oplot = True, labels = False):
+    if outname:
+        pylab.savefig("uy_bothorders_"+outname+".png")
+    else:
+        pylab.savefig("uy_bothorders_Q2p3_Rm45.png")
+        
+def plot_By_firstorder(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2374,7 +2415,12 @@ def plot_By_firstorder(pc_obj, oplot = True, labels = False):
         B1mag = np.sqrt(np.abs(V1_Bx1**2) + np.abs(V1_Bz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V1_Bx1.real, V1_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
         
-def plot_By_secondorder(pc_obj, oplot = True, labels = False):
+    if outname:
+        pylab.savefig("By_firstorder_"+outname+".png")
+    else:
+        pylab.savefig("By_firstorder_Q2p3_Rm45.png")
+        
+def plot_By_secondorder(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2385,7 +2431,7 @@ def plot_By_secondorder(pc_obj, oplot = True, labels = False):
 
     fig = plt.figure(figsize = (12, 8))
     ax = fig.add_subplot(111)
-    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_B, cmap="binary")#cmap="RdBu_r")
+    info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.eps**2*pc_obj.V2_B, cmap="RdBu_r")
     cbar = plt.colorbar(info)
     cbar.ax.tick_params(labelsize = 20)
     
@@ -2407,8 +2453,12 @@ def plot_By_secondorder(pc_obj, oplot = True, labels = False):
         B1mag = np.sqrt(np.abs(V2_Bx1**2) + np.abs(V2_Bz1**2))
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V2_Bx1.real, V2_Bz1.real, linewidth = 3*B1mag/B1mag.max(), color = "black")
         
+    if outname:
+        pylab.savefig("By_secondorder_"+outname+".png")
+    else:
+        pylab.savefig("By_secondorder_Q2p3_Rm45.png")
 
-def plot_By(pc_obj, oplot = True, labels = False):
+def plot_By(pc_obj, oplot = True, labels = False, outname=outname):
 
     nz = pc_obj.gridnum
     Lz = 2*np.pi/pc_obj.Q
@@ -2454,6 +2504,11 @@ def plot_By(pc_obj, oplot = True, labels = False):
         uymag = pc_obj.V_B.real
         su.streamplot(ax, pc_obj.saa.alpha_amp.x, z, V_Bx1, V_Bz1)#, linewidth = 3*Bmag/Bmag.max(), color = "black")
     """    
+
+    if outname:
+        pylab.savefig("By_bothorders_"+outname+".png")
+    else:
+        pylab.savefig("By_bothorders_Q2p3_Rm45.png")
 
 def plotN2(n2_obj):
 
