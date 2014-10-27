@@ -7,6 +7,7 @@ config['logging']['stdout_level'] = 'critical'
 from dedalus2.public import *
 from dedalus2.pde.solvers import LinearEigenvalue
 import pylab
+import pickle
 
 import sys
 
@@ -97,7 +98,7 @@ if __name__ == '__main__':
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
 
-    with Pool(processes=4) as pool:
+    with Pool(processes=10) as pool:
        result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))))
        print(result.get(timeout=1000))
        
