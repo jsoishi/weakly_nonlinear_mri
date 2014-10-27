@@ -93,7 +93,7 @@ if __name__ == '__main__':
     Rmsearch = np.arange(3.5, 5.5, 0.1)
     
     # Search all combinations of Qsearch and Rmsearch 
-    QRm = np.array(itertools.product(Qsearch, Rmsearch))
+    QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
 
