@@ -99,7 +99,7 @@ if __name__ == '__main__':
 
     with Pool(processes=4) as pool:
        result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))))
-       print(result.get(timeout=100))
+       print(result.get(timeout=1000))
        
 
 
