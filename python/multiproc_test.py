@@ -90,8 +90,11 @@ if __name__ == '__main__':
     q = 3/2.
     Co = 0.08
 
-    Qsearch = np.arange(0.2, 2, 0.2)
-    Rmsearch = np.arange(3.5, 5.5, 0.1)
+    #Qsearch = np.arange(0.2, 2, 0.2)
+    #Rmsearch = np.arange(3.5, 5.5, 0.1)
+    
+    Qsearch = np.arange(1, 3, 1)
+    Rmsearch = np.arange(1, 3, 1)
     
     # Search all combinations of Qsearch and Rmsearch 
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
@@ -101,8 +104,9 @@ if __name__ == '__main__':
     with Pool(processes=10) as pool:
        result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))))
        print(result.get(timeout=1000))
-       
-    pickle.dump(result, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
+     
+    results = result.get()  
+    pickle.dump(results, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
 
 
 
