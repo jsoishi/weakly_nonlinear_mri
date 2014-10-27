@@ -91,9 +91,14 @@ if __name__ == '__main__':
 
     Qsearch = np.arange(0.2, 2, 0.2)
     Rmsearch = np.arange(3.5, 5.5, 0.1)
+    
+    # Search all combinations of Qsearch and Rmsearch 
+    QRm = np.array(itertools.product(Qsearch, Rmsearch))
+    Qs = QRm[:, 0]
+    Rms = QRm[:, 1]
 
     with Pool(processes=4) as pool:
-       result = pool.starmap_async(run_mri_solve, (zip(Qsearch, itertools.repeat(Pm), Rmsearch, itertools.repeat(q), itertools.repeat(Co))))
+       result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))))
        print(result.get(timeout=100))
        
 
