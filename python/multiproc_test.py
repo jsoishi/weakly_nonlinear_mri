@@ -106,6 +106,19 @@ if __name__ == '__main__':
     result = {}
 
     with Pool(processes=15) as pool:
+    
+        def cb(r, params=params):
+            print("callback")
+            result[params] = r
+            #return result[params]
+    
+        def ec(r, params=params):
+            result[params] = np.nan
+            #return result[params]
+            #raise the error it got...
+            print("error callback")
+            raise np.linalg.LinAlgError
+    
         try:
             params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co)))
         
@@ -123,17 +136,6 @@ if __name__ == '__main__':
         except mp.context.TimeoutError:
             print("Timeout error. Continuing...")
             
-    def cb(r, params):
-        print("callback")
-        result[params] = r
-        #return result[params]
-    
-    def ec(r):
-        result[params] = np.nan
-        #return result[params]
-        #raise the error it got...
-        print("error callback")
-        raise np.linalg.LinAlgError
          
     #results = r.get()  
     pickle.dump(result, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
