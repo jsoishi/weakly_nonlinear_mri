@@ -110,7 +110,8 @@ if __name__ == '__main__':
         return result[params]
     
     def ec(r):
-        return result[params] = np.nan
+        result[params] = np.nan
+        return result[params]
 
     with Pool(processes=15) as pool:
         try:
