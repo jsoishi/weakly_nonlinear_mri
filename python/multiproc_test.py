@@ -112,14 +112,14 @@ if __name__ == '__main__':
         #try:
         params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co)))
         result[params] = pool.starmap_async(run_mri_solve, params, error_callback=ec)
-        print(result)
-        #print(result.get(timeout=10))#000))
+        #print(result)
+        print(result.get(timeout=10))#000))
         
         #except mp.context.TimeoutError:
             #result = -99
             #print("parameters did not converge")
          
-    #results = result.get()  
+    results = result.get()  
     pickle.dump(result, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
 
 
