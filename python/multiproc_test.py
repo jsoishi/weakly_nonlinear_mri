@@ -106,6 +106,7 @@ if __name__ == '__main__':
     result = {}
     
     def cb(r, params):
+        print("callback")
         result[params] = r
         #return result[params]
     
@@ -113,6 +114,7 @@ if __name__ == '__main__':
         result[params] = np.nan
         #return result[params]
         #raise the error it got...
+        print("error callback")
         raise np.linalg.LinAlgError
 
     with Pool(processes=15) as pool:
