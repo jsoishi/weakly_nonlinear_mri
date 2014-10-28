@@ -84,23 +84,23 @@ def run_mri_solve(Q, Pm, Rm, q, Co):
 if __name__ == '__main__':
 
     # Parameter values from Umurhan+:
-    Q = 0.75
-    Rm = 4.8775
+    #Q = 0.75
+    #Rm = 4.8775
     Pm = 0.0001 #Pm = Rm/R
     q = 3/2.
     Co = 0.08
 
-    Qsearch = np.arange(0.02, 10, 0.02)
-    Rmsearch = np.arange(0.02, 10, 0.02)
+    Qsearch = np.arange(0.05, 10, 0.05)
+    Rmsearch = np.arange(0.05, 8, 0.05)
     
     # Search all combinations of Qsearch and Rmsearch 
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
 
-    with Pool(processes=10) as pool:
+    with Pool(processes=15) as pool:
        result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))))
-       print(result.get(timeout=1000))
+       print(result.get(timeout=20))
      
     results = result.get()  
     pickle.dump(results, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
