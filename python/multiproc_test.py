@@ -94,7 +94,7 @@ if __name__ == '__main__':
     #Qsearch = np.arange(0.05, 10, 0.05)
     #Rmsearch = np.arange(0.05, 8, 0.05)
     
-    Rmsearch = np.arange(3.5, 5.5, 0.1)
+    Rmsearch = np.arange(4, 8, 1)
     Qsearch = np.arange(0.2, 2, 0.2)
     
     
@@ -129,6 +129,8 @@ if __name__ == '__main__':
          
     #results = r.get()  
     pickle.dump(result, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
+    
+    print("pickling output")
 
 
 
