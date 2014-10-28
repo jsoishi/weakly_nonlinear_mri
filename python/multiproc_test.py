@@ -112,17 +112,17 @@ if __name__ == '__main__':
         return np.nan
 
     with Pool(processes=15) as pool:
-        #try:
-        params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co)))
+        try:
+            params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co)))
         
-        result = pool.starmap_async(run_mri_solve, params, callback=cb, error_callback=ec)
+            result = pool.starmap_async(run_mri_solve, params, callback=cb, error_callback=ec)
         
-        #result[params] = pool.starmap_async(run_mri_solve, params, error_callback=ec)
-        #print(result)
-        print(result.get(timeout=10))#000))
+            #result[params] = pool.starmap_async(run_mri_solve, params, error_callback=ec)
+            #print(result)
+            print(result.get(timeout=10))#000))
         
-        #except mp.context.TimeoutError:
-            #result = -99
+        except mp.context.TimeoutError:
+            ec(r)
             #print("parameters did not converge")
          
     results = result.get()  
