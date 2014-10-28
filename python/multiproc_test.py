@@ -112,7 +112,9 @@ if __name__ == '__main__':
         #try:
         params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co)))
         result[params] = pool.starmap_async(run_mri_solve, params, error_callback=ec)
-        print(result.get(timeout=10))#000))
+        print(result)
+        #print(result.get(timeout=10))#000))
+        
         #except mp.context.TimeoutError:
             #result = -99
             #print("parameters did not converge")
