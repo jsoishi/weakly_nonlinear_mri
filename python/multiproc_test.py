@@ -112,6 +112,8 @@ if __name__ == '__main__':
     def ec(r):
         result[params] = np.nan
         #return result[params]
+        #raise the error it got...
+        raise np.linalg.LinAlgError
 
     with Pool(processes=15) as pool:
         try:
@@ -123,9 +125,10 @@ if __name__ == '__main__':
             #print(result)
             print(r.get(timeout=10))#000))
         
-        except mp.context.TimeoutError:
-            ec(r)
-            #print("parameters did not converge")
+        #except mp.context.TimeoutError:
+        except np.linalg.LinAlgError:
+            #ec(r)
+            print("parameters did not converge")
          
     #results = r.get()  
     pickle.dump(result, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
