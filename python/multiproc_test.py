@@ -127,7 +127,7 @@ if __name__ == '__main__':
             ec(r)
             #print("parameters did not converge")
          
-    results = result.get()  
+    #results = r.get()  
     pickle.dump(result, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
 
 
