@@ -105,7 +105,7 @@ if __name__ == '__main__':
     
     result = {}
     
-    def cb(r, params):
+    def cb(r, params=params):
         print("callback")
         result[params] = r
         #return result[params]
@@ -121,7 +121,7 @@ if __name__ == '__main__':
         try:
             params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co)))
         
-            r = pool.starmap_async(run_mri_solve, params, callback=cb, error_callback=ec)
+            r = pool.starmap_async(run_mri_solve, params, callback=cb(params=params), error_callback=ec)
         
             #result[params] = pool.starmap_async(run_mri_solve, params, error_callback=ec)
             #print(result)
