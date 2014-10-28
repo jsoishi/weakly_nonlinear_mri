@@ -105,7 +105,7 @@ if __name__ == '__main__':
     
     result = {}
     
-    def cb(r, params=params):
+    def cb(r, params=None):
         print("callback")
         result[params] = r
         #return result[params]
