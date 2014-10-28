@@ -107,11 +107,11 @@ if __name__ == '__main__':
     
     def cb(r, params):
         result[params] = r
-        return result[params]
+        #return result[params]
     
     def ec(r):
         result[params] = np.nan
-        return result[params]
+        #return result[params]
 
     with Pool(processes=15) as pool:
         try:
@@ -125,7 +125,6 @@ if __name__ == '__main__':
         
         except mp.context.TimeoutError:
             ec(r)
-            break
             #print("parameters did not converge")
          
     #results = r.get()  
