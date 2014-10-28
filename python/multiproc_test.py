@@ -91,11 +91,9 @@ if __name__ == '__main__':
     q = 3/2.
     Co = 0.08
 
-    #Qsearch = np.arange(0.05, 10, 0.05)
-    #Rmsearch = np.arange(0.05, 8, 0.05)
+    Qsearch = np.arange(0.05, 10, 0.05)
+    Rmsearch = np.arange(0.05, 8, 0.05)
     
-    Rmsearch = np.arange(3.5, 5.5, 0.1)
-    Qsearch = np.arange(0.2, 2, 0.2)
     
     # Search all combinations of Qsearch and Rmsearch 
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
