@@ -99,8 +99,13 @@ if __name__ == '__main__':
     Rms = QRm[:, 1]
 
     with Pool(processes=15) as pool:
-       result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))))
-       print(result.get(timeout=100))
+        try:
+            result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))))
+        except LinAlgError:
+            result = -99
+            print("parameters did not converge")
+         
+        print(result.get(timeout=100))
      
     results = result.get()  
     pickle.dump(results, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
