@@ -121,7 +121,7 @@ if __name__ == '__main__':
         
             #result[params] = pool.starmap_async(run_mri_solve, params, error_callback=ec)
             #print(result)
-            print(result.get(timeout=10))#000))
+            print(r.get(timeout=10))#000))
         
         except mp.context.TimeoutError:
             ec(r)
