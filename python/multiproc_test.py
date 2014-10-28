@@ -130,7 +130,7 @@ if __name__ == '__main__':
     #results = r.get()  
     pickle.dump(result, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
     
-    print("pickling output")
+    print("pickling output:", result)
 
 
 
