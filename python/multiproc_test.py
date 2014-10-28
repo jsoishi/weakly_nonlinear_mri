@@ -125,6 +125,7 @@ if __name__ == '__main__':
         
         except mp.context.TimeoutError:
             ec(r)
+            break
             #print("parameters did not converge")
          
     #results = r.get()  
