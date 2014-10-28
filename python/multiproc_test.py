@@ -91,8 +91,11 @@ if __name__ == '__main__':
     q = 3/2.
     Co = 0.08
 
-    Qsearch = np.arange(0.05, 10, 0.05)
-    Rmsearch = np.arange(0.05, 8, 0.05)
+    #Qsearch = np.arange(0.05, 10, 0.05)
+    #Rmsearch = np.arange(0.05, 8, 0.05)
+    
+    Rmsearch = np.arange(3.5, 5.5, 0.1)
+    Qsearch = np.arange(0.2, 2, 0.2)
     
     
     # Search all combinations of Qsearch and Rmsearch 
@@ -103,7 +106,7 @@ if __name__ == '__main__':
     with Pool(processes=15) as pool:
         #try:
         result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))))
-        print(result.get(timeout=1000))
+        print(result.get(timeout=1))#000))
         #except mp.context.TimeoutError:
             #result = -99
             #print("parameters did not converge")
