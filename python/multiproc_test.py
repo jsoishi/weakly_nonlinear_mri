@@ -106,16 +106,16 @@ if __name__ == '__main__':
     result = {}
     
     def cb(r, params):
-        result[params] = r
+        return result[params] = r
     
     def ec(r):
-        return np.nan
+        return result[params] = np.nan
 
     with Pool(processes=15) as pool:
         try:
             params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co)))
         
-            result = pool.starmap_async(run_mri_solve, params, callback=cb, error_callback=ec)
+            r = pool.starmap_async(run_mri_solve, params, callback=cb, error_callback=ec)
         
             #result[params] = pool.starmap_async(run_mri_solve, params, error_callback=ec)
             #print(result)
