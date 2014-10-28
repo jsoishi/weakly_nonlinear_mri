@@ -1,4 +1,5 @@
 from multiprocessing import Pool
+import multiprocessing as mp
 import itertools
 import numpy as np
 import matplotlib.pyplot as plt
@@ -104,11 +105,12 @@ if __name__ == '__main__':
     with Pool(processes=15) as pool:
         try:
             result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))))
-        except np.linalg.linalg.LinAlgError:
+            print(result.get(timeout=100))
+        except mp.context.TimeoutError:
             result = -99
             print("parameters did not converge")
          
-        print(result.get(timeout=100))
+        
      
     results = result.get()  
     pickle.dump(results, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
