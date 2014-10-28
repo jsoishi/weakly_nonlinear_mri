@@ -103,6 +103,8 @@ if __name__ == '__main__':
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
     
+    result = {}
+    
     def ec():
         return np.nan
 
