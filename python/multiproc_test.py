@@ -106,7 +106,8 @@ if __name__ == '__main__':
     result = {}
     
     def cb(r, params):
-        return result[params] = r
+        result[params] = r
+        return result[params]
     
     def ec(r):
         return result[params] = np.nan
