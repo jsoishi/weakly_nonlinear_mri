@@ -102,10 +102,13 @@ if __name__ == '__main__':
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
+    
+    def ec():
+        return np.nan
 
     with Pool(processes=15) as pool:
         #try:
-        result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))))
+        result = pool.starmap_async(run_mri_solve, (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co))), error_callback=ec)
         print(result.get(timeout=1))#000))
         #except mp.context.TimeoutError:
             #result = -99
