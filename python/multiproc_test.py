@@ -107,12 +107,12 @@ if __name__ == '__main__':
 
     with Pool(processes=15) as pool:
     
-        def cb(r, params):
+        def cb(r):
             print("callback")
             result[params] = r
             #return result[params]
     
-        def ec(r, params):
+        def ec(r):
             result[params] = np.nan
             #return result[params]
             #raise the error it got...
