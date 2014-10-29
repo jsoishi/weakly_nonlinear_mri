@@ -114,9 +114,10 @@ if __name__ == '__main__':
     with Pool(processes=15) as pool:
         params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
         results[id] = pool.starmap_async(run_mri_solve, params)
-        
-    result = results.get(100)
-    pickle.dump(result, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
+     
+    results.wait()   
+    #result = results.get(100)
+    pickle.dump(results, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
     
     print("pickling output:", result)
         
