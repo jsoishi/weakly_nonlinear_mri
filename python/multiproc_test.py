@@ -94,7 +94,7 @@ if __name__ == '__main__':
     #Qsearch = np.arange(0.05, 10, 0.05)
     #Rmsearch = np.arange(0.05, 8, 0.05)
     
-    Rmsearch = np.arange(4, 8, 1)
+    Rmsearch = np.arange(4, 8, 0.1)
     Qsearch = np.arange(0.2, 2, 0.2)
     
     
@@ -109,7 +109,7 @@ if __name__ == '__main__':
     
         def cb(r):
             print("callback")
-            result[params] = r.get()
+            result[params] = r
             #return result[params]
     
         def ec(r):
