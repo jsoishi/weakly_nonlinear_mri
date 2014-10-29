@@ -18,69 +18,75 @@ def run_mri_solve_2(Q, Pm, Rm, q, B0, Co, lv1=None, LEV=None):
 
 def run_mri_solve(Q, Pm, Rm, q, Co):
 
-    # Rm is an input parameter
-    iRm = 1./Rm
-    R = Rm/Pm
-    iR = 1./R
+    try:
 
-    #Q = float(sys.argv[2])
-    #Rm = float(sys.argv[1])
-    #name = sys.argv[0]
-    #print("%s: Q = %10.5f; Rm = %10.5f" % (name, Q, Rm))
+        # Rm is an input parameter
+        iRm = 1./Rm
+        R = Rm/Pm
+        iR = 1./R
 
-    # Solve eigenvalues of linearized MRI set up. Will minimize to find k_z = Q and Rm = Rm_crit, where s ~ 0. 
-    # This takes as inputs guesses for the critical values Q and Rm.
-    lv1 = ParsedProblem(['x'],
-                          field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
-                          param_names=['Q', 'iR', 'iRm', 'q', 'Co'])
+        #Q = float(sys.argv[2])
+        #Rm = float(sys.argv[1])
+        #name = sys.argv[0]
+        #print("%s: Q = %10.5f; Rm = %10.5f" % (name, Q, Rm))
 
-    x_basis = Chebyshev(64)
-    domain = Domain([x_basis])
+        # Solve eigenvalues of linearized MRI set up. Will minimize to find k_z = Q and Rm = Rm_crit, where s ~ 0. 
+        # This takes as inputs guesses for the critical values Q and Rm.
+        lv1 = ParsedProblem(['x'],
+                              field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
+                              param_names=['Q', 'iR', 'iRm', 'q', 'Co'])
 
-    # In terms of Co ....multiplied dt terms by -1j
-    lv1.add_equation("-1j*dt(psixx) - -1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - Co*1j*Q*dx(Ax) + Co*Q**3*1j*A = 0")
-    lv1.add_equation("-1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - Co*1j*Q*B = 0") 
-    lv1.add_equation("-1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
-    lv1.add_equation("-1j*dt(B) - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
+        x_basis = Chebyshev(64)
+        domain = Domain([x_basis])
 
-    lv1.add_equation("dx(psi) - psix = 0")
-    lv1.add_equation("dx(psix) - psixx = 0")
-    lv1.add_equation("dx(psixx) - psixxx = 0")
-    lv1.add_equation("dx(u) - ux = 0")
-    lv1.add_equation("dx(A) - Ax = 0")
-    lv1.add_equation("dx(B) - Bx = 0")
+        # In terms of Co ....multiplied dt terms by -1j
+        lv1.add_equation("-1j*dt(psixx) - -1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - Co*1j*Q*dx(Ax) + Co*Q**3*1j*A = 0")
+        lv1.add_equation("-1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - Co*1j*Q*B = 0") 
+        lv1.add_equation("-1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
+        lv1.add_equation("-1j*dt(B) - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
 
-    # Boundary conditions
-    lv1.add_left_bc("u = 0")
-    lv1.add_right_bc("u = 0")
-    lv1.add_left_bc("psi = 0")
-    lv1.add_right_bc("psi = 0")
-    lv1.add_left_bc("A = 0")
-    lv1.add_right_bc("A = 0")
-    lv1.add_left_bc("psix = 0")
-    lv1.add_right_bc("psix = 0")
-    lv1.add_left_bc("Bx = 0")
-    lv1.add_right_bc("Bx = 0")
+        lv1.add_equation("dx(psi) - psix = 0")
+        lv1.add_equation("dx(psix) - psixx = 0")
+        lv1.add_equation("dx(psixx) - psixxx = 0")
+        lv1.add_equation("dx(u) - ux = 0")
+        lv1.add_equation("dx(A) - Ax = 0")
+        lv1.add_equation("dx(B) - Bx = 0")
+
+        # Boundary conditions
+        lv1.add_left_bc("u = 0")
+        lv1.add_right_bc("u = 0")
+        lv1.add_left_bc("psi = 0")
+        lv1.add_right_bc("psi = 0")
+        lv1.add_left_bc("A = 0")
+        lv1.add_right_bc("A = 0")
+        lv1.add_left_bc("psix = 0")
+        lv1.add_right_bc("psix = 0")
+        lv1.add_left_bc("Bx = 0")
+        lv1.add_right_bc("Bx = 0")
 
 
-    # Parameters
-    lv1.parameters['Q'] = Q
-    lv1.parameters['iR'] = iR
-    lv1.parameters['iRm'] = iRm
-    lv1.parameters['q'] = q
-    lv1.parameters['Co'] = Co
+        # Parameters
+        lv1.parameters['Q'] = Q
+        lv1.parameters['iR'] = iR
+        lv1.parameters['iRm'] = iRm
+        lv1.parameters['q'] = q
+        lv1.parameters['Co'] = Co
 
-    lv1.expand(domain)
-    LEV = LinearEigenvalue(lv1,domain)
-    LEV.solve(LEV.pencils[0])
+        lv1.expand(domain)
+        LEV = LinearEigenvalue(lv1,domain)
+        LEV.solve(LEV.pencils[0])
 
-    # Find the eigenvalue that is closest to zero.
-    evals = LEV.eigenvalues
-    indx = np.arange(len(evals))
-    e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+        # Find the eigenvalue that is closest to zero.
+        evals = LEV.eigenvalues
+        indx = np.arange(len(evals))
+        e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
 
-    val = evals[e0]
-    return val[0]
+        val = evals[e0]
+        return val[0]
+        
+    except np.linalg.LinAlgError:
+        return np.nan
+    
 
 if __name__ == '__main__':
 
@@ -103,6 +109,22 @@ if __name__ == '__main__':
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
     
+    results = {}
+
+    for r in pool.starmap_async(run_mri_solve, params):
+        
+        try:
+        
+            results.append(r.get(10))
+            
+        except mp.context.TimeoutError:
+        
+            print("timeout error. Continuing...")
+            results.append(None)
+            
+    
+    
+    """
     result = {}
 
     with Pool(processes=15) as pool:
@@ -141,6 +163,6 @@ if __name__ == '__main__':
     pickle.dump(result, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
     
     print("pickling output:", result)
-
+    """
 
 
