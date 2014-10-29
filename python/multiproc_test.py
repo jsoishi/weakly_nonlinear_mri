@@ -82,10 +82,10 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
         e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
 
         val = evals[e0]
-        return val[0], run_id
+        return (val[0], run_id)
         
     except np.linalg.LinAlgError:
-        return np.nan, run_id
+        return (np.nan, run_id)
     
 
 if __name__ == '__main__':
