@@ -112,7 +112,8 @@ if __name__ == '__main__':
     results = {}
 
     with Pool(processes=15) as pool:
-    
+        params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co)))
+        
         for r in pool.starmap_async(run_mri_solve, params):
         
             try:
