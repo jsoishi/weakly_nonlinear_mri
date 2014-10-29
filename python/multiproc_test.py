@@ -113,8 +113,9 @@ if __name__ == '__main__':
 
     with Pool(processes=15) as pool:
         params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
-        re, id = pool.starmap_async(run_mri_solve, params)
+        results[id] = pool.starmap_async(run_mri_solve, params)
         
+        """
         try:
     
             results[id] = re.get(10)
@@ -123,7 +124,7 @@ if __name__ == '__main__':
     
             print("timeout error. Continuing...")
             results[id] = None
-
+        """
             
     
     """
