@@ -111,16 +111,18 @@ if __name__ == '__main__':
     
     results = {}
 
-    for r in pool.starmap_async(run_mri_solve, params):
+    with Pool(processes=15) as pool:
+    
+        for r in pool.starmap_async(run_mri_solve, params):
         
-        try:
+            try:
         
-            results.append(r.get(10))
+                results.append(r.get(10))
             
-        except mp.context.TimeoutError:
+            except mp.context.TimeoutError:
         
-            print("timeout error. Continuing...")
-            results.append(None)
+                print("timeout error. Continuing...")
+                results.append(None)
             
     
     
