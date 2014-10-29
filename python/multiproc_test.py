@@ -109,7 +109,7 @@ if __name__ == '__main__':
     
         def cb(r):
             print("callback")
-            result[params] = r
+            result[params] = r.get()
             #return result[params]
     
         def ec(r):
