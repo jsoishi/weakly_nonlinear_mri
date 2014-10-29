@@ -119,16 +119,16 @@ if __name__ == '__main__':
     
     print("pickling output:", result)
         
-        """
-        try:
+    """
+    try:
+
+        results[id] = re.get(10)
     
-            results[id] = re.get(10)
-        
-        except mp.context.TimeoutError:
-    
-            print("timeout error. Continuing...")
-            results[id] = None
-        """
+    except mp.context.TimeoutError:
+
+        print("timeout error. Continuing...")
+        results[id] = None
+    """
             
     
     """
