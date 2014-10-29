@@ -116,7 +116,7 @@ if __name__ == '__main__':
         results[id] = pool.starmap_async(run_mri_solve, params)
      
     print(results)
-    for i in xrange(len(Qs)):
+    for i in range(len(Qs)):
         print(resuts[i]) 
     #results.wait()   
     #result = results.get(100)
