@@ -117,7 +117,7 @@ if __name__ == '__main__':
      
     print(results)
     for i in range(len(Qs)):
-        print(resuts[i]) 
+        print(results[i]) 
     #results.wait()   
     #result = results.get(100)
     pickle.dump(results, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
