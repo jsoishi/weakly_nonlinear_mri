@@ -16,7 +16,7 @@ def run_mri_solve_2(Q, Pm, Rm, q, B0, Co, lv1=None, LEV=None):
     output = "Hello. Parameter Q = %10.5e" % Q
     return output
 
-def run_mri_solve(Q, Pm, Rm, q, Co):
+def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
 
     try:
 
@@ -82,10 +82,10 @@ def run_mri_solve(Q, Pm, Rm, q, Co):
         e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
 
         val = evals[e0]
-        return val[0]
+        return val[0], run_id
         
     except np.linalg.LinAlgError:
-        return np.nan
+        return np.nan, run_id
     
 
 if __name__ == '__main__':
@@ -112,20 +112,19 @@ if __name__ == '__main__':
     results = {}
 
     with Pool(processes=15) as pool:
-        params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co)))
+        params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
+        re, id = pool.starmap_async(run_mri_solve, params)
         
-        for r in pool.starmap_async(run_mri_solve, params):
-        
-            try:
-        
-                results.append(r.get(10))
-            
-            except mp.context.TimeoutError:
-        
-                print("timeout error. Continuing...")
-                results.append(None)
-            
+        try:
     
+            results[id] = re.get(10)
+        
+        except mp.context.TimeoutError:
+    
+            print("timeout error. Continuing...")
+            results[id] = None
+
+            
     
     """
     result = {}
