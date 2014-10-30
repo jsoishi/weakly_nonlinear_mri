@@ -108,28 +108,26 @@ if __name__ == '__main__':
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
-    
-    results = []
 
-    with Pool(processes=15) as pool:
-        ids = np.arange(len(Qs))
-        params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), ids))
-        
+    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
+    print("Processing %10.5e parameter combinations" % len(params))
+
+    with Pool(processes=16) as pool:
         result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
     
-    for result in result_pool:
-        print(result)
-        try:
-            results.append(result.get(100))
-        except mp.context.TimeoutError:
-            print("TimeoutError encountered. Continuing..") 
+        results = []
+        for result in result_pool:
+            try:
+                results.append(result.get(100))
+            except mp.context.TimeoutError:
+                print("TimeoutError encountered. Continuing..") 
     
     result_dict = {}    
     for x in results:
         result_dict[x[0]] = x[1]
         
     print(result_dict)
-    print("test: ", result_dict[1])
+    print("test: ", result_dict[0])
     
     pickle.dump(result_dict, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
     
