@@ -9,6 +9,7 @@ from dedalus2.public import *
 from dedalus2.pde.solvers import LinearEigenvalue
 import pylab
 import pickle
+import time
 
 import sys
 
@@ -97,17 +98,20 @@ if __name__ == '__main__':
     q = 3/2.
     Co = 0.08
 
-    #Qsearch = np.arange(0.05, 10, 0.05)
-    #Rmsearch = np.arange(0.05, 8, 0.05)
+    dQ = 0.05
+    dRm = 0.05
     
-    Rmsearch = np.arange(4, 8, 2)
-    Qsearch = np.arange(1, 2, 1)
-    
-    
+    #Qsearch = np.arange(0.05, 10, dQ)
+    #Rmsearch = np.arange(0.05, 8, dRm)
+    Qsearch = np.arange(0.05, 5, dQ)
+    Rmsearch = np.arange(0.05, 5, dRm)
+      
     # Search all combinations of Qsearch and Rmsearch 
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
+    
+    start_time = time.time()
 
     params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
     print("Processing %10.5e parameter combinations" % len(Qs))
@@ -129,8 +133,10 @@ if __name__ == '__main__':
     print(result_dict)
     print("test: ", result_dict[0])
     
-    pickle.dump(result_dict, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
     
+    pickle.dump(result_dict, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
+    
+    print("--- %s seconds ---" % time.time() - start_time)
         
     """
     try:
