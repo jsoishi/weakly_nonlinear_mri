@@ -125,7 +125,7 @@ if __name__ == '__main__':
         print(result)
         try:
             results.append(result.get(15))
-        except context.TimeoutError:
+        except mp.context.TimeoutError:
             # do desired action on timeout
             results.append(None)
      
