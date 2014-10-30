@@ -112,8 +112,22 @@ if __name__ == '__main__':
     results = {}
 
     with Pool(processes=15) as pool:
-        params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
-        results[id] = pool.starmap_async(run_mri_solve, params)
+        ids = np.arange(len(Qs))
+        params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), ids))
+        
+        #r = pool.starmap_async(run_mri_solve, params)
+        #print(r)
+        #results[id] = pool.starmap_async(run_mri_solve, params)
+        
+        result_pool = [pool.apply_async(run_solver, args) for args in params]
+    
+    for result in result_pool:
+        print(result)
+        try:
+            results.append(result.get(15))
+        except context.TimeoutError:
+            # do desired action on timeout
+            results.append(None)
      
     print(results)
     for i in range(len(Qs)):
