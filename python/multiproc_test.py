@@ -82,10 +82,10 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
         e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
 
         val = evals[e0]
-        return (val[0], run_id)
+        return (run_id, val[0])
         
     except np.linalg.LinAlgError:
-        return (np.nan, run_id)
+        return (run_id, np.nan)
     
 
 if __name__ == '__main__':
@@ -100,8 +100,8 @@ if __name__ == '__main__':
     #Qsearch = np.arange(0.05, 10, 0.05)
     #Rmsearch = np.arange(0.05, 8, 0.05)
     
-    Rmsearch = np.arange(4, 8, 0.1)
-    Qsearch = np.arange(0.2, 2, 0.2)
+    Rmsearch = np.arange(4, 8, 2)
+    Qsearch = np.arange(1, 2, 1)
     
     
     # Search all combinations of Qsearch and Rmsearch 
@@ -115,28 +115,24 @@ if __name__ == '__main__':
         ids = np.arange(len(Qs))
         params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), ids))
         
-        #r = pool.starmap_async(run_mri_solve, params)
-        #print(r)
-        #results[id] = pool.starmap_async(run_mri_solve, params)
-        
         result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
     
     for result in result_pool:
         print(result)
         try:
-            results.append(result.get(15))
+            results.append(result.get(100))
         except mp.context.TimeoutError:
-            # do desired action on timeout
-            results.append(None)
-     
-    print(results)
-    for i in range(len(Qs)):
-        print(results[i]) 
-    #results.wait()   
-    #result = results.get(100)
-    pickle.dump(results, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
+            print("TimeoutError encountered. Continuing..") 
     
-    print("pickling output:", result)
+    result_dict = {}    
+    for x in results:
+        result_dict[x[0]] = x[1]
+        
+    print(result_dict)
+    print("test: ", result_dict[1])
+    
+    pickle.dump(result_dict, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
+    
         
     """
     try:
