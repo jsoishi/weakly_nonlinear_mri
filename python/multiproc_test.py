@@ -119,7 +119,7 @@ if __name__ == '__main__':
         #print(r)
         #results[id] = pool.starmap_async(run_mri_solve, params)
         
-        result_pool = [pool.apply_async(run_solver, args) for args in params]
+        result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
     
     for result in result_pool:
         print(result)
