@@ -109,7 +109,7 @@ if __name__ == '__main__':
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
     
-    results = {}
+    results = []
 
     with Pool(processes=15) as pool:
         ids = np.arange(len(Qs))
