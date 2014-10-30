@@ -110,7 +110,7 @@ if __name__ == '__main__':
     Rms = QRm[:, 1]
 
     params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
-    print("Processing %10.5e parameter combinations" % len(params))
+    print("Processing %10.5e parameter combinations" % len(Qs))
 
     with Pool(processes=16) as pool:
         result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
