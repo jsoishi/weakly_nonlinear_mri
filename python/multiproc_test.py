@@ -94,7 +94,7 @@ if __name__ == '__main__':
     # Parameter values from Umurhan+:
     #Q = 0.75
     #Rm = 4.8775
-    Pm = 0.0001 #Pm = Rm/R
+    Pm = 0.00001 #Pm = Rm/R
     q = 3/2.
     Co = 0.08
 
@@ -105,6 +105,8 @@ if __name__ == '__main__':
     #Rmsearch = np.arange(0.05, 8, dRm)
     Qsearch = np.arange(0.05, 5, dQ)
     Rmsearch = np.arange(0.05, 5, dRm)
+    
+    print("Pm = %10.5e" % Pm)
       
     # Search all combinations of Qsearch and Rmsearch 
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
@@ -136,7 +138,7 @@ if __name__ == '__main__':
     
     pickle.dump(result_dict, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
     
-    print("--- %s seconds ---" % time.time() - start_time)
+    print("process took %10.5e seconds" % time.time() - start_time)
         
     """
     try:
