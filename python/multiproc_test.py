@@ -94,7 +94,7 @@ if __name__ == '__main__':
     # Parameter values from Umurhan+:
     #Q = 0.75
     #Rm = 4.8775
-    Pm = 0.00001 #Pm = Rm/R
+    Pm = 0.000001 #Pm = Rm/R
     q = 3/2.
     Co = 0.08
 
