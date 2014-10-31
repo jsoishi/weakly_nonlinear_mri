@@ -98,13 +98,16 @@ if __name__ == '__main__':
     q = 3/2.
     Co = 0.08
 
-    dQ = 0.1#0.05
-    dRm = 0.1#0.05
+    dQ = 0.01#0.05
+    dRm = 0.01#0.05
     
     #Qsearch = np.arange(0.05, 10, dQ)
     #Rmsearch = np.arange(0.05, 8, dRm)
     Qsearch = np.arange(0.05, 5, dQ)
     Rmsearch = np.arange(0.05, 5, dRm)
+    
+    Qsearch = np.arange(0.5, 1.0, dRm)
+    Rmsearch = np.arange(4.6, 5.1, dQ)
     
     print("Pm = %10.5e" % Pm)
       
