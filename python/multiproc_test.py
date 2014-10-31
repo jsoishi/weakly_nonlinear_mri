@@ -98,8 +98,8 @@ if __name__ == '__main__':
     q = 3/2.
     Co = 0.08
 
-    dQ = 0.05
-    dRm = 0.05
+    dQ = 0.1#0.05
+    dRm = 0.1#0.05
     
     #Qsearch = np.arange(0.05, 10, dQ)
     #Rmsearch = np.arange(0.05, 8, dRm)
