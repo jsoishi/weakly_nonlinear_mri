@@ -94,7 +94,7 @@ if __name__ == '__main__':
     # Parameter values from Umurhan+:
     #Q = 0.75
     #Rm = 4.8775
-    Pm = 0.000001 #Pm = Rm/R
+    Pm = 0.0000001 #Pm = Rm/R
     q = 3/2.
     Co = 0.08
 
@@ -103,8 +103,9 @@ if __name__ == '__main__':
     
     #Qsearch = np.arange(0.05, 10, dQ)
     #Rmsearch = np.arange(0.05, 8, dRm)
-    Qsearch = np.arange(0.05, 5, dQ)
-    Rmsearch = np.arange(0.05, 5, dRm)
+    
+    #Qsearch = np.arange(0.05, 5, dQ)
+    #Rmsearch = np.arange(0.05, 5, dRm)
     
     Qsearch = np.arange(0.5, 1.0, dRm)
     Rmsearch = np.arange(4.6, 5.1, dQ)
