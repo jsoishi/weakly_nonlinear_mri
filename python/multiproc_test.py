@@ -87,7 +87,7 @@ def Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch):
     print("test: ", result_dict[0])
 
 
-    pickle.dump(result_dict, open("multirun/beta_"+str(beta)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
+    pickle.dump(result_dict, open("multirun/beta_"+str(beta)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
 
     print("process took %10.5e seconds" % (time.time() - start_time))
         
@@ -172,7 +172,7 @@ if __name__ == '__main__':
     #Rm = 4.8775
     Pm = 1E-3 #Pm = Rm/R
     q = 3/2.
-    beta = 2.50
+    beta = 0.250
     #Co = 0.08
 
     dQ = 0.01
