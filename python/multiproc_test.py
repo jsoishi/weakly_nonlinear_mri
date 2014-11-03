@@ -176,11 +176,11 @@ if __name__ == '__main__':
     q = 3/2.
     beta = 0.250
 
-    dQ = 0.01
-    dRm = 0.01
+    dQ = 0.05
+    dRm = 0.05
     
-    Qsearch = np.arange(0.5, 1.0, dRm)
-    Rmsearch = np.arange(4.6, 5.1, dQ)
+    Qsearch = np.arange(0.2, 1.2, dRm)
+    Rmsearch = np.arange(5.0, 6.1, dQ)
     
     Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
 
