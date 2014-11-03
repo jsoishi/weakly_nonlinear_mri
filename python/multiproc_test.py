@@ -90,33 +90,35 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
     
 
 if __name__ == '__main__':
+    # beta = 2/Co. Co = 2/beta.
 
     # Parameter values from Umurhan+:
     #Q = 0.75
     #Rm = 4.8775
     Pm = 1E-9 #Pm = Rm/R
     q = 3/2.
-    Co = 0.08
+    beta = 2.50
+    #Co = 0.08
 
-    dQ = 0.01#0.05
-    dRm = 0.01#0.05
-    
-    #Qsearch = np.arange(0.05, 10, dQ)
-    #Rmsearch = np.arange(0.05, 8, dRm)
-    
-    #Qsearch = np.arange(0.05, 5, dQ)
-    #Rmsearch = np.arange(0.05, 5, dRm)
+    dQ = 0.01
+    dRm = 0.01
     
     Qsearch = np.arange(0.5, 1.0, dRm)
     Rmsearch = np.arange(4.6, 5.1, dQ)
     
+    Betarun(Pm, q, beta, dQ, Rm, Qsearch, Rmsearch)
+    #Pmrun(Pm, q, Co, dQ, Rm, Qsearch, Rmsearch)
+    
+
+def Pmrun(Pm, q, Co, dQ, Rm, Qsearch, Rmsearch):       
+
     print("Pm = %10.5e" % Pm)
-      
+  
     # Search all combinations of Qsearch and Rmsearch 
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
-    
+
     start_time = time.time()
 
     params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
@@ -124,77 +126,63 @@ if __name__ == '__main__':
 
     with Pool(processes=16) as pool:
         result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
-    
+
         results = []
         for result in result_pool:
             try:
                 results.append(result.get(100))
             except mp.context.TimeoutError:
                 print("TimeoutError encountered. Continuing..") 
-    
+
     result_dict = {}    
     for x in results:
         result_dict[x[0]] = x[1]
-        
+    
     print(result_dict)
     print("test: ", result_dict[0])
-    
-    
+
+
     pickle.dump(result_dict, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
-    
-    print("process took %10.5e seconds" % time.time() - start_time)
-        
-    """
-    try:
 
-        results[id] = re.get(10)
+    print("process took %10.5e seconds" % (time.time() - start_time))
     
-    except mp.context.TimeoutError:
+def Betarun(Pm, q, beta, dQ, Rm, Qsearch, Rmsearch):   
+    Co = 2.0/beta   
 
-        print("timeout error. Continuing...")
-        results[id] = None
-    """
-            
-    
-    """
-    result = {}
+    print("Pm = %10.5e" % Pm)
+  
+    # Search all combinations of Qsearch and Rmsearch 
+    QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
+    Qs = QRm[:, 0]
+    Rms = QRm[:, 1]
 
-    with Pool(processes=15) as pool:
+    start_time = time.time()
+
+    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
+    print("Processing %10.5e parameter combinations" % len(Qs))
+
+    with Pool(processes=16) as pool:
+        result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
+
+        results = []
+        for result in result_pool:
+            try:
+                results.append(result.get(100))
+            except mp.context.TimeoutError:
+                print("TimeoutError encountered. Continuing..") 
+
+    result_dict = {}    
+    for x in results:
+        result_dict[x[0]] = x[1]
     
-        def cb(r):
-            print("callback")
-            result[params] = r
-            #return result[params]
-    
-        def ec(r):
-            result[params] = np.nan
-            #return result[params]
-            #raise the error it got...
-            print("error callback")
-            raise np.linalg.LinAlgError
-    
-        try:
-            params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co)))
+    print(result_dict)
+    print("test: ", result_dict[0])
+
+
+    pickle.dump(result_dict, open("multirun/beta_"+str(beta)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
+
+    print("process took %10.5e seconds" % (time.time() - start_time))
         
-            r = pool.starmap_async(run_mri_solve, params, callback=cb, error_callback=ec)
-        
-            #result[params] = pool.starmap_async(run_mri_solve, params, error_callback=ec)
-            #print(result)
-            print(r.get(timeout=100))#000))
-        
-        #except mp.context.TimeoutError:
-        except np.linalg.LinAlgError:
-            #ec(r)
-            print("parameters did not converge")
-            
-        except mp.context.TimeoutError:
-            print("Timeout error. Continuing...")
-            
-         
-    #results = r.get()  
-    pickle.dump(result, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_Rm_"+str(Rmsearch[0])+".p", "wb"))
-    
-    print("pickling output:", result)
-    """
+
 
 
