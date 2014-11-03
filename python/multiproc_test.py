@@ -95,7 +95,7 @@ if __name__ == '__main__':
     # Parameter values from Umurhan+:
     #Q = 0.75
     #Rm = 4.8775
-    Pm = 1E-9 #Pm = Rm/R
+    Pm = 1E-3 #Pm = Rm/R
     q = 3/2.
     beta = 2.50
     #Co = 0.08
@@ -150,6 +150,7 @@ def Betarun(Pm, q, beta, dQ, Rm, Qsearch, Rmsearch):
     Co = 2.0/beta   
 
     print("Pm = %10.5e" % Pm)
+    print("beta = %10.5e" % beta)
   
     # Search all combinations of Qsearch and Rmsearch 
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
