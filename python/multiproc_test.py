@@ -17,6 +17,81 @@ def run_mri_solve_2(Q, Pm, Rm, q, B0, Co, lv1=None, LEV=None):
     output = "Hello. Parameter Q = %10.5e" % Q
     return output
 
+def Pmrun(Pm, q, Co, dQ, Rm, Qsearch, Rmsearch):       
+
+    print("Pm = %10.5e" % Pm)
+  
+    # Search all combinations of Qsearch and Rmsearch 
+    QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
+    Qs = QRm[:, 0]
+    Rms = QRm[:, 1]
+
+    start_time = time.time()
+
+    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
+    print("Processing %10.5e parameter combinations" % len(Qs))
+
+    with Pool(processes=16) as pool:
+        result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
+
+        results = []
+        for result in result_pool:
+            try:
+                results.append(result.get(100))
+            except mp.context.TimeoutError:
+                print("TimeoutError encountered. Continuing..") 
+
+    result_dict = {}    
+    for x in results:
+        result_dict[x[0]] = x[1]
+    
+    print(result_dict)
+    print("test: ", result_dict[0])
+
+
+    pickle.dump(result_dict, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
+
+    print("process took %10.5e seconds" % (time.time() - start_time))
+    
+def Betarun(Pm, q, beta, dQ, Rm, Qsearch, Rmsearch):   
+    Co = 2.0/beta   
+
+    print("Pm = %10.5e" % Pm)
+    print("beta = %10.5e" % beta)
+  
+    # Search all combinations of Qsearch and Rmsearch 
+    QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
+    Qs = QRm[:, 0]
+    Rms = QRm[:, 1]
+
+    start_time = time.time()
+
+    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
+    print("Processing %10.5e parameter combinations" % len(Qs))
+
+    with Pool(processes=16) as pool:
+        result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
+
+        results = []
+        for result in result_pool:
+            try:
+                results.append(result.get(100))
+            except mp.context.TimeoutError:
+                print("TimeoutError encountered. Continuing..") 
+
+    result_dict = {}    
+    for x in results:
+        result_dict[x[0]] = x[1]
+    
+    print(result_dict)
+    print("test: ", result_dict[0])
+
+
+    pickle.dump(result_dict, open("multirun/beta_"+str(beta)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
+
+    print("process took %10.5e seconds" % (time.time() - start_time))
+        
+
 def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
 
     try:
@@ -109,81 +184,6 @@ if __name__ == '__main__':
     Betarun(Pm, q, beta, dQ, Rm, Qsearch, Rmsearch)
     #Pmrun(Pm, q, Co, dQ, Rm, Qsearch, Rmsearch)
     
-
-def Pmrun(Pm, q, Co, dQ, Rm, Qsearch, Rmsearch):       
-
-    print("Pm = %10.5e" % Pm)
-  
-    # Search all combinations of Qsearch and Rmsearch 
-    QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
-    Qs = QRm[:, 0]
-    Rms = QRm[:, 1]
-
-    start_time = time.time()
-
-    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
-    print("Processing %10.5e parameter combinations" % len(Qs))
-
-    with Pool(processes=16) as pool:
-        result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
-
-        results = []
-        for result in result_pool:
-            try:
-                results.append(result.get(100))
-            except mp.context.TimeoutError:
-                print("TimeoutError encountered. Continuing..") 
-
-    result_dict = {}    
-    for x in results:
-        result_dict[x[0]] = x[1]
-    
-    print(result_dict)
-    print("test: ", result_dict[0])
-
-
-    pickle.dump(result_dict, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
-
-    print("process took %10.5e seconds" % (time.time() - start_time))
-    
-def Betarun(Pm, q, beta, dQ, Rm, Qsearch, Rmsearch):   
-    Co = 2.0/beta   
-
-    print("Pm = %10.5e" % Pm)
-    print("beta = %10.5e" % beta)
-  
-    # Search all combinations of Qsearch and Rmsearch 
-    QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
-    Qs = QRm[:, 0]
-    Rms = QRm[:, 1]
-
-    start_time = time.time()
-
-    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
-    print("Processing %10.5e parameter combinations" % len(Qs))
-
-    with Pool(processes=16) as pool:
-        result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
-
-        results = []
-        for result in result_pool:
-            try:
-                results.append(result.get(100))
-            except mp.context.TimeoutError:
-                print("TimeoutError encountered. Continuing..") 
-
-    result_dict = {}    
-    for x in results:
-        result_dict[x[0]] = x[1]
-    
-    print(result_dict)
-    print("test: ", result_dict[0])
-
-
-    pickle.dump(result_dict, open("multirun/beta_"+str(beta)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
-
-    print("process took %10.5e seconds" % (time.time() - start_time))
-        
 
 
 
