@@ -170,10 +170,11 @@ if __name__ == '__main__':
     # Parameter values from Umurhan+:
     #Q = 0.75
     #Rm = 4.8775
+    #Co = 0.08
+    
     Pm = 1E-3 #Pm = Rm/R
     q = 3/2.
     beta = 0.250
-    #Co = 0.08
 
     dQ = 0.01
     dRm = 0.01
@@ -182,8 +183,12 @@ if __name__ == '__main__':
     Rmsearch = np.arange(4.6, 5.1, dQ)
     
     Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
-    #Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+
+    beta = 0.025
+    Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
     
+    beta = 0.0025
+    Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
 
 
 
