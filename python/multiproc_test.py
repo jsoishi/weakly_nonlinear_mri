@@ -17,7 +17,7 @@ def run_mri_solve_2(Q, Pm, Rm, q, B0, Co, lv1=None, LEV=None):
     output = "Hello. Parameter Q = %10.5e" % Q
     return output
 
-def Pmrun(Pm, q, Co, dQ, Rm, Qsearch, Rmsearch):       
+def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):       
 
     print("Pm = %10.5e" % Pm)
   
@@ -53,7 +53,7 @@ def Pmrun(Pm, q, Co, dQ, Rm, Qsearch, Rmsearch):
 
     print("process took %10.5e seconds" % (time.time() - start_time))
     
-def Betarun(Pm, q, beta, dQ, Rm, Qsearch, Rmsearch):   
+def Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch):   
     Co = 2.0/beta   
 
     print("Pm = %10.5e" % Pm)
@@ -181,8 +181,8 @@ if __name__ == '__main__':
     Qsearch = np.arange(0.5, 1.0, dRm)
     Rmsearch = np.arange(4.6, 5.1, dQ)
     
-    Betarun(Pm, q, beta, dQ, Rm, Qsearch, Rmsearch)
-    #Pmrun(Pm, q, Co, dQ, Rm, Qsearch, Rmsearch)
+    Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
+    #Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
     
 
 
