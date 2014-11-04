@@ -53,9 +53,12 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
 
     print("process took %10.5e seconds" % (time.time() - start_time))
 
-def Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch):       
+def Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch): 
+    Co = 2.0/beta      
 
     print("Pm = %10.5e" % Pm)
+    print("beta = %10.5e" % beta)
+    print("this is the hmri")
   
     # Search all combinations of Qsearch and Rmsearch 
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
