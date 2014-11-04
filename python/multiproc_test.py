@@ -289,13 +289,16 @@ if __name__ == '__main__':
     xi = 1.0
     x0 = 1.0
 
-    dQ = 0.05
+    dQ = 0.005
     dRm = 0.05
     
     #Qsearch = np.arange(0.2, 1.2, dQ)
     #Rmsearch = np.arange(5.0, 6.1, dRm)
     Qsearch = np.arange(0.2, 1.5, dQ)
     Rmsearch = np.arange(0.5, 8, dRm)
+    
+    Qsearch = np.arange(0.001, 0.2, dQ)
+    Rmsearch = np.arange(0.05, 0.5, dRm)
     
     Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
     
