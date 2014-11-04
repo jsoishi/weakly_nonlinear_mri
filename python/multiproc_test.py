@@ -283,7 +283,7 @@ if __name__ == '__main__':
     #Rm = 4.8775
     #Co = 0.08
     
-    Pm = 1E-3 #Pm = Rm/R
+    Pm = 1E-2 #Pm = Rm/R
     q = 3/2.
     beta = 25#0.250
     xi = 1.0
@@ -299,7 +299,12 @@ if __name__ == '__main__':
     
     #Qsearch = np.arange(0.001, 0.2, dQ)
     Rmsearch = np.arange(0.05, 0.5, dRm)
-    Qsearch = np.arange(0.2, 0.4, dQ)
+    Qsearch = np.arange(0.1, 0.4, dQ)
+    
+    #big hmri search...
+    Rmsearch = np.arange(0.05, 0.5, dRm)
+    Qsearch = np.arange(0.001, 0.4, dQ)
+    
     
     Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
     
