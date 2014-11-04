@@ -53,7 +53,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
 
     print("process took %10.5e seconds" % (time.time() - start_time))
 
-def Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch): 
+def Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0): 
     Co = 2.0/beta      
 
     print("Pm = %10.5e" % Pm)
@@ -67,7 +67,7 @@ def Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch):
 
     start_time = time.time()
 
-    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
+    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs)), itertools.repeat(xi), itertools.repeat(x0)))
     print("Processing %10.5e parameter combinations" % len(Qs))
 
     with Pool(processes=16) as pool:
@@ -286,6 +286,8 @@ if __name__ == '__main__':
     Pm = 1E-3 #Pm = Rm/R
     q = 3/2.
     beta = 25#0.250
+    xi = 1.0
+    x0 = 1.0
 
     dQ = 0.05
     dRm = 0.05
@@ -295,7 +297,7 @@ if __name__ == '__main__':
     Qsearch = np.arange(0.2, 1.5, dQ)
     Rmsearch = np.arange(0.5, 8, dRm)
     
-    Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
+    Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
     
     """
     Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
