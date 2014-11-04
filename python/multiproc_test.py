@@ -202,7 +202,7 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
     except np.linalg.LinAlgError:
         return (run_id, np.nan)
     
-def run_hmri_solve(Q, Pm, Rm, q, beta, run_id):
+def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
 
     try:
 
