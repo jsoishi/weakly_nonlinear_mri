@@ -277,7 +277,7 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
         e_pos = evals[epos]
         e_neg = evals[eneg]
         
-        return (run_id, e_pos[0], e_neg[0])
+        return (run_id, e_pos, e_neg)
         
     except np.linalg.LinAlgError:
         return (run_id, np.nan)
