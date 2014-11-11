@@ -274,7 +274,7 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
         epos = evals[evals == np.nanmin(evals[evals > 0])]
         eneg = evals[evals == np.nanmin(evals[evals < 0])]
         
-        return (run_id, epos, eneg)
+        return (run_id, epos[0], eneg[0])
         
     except np.linalg.LinAlgError:
         return (run_id, np.nan)
