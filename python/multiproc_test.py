@@ -271,8 +271,8 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
 
         val = evals[e0]
         
-        epos = indx[evals == np.nanmin(evals[evals > 0])]
-        eneg = indx[evals == np.nanmin(evals[evals < 0])]
+        epos = indx[evals == np.nanmin(evals > 0)]
+        eneg = indx[evals == np.nanmin(evals < 0])]
         
         e_pos = evals[epos]
         e_neg = evals[eneg]
