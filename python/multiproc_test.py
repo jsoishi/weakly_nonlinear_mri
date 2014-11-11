@@ -82,7 +82,7 @@ def Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0):
 
     result_dict = {}    
     for x in results:
-        result_dict[x[0]] = x[1]
+        result_dict[x[0]] = (x[1], x[2])
     
     print(result_dict)
     print("test: ", result_dict[0])
