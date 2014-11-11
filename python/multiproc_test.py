@@ -283,37 +283,44 @@ if __name__ == '__main__':
     #Rm = 4.8775
     #Co = 0.08
     
-    Pm = 1E-2 #Pm = Rm/R
-    q = 3/2.
-    beta = 25#0.250
-    xi = 1.0
-    x0 = 1.0
+    # derived (non-dimensionalized) values from Liu+ 2006:
+    # q = 1.9, xi = 20, x0 = 4.5, Rm = 3 for Pm = 1E-2
+    # q = 1.9, xi = 20, x0 = 4.5, Rm = 0.015 for Pm = 5E-6
+    
+    Pm = 5E-6
+    #Pm = 1E-2 #Pm = Rm/R
+    q = 1.9#3/2. #for the hMRI, q = 1.9
+    beta = 25.0#0.250
+    xi = 20.0#1.0
+    x0 = 4.5#1.0 #for the hMRI, x0 = 4.5
 
     dQ = 0.005
     dRm = 0.005
     
-    #Qsearch = np.arange(0.2, 1.2, dQ)
-    #Rmsearch = np.arange(5.0, 6.1, dRm)
-    Qsearch = np.arange(0.2, 1.5, dQ)
-    Rmsearch = np.arange(0.5, 8, dRm)
-    
-    #Qsearch = np.arange(0.001, 0.2, dQ)
-    Rmsearch = np.arange(0.05, 0.5, dRm)
-    Qsearch = np.arange(0.1, 0.4, dQ)
-    
     #big hmri search...
-    Rmsearch = np.arange(0.005, 0.5, dRm)
-    Qsearch = np.arange(0.0001, 0.4, dQ)
+    #Rmsearch = np.arange(0.005, 0.5, dRm)
+    #Qsearch = np.arange(0.0001, 0.4, dQ)
     
-    Pm = 1E-1
+    Rmsearch = np.arange(0.010, 0.020, dRm)
+    Qsearch = np.arange(0.0001, 2, dQ)
     Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
     
-    Pm = 1E-3
     beta = 2.5
+    Rmsearch = np.arange(0.010, 0.020, dRm)
+    Qsearch = np.arange(0.0001, 2, dQ)
     Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
     
-    Pm=1E-3
-    beta = 0.025
+    beta = 10.0
+    Rmsearch = np.arange(0.010, 0.020, dRm)
+    Qsearch = np.arange(0.0001, 2, dQ)
+    Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
+    
+    #----
+    
+    Pm = 1E-2
+    beta = 25.0
+    Rmsearch = np.arange(2.995, 3.005, dRm)
+    Qsearch = np.arange(0.0001, 2, dQ)
     Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
     
     #Pm=1E-1
