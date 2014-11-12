@@ -286,7 +286,7 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
     except np.linalg.LinAlgError:
         return (run_id, np.nan, np.nan)
 
-"""
+
 if __name__ == '__main__':
     # beta = 2/Co. Co = 2/beta.
 
@@ -318,7 +318,7 @@ if __name__ == '__main__':
     Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
 
     
-    
+    """
     Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
 
     beta = 0.025
