@@ -271,8 +271,12 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
 
         val = evals[e0]
         
-        epos = indx[evals == np.nanmin(evals > 0)]
-        eneg = indx[evals == np.nanmin(evals < 0)]
+        print(evals)
+        
+        epos = indx[evals == np.nanmin(evals[evals > 0])]
+        eneg = indx[evals == np.nanmax(evals[evals < 0])]
+        
+        print(epos, eneg)
         
         e_pos = evals[epos]
         e_neg = evals[eneg]
@@ -280,8 +284,9 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
         return (run_id, e_pos, e_neg)
         
     except np.linalg.LinAlgError:
-        return (run_id, np.nan)
+        return (run_id, np.nan, np.nan)
 
+"""
 if __name__ == '__main__':
     # beta = 2/Co. Co = 2/beta.
 
@@ -311,9 +316,9 @@ if __name__ == '__main__':
     Rmsearch = np.arange(0.015, 0.016, dRm)
     Qsearch = np.arange(0.0, 10.0, dQ)
     Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
+
     
     
-    """
     Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
 
     beta = 0.025
