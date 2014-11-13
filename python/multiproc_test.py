@@ -283,10 +283,10 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
         
         # Sometimes epos or eneg will not contain data.
         except ValueError:
-            return (run_id, np.nan, np.nan)
+            return (run_id, np.nan + np.nan*1j, np.nan + np.nan*1j)
         
     except np.linalg.LinAlgError:
-        return (run_id, np.nan, np.nan)
+        return (run_id, np.nan + np.nan*1j, np.nan + np.nan*1j)
 
 
 if __name__ == '__main__':
