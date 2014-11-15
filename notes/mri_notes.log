@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  22 OCT 2014 16:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  15 NOV 2014 14:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2660,11 +2660,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 1546--1547
 
  []
 
-(./mri_notes.bbl)
+[38] (./mri_notes.bbl)
 
 Package natbib Warning: There were undefined citations.
 
-[38] (./mri_notes.aux) ) 
+[39] (./mri_notes.aux) ) 
 Here is how much of TeX's memory you used:
  2848 strings out of 493117
  38916 string characters out of 6135433
@@ -2693,10 +2693,10 @@ xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/tex
 live/2014/texmf-dist/fonts/type1/public/amsfonts/latxfont/line10.pfb></usr/loca
 l/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/
 local/texlive/2014/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on mri_notes.pdf (38 pages, 1217508 bytes).
+Output written on mri_notes.pdf (39 pages, 1218454 bytes).
 PDF statistics:
- 233 PDF objects out of 1000 (max. 8388607)
- 146 compressed objects within 2 object streams
+ 236 PDF objects out of 1000 (max. 8388607)
+ 148 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  66 words of extra memory for PDF output out of 10000 (max. 10000000)
 
