@@ -226,8 +226,8 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
         domain = Domain([x_basis])
         
          # linear hMRI equations in terms of beta ....multiplied dt terms by -1j
-        lv1.add_equation("-1j*dt(psixx) - -1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A - xi*x0*(1/x**2)*1j*Q*B + xi*x0*(1/x)*1j*Q*Bx = 0")
-        lv1.add_equation("-1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - (2/beta)*1j*Q*B + xi*(x0/x**2)*1j*Q*A = 0") 
+        lv1.add_equation("-1j*dt(psixx) - -1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A + xi*1j*Q*Bx = 0")
+        lv1.add_equation("-1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - (2/beta)*1j*Q*B - xi*1j*Q*Bx = 0") 
         lv1.add_equation("-1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
         lv1.add_equation("-1j*dt(B) - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A - xi*(x0/x**2)*1j*Q*psi = 0")
 
