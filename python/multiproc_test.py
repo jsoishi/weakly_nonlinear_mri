@@ -279,7 +279,7 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
             e_pos = evals[epos]
             e_neg = evals[eneg]
         
-            return (run_id, e_pos, e_neg)
+            return (run_id, -1*e_pos, -1*e_neg)
         
         # Sometimes epos or eneg will not contain data.
         except ValueError:
@@ -308,15 +308,17 @@ if __name__ == '__main__':
     xi = 20.0#1.0
     x0 = 4.5#1.0 #for the hMRI, x0 = 4.5
 
-    dQ = 0.05
-    dRm = 0.005
+    #dQ = 0.05
+    #dRm = 0.005
+    dQ = 0.005
+    dRm = 0.5
     
     #big hmri search...
     #Rmsearch = np.arange(0.005, 0.5, dRm)
     #Qsearch = np.arange(0.0001, 0.4, dQ)
     
-    #Rmsearch = np.arange(0.015, 0.016, dRm)
-    Rmsearch = np.arange(0.005, 0.1, dRm) 
+    Rmsearch = np.arange(0.015, 0.016, dRm)
+    #Rmsearch = np.arange(0.005, 0.1, dRm) 
     Qsearch = np.arange(0.0, 10.0, dQ)
     Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
 
