@@ -139,6 +139,8 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
         iRm = 1./Rm
         R = Rm/Pm
         iR = 1./R
+        
+        gridnum = 64
 
         #Q = float(sys.argv[2])
         #Rm = float(sys.argv[1])
@@ -151,7 +153,7 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
                               field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
                               param_names=['Q', 'iR', 'iRm', 'q', 'Co'])
 
-        x_basis = Chebyshev(64)
+        x_basis = Chebyshev(gridnum)
         domain = Domain([x_basis])
 
         # In terms of Co ....multiplied dt terms by -1j
@@ -221,8 +223,9 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
         lv1 = ParsedProblem(['x'],
                               field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
                               param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'xi', 'x0'])
+        gridnum = 64
 
-        x_basis = Chebyshev(64)
+        x_basis = Chebyshev(gridnum)
         domain = Domain([x_basis])
         
          # linear hMRI equations in terms of beta ....multiplied dt terms by -1j
@@ -275,8 +278,11 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
         
         try:
             # Find the negative and positive eigenvalues that are closest to zero.
-            epos = indx[evals.real == np.nanmin(evals.real[evals.real > 0])]
-            eneg = indx[evals.real == np.nanmax(evals.real[evals.real < 0])]
+            #epos = indx[evals.real == np.nanmin(evals.real[evals.real > 0])]
+            #eneg = indx[evals.real == np.nanmax(evals.real[evals.real < 0])]
+            
+            epos = indx[evals.real == np.nanmax(evals.real[0:np.int(gridnum/2)])]
+            eneg = indx[evals.real == np.nanmax(evals.real[0:np.int(gridnum/2)])]
 
             e_pos = evals[epos]
             e_neg = evals[eneg]
