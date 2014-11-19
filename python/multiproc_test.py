@@ -308,14 +308,15 @@ if __name__ == '__main__':
     xi = 20.0#1.0
     x0 = 4.5#1.0 #for the hMRI, x0 = 4.5
 
-    dQ = 0.005
-    dRm = 0.5
+    dQ = 0.05
+    dRm = 0.005
     
     #big hmri search...
     #Rmsearch = np.arange(0.005, 0.5, dRm)
     #Qsearch = np.arange(0.0001, 0.4, dQ)
     
-    Rmsearch = np.arange(0.015, 0.016, dRm)
+    #Rmsearch = np.arange(0.015, 0.016, dRm)
+    Rmsearch = np.arange(0.0, 0.1, dRm) 
     Qsearch = np.arange(0.0, 10.0, dQ)
     Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
 
