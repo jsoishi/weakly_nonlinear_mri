@@ -276,6 +276,8 @@ def run_hmri_solve(Q, Pm, Rm, q, beta, run_id, xi, x0):
         
         evals = evals*(-1)
         
+        evals = np.sort(evals)
+        
         try:
             # Find the negative and positive eigenvalues that are closest to zero.
             #epos = indx[evals.real == np.nanmin(evals.real[evals.real > 0])]
