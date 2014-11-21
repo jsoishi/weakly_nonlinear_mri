@@ -2321,7 +2321,7 @@ def plot_uy_secondorder(pc_obj, oplot = True, labels = False, outname=outname):
         ax.set_ylabel("z (vertical)", size = 20)
         cbar.set_label(r"$u_y$ Perturbation", size = 20)
     
-    # only the first order perturbations
+    # only the second order perturbations
     V2_uz1 = pc_obj.eps**2*pc_obj.V2_uz1
     V2_ux1 = pc_obj.eps**2*pc_obj.V2_ux1
     
@@ -2353,9 +2353,14 @@ def plot_uy(pc_obj, oplot = True, labels = False, outname=outname):
     ax = fig.add_subplot(111)
     
     # set colorbar min/max to the same as firstorder
-    info1 = pc_obj.eps*pc_obj.V1_u
-    cbarmax = np.max(info1)
-    cbarmin = np.min(info1)
+    #info1 = pc_obj.eps*pc_obj.V1_u
+    #cbarmax = np.max(info1)
+    #cbarmin = np.min(info1)
+    
+    # set colorbar min/max to the same as secondorder
+    info2 = pc_obj.eps**2*pc_obj.V2_u
+    cbarmax = np.max(info2)
+    cbarmin = np.min(info2)
     
     info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.V_u, cmap="RdBu_r", vmin = cbarmin, vmax = cbarmax)
     cbar = plt.colorbar(info)
