@@ -319,7 +319,7 @@ if __name__ == '__main__':
     x0 = 4.5#1.0 #for the hMRI, x0 = 4.5
 
     dQ = 0.05
-    dRm = 0.005
+    dRm = 0.05
     #dQ = 0.005
     #dRm = 0.5
     
