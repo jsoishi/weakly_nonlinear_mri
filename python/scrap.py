@@ -16,7 +16,7 @@ path = "/Users/susanclark/weakly_nonlinear_mri/python/multirun/"
 #data = pickle.load(open(path+"Pm_1e-05_Q_0.05_dQ_0.05_Rm_0.05_dRm_0.05.p", "rb"))
 #data = pickle.load(open(path+"Pm_1e-06_Q_0.05_dQ_0.1_Rm_0.05_dRm_0.1.p", "rb"))
 #data = pickle.load(open(path+"Pm_1e-06_Q_0.5_dQ_0.01_Rm_4.6_dRm_0.01.p", "rb"))
-data = pickle.load(open(path+"Pm_1e-07_Q_0.5_dQ_0.01_Rm_4.6_dRm_0.01.p", "rb"))
+#data = pickle.load(open(path+"Pm_1e-07_Q_0.5_dQ_0.01_Rm_4.6_dRm_0.01.p", "rb"))
 #data = pickle.load(open(path+"Pm_1e-08_Q_0.5_dQ_0.01_Rm_4.6_dRm_0.01.p", "rb"))
 #data = pickle.load(open(path+"Pm_1e-09_Q_0.5_dQ_0.01_Rm_4.6_dRm_0.01.p", "rb"))
 
@@ -31,9 +31,11 @@ data = pickle.load(open(path+"Pm_1e-07_Q_0.5_dQ_0.01_Rm_4.6_dRm_0.01.p", "rb"))
 #data = pickle.load(open(path+"hmri/Pm_0.001_beta_2.5_Q_0.0001_dQ_0.005_Rm_0.005_dRm_0.005.p", "rb"))
 #data = pickle.load(open(path+"hmri/Pm_0.1_beta_25_Q_0.0001_dQ_0.005_Rm_0.005_dRm_0.005.p", "rb"))
 
-data = pickle.load(open(path+"hmri/Pm_5e-06_beta_0.0057_Q_0.0_dQ_0.005_Rm_0.015_dRm_0.5.p", "rb"))
+#data = pickle.load(open(path+"hmri/Pm_5e-06_beta_0.0057_Q_0.0_dQ_0.005_Rm_0.015_dRm_0.5.p", "rb"))
 
 #data = pickle.load(open(path+"hmri/Pm_5e-06_beta_0.0057_Q_0.0_dQ_0.05_Rm_0.005_dRm_0.005.p", "rb"))
+
+data = pickle.load(open(path+"hmri/Pm_5e-06_beta_0.0057_Q_0.0_dQ_0.05_Rm_0.005_dRm_0.05.p", "rb"))
 
 ids = np.zeros(len(data))
 eval = np.zeros(len(data), np.complex128)
@@ -69,6 +71,9 @@ Qsearch = np.arange(0.0, 10.0, dQ)
 #Rmsearch = Rmsearch[0:len(data)]
 #Qsearch = Qsearch[0:len(data)]
 
+Rmsearch = np.arange(0.005, 0.5, 0.05)
+Qsearch = np.arange(0.0, 10.0, 0.05)
+
 QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
 Qs = QRm[:, 0]
 Rms = QRm[:, 1]
@@ -99,11 +104,13 @@ for i in range(len(data)):
 
 Q = Qs[ids.astype(int)]
 Rm = Rms[ids.astype(int)]
+eval_neg = eval_neg[ids.astype(int)]
+eval_pos = eval_pos[ids.astype(int)]
 
-if hmri == False:
+if hmri == True:
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
-    cb = ax1.scatter(Qs, Rms, c=np.imag(eval_neg), marker="s", s=40, vmin=-1E-7, vmax=1E-7, cmap="bone")
+    cb = ax1.scatter(Qs, Rms, c=np.real(eval_neg), marker="s", s=40)#, vmin=-1E-7, vmax=1E-7, cmap="bone")
     fig.colorbar(cb)
     ax1.set_title("Real")
     ax1.set_xlabel("Q")
@@ -111,9 +118,9 @@ if hmri == False:
     ax1.set_xlim(Q[0], Q[-1])
     ax1.set_ylim(Rm[0], Rm[-1])
     
-  
-    ax2 = fig.add_subplot(122)
-    cb2 = ax2.scatter(Qs, Rms, c=np.imag(eval_pos), marker="s", s=40)
+    fig = plt.figure()
+    ax2 = fig.add_subplot(111)
+    cb2 = ax2.scatter(Qs, Rms, c=np.real(eval_pos), marker="s", s=40)
     fig.colorbar(cb2)
     ax2.set_title("Imaginary")
     ax2.set_xlabel("Q")

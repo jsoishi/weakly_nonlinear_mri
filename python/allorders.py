@@ -2093,7 +2093,7 @@ class PlotContours():
         self.q = q
         self.beta = beta
         
-        print(Q, Rm, Pm, q)
+        print(Q, Rm, Pm, q, gridnum)
         
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
