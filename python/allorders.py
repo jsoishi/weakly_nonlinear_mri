@@ -2521,7 +2521,7 @@ def plot_By(pc_obj, oplot = True, labels = False, outname=outname):
     else:
         pylab.savefig("By_bothorders_Q2p3_Rm45.png")
 
-def plotN2(n2_obj):
+def plotN2(n2_obj, outname = outname):
 
     #fig = plt.figure(figsize=(16,4))
     fig = plt.figure(figsize=(10,8))
@@ -2559,9 +2559,12 @@ def plotN2(n2_obj):
     ax4.set_xlim(-1, 1)
 
     plt.tick_params(labelsize = 20)
+    
+    if outname:
+        pylab.savefig("N2_"+outname+".png")
 
     
-def plotN3(n3_obj):
+def plotN3(n3_obj, outname = outname):
 
     #fig = plt.figure(figsize=(16,4))
     fig = plt.figure(figsize=(10,8))
@@ -2600,8 +2603,10 @@ def plotN3(n3_obj):
 
     plt.tick_params(labelsize = 20)
     
+    if outname:
+        pylab.savefig("N3_"+outname+".png")
     
-def plotOE(oe_obj):
+def plotOE(oe_obj, outname = outname):
 
     fig = plt.figure(figsize=(10,8))
     
@@ -2632,5 +2637,8 @@ def plotOE(oe_obj):
     #ax4.plot(oe_obj.x, oe_obj.B.real, color="red")
     #ax4.set_title("Im($B_{1}$)")
     plt.tick_params(labelsize = 20)
+    
+    if outname:
+        pylab.savefig("OrderE_"+outname+".png")
     
     

@@ -34,9 +34,18 @@ beta = 25.0
 
 #Pm = 1E-7: Q = 0.745, Rm = 4.90
 
+"""
 Pm = 1.0E-7
 Q = 0.745
 Rm = 4.90
+q = 1.5
+beta = 25.0
+"""
+
+#Pm = 1E-8: Q = 0.815, Rm = 4.75
+Pm = 1.0E-8
+Q = 0.815
+Rm = 4.75
 q = 1.5
 beta = 25.0
 
@@ -64,6 +73,9 @@ plot_uy_secondorder(pc, oplot = True, labels = False, outname=outname)
 plot_By_secondorder(pc, oplot = True, labels = False, outname=outname)
 plot_uy(pc, oplot = True, labels = False, outname=outname)
 plot_By(pc, oplot = True, labels = False, outname=outname)
+plotN2(pc., outname=outname)
+plotN3(n2_obj, outname=outname)
+plotOE(n2_obj, outname=outname)
 
 print(coeffs)
 
