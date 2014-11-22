@@ -318,7 +318,7 @@ if __name__ == '__main__':
     xi = 20.0#1.0
     x0 = 4.5#1.0 #for the hMRI, x0 = 4.5
 
-    Pm = 1.0E-4
+    Pm = 1.0E-5
     q = 1.5
     beta = 25.0
     Co = 0.08
