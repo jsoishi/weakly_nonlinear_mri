@@ -35,10 +35,13 @@ path = "/Users/susanclark/weakly_nonlinear_mri/python/multirun/"
 
 #data = pickle.load(open(path+"hmri/Pm_5e-06_beta_0.0057_Q_0.0_dQ_0.05_Rm_0.005_dRm_0.005.p", "rb"))
 
-data = pickle.load(open(path+"hmri/Pm_5e-06_beta_0.0057_Q_0.0_dQ_0.05_Rm_0.005_dRm_0.05.p", "rb"))
+#data = pickle.load(open(path+"hmri/Pm_5e-06_beta_0.0057_Q_0.0_dQ_0.05_Rm_0.005_dRm_0.05.p", "rb"))
 
-#Pm 1E-5 standard MRI
-data = pickle.load(open(path+"Pm_0.0001_Q_0.5_dQ_0.005_Rm_4.7_dRm_0.01.p", "rb"))
+#Pm 1E-4 standard MRI
+#data = pickle.load(open(path+"Pm_0.0001_Q_0.5_dQ_0.005_Rm_4.7_dRm_0.01.p", "rb"))
+
+#Pm 1E-5
+data = pickle.load(open(path+"Pm_1e-05_Q_0.5_dQ_0.005_Rm_4.7_dRm_0.01.p", "rb"))
 
 ids = np.zeros(len(data))
 eval = np.zeros(len(data), np.complex128)
