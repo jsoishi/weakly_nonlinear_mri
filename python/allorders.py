@@ -18,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 16
+gridnum = 256
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -1564,7 +1564,7 @@ class AmplitudeAlpha():
             self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o2 = self.o2)
             self.o3.solve()
             
-            self.n3 = N3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = v1, o2 = self.o2)
+            self.n3 = N3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = self.v1, o2 = self.o2)
             self.n3.solve31()
             self.n3.solve30()
             

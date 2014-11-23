@@ -84,9 +84,9 @@ plot_uy_secondorder(pc, oplot = True, labels = False, outname=outname)
 plot_By_secondorder(pc, oplot = True, labels = False, outname=outname)
 plot_uy(pc, oplot = True, labels = False, outname=outname)
 plot_By(pc, oplot = True, labels = False, outname=outname)
-plotN2(pc.saa.alpha_amp.o2.n2, outname=outname)
+plotN2(pc.saa.alpha_amp.o2, outname=outname)
 plotN3(pc.saa.alpha_amp.n3, outname=outname)
-plotOE(oc.saa.alpha_amp.v1, outname=outname)
+plotOE(pc.saa.alpha_amp, outname=outname)
 
 print(coeffs)
 
