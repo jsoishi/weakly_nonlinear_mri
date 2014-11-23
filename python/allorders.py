@@ -18,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 256
+gridnum = 16
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -576,17 +576,17 @@ class OrderE2():
                 self.A_1 = o1.LEV.state['A']
                 self.B_1 = o1.LEV.state['B']
                  
-        n2 = N2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
-        n2.solve()
-        self.n22_psi = n2.N22_psi
-        self.n22_u = n2.N22_u
-        self.n22_A = n2.N22_A
-        self.n22_B = n2.N22_B
+        self.n2 = N2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+        self.n2.solve()
+        self.n22_psi = self.n2.N22_psi
+        self.n22_u = self.n2.N22_u
+        self.n22_A = self.n2.N22_A
+        self.n22_B = self.n2.N22_B
         
-        self.n20_psi = n2.N20_psi
-        self.n20_u = n2.N20_u
-        self.n20_A = n2.N20_A
-        self.n20_B = n2.N20_B
+        self.n20_psi = self.n2.N20_psi
+        self.n20_u = self.n2.N20_u
+        self.n20_A = self.n2.N20_A
+        self.n20_B = self.n2.N20_B
             
     def solve20(self, gridnum = gridnum, save = False):
         # inverse magnetic reynolds number
@@ -1505,15 +1505,15 @@ class AmplitudeAlpha():
             self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
             self.va.solve(save = False, norm = True)
         
-            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
-            v1.solve(save=False)
+            self.v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            self.v1.solve(save=False)
             
             if norm == True:
             
-                psi_1 = v1.LEV.state['psi']*v1.scale
-                u_1 = v1.LEV.state['u']*v1.scale
-                A_1 = v1.LEV.state['A']*v1.scale
-                B_1 = v1.LEV.state['B']*v1.scale
+                psi_1 = self.v1.LEV.state['psi']*self.v1.scale
+                u_1 = self.v1.LEV.state['u']*self.v1.scale
+                A_1 = self.v1.LEV.state['A']*self.v1.scale
+                B_1 = self.v1.LEV.state['B']*self.v1.scale
             
                 self.v11_psi = psi_1.evaluate()
                 self.v11_u = u_1.evaluate()
@@ -1523,12 +1523,12 @@ class AmplitudeAlpha():
                 
             else:
             
-                self.v11_psi = v1.LEV.state['psi']
-                self.v11_u = v1.LEV.state['u']
-                self.v11_A = v1.LEV.state['A']
-                self.v11_B = v1.LEV.state['B']
+                self.v11_psi = self.v1.LEV.state['psi']
+                self.v11_u = self.v1.LEV.state['u']
+                self.v11_A = self.v1.LEV.state['A']
+                self.v11_B = self.v1.LEV.state['B']
             
-            self.o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = v1)
+            self.o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = self.v1)
             self.o2.solve20()
             self.o2.solve21(norm = norm)
             self.o2.solve22()

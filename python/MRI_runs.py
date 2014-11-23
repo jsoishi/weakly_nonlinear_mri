@@ -43,9 +43,18 @@ beta = 25.0
 """
 
 #Pm = 1E-8: Q = 0.815, Rm = 4.75
+"""
 Pm = 1.0E-8
 Q = 0.815
 Rm = 4.75
+q = 1.5
+beta = 25.0
+"""
+
+#Pm = 1E-5: Q = 0.747, Rm = 4.88
+Pm = 1.0E-5
+Q = 0.747
+Rm = 4.88
 q = 1.5
 beta = 25.0
 
@@ -65,6 +74,8 @@ coeffs["ctwiddle"] = pc.saa.alpha_amp.c_twiddle
 coeffs["b"] = pc.saa.alpha_amp.b
 coeffs["h"] = pc.saa.alpha_amp.h
 coeffs["g"] = pc.saa.alpha_amp.g
+coeffs["t_array"] = pc.saa.t_array
+coeffs["alpha_array"] = pc.saa.alpha_array
 
 outname = "gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)
 plot_uy_firstorder(pc, oplot = True, labels = False, outname=outname)
@@ -73,9 +84,9 @@ plot_uy_secondorder(pc, oplot = True, labels = False, outname=outname)
 plot_By_secondorder(pc, oplot = True, labels = False, outname=outname)
 plot_uy(pc, oplot = True, labels = False, outname=outname)
 plot_By(pc, oplot = True, labels = False, outname=outname)
-plotN2(pc., outname=outname)
-plotN3(n2_obj, outname=outname)
-plotOE(n2_obj, outname=outname)
+plotN2(pc.saa.alpha_amp.o2.n2, outname=outname)
+plotN3(pc.saa.alpha_amp.n3, outname=outname)
+plotOE(oc.saa.alpha_amp.v1, outname=outname)
 
 print(coeffs)
 
