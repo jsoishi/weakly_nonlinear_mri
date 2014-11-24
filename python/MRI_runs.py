@@ -12,8 +12,8 @@ import random
 from allorders import *
 
 import matplotlib
-matplotlib.rcParams['backend'] = "Qt4Agg"
-matplotlib.rcParams.update({'figure.autolayout': True})
+#matplotlib.rcParams['backend'] = "Qt4Agg"
+#matplotlib.rcParams.update({'figure.autolayout': True})
 
 from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})

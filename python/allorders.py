@@ -11,8 +11,8 @@ import streamplot_uneven as su
 import random
 
 import matplotlib
-matplotlib.rcParams['backend'] = "Qt4Agg"
-matplotlib.rcParams.update({'figure.autolayout': True})
+#matplotlib.rcParams['backend'] = "Qt4Agg"
+#matplotlib.rcParams.update({'figure.autolayout': True})
 
 from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
@@ -2206,7 +2206,7 @@ class PlotContours():
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color="#660033")
         
         su.streamplot(ax2, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color = uymag/np.max(uymag), cmap = "RdBu")
-        plt.show()
+        #plt.show()
         
         pylab.savefig("vel1.png")
         
@@ -2248,7 +2248,7 @@ class PlotContours():
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, color = speed/speed.max(), cmap = "Purples")
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color="#660033")
         su.streamplot(ax3, self.saa.alpha_amp.x, z, self.V_Bx1.real, self.V_Bz1.real, color="#660033")
-        plt.show()     
+        #plt.show()     
         
         pylab.savefig("Bfield1.png")
 
