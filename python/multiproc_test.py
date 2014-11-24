@@ -338,8 +338,29 @@ if __name__ == '__main__':
     #Qsearch = np.arange(0.0, 10.0, dQ)
     #Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
 
-    Qsearch = np.arange(0.5, 1.0, dQ)
+    Qsearch = np.arange(0.7, 0.9, dQ)
     Rmsearch = np.arange(4.7, 5.1, dRm)
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-2
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-3
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-4
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-5
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-6
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-7
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-8
     Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
     
     """
