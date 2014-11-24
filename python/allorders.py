@@ -16,7 +16,7 @@ import matplotlib
 
 from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-rc('text', usetex=False)
+rc('text', usetex=True)
 
 gridnum = 16#512
 x_basis = Chebyshev(gridnum)
