@@ -14,9 +14,9 @@ import matplotlib
 #matplotlib.rcParams['backend'] = "Qt4Agg"
 #matplotlib.rcParams.update({'figure.autolayout': True})
 
-from matplotlib import rc
-rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-rc('text', usetex=True)
+#from matplotlib import rc
+#rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+#rc('text', usetex=True)
 
 gridnum = 16#512
 x_basis = Chebyshev(gridnum)
