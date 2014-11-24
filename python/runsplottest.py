@@ -1,3 +1,5 @@
+import os
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import pylab
@@ -5,7 +7,9 @@ import pickle
 import matplotlib
 matplotlib.rcParams['backend'] = "Qt4Agg"
 
-testdata = pickle.load(open("multirun_Pm_00001.p", "rb"))
+filename = sys.argv[-1]
+runname = os.path.splitext(filename)[0]
+testdata = pickle.load(open(filename, "rb"))
 
 Rms = np.zeros(len(testdata))
 Qs = np.zeros(len(testdata))
@@ -35,5 +39,5 @@ ax2.set_title("Imaginary")
 ax2.set_xlabel("Q")
 ax2.set_ylabel("Rm")
 
-plt.show()
-pylab.savefig("multirun_Pm_00001_1.png")
+#plt.show()
+pylab.savefig("%s.png" % filename)
