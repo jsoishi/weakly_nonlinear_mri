@@ -13,6 +13,8 @@ import time
 
 import sys
 
+nprocs = 10
+
 def run_mri_solve_2(Q, Pm, Rm, q, B0, Co, lv1=None, LEV=None):
     output = "Hello. Parameter Q = %10.5e" % Q
     return output
@@ -31,7 +33,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
     params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
     print("Processing %10.5e parameter combinations" % len(Qs))
 
-    with Pool(processes=16) as pool:
+    with Pool(processes=nprocs) as pool:
         result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
 
         results = []
@@ -70,7 +72,7 @@ def Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0):
     params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs)), itertools.repeat(xi), itertools.repeat(x0)))
     print("Processing %10.5e parameter combinations" % len(Qs))
 
-    with Pool(processes=16) as pool:
+    with Pool(processes=nprocs) as pool:
         result_pool = [pool.apply_async(run_hmri_solve, args) for args in params]
 
         results = []
@@ -108,7 +110,7 @@ def Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch):
     params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
     print("Processing %10.5e parameter combinations" % len(Qs))
 
-    with Pool(processes=16) as pool:
+    with Pool(processes=nprocs) as pool:
         result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
 
         results = []
@@ -195,12 +197,19 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
 
         # Find the eigenvalue that is closest to zero.
         evals = LEV.eigenvalues
-        indx = np.arange(len(evals))
-        e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+        evals = evals*(-1)
+        keys = np.argsort(np.abs(evals.real))
+        evals = evals[keys]
+        evals = evals[~np.isnan(evals)]
+        #evals = np.sort(evals)
+        #val = evals[evals[0:gridnum/2].real == np.nanmax(evals[0:gridnum/2].real)]
+        #nkeep_modes = (gridnum * (lv1.neqns-6))/2
+        nkeep_modes = (gridnum * (lv1.neqns))/2
 
-        val = evals[e0]
-        return (run_id, val[0])
+        val = evals[np.abs(evals[0:nkeep_modes]) == np.nanmin(np.abs(evals[0:nkeep_modes]))]
         
+        return (run_id, val[0])
+                
     except np.linalg.LinAlgError:
         return (run_id, np.nan)
     
@@ -311,10 +320,10 @@ if __name__ == '__main__':
     # q = 1.9, xi = 20, x0 = 4.5, Rm = 3 for Pm = 1E-2
     # q = 1.9, xi = 20, x0 = 4.5, Rm = 0.015 for Pm = 5E-6
     
-    Pm = 5.0E-6
+    Pm = 0.001#5.0E-6
     #Pm = 1E-2 #Pm = Rm/R
-    q = 1.9#3/2. #for the hMRI, q = 1.9
-    beta = 5.7E-3#0.250
+    q = 3/2. #for the hMRI, q = 1.9
+    beta = 25. #5.7E-3#0.250
     xi = 20.0#1.0
     x0 = 4.5#1.0 #for the hMRI, x0 = 4.5
 
@@ -329,8 +338,10 @@ if __name__ == '__main__':
     
     #Rmsearch = np.arange(0.015, 0.016, dRm)
     #Rmsearch = np.arange(0.005, 0.1, dRm) 
-    Qsearch = np.arange(0.0, 10.0, dQ)
-    Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
+    Qsearch = np.arange(0.0, 1.5, dQ)
+    Rmsearch = np.array([5.3,])
+    #Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
+    Pmrun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
 
     
     """
