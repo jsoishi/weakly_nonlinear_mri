@@ -19,7 +19,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 512
+gridnum = 16#512
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -105,6 +105,20 @@ coeffs["h"] = pc.saa.alpha_amp.h
 coeffs["g"] = pc.saa.alpha_amp.g
 coeffs["t_array"] = pc.saa.t_array
 coeffs["alpha_array"] = pc.saa.alpha_array
+coeffs["x"] = pc.saa.alpha_amp.x
+coeffs["eps"] = pc.eps
+coeffs["u_x first order"] = pc.V1_ux1
+coeffs["u_y first order"] = pc.V1_u
+coeffs["u_z first order"] = pc.V1_uz1
+coeffs["u_x second order"] = pc.V2_ux1
+coeffs["u_y second order"] = pc.V2_u
+coeffs["u_z second order"] = pc.V2_uz1
+coeffs["B_x first order"] = pc.V1_Bx1
+coeffs["B_y first order"] = pc.V1_B
+coeffs["B_z first order"] = pc.V1_Bz1
+coeffs["B_x second order"] = pc.V2_Bx1
+coeffs["B_y second order"] = pc.V2_B
+coeffs["B_z second order"] = pc.V2_Bz1
 
 outname = "gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)
 plot_uy_firstorder(pc, oplot = True, labels = False, outname=outname)
