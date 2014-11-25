@@ -45,6 +45,17 @@ path = "/Users/susanclark/weakly_nonlinear_mri/python/multirun/"
 
 #Pm 1E-2
 data = pickle.load(open(path+"Pm_0.01_Q_0.5_dQ_0.005_Rm_4.7_dRm_0.01.p", "rb"))
+"""
+Pm_0.05_Q_0.7_dQ_0.005_Rm_4.7_dRm_0.01.p
+Pm_0.005_Q_0.7_dQ_0.005_Rm_4.7_dRm_0.01.p
+Pm_0.0005_Q_0.7_dQ_0.005_Rm_4.7_dRm_0.01.p
+Pm_5e-05_Q_0.7_dQ_0.005_Rm_4.7_dRm_0.01.p
+Pm_5e-06_Q_0.7_dQ_0.005_Rm_4.7_dRm_0.01.p
+Pm_5e-07_Q_0.7_dQ_0.005_Rm_4.7_dRm_0.01.p
+Pm_5e-08_Q_0.7_dQ_0.005_Rm_4.7_dRm_0.01.p
+"""
+
+data = pickle.load(open(path+"Pm_5e-05_Q_0.7_dQ_0.005_Rm_4.7_dRm_0.01.p", "rb"))
 
 ids = np.zeros(len(data))
 eval = np.zeros(len(data), np.complex128)
@@ -85,6 +96,10 @@ Qsearch = np.arange(0.0, 10.0, 0.05)
 
 
 Qsearch = np.arange(0.5, 1.0, 0.005)
+Rmsearch = np.arange(4.7, 5.1, 0.01)
+
+# Pm = 5.0Ex runs
+Qsearch = np.arange(0.7, 0.9, 0.005)
 Rmsearch = np.arange(4.7, 5.1, 0.01)
 
 QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
