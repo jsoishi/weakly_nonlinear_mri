@@ -2290,7 +2290,7 @@ def plot_uy_firstorder(pc_obj, oplot = True, labels = False, outname=outname):
         
     if outname:
         pylab.savefig("uy_firstorder_"+outname+".png")
-        pylab.savefig("uy_firstorder_"+outname+".pdf")
+        #pylab.savefig("uy_firstorder_"+outname+".pdf")
     else:    
         pylab.savefig("uy_firstorder_Q2p3_Rm45.png")
         
@@ -2336,7 +2336,7 @@ def plot_uy_secondorder(pc_obj, oplot = True, labels = False, outname=outname):
        
     if outname:
         pylab.savefig("uy_secondorder_"+outname+".png")
-        pylab.savefig("uy_secondorder_"+outname+".pdf")
+        #pylab.savefig("uy_secondorder_"+outname+".pdf")
     else: 
         pylab.savefig("uy_secondorder_Q2p3_Rm45.png")
 
@@ -2382,7 +2382,7 @@ def plot_uy(pc_obj, oplot = True, labels = False, outname=outname):
         
     if outname:
         pylab.savefig("uy_bothorders_"+outname+".png")
-        pylab.savefig("uy_bothorders_"+outname+".pdf")
+        #pylab.savefig("uy_bothorders_"+outname+".pdf")
     else:
         pylab.savefig("uy_bothorders_Q2p3_Rm45.png")
         
@@ -2425,7 +2425,7 @@ def plot_By_firstorder(pc_obj, oplot = True, labels = False, outname=outname):
         
     if outname:
         pylab.savefig("By_firstorder_"+outname+".png")
-        pylab.savefig("By_firstorder_"+outname+".pdf")
+        #pylab.savefig("By_firstorder_"+outname+".pdf")
     else:
         pylab.savefig("By_firstorder_Q2p3_Rm45.png")
         
@@ -2464,7 +2464,7 @@ def plot_By_secondorder(pc_obj, oplot = True, labels = False, outname=outname):
         
     if outname:
         pylab.savefig("By_secondorder_"+outname+".png")
-        pylab.savefig("By_secondorder_"+outname+".pdf")
+        #pylab.savefig("By_secondorder_"+outname+".pdf")
     else:
         pylab.savefig("By_secondorder_Q2p3_Rm45.png")
 
@@ -2517,7 +2517,7 @@ def plot_By(pc_obj, oplot = True, labels = False, outname=outname):
 
     if outname:
         pylab.savefig("By_bothorders_"+outname+".png")
-        pylab.savefig("By_bothorders_"+outname+".pdf")
+        #pylab.savefig("By_bothorders_"+outname+".pdf")
     else:
         pylab.savefig("By_bothorders_Q2p3_Rm45.png")
 
