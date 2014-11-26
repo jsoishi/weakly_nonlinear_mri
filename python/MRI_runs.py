@@ -19,7 +19,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 512
+gridnum = 1024#512
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -70,22 +70,22 @@ beta = 25.0
 
 #Pm = 1E-7: Q = 0.745, Rm = 4.90
 
-"""
+
 Pm = 1.0E-7
 Q = 0.745
 Rm = 4.90
 q = 1.5
 beta = 25.0
-"""
+
 
 #Pm = 1E-8: Q = 0.815, Rm = 4.75
-
+"""
 Pm = 1.0E-8
 Q = 0.815
 Rm = 4.75
 q = 1.5
 beta = 25.0
-
+"""
 
 pc = PlotContours(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, run = True, norm = True)
 pc.plot_streams()

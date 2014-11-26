@@ -326,7 +326,7 @@ if __name__ == '__main__':
     #dQ = 0.05
     #dRm = 0.05
     dQ = 0.005
-    dRm = 0.01
+    dRm = 0.001
     #dRm = 0.5
     
     #big hmri search...
@@ -338,7 +338,7 @@ if __name__ == '__main__':
     #Qsearch = np.arange(0.0, 10.0, dQ)
     #Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
 
-    Qsearch = np.arange(0.7, 0.9, dQ)
+    Qsearch = np.arange(0.5, 0.9, dQ)
     Rmsearch = np.arange(4.7, 5.1, dRm)
     Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
     
