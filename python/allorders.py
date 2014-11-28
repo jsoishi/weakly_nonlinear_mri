@@ -18,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 1024#512
+gridnum = 16#512
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -1665,19 +1665,24 @@ class AmplitudeAlpha():
         
         # c = <va . N31*>
         c_psi = self.va.psi*self.N31_psi_star
-        c_psi = c_psi.evaluate()
+        c_psi = c_psi.evaluate() #testing
+        self.c_psi = c_psi
         
         c_u = self.va.u*self.N31_u_star
         c_u = c_u.evaluate()
+        self.c_u = c_u
         
         c_A = self.va.A*self.N31_A_star
         c_A = c_A.evaluate()
+        self.c_A = c_A
         
         c_B = self.va.B*self.N31_B_star # N31 B_star and u_star are nan
         c_B = c_B.evaluate()
+        self.c_B = c_B
         
         call = c_psi + c_u + c_A + c_B
         call = call.evaluate()
+        self.call = call
         
         c = domain.new_field()
         c.name = 'c'

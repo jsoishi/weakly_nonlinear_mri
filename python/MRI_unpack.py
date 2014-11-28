@@ -21,7 +21,7 @@ beta = 25.0
 coeffs = {}
 
 #Pm = 1E-7: Q = 0.745, Rm = 4.90
-gridnum = 512
+gridnum = 1024#512
 Pm = 1.0E-7
 Q = 0.745
 Rm = 4.90
