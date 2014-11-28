@@ -35,16 +35,16 @@ mri.parameters['beta'] = 25.0
 mri.parameters['Omega0'] = 1.
 
 #streamfunction
-mri.add_equation("dt(dx(psi_x)) + dz(dz(dt(psi))) - 2*dz(u) + (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re - 2*B0/beta*(dz(dx(A_x)) + dz(dz(dz(A)))) = 2/beta*((dx(dx(A_x)) + dz(dz(A_x))) * dz(A) - (dz(dx(A_x)) + dz(dz(dz(A))))*A_x) - ((psi_xxx + dz(dz(A_x))) * dz(psi) - (dz(psi_xx) + dz(dz(dz(psi))))*psi_x)")
+mri.add_equation("dt(dx(psi_x)) + dz(dz(dt(psi))) - 2*Omega0*dz(u) - (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re - 2*B0/beta*(dz(dx(A_x)) + dz(dz(dz(A)))) = 0") #2/beta*((dx(dx(A_x)) + dz(dz(A_x))) * dz(A) - (dz(dx(A_x)) + dz(dz(dz(A))))*A_x) - ((psi_xxx + dz(dz(A_x))) * dz(psi) - (dz(psi_xx) + dz(dz(dz(psi))))*psi_x)")
 
 #u (y-velocity)
-mri.add_equation("dt(u) + (2-q)*Omega0*dz(psi) - 2*B0/beta * dz(b) - (dx(u_x) + dz(dz(u)))/Re = 2./beta*(dz(A) * b_x - A_x * dz(b))")
+mri.add_equation("dt(u) + (2-q)*Omega0*dz(psi) - 2*B0/beta * dz(b) - (dx(u_x) + dz(dz(u)))/Re = 0")#2./beta*(dz(A) * b_x - A_x * dz(b))")
 
 #vector potential
-mri.add_equation("dt(A) - B0 * dz(psi) - (dx(A_x) + dz(dz(A)))/Rm = dz(A) * psi_x - A_x * dz(psi)")
+mri.add_equation("dt(A) - B0 * dz(psi) - (dx(A_x) + dz(dz(A)))/Rm = 0")#dz(A) * psi_x - A_x * dz(psi)")
 
 #b (y-field)
-mri.add_equation("dt(b) - B0*dz(u) + q*Omega0 * dz(A) - (dx(b_x) + dz(dz(b)))/Rm = dz(A) * u_x - A_x * dz(u) - (b_x*dz(psi) - dz(b)*psi_x)")
+mri.add_equation("dt(b) - B0*dz(u) + q*Omega0 * dz(A) - (dx(b_x) + dz(dz(b)))/Rm = 0")#dz(A) * u_x - A_x * dz(u) - (b_x*dz(psi) - dz(b)*psi_x)")
 
 # first-order scheme definitions
 mri.add_equation("psi_x - dx(psi) = 0")
@@ -67,17 +67,14 @@ mri.add_equation("b_x - dx(b) = 0")
 # mri.add_right_bc("b_x = 0")
 
 mri.add_left_bc("u = 0")
-mri.add_right_bc("u = 0")
-mri.add_left_bc("dz(psi) = 0",condition="dz != 0")
-mri.add_right_bc("dz(psi) = 0",condition="dz != 0")
-mri.add_left_bc("psi = 0",condition="dz == 0")
-mri.add_right_bc("psi = 0",condition="dz == 0")
+mri.add_right_bc("u = 0", condition="dz != 0")
+mri.add_int_bc("psi = 0",condition="dz == 0")
+mri.add_left_bc("dz(psi) = 0")
+mri.add_right_bc("dz(psi) = 0")
 mri.add_left_bc("psi_x = 0")
 mri.add_right_bc("psi_x = 0")
-mri.add_left_bc("dz(A) = 0",condition="dz != 0")
-mri.add_right_bc("dz(A) = 0",condition="dz != 0")
-mri.add_left_bc("A = 0",condition="dz == 0")
-mri.add_right_bc("A = 0",condition="dz == 0")
+mri.add_left_bc("dz(A) = 0")
+mri.add_right_bc("dz(A) = 0")
 mri.add_left_bc("A_x = 0")
 mri.add_right_bc("A_x = 0")
 
@@ -90,7 +87,7 @@ ts = de.timesteppers.RK443
 # build solver
 solver = de.solvers.IVP(mri, domain, ts)
 solver.stop_sim_time = np.inf
-solver.stop_iteration = 1000 #np.inf
+solver.stop_iteration = 10 #np.inf
 solver.stop_wall_time = 24*3600. # run for 24 hours
 
 # initial conditions
@@ -107,7 +104,8 @@ psi['g'] = Ampl0 * np.sin(np.pi*x/Lx)*np.random.rand(*psi['g'].shape)
 # analysis
 data_dir = "data"
 output_time_cadence= 0.01
-analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), sim_dt=output_time_cadence, parallel=False)
+output_iter_cadence = 2
+analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), sim_dt=output_time_cadence, iter=output_iter_cadence, parallel=False)
 
 analysis_slice.add_task("psi", name="psi")
 analysis_slice.add_task("u", name="u")
