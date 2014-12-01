@@ -90,12 +90,25 @@ z = domain.grid(0)
 psi['g'] = Ampl0 * np.sin(np.pi*x/Lx)*np.random.rand(*psi['g'].shape)
 
 # analysis
+t_orb = 2*np.pi/mri.parameters['Omega0']
 data_dir = "data"
 output_time_cadence= 0.01
 output_iter_cadence = 2
-analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), iter=output_iter_cadence, sim_dt=output_time_cadence, parallel=False)
+ts_time_cadence = t_orb/100
 
+# slices
+analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), iter=output_iter_cadence, sim_dt=output_time_cadence, parallel=False)
 analysis_slice.add_task("psi", name="psi")
+analysis_slice.add_task("u", name="u")
+analysis_slice.add_task("A", name="A")
+analysis_slice.add_task("b", name="b")
+
+# time series
+analysis_ts = solver.evaluator.add_file_handler(os.path.join(data_dir,"time_series"), sim_dt=ts_time_cadence, parallel=False)
+analysis_ts.add_task("Integrate(0.5 * (u*u + psi_x*psi_x + dz(psi)*dz(psi)))", name="total kinetic energy")
+analysis_ts.add_task("Integrate(0.5 * (u*u))", name="toridal kinetic energy")
+analysis_ts.add_task("Integrate(0.5 * (b*b + A_x*A_x + dz(A)*dz(A)))", name="total magnetic energy")
+analysis_ts.add_task("Integrate(0.5 * (b*b))", name="toridal magnetic energy")
 
 dt = 0.001
 start_time = time.time()
