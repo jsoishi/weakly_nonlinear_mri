@@ -24,9 +24,8 @@ z_basis = de.Fourier(nz)
 domain = de.Domain([z_basis,x_basis])
 
 mri = de.ParsedProblem(['z','x'],
-                       field_names=['psi','psi_x','psi_xx','psi_xxx'],
+                       field_names=['psi','psi_x','psi_xx','psi_xxx', 'u', 'u_x'],
                        param_names=['Re','Rm','B0','Omega0','q','beta'])
-
 # Parameters
 Pm = 0.001
 mri.parameters['B0'] = 1. - epsilon**2
@@ -37,19 +36,24 @@ mri.parameters['beta'] = 25.0
 mri.parameters['Omega0'] = 1.
 
 #streamfunction
-mri.add_equation("dt(dx(psi_x)) + dz(dz(dt(psi))) - (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re = 0")
+mri.add_equation("dt(dx(psi_x)) + dz(dz(dt(psi))) - 2*dz(u) - (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re = 0")
+
+#u (y-velocity)
+mri.add_equation("dt(u) + (2-q)*Omega0*dz(psi)  - (dx(u_x) + dz(dz(u)))/Re = 0")
 
 # first-order scheme definitions
 mri.add_equation("psi_x - dx(psi) = 0")
 mri.add_equation("psi_xx - dx(psi_x) = 0")
 mri.add_equation("psi_xxx - dx(psi_xx) = 0")
+mri.add_equation("u_x - dx(u) = 0")
 
-# four boundary conditions
+# six boundary conditions
 mri.add_left_bc("psi = 0")#,condition="dz == 0")
 mri.add_right_bc("psi = 0")#,condition="dz == 0")
 mri.add_left_bc("psi_x = 0")
 mri.add_right_bc("psi_x = 0")
-
+mri.add_left_bc("u = 0")
+mri.add_right_bc("u = 0")
 # prepare
 mri.expand(domain)
 
