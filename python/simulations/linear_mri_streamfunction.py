@@ -24,7 +24,7 @@ z_basis = de.Fourier(nz)
 domain = de.Domain([z_basis,x_basis])
 
 mri = de.ParsedProblem(['z','x'],
-                       field_names=['psi','psi_x','psi_xx','psi_xxx', 'u', 'u_x'],
+                       field_names=['psi','psi_x','psi_xx','psi_xxx', 'u', 'u_x', 'A', 'A_x', 'b', 'b_x'],
                        param_names=['Re','Rm','B0','Omega0','q','beta'])
 # Parameters
 Pm = 0.001
@@ -36,24 +36,39 @@ mri.parameters['beta'] = 25.0
 mri.parameters['Omega0'] = 1.
 
 #streamfunction
-mri.add_equation("dt(dx(psi_x)) + dz(dz(dt(psi))) - 2*dz(u) - (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re = 0")
+mri.add_equation("dt(dx(psi_x)) + dz(dz(dt(psi))) - 2*Omega0*dz(u) - (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re - 2*B0/beta*(dz(dx(A_x)) + dz(dz(dz(A)))) = 0")
 
 #u (y-velocity)
-mri.add_equation("dt(u) + (2-q)*Omega0*dz(psi)  - (dx(u_x) + dz(dz(u)))/Re = 0")
+mri.add_equation("dt(u) + (2-q)*Omega0*dz(psi) - 2*B0/beta * dz(b) - (dx(u_x) + dz(dz(u)))/Re = 0")
+
+# vector potential
+mri.add_equation("dt(A) - B0 * dz(psi) - (dx(A_x) + dz(dz(A)))/Rm = 0")
+
+#b (y-field)
+mri.add_equation("dt(b) - B0*dz(u) + q*Omega0 * dz(A) - (dx(b_x) + dz(dz(b)))/Rm = 0")
+
 
 # first-order scheme definitions
 mri.add_equation("psi_x - dx(psi) = 0")
 mri.add_equation("psi_xx - dx(psi_x) = 0")
 mri.add_equation("psi_xxx - dx(psi_xx) = 0")
 mri.add_equation("u_x - dx(u) = 0")
+mri.add_equation("A_x - dx(A) = 0")
+mri.add_equation("b_x - dx(b) = 0")
 
-# six boundary conditions
+# ten boundary conditions
 mri.add_left_bc("psi = 0")#,condition="dz == 0")
 mri.add_right_bc("psi = 0")#,condition="dz == 0")
 mri.add_left_bc("psi_x = 0")
 mri.add_right_bc("psi_x = 0")
 mri.add_left_bc("u = 0")
 mri.add_right_bc("u = 0")
+mri.add_left_bc("dz(A) = 0", condition="dz != 0")
+mri.add_int_bc("A = 0", condition="dz == 0")
+mri.add_right_bc("A = 0")
+mri.add_left_bc("dx(b) = 0")
+mri.add_right_bc("dx(b) = 0")
+
 # prepare
 mri.expand(domain)
 
@@ -63,7 +78,7 @@ ts = de.timesteppers.RK443
 # build solver
 solver = de.solvers.IVP(mri, domain, ts)
 solver.stop_sim_time = np.inf
-solver.stop_iteration = 2 #np.inf
+solver.stop_iteration = 20 #np.inf
 solver.stop_wall_time = 24*3600. # run for 24 hours
 
 # initial conditions
@@ -77,7 +92,7 @@ psi['g'] = Ampl0 * np.sin(np.pi*x/Lx)*np.random.rand(*psi['g'].shape)
 # analysis
 data_dir = "data"
 output_time_cadence= 0.01
-output_iter_cadence = 1
+output_iter_cadence = 2
 analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), iter=output_iter_cadence, sim_dt=output_time_cadence, parallel=False)
 
 analysis_slice.add_task("psi", name="psi")
