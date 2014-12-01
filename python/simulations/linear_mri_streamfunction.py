@@ -75,10 +75,12 @@ mri.expand(domain)
 # time stepper
 ts = de.timesteppers.RK443
 
+t_orb = 2*np.pi/mri.parameters['Omega0']
+
 # build solver
 solver = de.solvers.IVP(mri, domain, ts)
-solver.stop_sim_time = np.inf
-solver.stop_iteration = 20 #np.inf
+solver.stop_sim_time = 10*t_orb
+solver.stop_iteration = np.inf
 solver.stop_wall_time = 24*3600. # run for 24 hours
 
 # initial conditions
@@ -90,11 +92,10 @@ z = domain.grid(0)
 psi['g'] = Ampl0 * np.sin(np.pi*x/Lx)*np.random.rand(*psi['g'].shape)
 
 # analysis
-t_orb = 2*np.pi/mri.parameters['Omega0']
 data_dir = "data"
-output_time_cadence= 0.01
-output_iter_cadence = 2
-ts_time_cadence = t_orb/100
+output_time_cadence= t_orb/2.
+output_iter_cadence = 1000
+ts_time_cadence = t_orb/100.
 
 # slices
 analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), iter=output_iter_cadence, sim_dt=output_time_cadence, parallel=False)
