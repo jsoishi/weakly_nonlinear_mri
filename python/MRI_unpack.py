@@ -159,6 +159,7 @@ def plot3():
 def plot4():
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
+    
     for i in range(num):
         if i == 1:
             print("i = 1")
@@ -168,9 +169,11 @@ def plot4():
             #ax1.semilogx(coeffs[i]["Pm"], coeffs[i]["c"]/coeffs[i]["a"], '.', label = coeffs[i]["Pm"])
 
     plt.legend()
-    
-fig = plt.figure()
-fig2 = plt.figure()
+    """
+    print(coeffs[4]["Pm"])
+    ax1.plot(coeffs[4]["t_array"], coeffs[4]["alpha_array"][:, 0], '.')
+    """
+
 for i in range(6):
     if i > 0:
         
@@ -206,6 +209,7 @@ for i in range(6):
         ax.set_ylim(0, Lz - dz)
         ax.set_xlim(-1, 1)
         """
+        fig = plt.figure()
         Tint = np.sum(T_firstorder + T_secondorder, axis=0)
         ax2 = fig2.add_subplot(2, 2, i)
         ax2.plot(x, Tint, label=coeffs[i]["Pm"])
