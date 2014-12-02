@@ -21,6 +21,7 @@ beta = 25.0
 coeffs = {}
 
 #Pm = 1E-7: Q = 0.745, Rm = 4.90
+"""
 gridnum = 1024#512
 Pm = 1.0E-7
 Q = 0.745
@@ -34,7 +35,7 @@ Pm = 1.0E-6
 Q = 0.75
 Rm = 4.88
 coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-
+"""
 # all the rest have gridnum 256
 gridnum = 128
 #Pm = 1E-5, Q = 0.747, Rm = 4.88
@@ -42,21 +43,21 @@ Pm = 1.0E-5
 Q = 0.747
 Rm = 4.88
 
-coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 
 #Pm = 1E-4: Q = 0.747, Rm = 4.88
 Pm = 1.0E-4
 Q = 0.747
 Rm = 4.88
 
-coeffs[3] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-"""
+coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+
 #Pm = 1E-3, Q = 0.75, Rm = 4.8775
 Pm = 1.0E-3
 Q = 0.75
 Rm = 4.8775
-coeffs[4] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-"""
+coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+
 
 #Pm = 1E-2: Q = 0.757, Rm = 4.93
 """
@@ -67,7 +68,7 @@ Rm = 4.93
 coeffs[5] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 """
 
-num = 4#6
+num = 3#6
 a_arr = np.zeros(num, dtype=np.complex128)
 c_arr = np.zeros(num, dtype=np.complex128)
 b_arr = np.zeros(num, dtype=np.complex128)
@@ -163,10 +164,11 @@ def plot4():
     ax1 = fig.add_subplot(111)
     
     for i in range(num):
-        if i == 1:
-            print("i = 1")
-        else: 
-            ax1.plot(coeffs[i]["t_array"], coeffs[i]["alpha_array"][:, 0], '.', label = coeffs[i]["Pm"])
+        #if i == 1:
+        #    print("i = 1")
+        #else: 
+            ax1.plot(coeffs[i]["t_array"], coeffs[i]["alpha_array"], '.', label = coeffs[i]["Pm"])
+            #ax1.plot(coeffs[i]["t_array"], coeffs[i]["alpha_array"][:, 0], '.', label = coeffs[i]["Pm"])
             #ax1.loglog(coeffs[i]["Pm"], coeffs[i]["alpha_array"][-1][0], '.', label = coeffs[i]["Pm"])
             #ax1.semilogx(coeffs[i]["Pm"], coeffs[i]["c"]/coeffs[i]["a"], '.', label = coeffs[i]["Pm"])
 
@@ -176,13 +178,13 @@ def plot4():
     ax1.plot(coeffs[4]["t_array"], coeffs[4]["alpha_array"][:, 0], '.')
     """
 
-for i in range(6):
-    if i > 0:
+for i in range(num):
+    if i > -1:#0:
         
         if i > 1:
             gridnum = 128#256
         else:
-            gridnum = 512
+            gridnum = 128#512
         
         print(coeffs[i]["Pm"])
         TR_firstorder = coeffs[i]["u_x first order"].real*coeffs[i]["u_y first order"].real
