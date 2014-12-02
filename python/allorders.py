@@ -280,7 +280,7 @@ class OrderE():
             a = self.LEV.state['psi']['g'].real[13]/n
             b = self.LEV.state['psi']['g'].imag[13]/n
             scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
-            scale *= -664.4114817
+            scale *= -664.4114817 
             
             self.psi = LEV.state['psi']['g']*scale
             self.u = LEV.state['u']['g']*scale
@@ -669,6 +669,7 @@ class OrderE2():
         
         self.lv20psi = lv20psi
         self.LEV20psi = LEV20psi
+        self.LEV20psi.state['psi20']['g'] = np.zeros(gridnum) # An elegant hack! added 12/2
         
         self.lv20u = lv20u
         self.LEV20u = LEV20u
@@ -813,7 +814,7 @@ class OrderE2():
             b = self.LEV21.state['psi21']['g'].imag[13]/n
             scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
             tt = 1j*132/29.097408658719342
-            scale *= tt
+            scale *= tt 
             
             self.psi21 = LEV21.state['psi21']['g']*scale
             self.u21 = LEV21.state['u21']['g']*scale
