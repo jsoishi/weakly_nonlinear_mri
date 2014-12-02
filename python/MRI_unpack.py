@@ -36,7 +36,7 @@ Rm = 4.88
 coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 
 # all the rest have gridnum 256
-gridnum = 256
+gridnum = 128
 #Pm = 1E-5, Q = 0.747, Rm = 4.88
 Pm = 1.0E-5
 Q = 0.747
@@ -50,22 +50,24 @@ Q = 0.747
 Rm = 4.88
 
 coeffs[3] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-
+"""
 #Pm = 1E-3, Q = 0.75, Rm = 4.8775
 Pm = 1.0E-3
 Q = 0.75
 Rm = 4.8775
 coeffs[4] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-
+"""
 
 #Pm = 1E-2: Q = 0.757, Rm = 4.93
+"""
+gridnum =  256
 Pm = 1.0E-2
 Q = 0.757
 Rm = 4.93
 coeffs[5] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+"""
 
-
-num = 6
+num = 4#6
 a_arr = np.zeros(num, dtype=np.complex128)
 c_arr = np.zeros(num, dtype=np.complex128)
 b_arr = np.zeros(num, dtype=np.complex128)
@@ -178,7 +180,7 @@ for i in range(6):
     if i > 0:
         
         if i > 1:
-            gridnum = 256
+            gridnum = 128#256
         else:
             gridnum = 512
         
