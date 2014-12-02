@@ -687,7 +687,7 @@ class OrderE2():
         self.psi20 = LEV20psi.state['psi20']['g']
         self.u20 = LEV20u.state['u20']['g'] #+ beta*R*(self.x**2 - 1) #+ LEV20utwiddle.state['u20twiddle']['g']
         self.A20 = LEV20A.state['A20']['g']
-        self.B20 = LEV20B.state['B20']['g'] # this is nan
+        self.B20 = LEV20B.state['B20']['g'] 
         #self.B20 = np.zeros(gridnum)
             
     def solve21(self, gridnum = gridnum, save = True, norm = True):
@@ -2042,7 +2042,7 @@ class SolveAmplitudeAlpha():
         # stopping criteria
         solver.stop_sim_time = np.inf
         solver.stop_wall_time = np.inf
-        solver.stop_iteration = 50000
+        solver.stop_iteration = 500000
         
         # reference local grid and state fields
         Z = domain.grid(0)
