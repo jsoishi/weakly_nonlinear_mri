@@ -2049,8 +2049,8 @@ class SolveAmplitudeAlpha():
         alphaZ = solver.state['alphaZ']
 
         # initial conditions ... plus noise!
-        noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
-        alpha['g'] = 1 + noise
+        #noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
+        alpha['g'] = 1 #+ noise
         alpha.differentiate(0, out=alphaZ)
         
         # Setup storage
