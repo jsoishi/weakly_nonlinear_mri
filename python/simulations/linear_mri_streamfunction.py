@@ -2,6 +2,7 @@ import numpy as np
 import time
 import os
 import sys
+import pickle
 #import checkpointing
 
 import logging
@@ -20,7 +21,7 @@ Lz = 2*np.pi/Q
 nx = 32 # 256
 nz = nx
 x_basis = de.Chebyshev(nx)
-z_basis = de.Fourier(nz)
+z_basis = de.Fourier(nz,interval=(0,Lz))
 domain = de.Domain([z_basis,x_basis])
 
 mri = de.ParsedProblem(['z','x'],
@@ -29,7 +30,7 @@ mri = de.ParsedProblem(['z','x'],
 # Parameters
 Pm = 0.001
 mri.parameters['B0'] = 1. - epsilon**2
-mri.parameters['Rm'] = 4.8775
+mri.parameters['Rm'] = 10 #4.8775
 mri.parameters['Re'] = mri.parameters['Rm']/Pm
 mri.parameters['q'] = 1.5
 mri.parameters['beta'] = 25.0
@@ -63,8 +64,8 @@ mri.add_left_bc("psi_x = 0")
 mri.add_right_bc("psi_x = 0")
 mri.add_left_bc("u = 0")
 mri.add_right_bc("u = 0")
-mri.add_left_bc("dz(A) = 0", condition="dz != 0")
-mri.add_int_bc("A = 0", condition="dz == 0")
+#mri.add_left_bc("dz(A) = 0", condition="dz != 0")
+mri.add_left_bc("A = 0")#, condition="dz == 0")
 mri.add_right_bc("A = 0")
 mri.add_left_bc("dx(b) = 0")
 mri.add_right_bc("dx(b) = 0")
@@ -79,17 +80,44 @@ t_orb = 2*np.pi/mri.parameters['Omega0']
 
 # build solver
 solver = de.solvers.IVP(mri, domain, ts)
-solver.stop_sim_time = 10*t_orb
+solver.stop_sim_time = 3*t_orb
 solver.stop_iteration = np.inf
 solver.stop_wall_time = 24*3600. # run for 24 hours
 
 # initial conditions
 psi = solver.state['psi']
+psi_x =  solver.state['psi_x']
+psi_xx = solver.state['psi_xx']
+psi_xxx = solver.state['psi_xxx']
+u_x = solver.state['u_x'] 
+A_x = solver.state['A_x']
+b_x = solver.state['b_x']
+u = solver.state['u']
+b = solver.state['b']
+A = solver.state['A']
 
 # noise
-x = domain.grid(1)
-z = domain.grid(0)
-psi['g'] = Ampl0 * np.sin(np.pi*x/Lx)*np.random.rand(*psi['g'].shape)
+# x = domain.grid(1)
+# z = domain.grid(0)
+# psi['g'] = 1e-4 * Ampl0 * np.cos(np.pi*x/Lx)*np.sin(2*np.pi*z/Lz)*np.random.rand(*psi['g'].shape)
+
+# load in evalues
+ic_filename = os.path.expanduser("/home/jsoishi/Downloads/coeffs_gridnum32_Pm_0.001_Q_0.75_Rm_4.8775_q_1.5_beta_25.0.p")
+data = pickle.load(open(ic_filename,"rb"))
+
+local_layout = domain.dist.grid_layout.slices
+psi['g'] = data['Psi first order'][local_layout].real
+u['g'] = data['u_y first order'][local_layout].real
+A['g'] = data['A first order'][local_layout].real
+b['g'] = data['B_y first order'][local_layout].real
+
+# set up first order scheme
+u.differentiate(1,u_x)
+psi.differentiate(1,psi_x)
+psi_x.differentiate(1,psi_xx)
+psi_xx.differentiate(1,psi_xxx)
+A.differentiate(1,A_x)
+b.differentiate(1,b_x)
 
 # analysis
 data_dir = "data"
