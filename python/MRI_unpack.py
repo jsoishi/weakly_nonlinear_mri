@@ -35,9 +35,9 @@ Pm = 1.0E-6
 Q = 0.75
 Rm = 4.88
 coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-"""
+
 # all the rest have gridnum 256
-gridnum = 128
+gridnum = 256
 #Pm = 1E-5, Q = 0.747, Rm = 4.88
 Pm = 1.0E-5
 Q = 0.747
@@ -51,12 +51,14 @@ Q = 0.747
 Rm = 4.88
 
 coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-
+"""
 #Pm = 1E-3, Q = 0.75, Rm = 4.8775
+gridnum = 256
 Pm = 1.0E-3
 Q = 0.75
 Rm = 4.8775
-coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+#coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+coeffs[0] = pickle.load(open("1E-3test/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 
 
 #Pm = 1E-2: Q = 0.757, Rm = 4.93
@@ -68,7 +70,7 @@ Rm = 4.93
 coeffs[5] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 """
 
-num = 3#6
+num = 1#3#6
 a_arr = np.zeros(num, dtype=np.complex128)
 c_arr = np.zeros(num, dtype=np.complex128)
 b_arr = np.zeros(num, dtype=np.complex128)
@@ -184,17 +186,30 @@ for i in range(num):
         if i > 1:
             gridnum = 128#256
         else:
-            gridnum = 128#512
+            gridnum = 256
         
         print(coeffs[i]["Pm"])
+        """
         TR_firstorder = coeffs[i]["u_x first order"].real*coeffs[i]["u_y first order"].real
         TM_firstorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x first order"].real*coeffs[i]["B_y first order"].real
 
         TR_secondorder = coeffs[i]["u_x second order"].real*coeffs[i]["u_y second order"].real
         TM_secondorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x second order"].real*coeffs[i]["B_y second order"].real
 
-        T_firstorder = TR_firstorder + TM_firstorder
-        T_secondorder = TR_secondorder + TM_secondorder
+        TR_firstorder = coeffs[i]["u_x first order"]*coeffs[i]["u_y first order"]
+        TM_firstorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x first order"]*coeffs[i]["B_y first order"]
+
+        TR_secondorder = coeffs[i]["u_x second order"]*coeffs[i]["u_y second order"]
+        TM_secondorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x second order"]*coeffs[i]["B_y second order"]
+        """
+        TR = (0.5*coeffs[i]["u_x first order"].real + 0.5**2*coeffs[i]["u_x second order"].real)*(0.5*coeffs[i]["u_y first order"].real + 0.5**2*coeffs[i]["u_y second order"].real)
+        TM = -(2.0/coeffs[i]["beta"])*(0.5*coeffs[i]["B_x first order"].real + 0.5**2*coeffs[i]["B_x second order"].real)*(0.5*coeffs[i]["B_y first order"].real + 0.5**2*coeffs[i]["B_y second order"].real) 
+
+        T = TR + TM
+        """
+        T_firstorder = 0.5*TR_firstorder + 0.5*TM_firstorder
+        T_secondorder = 0.5**2*TR_secondorder + 0.5**2*TM_secondorder
+        """
         nz = gridnum
         Lz = 2*np.pi/coeffs[i]["Q"]
         z = np.linspace(0, Lz, nz, endpoint=False)
@@ -204,14 +219,18 @@ for i in range(num):
         
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        info = ax.pcolormesh(x, z, T_firstorder + T_secondorder, cmap="RdBu_r")
+        #info = ax.pcolormesh(x, z, T_firstorder + T_secondorder, cmap="RdBu_r")
+        info = ax.pcolormesh(x, z, T, cmap="RdBu_r")
+        #info = ax.contour(x, z, T_firstorder + T_secondorder, cmap="RdBu_r")
         #info = ax.pcolormesh(x, z, TM_firstorder + TM_secondorder, cmap="RdBu_r")
         cbar = plt.colorbar(info)
         cbar.ax.tick_params(labelsize = 20)
-        ax.set_title("Pm = "+str(coeffs[i]["Pm"]))
+        #ax.set_title("Pm = "+str(coeffs[i]["Pm"]))
 
         ax.set_ylim(0, Lz - dz)
         ax.set_xlim(-1, 1)
+        
+        plt.tick_params(labelsize = 20)
         """
         fig = plt.figure()
         Tint = np.sum(T_firstorder + T_secondorder, axis=0)

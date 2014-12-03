@@ -18,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 256
+gridnum = 128#256
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -2043,7 +2043,7 @@ class SolveAmplitudeAlpha():
         # stopping criteria
         solver.stop_sim_time = np.inf
         solver.stop_wall_time = np.inf
-        solver.stop_iteration = 500000
+        solver.stop_iteration = 50000
         
         # reference local grid and state fields
         Z = domain.grid(0)
@@ -2052,7 +2052,7 @@ class SolveAmplitudeAlpha():
 
         # initial conditions ... plus noise!
         #noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
-        alpha['g'] = 1 #+ noise
+        alpha['g'] = 1.0E-5 #+ noise
         alpha.differentiate(0, out=alphaZ)
         
         # Setup storage
