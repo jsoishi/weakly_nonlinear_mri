@@ -179,6 +179,22 @@ def plot4():
     print(coeffs[4]["Pm"])
     ax1.plot(coeffs[4]["t_array"], coeffs[4]["alpha_array"][:, 0], '.')
     """
+    
+def plot5():
+    fig = plt.figure()
+    ax1 = fig.add_subplot(311)
+    
+    cy2 = coeffs[0]["u_y second order"]
+    x = coeffs[0]["x"]    
+    ax1.plot(x, cy2[25, :].real, color="purple")
+    
+    ax1 = fig.add_subplot(312)
+    ax1.plot(x, cy2[128, :].real, color="purple")
+    
+    ax1 = fig.add_subplot(313)
+    ax1.plot(x, cy2[231, :].real, color="purple")
+    
+
 
 for i in range(num):
     if i > -1:#0:
@@ -231,6 +247,11 @@ for i in range(num):
         ax.set_xlim(-1, 1)
         
         plt.tick_params(labelsize = 20)
+        rr = np.zeros(len(x))
+        plt.plot(x, rr+z[25], color="purple")
+        plt.plot(x, rr+z[128], color="purple")
+        plt.plot(x, rr+z[231], color="purple")
+        
         """
         fig = plt.figure()
         Tint = np.sum(T_firstorder + T_secondorder, axis=0)
