@@ -37,7 +37,7 @@ Rm = 4.88
 coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 """
 # all the rest have gridnum 256
-gridnum = 256#128
+gridnum = 128
 #Pm = 1E-5, Q = 0.747, Rm = 4.88
 Pm = 1.0E-5
 Q = 0.747
@@ -167,8 +167,8 @@ def plot4():
         #if i == 1:
         #    print("i = 1")
         #else: 
-            #ax1.plot(coeffs[i]["t_array"], coeffs[i]["alpha_array"], '.', label = coeffs[i]["Pm"])
-            ax1.plot(coeffs[i]["t_array"], coeffs[i]["alpha_array"][:, 0], '.', label = coeffs[i]["Pm"])
+            ax1.plot(coeffs[i]["t_array"], coeffs[i]["alpha_array"], '.', label = coeffs[i]["Pm"])
+            #ax1.plot(coeffs[i]["t_array"], coeffs[i]["alpha_array"][:, 0], '.', label = coeffs[i]["Pm"])
             #ax1.loglog(coeffs[i]["Pm"], coeffs[i]["alpha_array"][-1][0], '.', label = coeffs[i]["Pm"])
             #ax1.semilogx(coeffs[i]["Pm"], coeffs[i]["c"]/coeffs[i]["a"], '.', label = coeffs[i]["Pm"])
 
@@ -182,9 +182,9 @@ for i in range(num):
     if i > -1:#0:
         
         if i > 1:
-            256 #128
+            gridnum = 128#256
         else:
-            512 #128
+            gridnum = 128#512
         
         print(coeffs[i]["Pm"])
         TR_firstorder = coeffs[i]["u_x first order"].real*coeffs[i]["u_y first order"].real
