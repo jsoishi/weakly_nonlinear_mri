@@ -184,23 +184,27 @@ def plot5():
     fig = plt.figure()
     ax1 = fig.add_subplot(311)
     
-    cy1 = coeffs[0]["u_z first order"]
-    cy2 = coeffs[0]["u_z second order"]
+    cy1 = coeffs[0]["u_y first order"]
+    cy2 = coeffs[0]["u_y second order"]
     x = coeffs[0]["x"]    
+    jj = np.zeros(len(x))
+        
     ax1.plot(x, 0.5*cy1[25, :].real, color="purple")
     ax1.plot(x, 0.5**2*cy2[25, :].real, color="orange")
     ax1.plot(x, 0.5*cy1[25, :].real + 0.5**2*cy2[25, :].real, color="black")
+    ax1.plot(x, jj, color="grey")
     
     ax2 = fig.add_subplot(312)
     ax2.plot(x, 0.5*cy1[128, :].real, color="purple")
     ax2.plot(x, 0.5**2*cy2[128, :].real, color="orange")
     ax2.plot(x, 0.5*cy1[128, :].real + 0.5**2*cy2[128, :].real, color="black")
+    ax2.plot(x, jj, color="grey")
     
     ax3 = fig.add_subplot(313)
     ax3.plot(x, 0.5*cy1[231, :].real, color="purple")
     ax3.plot(x, 0.5**2*cy2[231, :].real, color="orange")
     ax3.plot(x, 0.5*cy1[231, :].real + 0.5**2*cy2[231, :].real, color="black")
-    
+    ax3.plot(x, jj, color="grey")
 
 
 for i in range(num):
