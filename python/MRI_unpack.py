@@ -188,23 +188,25 @@ def plot5():
     cy2 = coeffs[0]["u_y second order"]
     x = coeffs[0]["x"]    
     jj = np.zeros(len(x))
-        
-    ax1.plot(x, 0.5*cy1[25, :].real, color="purple")
-    ax1.plot(x, 0.5**2*cy2[25, :].real, color="orange")
+    
+    ax1.plot(x, jj, color="grey", ls='--')
+    ax1.plot(x, 0.5*cy1[25, :].real, color="purple", lw=2)
+    ax1.plot(x, 0.5**2*cy2[25, :].real, color="orange", lw=2)
     ax1.plot(x, 0.5*cy1[25, :].real + 0.5**2*cy2[25, :].real, color="black")
-    ax1.plot(x, jj, color="grey")
     
     ax2 = fig.add_subplot(312)
-    ax2.plot(x, 0.5*cy1[128, :].real, color="purple")
-    ax2.plot(x, 0.5**2*cy2[128, :].real, color="orange")
+    ax2.plot(x, jj, color="grey", ls='--')
+    ax2.plot(x, 0.5*cy1[128, :].real, color="purple", lw=2)
+    ax2.plot(x, 0.5**2*cy2[128, :].real, color="orange", lw=2)
     ax2.plot(x, 0.5*cy1[128, :].real + 0.5**2*cy2[128, :].real, color="black")
-    ax2.plot(x, jj, color="grey")
+
     
     ax3 = fig.add_subplot(313)
-    ax3.plot(x, 0.5*cy1[231, :].real, color="purple")
-    ax3.plot(x, 0.5**2*cy2[231, :].real, color="orange")
+    ax3.plot(x, jj, color="grey", ls='--')
+    ax3.plot(x, 0.5*cy1[231, :].real, color="purple", lw=2)
+    ax3.plot(x, 0.5**2*cy2[231, :].real, color="orange", lw=2)
     ax3.plot(x, 0.5*cy1[231, :].real + 0.5**2*cy2[231, :].real, color="black")
-    ax3.plot(x, jj, color="grey")
+    
 
 
 for i in range(num):
@@ -259,9 +261,9 @@ for i in range(num):
         
         plt.tick_params(labelsize = 20)
         rr = np.zeros(len(x))
-        plt.plot(x, rr+z[25], color="purple")
-        plt.plot(x, rr+z[128], color="purple")
-        plt.plot(x, rr+z[231], color="purple")
+        plt.plot(x, rr+z[25], color="black", lw=3, ls='--')
+        plt.plot(x, rr+z[128], color="black", lw=3, ls='--')
+        plt.plot(x, rr+z[231], color="black", lw=3, ls='--')
         
         """
         fig = plt.figure()

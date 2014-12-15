@@ -89,6 +89,7 @@ We analyze a magnetized Taylor Couette flow, representing a differentially rotat
 where $q$, the shear parameter, is $3/2$ for Keplerian rotation. The initial background magnetic field is
 
 \beq
+\label{backgroundfield1}
 \mathbf{B} = B_0 \hat{z},
 \eeq
 
@@ -503,7 +504,35 @@ Our analytic formulation is advantageous because we can now analyze the contribu
 
 \section{Parameter Space}\label{sec:pspace}
 
-We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. This analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of [TBD!].
+We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. This analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of $10^{-6}$ or lower.
+
+\section{Helical MRI}
+
+The configuration investigated thus far, that of magnetized Taylor Couette flow with a purely axial magnetic field, constitutes the standard MRI. The helical MRI (HMRI) is a related, but separate, MHD instability, first identified by Hollerbach and R\"udiger (\citeyear{Hollerbach:2005tr}). It arises in the presence of combined axial and azimuthal fields. 
+
+We initialize the helical MRI by adding a constant background toroidal field to Equation \ref{backgroundfield1}, such that our initial magnetic field structure becomes
+
+\beq
+\mathbf{B} = B_0 \hat{z} + \xi B_0 \hat{y},
+\eeq 
+
+where $\xi$ is a dimensionless parameter representing the relative strength of the axial field and the vertical field.
+
+This addition leaves Equations \ref{eqset2} - \ref{eqset4} unchanged, but Equation \ref{eqset1} gains a term to become
+
+\begin{multline}
+\label{eqset1_hmri}
+\partial_t \nabla^2 \Psi \, = \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, + \, 2 \partial_z u_{y} \, - \xi B_0 \partial_x \partial_z B_{y}\\
+- \, J\left(\Psi, \nabla^2 \Psi\right) \, + \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi,
+\end{multline}
+
+in other words, the $\Psi$ equation picks up a linear $B_y$ term.
+
+Following the same prescription for weakly nonlinear tuning, multiscale expansion, and perturbation expansion, we find the equations for the HMRI up to order $epsilon^3$.
+
+To $\mathcal{O}(\epsilon)$, we find
+
+\mathcal{L} \mathbf{V_1} 
 
 \section{Discussion}\label{discussion}
 
@@ -515,7 +544,7 @@ We compute the solutions to our derived equations pseudospectrally, using Dedalu
 
 This work analyzes Taylor Couette flow in the thin-gap limit, where the channel width is radially narrow compared to its distance from the center of rotation. This simplifies the math by allowing curvature terms to drop out at lowest order. The relaxation of the thin-gap approximation is an obvious next step for this work. The term expansion in the weakly nonlinear analysis will be more formidable in the wide-gap regime, but could prove informative for comparison to experiments.
 
-The present configuration, that of magnetized Taylor Couette flow with a purely axial magnetic field, represents the initial conditions for the standard MRI. The helical MRI is a related, but separate, MHD instability, and was first discovered by Hollerbach and R\"udiger (\citeyear{Hollerbach:2005tr}). It arises in the presence of combined axial and azimuthal fields. To seed helical MRI in our current set-up, we need only add an azimuthal component to our initial background magnetic field. This will be an avenue of future study, and will yield an analytic theory relevant to the above-mentioned PROMISE experiment. 
+%The present configuration, that of magnetized Taylor Couette flow with a purely axial magnetic field, represents the initial conditions for the standard MRI. The helical MRI is a related, but separate, MHD instability, and was first discovered by Hollerbach and R\"udiger (\citeyear{Hollerbach:2005tr}). It arises in the presence of combined axial and azimuthal fields. To seed helical MRI in our current set-up, we need only add an azimuthal component to our initial background magnetic field. This will be an avenue of future study, and will yield an analytic theory relevant to the above-mentioned PROMISE experiment. 
 
 Our results suggest that the primary driver of saturation is reduction of the background shear. We note that while shear modification is relevant in the experimental regime, the gravitational pull of the central body will tend to enforce a Keplerian rotation profile in any astrophysical disk. Thus a modification of the rotation profile is of little relevance as a saturation mechanism to the astrophysical regime. Nevertheless, understanding laboratory MRI experiments is crucial for allowing experimental results to inform our astrophysical understanding of the MRI. %^this sentence sucks
 
