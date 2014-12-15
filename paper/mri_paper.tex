@@ -528,11 +528,27 @@ This addition leaves Equations \ref{eqset2} - \ref{eqset4} unchanged, but Equati
 
 in other words, the $\Psi$ equation picks up a linear $B_y$ term.
 
-Following the same prescription for weakly nonlinear tuning, multiscale expansion, and perturbation expansion, we find the equations for the HMRI up to order $epsilon^3$.
+Following the same prescription for weakly nonlinear tuning, multiscale expansion, and perturbation expansion, we find the equations for the HMRI up to order $\epsilon^3$.
 
-To $\mathcal{O}(\epsilon)$, we find
+To $\mathcal{O}(\epsilon)$, we find 
 
-\mathcal{L} \mathbf{V_1} 
+\beq
+\mathcal{L} \mathbf{V_1} + \xi B_0 \mathcal{H} \partial_z \mathbf{V_1} = 0
+\eeq
+
+To $\mathcal{O}(\epsilon^2)$,
+
+\beq
+\mathcal{L}\mathbf{V_2} = \mathbf{N_2} - \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1} + \xi \mathcal{H} \partial_z \mathbf{V_2} - \xi \mathcal{H}\partial_Z \mathbf{V_1}
+\eeq
+
+To $\mathcal{O}(\epsilon^3)$,
+
+\begin{multline}
+\mathcal{D}\partial_T \mathbf{V_1} \, + \, \mathbf{N_3} \, = \, \mathcal{L} \mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} \, \\
+- \partial_z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1} + \xi \mathcal{H} \partial_z \mathbf{V_3} - \xi \mathcal{H} \partial_Z \mathbf{V_2} + \xi \mathcal{H} \partial_z \mathbf{V_1}.
+\end{multline}
+
 
 \section{Discussion}\label{discussion}
 
