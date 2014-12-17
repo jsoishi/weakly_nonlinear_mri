@@ -55,9 +55,11 @@ The magnetorotational instability (MRI) is a fundamental process of accretion di
 
 \section{Introduction}
 
-For matter to accrete from a disk onto a central object, angular momentum must be transported radially outward in the disk. The transport mechanism is likely turbulent (\citei{Shakura:1973wg}). Since its discovery by \citeauthor{Chandrasekhar:1960wh} (\citeyear{Chandrasekhar:1960wh}) and subsequent rediscovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}), the MRI remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field destabilizes the disk gas, driving turbulence and angular momentum transport.
+For matter to accrete from a disk onto a central object, angular momentum must be transported radially outward in the disk. The transport mechanism is likely turbulent (\citei{Shakura:1973wg}). Since its discovery by \citeauthor{Chandrasekhar:1960wh} (\citeyear{Chandrasekhar:1960wh}) and subsequent rediscovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}), the MRI remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability in its simplest geometry arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field destabilizes the disk gas, driving turbulence and angular momentum transport.
 
-The MRI evolves via a period of linear growth, followed by nonlinear saturation. The nonlinear evolution of the MRI is a complex process, and an understanding of the mechanism by which the MRI saturates remains elusive. Most previous works on MRI saturation have studied the problem in simulation. Indeed, only a few works have tackled MRI saturation analytically. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They find that this saturation proceeds via modification of the background shear. Another notable analytic work is that of \citeauthor{Pessah:2010ic} (\citeyear{Pessah:2010ic}), who presents an analysis of MRI saturation via secondary instabilities. This work suggests that MRI saturation can be caused by parasitic instabilities growing off of the primary MRI modes, in particular by Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime.
+The MRI evolves via a period of linear growth, followed by nonlinear saturation. The nonlinear evolution of the MRI is a complex process, and an understanding of the mechanism by which the MRI saturates remains elusive. Several possible saturation avenues are available to the MRI. The instability could saturate via a reduction in the background shear (e.g. \citei{Umurhan:2007hs}), cutting off the supply of free energy on which the instability feeds. Similarly, the instability could pour its free energy into the magnetic field, and saturate via field generation (e.g. \citei{Ebrahimi:2009ey}). Saturation may also occur via ``parasite" instabilities, which feed off and destroy primary MRI modes (\citei{Goodman:1994ul}).
+
+Most previous works on MRI saturation have studied the problem in simulation. Indeed, only a few works have tackled MRI saturation analytically. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They find that this saturation proceeds via modification of the background shear. Another notable analytic work is that of \citeauthor{Pessah:2010ic} (\citeyear{Pessah:2010ic}), who presents an analysis of MRI saturation via secondary instabilities. This work suggests that MRI saturation can be caused by parasitic instabilities growing off of the primary MRI modes, in particular by Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime.
 
 %examples of simulations papers
 %more mention of other analytic works
@@ -506,6 +508,12 @@ Our analytic formulation is advantageous because we can now analyze the contribu
 
 We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. Because we solve spectrally in only one dimension, rather than in two or three, our analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of $10^{-6}$ or lower.
 
+\section{Simulations}
+
+We compute the solutions to our derived equations pseudospectrally, using Dedalus. One advantage to using Dedalus for these computations is that the code can compute the evolution of the fully nonlinear MRI system on the same Fourier/Chebyshev grid. This allows us to directly compare simulation and theory. 
+
+% Jeff's sims!!!!!
+
 \section{Helical MRI}
 
 The configuration investigated thus far, that of magnetized Taylor Couette flow with a purely axial magnetic field, constitutes the standard MRI. The helical MRI (HMRI) is a related, but separate, MHD instability, first identified by Hollerbach and R\"udiger (\citeyear{Hollerbach:2005tr}). It arises in the presence of combined axial and azimuthal fields. 
@@ -597,16 +605,12 @@ and
 f = \left< \mathbb{U}_{11} \cdot \left(\mathcal{H}\mathbb{U}_{20}\right)^*\right>.
 \eeq
 
-If s is zero, as it is for the standard MRI, the two amplitude equations will again decouple.
+If $s = 0$, as it is for the standard MRI, the two amplitude equations will again decouple.
 
 
 \section{Discussion}\label{discussion}
 
 Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment (\citei{Ji:2001kd}). A challenge for all MRI experiments is to reduce all extraneous flows which may stabilize the MRI or obscure its detection. In particular, care must be taken to mitigate meridional flows introduced by the endcaps of the experimental apparatus. The PPPL MRI experiment employs a novel design using concentric, differentially rotating rings as endcaps (\citei{Schartman:2009df}). In this investigation, we use periodic vertical boundary conditions, so our set-up represents an idealized domain where endcap contamination does not exist. Future work will address specifically our predictions for the PPPL MRI experiment.
-
-We compute the solutions to our derived equations pseudospectrally, using Dedalus. One advantage to using Dedalus for these computations is that the code can compute the evolution of the fully nonlinear MRI system on the same Fourier/Chebyshev grid. This allows us to directly compare simulation and theory. 
-
-% Jeff's sims!!!!!
 
 This work analyzes Taylor Couette flow in the thin-gap limit, where the channel width is radially narrow compared to its distance from the center of rotation. This simplifies the math by allowing curvature terms to drop out at lowest order. The relaxation of the thin-gap approximation is an obvious next step for this work. The term expansion in the weakly nonlinear analysis will be more formidable in the wide-gap regime, but could prove informative for comparison to experiments.
 
@@ -796,6 +800,9 @@ Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the U
 
 \bibitem[{Cooper et al.(2014)}]{Cooper:2013to}
 Cooper, C M, Wallace, J, Brookhart, M, Clark, M, Collins, C, Ding, W X, Flanagan, K, Khalzov, I, Li, Y, Milhone, J, Nornberg, M, Nonn, P, Weisberg, D, Whyte, D G, Zweibel, E, Forest, C B, Physics of Plasmas, 2013, 21, 013505
+
+\bibitem[{Ebrahimi et al.(2009)}]{Ebrahimi:2009ey}
+Ebrahimi, F., Prager, S.C., Schnack, D.D
 
 \bibitem[{Gissinger et al.(2011)}]{Gissinger:2011td}
 Gissinger, C, Ji, H, Goodman, J, Phys. Rev. E, 2011, 84, 026308
