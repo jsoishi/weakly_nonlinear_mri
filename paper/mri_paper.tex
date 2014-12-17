@@ -503,7 +503,18 @@ but both $k$ and $p$ are equal to zero. Thus this amplitude equation decouples f
 
 Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variables $Z$ and $T$. We solve this initial value problem using Dedalus to obtain the asymptotic behavior of $\alpha$. This is the saturation amplitude. We use the saturation amplitude as $\alpha$ and the radial component of computed on the Chebyshev grid to plot $\mathbf{V}$. We show both first order ($\epsilon\mathbf{V}_1$), second order ($\epsilon^2\mathbf{V}_2$), and combined first and second order fluid perturbations ($\epsilon\mathbf{V}_1$ + ($\epsilon^2\mathbf{V}_2$). Figure \ref{allorders_velocity} shows the velocity perturbations, and Figure \ref{allorders_Bfield} shows the magnetic field perturbations.
 
-Our analytic formulation is advantageous because we can now analyze the contributions of each fluid quantity at each order. This allows us to directly identify the source of saturation. Equation \ref{ampeq1} asymptotically approaches a value, so the system is clearly saturating, and our approach now allows us to quantify the individual contribution of each term. In Figure \ref{allorders_velocity}, we see significant fluid action in the second-order velocity plot. By contrast, the second-order magnetic field perturbations are two orders of magnitude smaller than the first-order perturbations (Figure \ref{allorders_Bfield}). It appears that the second-order velocity perturbations are instrumental in the saturation of the MRI. The likely mechanism is a reduction in the background shear. 
+Our analytic formulation is advantageous because we can now analyze the contributions of each fluid quantity at each order. This allows us to directly identify the source of saturation. Equation \ref{ampeq1} asymptotically approaches a value, so the system is clearly saturating, and our approach now allows us to quantify the individual contribution of each term. In Figure \ref{allorders_velocity}, we see significant fluid action in the second-order velocity plot. By contrast, the second-order magnetic field perturbations are two orders of magnitude smaller than the first-order perturbations (Figure \ref{allorders_Bfield}). 
+
+The role of the boundary layers changes with Pm. As Pm decreases, the width of the boundary layer becomes increasingly narrow (Figure \ref{u_secondorder_by_Pm}). The relative importance of the $u_y$ second order perturbation to the first order perturbation increases as well (CHECK, PLOT).
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[trim=6cm 0cm 6cm 0cm, scale=0.4]{u_secondorder_by_Pm_2.eps}
+\caption{(Placeholder) The evolution of the second-order velocity perturbations by Pm.}\label{allorders_velocity}
+\label{u_secondorder_by_Pm}
+\end{figure*}
+
+It appears that the second-order velocity perturbations are instrumental in the saturation of the MRI. The likely mechanism is a reduction in the background shear. 
 
 \section{Parameter Space}\label{sec:pspace}
 
