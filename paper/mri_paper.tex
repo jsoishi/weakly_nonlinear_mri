@@ -505,14 +505,6 @@ Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variabl
 
 Our analytic formulation is advantageous because we can now analyze the contributions of each fluid quantity at each order. This allows us to directly identify the source of saturation. Equation \ref{ampeq1} asymptotically approaches a value, so the system is clearly saturating, and our approach now allows us to quantify the individual contribution of each term. In Figure \ref{allorders_velocity}, we see significant fluid action in the second-order velocity plot. By contrast, the second-order magnetic field perturbations are two orders of magnitude smaller than the first-order perturbations (Figure \ref{allorders_Bfield}). 
 
-We plot the total stress, or the sum of the Reynolds and Maxwell stresses, 
-
-\beq
-\mathbb{T}(x, z) = u_x u_y - \frac{2}{\beta} B_x B_y.
-\eeq
-
-See Figure \ref{stress_uy_cuts}.
-
 The role of the boundary layers changes with Pm. As Pm decreases, the width of the boundary layer becomes increasingly narrow (Figure \ref{u_secondorder_by_Pm}). The geometry of the velocity in the $x-z$ plane begins as a series of MRI ``cells" whose structure is radially narrow in the bulk of the flow. These central cells then stretch and grow, until at $Pm \sim 10^{-5}$ the bulk cells dominate the flow. The relative importance of the $u_y$ second order perturbation to the first order perturbation increases as well (CHECK, PLOT).
 
 \begin{figure*}[h]
@@ -524,7 +516,15 @@ The role of the boundary layers changes with Pm. As Pm decreases, the width of t
 
 %It appears that the second-order velocity perturbations are instrumental in the saturation of the MRI. The likely mechanism is a reduction in the background shear. 
 
-From the behavior of the second order velocity perturbations (Figure \ref{u_secondorder_by_Pm}) in the bulk of the flow (i.e. apart from the boundary layers), we gather that the MRI is saturating via a background shear reduction. Recall that the linear shear profile means that the background shear is positive for negative values of $x$ and negative for positive values of $x$. Thus Figure \ref{u_secondorder_by_Pm} shows the azimuthal velocity perturbations resisting the background shear in the bulk of the flow
+We plot the total stress, or the sum of the Reynolds and Maxwell stresses, 
+
+\beq
+\mathbb{T}(x, z) = u_x u_y - \frac{2}{\beta} B_x B_y.
+\eeq
+
+See Figure \ref{stress_uy_cuts}.
+
+From the behavior of the second order velocity perturbations (Figure \ref{stress_uy_cuts}) in the bulk of the flow (i.e. apart from the boundary layers), we gather that the MRI is saturating via a background shear reduction. Recall that the linear shear profile means that the background shear is positive for negative values of $x$ and negative for positive values of $x$. Thus Figure \ref{stress_uy_cuts} shows the azimuthal velocity perturbations resisting the background shear in the bulk of the flow.
 
 \begin{figure*}
 \centering
