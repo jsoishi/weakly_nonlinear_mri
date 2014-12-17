@@ -505,21 +505,23 @@ Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variabl
 
 Our analytic formulation is advantageous because we can now analyze the contributions of each fluid quantity at each order. This allows us to directly identify the source of saturation. Equation \ref{ampeq1} asymptotically approaches a value, so the system is clearly saturating, and our approach now allows us to quantify the individual contribution of each term. In Figure \ref{allorders_velocity}, we see significant fluid action in the second-order velocity plot. By contrast, the second-order magnetic field perturbations are two orders of magnitude smaller than the first-order perturbations (Figure \ref{allorders_Bfield}). 
 
-The role of the boundary layers changes with Pm. As Pm decreases, the width of the boundary layer becomes increasingly narrow (Figure \ref{u_secondorder_by_Pm}). The relative importance of the $u_y$ second order perturbation to the first order perturbation increases as well (CHECK, PLOT).
+The role of the boundary layers changes with Pm. As Pm decreases, the width of the boundary layer becomes increasingly narrow (Figure \ref{u_secondorder_by_Pm}). The geometry of the velocity in the $x-z$ plane begins as a series of MRI ``cells" whose structure is radially narrow in the bulk of the flow. These central cells then stretch and grow, until at $Pm \sim 10^{-5}$ the bulk cells dominate the flow. The relative importance of the $u_y$ second order perturbation to the first order perturbation increases as well (CHECK, PLOT).
 
-\begin{figure*}[h!]
+\begin{figure*}[h]
 \centering
-\includegraphics[trim=6cm 0cm 6cm 0cm, scale=0.4]{u_secondorder_by_Pm_2.eps}
+\includegraphics[trim=2cm 0cm 6cm 0cm, scale=0.4]{u_secondorder_by_Pm_2.eps}
 \caption{(Placeholder) The evolution of the second-order velocity perturbations by Pm.}\label{allorders_velocity}
 \label{u_secondorder_by_Pm}
 \end{figure*}
 
-It appears that the second-order velocity perturbations are instrumental in the saturation of the MRI. The likely mechanism is a reduction in the background shear. 
+%It appears that the second-order velocity perturbations are instrumental in the saturation of the MRI. The likely mechanism is a reduction in the background shear. 
 
-\begin{figure*}[h!]
+From the behavior of the second order velocity perturbations (Figure \ref{u_secondorder_by_Pm}) in the bulk of the flow (i.e. apart from the boundary layers), we gather that the MRI is saturating via a background shear reduction.
+
+\begin{figure*}
 \centering
-\includegraphics[trim=6cm 0cm 6cm 0cm, scale=0.4]{stress_uy_cuts.pdf}
-\caption{(Placeholder) The total stress (left) and vertical cuts of the $u_y$ perturbations (right).}\label{allorders_velocity}
+\includegraphics[trim=6cm 4cm 6cm 3cm, scale=0.5]{stress_uy_cuts.pdf}
+\caption{(Placeholder) The total stress (left) and vertical cuts of the azimuthal velocity perturbations (right). The $u_y$ perturbations shown are first order (purple), second order (orange), and total (black). The blue shaded area represents the region where the second order and total perturbations are opposing the background shear because they are negative, and the red shaded region indicates where the second order and total perturbations are opposing the background shear because they are positive.}\label{allorders_velocity}
 \label{stress_uy_cuts}
 \end{figure*}
 
