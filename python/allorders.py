@@ -1420,6 +1420,7 @@ class N3():
         
         self.N31_u = N31_u.evaluate()
         
+        # Correct: checked 1/12
         N31_A_my1 = -1j*self.Q*(self.v11_A*self.v20_psi_x) - 1j*self.Q*(self.v11_A*self.v20_psi_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_psi)
         N31_A_my2 = 1j*self.Q*(self.v11_psi*self.v20_A_x) + 1j*self.Q*(self.v11_psi*self.v20_A_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_A_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_A)
         
@@ -1427,7 +1428,6 @@ class N3():
         
         self.N31_A = N31_A.evaluate()
         
-        # B_my1 is nan. Only first 2 terms. Cause is self.v20_B_x and self.v20_B_star_x
         N31_B_my1 = 1j*self.Q*(self.v11_psi*self.v20_B_x) + 1j*self.Q*(self.v11_psi*self.v20_B_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_B_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_B)
         
         N31_B_my2 = -1j*self.Q*(self.v11_B*self.v20_psi_x) - 1j*self.Q*(self.v11_B*self.v20_psi_star_x) + 1j*self.Q*(self.v11_B_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_B_star_x*self.v22_psi)
