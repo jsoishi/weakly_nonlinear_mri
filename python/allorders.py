@@ -1843,7 +1843,7 @@ class AmplitudeAlpha():
         self.h = hh['g'][0]
         
         # g = < va . L3 v11 >
-        g_psi = self.va.psi*(2/self.beta)*self.v11_A
+        g_psi = self.va.psi*(2/self.beta)*self.v11_A['g'].conj()
         g_psi = g_psi.evaluate()
         
         g_u = 0j
