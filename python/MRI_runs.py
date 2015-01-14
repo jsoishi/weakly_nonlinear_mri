@@ -124,6 +124,7 @@ coeffs["B_z second order"] = pc.V2_Bz1
 coeffs["A first order"] = pc.V1_A
 coeffs["Psi first order"] = pc.V1_psi
 
+
 outname = "gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)
 plot_uy_firstorder(pc, oplot = True, labels = False, outname=outname)
 plot_By_firstorder(pc, oplot = True, labels = False, outname=outname)

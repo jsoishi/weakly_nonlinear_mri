@@ -21,7 +21,7 @@ beta = 25.0
 coeffs = {}
 
 #Pm = 1E-7: Q = 0.745, Rm = 4.90
-"""
+
 gridnum = 1024#512
 Pm = 1.0E-7
 Q = 0.745
@@ -43,22 +43,22 @@ Pm = 1.0E-5
 Q = 0.747
 Rm = 4.88
 
-coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 
 #Pm = 1E-4: Q = 0.747, Rm = 4.88
 Pm = 1.0E-4
 Q = 0.747
 Rm = 4.88
 
-coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-"""
+coeffs[3] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+
 #Pm = 1E-3, Q = 0.75, Rm = 4.8775
 gridnum = 256
 Pm = 1.0E-3
 Q = 0.75
 Rm = 4.8775
-#coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-coeffs[0] = pickle.load(open("1E-3test/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+coeffs[4] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+#coeffs[0] = pickle.load(open("1E-3test/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 
 
 #Pm = 1E-2: Q = 0.757, Rm = 4.93
@@ -70,7 +70,7 @@ Rm = 4.93
 coeffs[5] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 """
 
-num = 1#3#6
+num = 5
 a_arr = np.zeros(num, dtype=np.complex128)
 c_arr = np.zeros(num, dtype=np.complex128)
 b_arr = np.zeros(num, dtype=np.complex128)
@@ -161,6 +161,7 @@ def plot3():
     ax2.set_xlabel("Pm")
     ax2.set_ylabel("1/alpha")
 
+# Amplitude alpha vs time
 def plot4():
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
@@ -179,6 +180,42 @@ def plot4():
     print(coeffs[4]["Pm"])
     ax1.plot(coeffs[4]["t_array"], coeffs[4]["alpha_array"][:, 0], '.')
     """
+    
+# Width of the boundary layer from u_y first order
+def boundary_layers():
+
+    boundary_widths = np.zeros(len(coeffs))
+    Pms = np.zeros(len(coeffs))
+    for i in range(len(coeffs)):
+        c = coeffs[i]["u_y first order"]
+        x = coeffs[i]["x"]
+        Pms[i] = coeffs[i]["Pm"]
+        
+        plt.figure()
+        uy = c[40, :]
+        plt.plot(x, uy)
+        plt.plot(x, np.zeros(len(x)))
+        plt.title("Pm "+str(Pms[i]))
+        
+        # Determine where u_y first dips below zero
+        lt = np.where(uy < 0)
+        first_crossing = lt[0]
+        
+        boundary_widths[i] = first_crossing[0]
+        
+    print(boundary_widths)
+    print(Pms)
+    #plt.plot(Pms, boundary_widths)
+        
+def plot_widths_byhand():
+
+    Pms = [1E-3, 1E-4, 1E-5, 1E-6, 1E-7]
+    widths = [0.248, 0.112, 0.055, 0.026, 0.013]
+    
+    plt.figure()
+    plt.loglog(Pms, widths, '.')
+    plt.xlim(1E-8, 1E-2)
+        
     
 def plot5():
     fig = plt.figure()
@@ -208,68 +245,67 @@ def plot5():
     ax3.plot(x, 0.5*cy1[231, :].real + 0.5**2*cy2[231, :].real, color="black")
     
 
-
-for i in range(num):
-    if i > -1:#0:
+def plotstress():
+    for i in range(num):
+        if i > -1:#0:
         
-        if i > 1:
-            gridnum = 128#256
-        else:
-            gridnum = 256
+            if i > 1:
+                gridnum = 128#256
+            else:
+                gridnum = 256
         
-        print(coeffs[i]["Pm"])
-        """
-        TR_firstorder = coeffs[i]["u_x first order"].real*coeffs[i]["u_y first order"].real
-        TM_firstorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x first order"].real*coeffs[i]["B_y first order"].real
+            print(coeffs[i]["Pm"])
+            """
+            TR_firstorder = coeffs[i]["u_x first order"].real*coeffs[i]["u_y first order"].real
+            TM_firstorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x first order"].real*coeffs[i]["B_y first order"].real
 
-        TR_secondorder = coeffs[i]["u_x second order"].real*coeffs[i]["u_y second order"].real
-        TM_secondorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x second order"].real*coeffs[i]["B_y second order"].real
+            TR_secondorder = coeffs[i]["u_x second order"].real*coeffs[i]["u_y second order"].real
+            TM_secondorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x second order"].real*coeffs[i]["B_y second order"].real
 
-        TR_firstorder = coeffs[i]["u_x first order"]*coeffs[i]["u_y first order"]
-        TM_firstorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x first order"]*coeffs[i]["B_y first order"]
+            TR_firstorder = coeffs[i]["u_x first order"]*coeffs[i]["u_y first order"]
+            TM_firstorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x first order"]*coeffs[i]["B_y first order"]
 
-        TR_secondorder = coeffs[i]["u_x second order"]*coeffs[i]["u_y second order"]
-        TM_secondorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x second order"]*coeffs[i]["B_y second order"]
-        """
-        TR = (0.5*coeffs[i]["u_x first order"].real + 0.5**2*coeffs[i]["u_x second order"].real)*(0.5*coeffs[i]["u_y first order"].real + 0.5**2*coeffs[i]["u_y second order"].real)
-        TM = -(2.0/coeffs[i]["beta"])*(0.5*coeffs[i]["B_x first order"].real + 0.5**2*coeffs[i]["B_x second order"].real)*(0.5*coeffs[i]["B_y first order"].real + 0.5**2*coeffs[i]["B_y second order"].real) 
+            TR_secondorder = coeffs[i]["u_x second order"]*coeffs[i]["u_y second order"]
+            TM_secondorder = -(2.0/coeffs[i]["beta"])*coeffs[i]["B_x second order"]*coeffs[i]["B_y second order"]
+            """
+            TR = (0.5*coeffs[i]["u_x first order"].real + 0.5**2*coeffs[i]["u_x second order"].real)*(0.5*coeffs[i]["u_y first order"].real + 0.5**2*coeffs[i]["u_y second order"].real)
+            TM = -(2.0/coeffs[i]["beta"])*(0.5*coeffs[i]["B_x first order"].real + 0.5**2*coeffs[i]["B_x second order"].real)*(0.5*coeffs[i]["B_y first order"].real + 0.5**2*coeffs[i]["B_y second order"].real) 
 
-        T = TR + TM
-        """
-        T_firstorder = 0.5*TR_firstorder + 0.5*TM_firstorder
-        T_secondorder = 0.5**2*TR_secondorder + 0.5**2*TM_secondorder
-        """
-        nz = gridnum
-        Lz = 2*np.pi/coeffs[i]["Q"]
-        z = np.linspace(0, Lz, nz, endpoint=False)
-        zz = z.reshape(nz, 1)
-        dz = z[1] - z[0]
-        x = coeffs[i]["x"]
+            T = TR + TM
+            """
+            T_firstorder = 0.5*TR_firstorder + 0.5*TM_firstorder
+            T_secondorder = 0.5**2*TR_secondorder + 0.5**2*TM_secondorder
+            """
+            nz = gridnum
+            Lz = 2*np.pi/coeffs[i]["Q"]
+            z = np.linspace(0, Lz, nz, endpoint=False)
+            zz = z.reshape(nz, 1)
+            dz = z[1] - z[0]
+            x = coeffs[i]["x"]
         
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        #info = ax.pcolormesh(x, z, T_firstorder + T_secondorder, cmap="RdBu_r")
-        info = ax.pcolormesh(x, z, T, cmap="RdBu_r")
-        #info = ax.contour(x, z, T_firstorder + T_secondorder, cmap="RdBu_r")
-        #info = ax.pcolormesh(x, z, TM_firstorder + TM_secondorder, cmap="RdBu_r")
-        cbar = plt.colorbar(info)
-        cbar.ax.tick_params(labelsize = 20)
-        #ax.set_title("Pm = "+str(coeffs[i]["Pm"]))
+            fig = plt.figure()
+            ax = fig.add_subplot(111)
+            #info = ax.pcolormesh(x, z, T_firstorder + T_secondorder, cmap="RdBu_r")
+            info = ax.pcolormesh(x, z, T, cmap="RdBu_r")
+            #info = ax.contour(x, z, T_firstorder + T_secondorder, cmap="RdBu_r")
+            #info = ax.pcolormesh(x, z, TM_firstorder + TM_secondorder, cmap="RdBu_r")
+            cbar = plt.colorbar(info)
+            cbar.ax.tick_params(labelsize = 20)
+            #ax.set_title("Pm = "+str(coeffs[i]["Pm"]))
 
-        ax.set_ylim(0, Lz - dz)
-        ax.set_xlim(-1, 1)
+            ax.set_ylim(0, Lz - dz)
+            ax.set_xlim(-1, 1)
         
-        plt.tick_params(labelsize = 20)
-        rr = np.zeros(len(x))
-        plt.plot(x, rr+z[25], color="black", lw=3, ls='--')
-        plt.plot(x, rr+z[128], color="black", lw=3, ls='--')
-        plt.plot(x, rr+z[231], color="black", lw=3, ls='--')
+            plt.tick_params(labelsize = 20)
+            rr = np.zeros(len(x))
+            plt.plot(x, rr+z[25], color="black", lw=3, ls='--')
+            plt.plot(x, rr+z[128], color="black", lw=3, ls='--')
+            plt.plot(x, rr+z[231], color="black", lw=3, ls='--')
         
-        """
-        fig = plt.figure()
-        Tint = np.sum(T_firstorder + T_secondorder, axis=0)
-        ax2 = fig2.add_subplot(2, 2, i)
-        ax2.plot(x, Tint, label=coeffs[i]["Pm"])
-        ax2.set_title("Pm = "+str(coeffs[i]["Pm"]))
-        """
-        
+            """
+            fig = plt.figure()
+            Tint = np.sum(T_firstorder + T_secondorder, axis=0)
+            ax2 = fig2.add_subplot(2, 2, i)
+            ax2.plot(x, Tint, label=coeffs[i]["Pm"])
+            ax2.set_title("Pm = "+str(coeffs[i]["Pm"]))
+            """

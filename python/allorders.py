@@ -32,18 +32,22 @@ class AdjointHomogenous():
     
     """
     
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0):
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         self.Q = Q
         self.Rm = Rm
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("adjoint params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("adjoint params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, 'norm = ', norm)
         
     
-    def solve(self, gridnum = gridnum, save = False, norm = True):
+    def solve(self, gridnum = gridnum, save = False):
+        
+        # norm keyword initiated in __init__
+        norm = self.norm
 
         self.gridnum = gridnum
 
@@ -121,7 +125,7 @@ class AdjointHomogenous():
             a = self.LEV.state['psi']['g'].real[13]/n
             b = self.LEV.state['psi']['g'].imag[13]/n
             scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
-            #scale *= -664.4114817
+            scale *= -664.4114817
             
             psinorm = LEV.state['psi']*scale
             self.psi = psinorm.evaluate()
@@ -183,17 +187,21 @@ class OrderE():
     
     """
     
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0):
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         self.Q = Q
         self.Rm = Rm
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("first order params", self.Q, self.Rm, self.Pm, self.q)
+        print("first order params", self.Q, self.Rm, self.Pm, self.q, "norm = ", self.norm)
     
-    def solve(self, gridnum = gridnum, save = False, norm = True):
+    def solve(self, gridnum = gridnum, save = False):
+
+        # norm keyword initiated in __init__
+        norm = self.norm
 
         self.gridnum = gridnum
 
@@ -256,18 +264,24 @@ class OrderE():
         lv1.expand(domain, order = gridnum)
         LEV = LinearEigenvalue(lv1, domain)
         LEV.solve(LEV.pencils[0])
+        
+        # BVP way
         #LEV = LinearBVP(lv1, domain)
         #LEV.solvedense()
+        #LEV.solve()
         
         self.LEV = LEV
 
         #Find the eigenvalue that is closest to zero.
+        
         evals = LEV.eigenvalues
         indx = np.arange(len(evals))
         e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
         print('eigenvalue', evals[e0])
+        
        
         # set state
+        
         self.x = domain.grid(0)
         LEV.set_state(e0[0])
         
@@ -338,12 +352,13 @@ class N2():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("N2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("N2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, "norm = ", self.norm)
         
         # either run or load the data in from saved files (needs implementing)
         if run == True:
-            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             v1.solve(save=False)
             
             if norm == True:
@@ -367,7 +382,10 @@ class N2():
                 self.B_1 = v1.LEV.state['B']
         
     
-    def solve(self, gridnum = gridnum, save = True, norm = True):
+    def solve(self, gridnum = gridnum, save = True):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
 
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -526,13 +544,14 @@ class OrderE2():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("order e 2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("order e 2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, "norm = ", self.norm)
         
         
         if (run == True) and (speedy == False):
             
-            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             v1.solve(save=False)
             
             if norm == True:
@@ -577,7 +596,7 @@ class OrderE2():
                 self.A_1 = o1.LEV.state['A']
                 self.B_1 = o1.LEV.state['B']
                  
-        self.n2 = N2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+        self.n2 = N2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         self.n2.solve()
         self.n22_psi = self.n2.N22_psi
         self.n22_u = self.n2.N22_u
@@ -590,6 +609,10 @@ class OrderE2():
         self.n20_B = self.n2.N20_B
             
     def solve20(self, gridnum = gridnum, save = False):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
+    
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
 
@@ -692,6 +715,9 @@ class OrderE2():
         #self.B20 = np.zeros(gridnum)
             
     def solve21(self, gridnum = gridnum, save = True, norm = True):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
     
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
@@ -825,6 +851,9 @@ class OrderE2():
             self.scale = scale
 
     def solve22(self, gridnum = gridnum, save = True):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
 
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
@@ -1007,12 +1036,13 @@ class OrderE3():
         self.q = q
         self.beta = beta
         self.R = self.Rm/self.Pm
+        self.norm = norm
         
-        print("order 3 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, self.R)
+        print("order 3 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, self.R, "norm = ", self.norm)
         
         if (run == True) and (speedy == False):
             
-            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1073,6 +1103,9 @@ class OrderE3():
             
     def solve(self, gridnum = gridnum, save = False):
     
+        # norm keyword initiated in __init__
+        norm = self.norm
+    
         self.gridnum = gridnum
     
         # inverse magnetic reynolds number
@@ -1127,6 +1160,9 @@ class N3():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
+        
+        print("N3 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, "norm = ", self.norm)
         
         if (run == True) and (speedy == False):
             v1 = OrderE()
@@ -1152,7 +1188,7 @@ class N3():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1241,6 +1277,8 @@ class N3():
             self.v22_B = o2.LEV22.state['B22']
             
     def solve31(self, gridnum = gridnum, save = False):
+        # norm keyword initiated in __init__
+        norm = self.norm
     
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -1486,7 +1524,7 @@ class N3():
         
         self.N31_B_no20star = N31_B_no20star.evaluate()
         
-        test20 = True
+        test20 = False
         if test20 == True:
             self.N31_psi = self.N31_psi_no20star
             self.N31_u = self.N31_u_no20star
@@ -1495,6 +1533,8 @@ class N3():
         
     
     def solve30(self, gridnum = gridnum, save = False):
+        # norm keyword initiated in __init__
+        norm = self.norm
     
         N30_B_1 = -1j*self.Q*(self.v11_psi*self.v21_B_star_x) + 1j*self.Q*(self.v11_psi_star*self.v21_B_x) - 1j*self.Q*(self.v11_psi_x*self.v21_B_star) + 1j*self.Q*(self.v11_psi_star_x*self.v21_B)
         N30_B_2 = 1j*self.Q*(self.v11_B*self.v21_psi_star_x) - 1j*self.Q*(self.v11_B_star*self.v21_psi_x) + 1j*self.Q*(self.v11_B_x*self.v21_psi_star) - 1j*self.Q*(self.v11_B_star_x*self.v21_psi)
@@ -1548,8 +1588,9 @@ class AmplitudeAlpha():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("amplitude alpha params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("amplitude alpha params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, "norm = ", self.norm)
         
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
@@ -1560,10 +1601,10 @@ class AmplitudeAlpha():
         
         if run == True:
         
-            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.va.solve(save = False, norm = True)
         
-            self.v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            self.v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.v1.solve(save=False)
             
             if norm == True:
@@ -1586,7 +1627,7 @@ class AmplitudeAlpha():
                 self.v11_A = self.v1.LEV.state['A']
                 self.v11_B = self.v1.LEV.state['B']
             
-            self.o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = self.v1)
+            self.o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = self.v1, norm = self.norm)
             self.o2.solve20()
             self.o2.solve21(norm = norm)
             self.o2.solve22()
@@ -1619,15 +1660,18 @@ class AmplitudeAlpha():
             self.v22_A = self.o2.LEV22.state['A22']
             self.v22_B = self.o2.LEV22.state['B22']
             
-            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o2 = self.o2)
+            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o2 = self.o2, norm = self.norm)
             self.o3.solve()
             
-            self.n3 = N3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = self.v1, o2 = self.o2)
+            self.n3 = N3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = self.v1, o2 = self.o2, norm = self.norm)
             self.n3.solve31()
             self.n3.solve30()
             
             
     def solve(self, gridnum = gridnum, save = False):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
     
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -1703,13 +1747,13 @@ class AmplitudeAlpha():
         a_psi = self.va.psi*(self.v11_psi_star_xx - self.Q**2*self.v11_psi_star)
         a_psi = a_psi.evaluate()
         
-        a_u = self.va.u*self.v11_u_star#(self.v11_u_star_xx - self.Q**2*self.v11_u_star)
+        a_u = self.va.u*self.v11_u_star
         a_u = a_u.evaluate()
         
-        a_A = self.va.A*self.v11_A_star#(self.v11_A_star_xx - self.Q**2*self.v11_A_star)
+        a_A = self.va.A*self.v11_A_star
         a_A = a_A.evaluate()
         
-        a_B = self.va.B*self.v11_B_star#(self.v11_B_star_xx - self.Q**2*self.v11_B_star)
+        a_B = self.va.B*self.v11_B_star
         a_B = a_B.evaluate()
         
         aall = a_psi + a_u + a_A + a_B
@@ -1842,7 +1886,7 @@ class AmplitudeAlpha():
         hh = h.integrate(x_basis)
         self.h = hh['g'][0]
         
-        # g = < va . L3 v11 >
+        # g = < va . L3 v11 * >
         g_psi = self.va.psi*(2/self.beta)*self.v11_A['g'].conj()
         g_psi = g_psi.evaluate()
         
@@ -1888,8 +1932,9 @@ class AmplitudeBeta():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("amplitude beta params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("amplitude beta params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, "norm = ", self.norm)
         
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
@@ -1900,10 +1945,10 @@ class AmplitudeBeta():
         
         if run == True:
         
-            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.va.solve(save = False, norm = True)
         
-            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             v1.solve(save=False)
             
             if norm == True:
@@ -1926,7 +1971,7 @@ class AmplitudeBeta():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1963,11 +2008,14 @@ class AmplitudeBeta():
             self.n3.solve31()
             self.n3.solve30()
             
-            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.o3.solve()
             
             
     def solve(self, gridnum = gridnum, save = False):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
     
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -2039,8 +2087,9 @@ class SolveAmplitudeAlpha():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("saa params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("saa params: ", self.Q, self.Rm, self.Pm, self.q, self.beta,"norm = ", self.norm)
         
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
@@ -2052,7 +2101,7 @@ class SolveAmplitudeAlpha():
         self.gridnum = gridnum
 
         # obtain amplitude coefficients
-        self.alpha_amp = AmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+        self.alpha_amp = AmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         self.alpha_amp.solve()
         
         #MagSq = operators.MagSquared
@@ -2157,6 +2206,7 @@ class PlotContours():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
         print(Q, Rm, Pm, q, gridnum)
         
@@ -2169,7 +2219,7 @@ class PlotContours():
         
         self.gridnum = gridnum
         
-        self.saa = SolveAmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+        self.saa = SolveAmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         #alpha_amp = AmplitudeAlpha()
         #beta_amp = AmplitudeBeta()
         
