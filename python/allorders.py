@@ -18,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 64#256
+gridnum = 512
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -1602,7 +1602,7 @@ class AmplitudeAlpha():
         if run == True:
         
             self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
-            self.va.solve(save = False, norm = True)
+            self.va.solve(save = False)
         
             self.v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.v1.solve(save=False)
@@ -2117,8 +2117,8 @@ class SolveAmplitudeAlpha():
         #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSq(alpha)")
         #problem.add_equation("-(a/c)*dt(alpha) - (b/c)*alphaZ + (h/c)*dZ(alphaZ) + (g/c)*1j*Q**3*alpha = alpha*Absolute(alpha**2)")
         
-        #problem.add_equation("ac*dt(alpha) + bc*1j*Q*alpha - hc*dZ(alphaZ) - gc*1j*Q**3*alpha = alpha*Absolute(alpha**2)") #fixed to be gle
-        problem.add_equation("ac*dt(alpha) - bc*1j*Q*alpha - hc*dZ(alphaZ) = alpha*Absolute(alpha**2)") #fixed to be gle
+        problem.add_equation("ac*dt(alpha) - bc*1j*Q*alpha - hc*dZ(alphaZ) + gc*1j*Q**3*alpha = alpha*Absolute(alpha**2)") #fixed to be gle
+        #problem.add_equation("ac*dt(alpha) - bc*1j*Q*alpha - hc*dZ(alphaZ) = alpha*Absolute(alpha**2)") #fixed to be gle
         problem.add_equation("alphaZ - dZ(alpha) = 0")
         
         
@@ -2148,7 +2148,7 @@ class SolveAmplitudeAlpha():
         # stopping criteria
         solver.stop_sim_time = np.inf
         solver.stop_wall_time = np.inf
-        solver.stop_iteration = 50000
+        solver.stop_iteration = 500000
         
         # reference local grid and state fields
         Z = domain.grid(0)
@@ -2165,7 +2165,7 @@ class SolveAmplitudeAlpha():
         t_list = [solver.sim_time]
 
         # Main loop
-        dt = 2e-3
+        dt = 2e-2#2e-3
         while solver.ok:
             solver.step(dt)
             if solver.iteration % 20 == 0:
@@ -2272,17 +2272,21 @@ class PlotContours():
         self.V2_B = self.alpha_s**2*self.ei2qz*self.saa.alpha_amp.v22_B['g'] + (self.alpha_s*self.alpha_s.conj())*self.saa.alpha_amp.v20_B['g']*self.ei0qz
         self.V_B = self.eps*self.V1_B + self.eps**2*self.V2_B
         
-        ax1.pcolormesh(self.saa.alpha_amp.x, z, self.V_psi, cmap="RdBu")
+        cbar = ax1.pcolormesh(self.saa.alpha_amp.x, z, self.V_psi, cmap="RdBu")
         ax1.set_ylim(0, Lz - dz)
+        plt.colorbar(cbar, ax=ax1)
         
-        ax2.pcolormesh(self.saa.alpha_amp.x, z, self.V_u, cmap="RdBu")
+        cbar = ax2.pcolormesh(self.saa.alpha_amp.x, z, self.V_u, cmap="RdBu")
         ax2.set_ylim(0, Lz - dz)
+        plt.colorbar(cbar, ax=ax2)
         
-        ax3.pcolormesh(self.saa.alpha_amp.x, z, self.V_A, cmap="RdBu")
+        cbar = ax3.pcolormesh(self.saa.alpha_amp.x, z, self.V_A, cmap="RdBu")
         ax3.set_ylim(0, Lz - dz)
+        plt.colorbar(cbar, ax=ax3)
         
-        ax4.pcolormesh(self.saa.alpha_amp.x, z, self.V_B, cmap="RdBu")
+        cbar = ax4.pcolormesh(self.saa.alpha_amp.x, z, self.V_B, cmap="RdBu")
         ax4.set_ylim(0, Lz - dz)
+        plt.colorbar(cbar, ax=ax4)
         
     def plot_streams(self):
     

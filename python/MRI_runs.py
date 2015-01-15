@@ -19,7 +19,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 256
+gridnum = 512
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -33,22 +33,22 @@ beta = 25.0
 """
 
 #Pm = 1E-3: Q = 0.75, Rm = 4.8775
-
+"""
 Pm = 1.0E-3
 Q = 0.75
 Rm = 4.8775
 q = 1.5
 beta = 25.0
-
+"""
 
 #Pm = 1E-4: Q = 0.747, Rm = 4.88
-"""
+
 Pm = 1.0E-4
 Q = 0.747
 Rm = 4.88
 q = 1.5
 beta = 25.0
-"""
+
 
 #Pm = 1E-5, Q = 0.747, Rm = 4.88
 """
@@ -87,7 +87,9 @@ q = 1.5
 beta = 25.0
 """
 
-pc = PlotContours(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, run = True, norm = True)
+norm = False
+
+pc = PlotContours(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, run = True, norm = norm)
 pc.plot_streams()
 pc.plot_Bfield()
 
@@ -125,7 +127,7 @@ coeffs["A first order"] = pc.V1_A
 coeffs["Psi first order"] = pc.V1_psi
 
 
-outname = "gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)
+outname = "gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)
 plot_uy_firstorder(pc, oplot = True, labels = False, outname=outname)
 plot_By_firstorder(pc, oplot = True, labels = False, outname=outname)
 plot_uy_secondorder(pc, oplot = True, labels = False, outname=outname)
@@ -136,6 +138,6 @@ plotN2(pc.saa.alpha_amp.o2, outname=outname)
 plotN3(pc.saa.alpha_amp.n3, outname=outname)
 plotOE(pc.saa.alpha_amp, outname=outname)
 
-print(coeffs)
+#print(coeffs)
 
-pickle.dump(coeffs, open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "wb"))
+pickle.dump(coeffs, open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "wb"))
