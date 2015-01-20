@@ -125,7 +125,9 @@ class AdjointHomogenous():
             a = self.LEV.state['psi']['g'].real[13]/n
             b = self.LEV.state['psi']['g'].imag[13]/n
             scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
-            scale *= -664.4114817
+        
+            # magic number
+            #scale *= -664.4114817
             
             psinorm = LEV.state['psi']*scale
             self.psi = psinorm.evaluate()
@@ -295,7 +297,9 @@ class OrderE():
             a = self.LEV.state['psi']['g'].real[13]/n
             b = self.LEV.state['psi']['g'].imag[13]/n
             scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
-            scale *= -664.4114817 
+            
+            # magic number
+            #scale *= -664.4114817 
             
             self.psi = LEV.state['psi']['g']*scale
             self.u = LEV.state['u']['g']*scale
@@ -467,9 +471,10 @@ class N2():
         N20B = 1j*Q*self.psi_1*self.B_1_star_x + self.psi_1_x*1j*Q*self.B_1_star - 1j*Q*self.A_1*self.u_1_star_x - self.A_1_x*1j*Q*self.u_1_star
         self.N20_B = N20B.evaluate()
         
+        """
         if norm == True:
-        
-            self.n20scale = 0.2/0.087941764519131521
+            # magic number
+            #self.n20scale = 0.2/0.087941764519131521
             
             N20psi = self.N20_psi*self.n20scale
             self.N20_psi = N20psi.evaluate()
@@ -482,6 +487,7 @@ class N2():
             
             N20B = self.N20_B*self.n20scale
             self.N20_B = N20B.evaluate()
+        """
         
     def plot(self):
     
@@ -840,8 +846,8 @@ class OrderE2():
             a = self.LEV21.state['psi21']['g'].real[13]/n
             b = self.LEV21.state['psi21']['g'].imag[13]/n
             scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
-            tt = 1j*132/29.097408658719342
-            scale *= tt 
+            #tt = 1j*132/29.097408658719342
+            #scale *= tt 
             
             self.psi21 = LEV21.state['psi21']['g']*scale
             self.u21 = LEV21.state['u21']['g']*scale
