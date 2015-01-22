@@ -17,7 +17,7 @@ rc('text', usetex=True)
 
 q = 1.5
 beta = 25.0
-norm = False
+norm = True
 
 coeffs = {}
 
@@ -30,67 +30,47 @@ Rm = 4.90
 
 coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 """
-"""
-gridnum = 512
+
 # Pm = 1E-6: Q = 0.75, Rm = 4.88, beta = 25
+gridnum = 1024
 Pm = 1.0E-6
 Q = 0.75
 Rm = 4.88
-coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-"""
+coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
 
-# all the rest have gridnum 256
-#gridnum = 256
-
-gridnum = 64
 
 #Pm = 1E-5, Q = 0.747, Rm = 4.88
+gridnum = 512
 Pm = 1.0E-5
 Q = 0.747
 Rm = 4.88
-
-if norm == "old":
-    coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
-else:
-    coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
 
 
 #Pm = 1E-4: Q = 0.747, Rm = 4.88
+"""
 Pm = 1.0E-4
 Q = 0.747
 Rm = 4.88
-
-if norm == "old":
-    coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
-else:
-    coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
+"""
 
 #Pm = 1E-3, Q = 0.75, Rm = 4.8775
-#gridnum = 256
-gridnum = 64
+gridnum = 256
 Pm = 1.0E-3
 Q = 0.75
 Rm = 4.8775
-#coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-#coeffs[0] = pickle.load(open("1E-3test/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-
-if norm == "old":
-    coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
-else:
-    coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-
-
+coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
 
 #Pm = 1E-2: Q = 0.757, Rm = 4.93
-"""
 gridnum =  256
 Pm = 1.0E-2
 Q = 0.757
 Rm = 4.93
-coeffs[5] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-"""
+coeffs[3] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
 
-num = 3
+num = len(coeffs)
+print("Considering %d Pm's" % num)
 a_arr = np.zeros(num, dtype=np.complex128)
 c_arr = np.zeros(num, dtype=np.complex128)
 b_arr = np.zeros(num, dtype=np.complex128)
@@ -236,6 +216,15 @@ def plot_widths_byhand():
     plt.loglog(Pms, widths, '.')
     plt.xlim(1E-8, 1E-2)
         
+def saturation_amp_from_coeffs():
+    Pms = np.zeros(len(coeffs))
+    asat = np.zeros(len(coeffs))
+    for i in range(len(coeffs)):
+        Pms[i] = coeffs[i]["Pm"]
+        asat[i] = np.sqrt((-coeffs[i]["b"]*1j*coeffs[i]["Q"] + coeffs[i]["g"]*1j*coeffs[i]["Q"]**3)/coeffs[i]["c"])
+        
+    plt.loglog(Pms, asat)
+
     
 def plot5():
     fig = plt.figure()
