@@ -19,19 +19,19 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 256
+gridnum = 512
 print("gridnum", gridnum)
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
 #Pm = 1E-2: Q = 0.757, Rm = 4.93
-
+"""
 Pm = 1.0E-2
 Q = 0.757
 Rm = 4.93
 q = 1.5
 beta = 25.0
-
+"""
 
 #Pm = 1E-3: Q = 0.75, Rm = 4.8775
 """
@@ -43,13 +43,13 @@ beta = 25.0
 """
 
 #Pm = 1E-4: Q = 0.747, Rm = 4.88
-"""
+
 Pm = 1.0E-4
 Q = 0.747
 Rm = 4.88
 q = 1.5
 beta = 25.0
-"""
+
 
 #Pm = 1E-5, Q = 0.747, Rm = 4.88
 """
