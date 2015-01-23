@@ -18,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 512
+gridnum = 64
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -751,10 +751,10 @@ class OrderE2():
         self.term2_B = term2_B.evaluate()
         
         # righthand side for the 21 terms (e^iQz)
-        rhs21_psi = self.term2_psi['g']
-        rhs21_u = self.term2_u['g']
-        rhs21_A = self.term2_A['g']
-        rhs21_B = self.term2_B['g']
+        rhs21_psi = -self.term2_psi['g']   # changed to correct sign 1/23/15
+        rhs21_u = -self.term2_u['g']
+        rhs21_A = -self.term2_A['g']
+        rhs21_B = -self.term2_B['g']
                 
         # define problem using righthand side as nonconstant coefficients
         
@@ -2118,6 +2118,10 @@ class SolveAmplitudeAlpha():
         #problem.add_equation("-(a/c)*dt(alpha) - (b/c)*alphaZ + (h/c)*dZ(alphaZ) + (g/c)*1j*Q**3*alpha = alpha*Absolute(alpha**2)")
         
         problem.add_equation("ac*dt(alpha) - bc*1j*Q*alpha - hc*dZ(alphaZ) + gc*1j*Q**3*alpha = alpha*Absolute(alpha**2)") #fixed to be gle
+        
+        #problem.add_equation("ac*dt(alpha) - bc*1j*Q*alpha - hc*dZ(alphaZ) = alpha*Absolute(alpha**2)") #fixed to be gle
+        
+        
         #problem.add_equation("ac*dt(alpha) - bc*1j*Q*alpha - hc*dZ(alphaZ) = alpha*Absolute(alpha**2)") #fixed to be gle
         problem.add_equation("alphaZ - dZ(alpha) = 0")
         
@@ -2148,7 +2152,7 @@ class SolveAmplitudeAlpha():
         # stopping criteria
         solver.stop_sim_time = np.inf
         solver.stop_wall_time = np.inf
-        solver.stop_iteration = 500000
+        solver.stop_iteration = 50000#0
         
         # reference local grid and state fields
         Z = domain.grid(0)
