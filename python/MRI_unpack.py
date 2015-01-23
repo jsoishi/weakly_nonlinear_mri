@@ -33,14 +33,14 @@ if test == True:
     Pm = 1.0E-4
     Q = 0.747
     Rm = 4.88
-    coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
+    coeffs[0] = pickle.load(open("pspace/test_coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
     
 
     #Pm = 1E-3, Q = 0.75, Rm = 4.8775
     Pm = 1.0E-3
     Q = 0.75
     Rm = 4.8775
-    coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
+    coeffs[1] = pickle.load(open("pspace/test_coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
 
     #Pm = 1E-2: Q = 0.757, Rm = 4.93
     Pm = 1.0E-2
