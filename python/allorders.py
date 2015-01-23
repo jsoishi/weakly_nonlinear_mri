@@ -1717,6 +1717,9 @@ class AmplitudeAlpha():
         self.v11_A_star.name = 'v11_A_star'
         self.v11_A_star['g'] = self.v11_A['g'].conj()
         
+        self.v11_A_x = self.v11_A.differentiate(0)
+        self.v11_A_xx = self.v11_A_x.differentiate(0) # new 1/23/15, needed for b_rhs
+        
         self.v11_A_star_x = self.v11_A_star.differentiate(0)
         self.v11_A_star_xx = self.v11_A_star_x.differentiate(0)
         
@@ -1751,7 +1754,15 @@ class AmplitudeAlpha():
         
         
         # a = <va . D V11*>
-        a_psi = self.va.psi*(self.v11_psi_star_xx - self.Q**2*self.v11_psi_star)
+        #a_psi = self.va.psi*(self.v11_psi_star_xx - self.Q**2*self.v11_psi_star)
+        a_psi_rhs = self.v11_psi_xx - self.Q**2*self.v11_psi
+        a_psi_rhs = a_psi_rhs.evaluate()
+        
+        a_psi_rhs_star = domain.new_field()
+        a_psi_rhs_star.name = 'a_psi_rhs_star'
+        a_psi_rhs_star['g'] = a_psi_rhs['g'].conj()
+        
+        a_psi = self.va.psi*a_psi_rhs_star
         a_psi = a_psi.evaluate()
         
         a_u = self.va.u*self.v11_u_star
@@ -1829,8 +1840,15 @@ class AmplitudeAlpha():
         cctwiddle = c_twiddle.integrate(x_basis)
         self.c_twiddle = cctwiddle['g'][0]
         
-        # b = < va . X v11* >
-        b_psi = self.va.psi*(2/self.beta)*self.v11_A_star_xx # added the _xx 1/23/15
+        # b = < va . (X v11)* >
+        b_psi_rhs = (2/self.beta)*self.v11_A_xx
+        b_psi_rhs = b_psi_rhs.evaluate()
+        
+        b_psi_rhs_star = domain.new_field()
+        b_psi_rhs_star.name = 'b_psi_rhs_star'
+        b_psi_rhs_star['g'] = b_psi_rhs['g'].conj()
+        
+        b_psi = self.va.psi*b_psi_rhs_star
         b_psi = b_psi.evaluate()
         
         b_u = self.va.u*(2/self.beta)*self.v11_B_star
@@ -1853,40 +1871,6 @@ class AmplitudeAlpha():
         
         # h = < va . (L2twiddle v11 - L1twiddle v21)* >
         
-        # new 1/23/15
-        l2twiddlel1twiddle_psi = 2*self.iR*self.v11_psi_xx - 2*self.v21_u - (2/self.beta)*self.v21_A_xx
-        l2l1t_psi = l2twiddlel1twiddle_psi.evaluate()
-        l2l1t_psi_conj = domain.new_field()
-        l2l1t_psi_conj.name = 'l2l1t_psi_conj'
-        l2l1t_psi_conj['g'] = l2l1t_psi['g'].conj()
-        h_psi = self.va.psi*l2l1t_psi_conj
-        h_psi = h_psi.evaluate()
-        
-        l2twiddlel1twiddle_u = self.iR*self.v11_u - (2 - self.q)*self.v21_psi - (2/self.beta)*self.v21_B
-        l2l1t_u = l2twiddlel1twiddle_u.evaluate()
-        l2l1t_u_conj = domain.new_field()
-        l2l1t_u_conj.name = 'l2l1t_u_conj'
-        l2l1t_u_conj['g'] = l2l1t_u['g'].conj()
-        h_u = self.va.u*l2l1t_u_conj
-        h_u = h_u.evaluate()
-        
-        l2twiddlel1twiddle_A = self.iRm*self.v11_A - self.v21_psi
-        l2l1t_A = l2twiddlel1twiddle_A.evaluate()
-        l2l1t_A_conj = domain.new_field()
-        l2l1t_A_conj.name = 'l2l1t_A_conj'
-        l2l1t_A_conj['g'] = l2l1t_A['g'].conj()
-        h_A = self.va.A*l2l1t_A_conj
-        h_A = h_A.evaluate()
-        
-        l2twiddlel1twiddle_B = self.iRm*self.v11_B - self.v21_u + self.q*self.v21_A
-        l2l1t_B = l2twiddlel1twiddle_B.evaluate()
-        l2l1t_B_conj = domain.new_field()
-        l2l1t_B_conj.name = 'l2l1t_B_conj'
-        l2l1t_B_conj['g'] = l2l1t_B['g'].conj()
-        h_B = self.va.B*l2l1t_B_conj
-        h_B = h_B.evaluate()
-        
-        """
         l2twiddlel1twiddle_psi = 3*1j*(2/self.beta)*self.Q*self.v11_A + 3*(2/self.beta)*self.Q**2*self.v21_A - (2/self.beta)*self.v21_A_xx - 6*self.Q**2*self.iR*self.v11_psi + 2*self.iR*self.v11_psi_xx + 4*1j*self.iR*self.Q**3*self.v21_psi - 4*self.iR*1j*self.Q*self.v21_psi_xx - 2*self.v21_u
         l2l1t_psi = l2twiddlel1twiddle_psi.evaluate()
         l2l1t_psi_conj = domain.new_field()
@@ -1895,7 +1879,8 @@ class AmplitudeAlpha():
         h_psi = self.va.psi*l2l1t_psi_conj
         h_psi = h_psi.evaluate()
         
-        l2twiddlel1twiddle_u = -(2/self.beta)*self.v21_B - 2*1j*self.iR*self.Q*self.v21_u - (self.q - 2)*self.v21_psi + self.iR*self.v11_u
+        #l2twiddlel1twiddle_u = -(2/self.beta)*self.v21_B - 2*1j*self.iR*self.Q*self.v21_u - (self.q - 2)*self.v21_psi + self.iR*self.v11_u
+        l2twiddlel1twiddle_u = (2/self.beta)*self.v11_B - 1j*self.Q*(2/self.beta)*self.v21_B - 1j*self.Q*(2 - self.q)*self.v21_psi + self.iR*self.v11_u
         l2l1t_u = l2twiddlel1twiddle_u.evaluate()
         l2l1t_u_conj = domain.new_field()
         l2l1t_u_conj.name = 'l2l1t_u_conj'
@@ -1918,7 +1903,6 @@ class AmplitudeAlpha():
         l2l1t_B_conj['g'] = l2l1t_B['g'].conj()
         h_B = self.va.B*l2l1t_B_conj
         h_B = h_B.evaluate()
-        """
         
         hall = h_psi + h_u + h_A + h_B
         hall = hall.evaluate()
@@ -1929,7 +1913,7 @@ class AmplitudeAlpha():
         hh = h.integrate(x_basis)
         self.h = hh['g'][0]
         
-        # g = < va . L3 v11 * >
+        # g = < va . (L3 v11) * >
         g_psi = self.va.psi*(2/self.beta)*self.v11_A['g'].conj()
         g_psi = g_psi.evaluate()
         
@@ -2212,7 +2196,7 @@ class SolveAmplitudeAlpha():
         t_list = [solver.sim_time]
 
         # Main loop
-        dt = 2e-2#2e-3
+        dt = 2e-3#2e-3
         while solver.ok:
             solver.step(dt)
             if solver.iteration % 20 == 0:

@@ -94,14 +94,14 @@ else:
 if norm == False:
 
     coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
-
+    """
     #Pm = 1E-5, Q = 0.747, Rm = 4.88
     gridnum = 512
     Pm = 1.0E-5
     Q = 0.747
     Rm = 4.88
     coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
-
+    """
 #Pm = 1E-4: Q = 0.747, Rm = 4.88
 Pm = 1.0E-4
 Q = 0.747
@@ -132,6 +132,7 @@ Rm = 4.8775
 #coeffs[0] = pickle.load(open("1E-3test/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
 
 #Pm = 1E-3, Q = 0.75, Rm = 4.8775
+"""
 gridnum = 256
 Pm = 1.0E-3
 Q = 0.75
@@ -144,7 +145,7 @@ Pm = 1.0E-2
 Q = 0.757
 Rm = 4.93
 coeffs[3] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
-
+"""
 
 #Pm = 1E-2: Q = 0.757, Rm = 4.93
 """
