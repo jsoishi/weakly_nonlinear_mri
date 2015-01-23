@@ -21,53 +21,82 @@ norm = True
 
 coeffs = {}
 
-#Pm = 1E-7: Q = 0.745, Rm = 4.90
-"""
-gridnum = 1024#512
-Pm = 1.0E-7
-Q = 0.745
-Rm = 4.90
+test = True
 
-coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
-"""
+if test == True:
 
-# Pm = 1E-6: Q = 0.75, Rm = 4.88, beta = 25
-gridnum = 1024
-Pm = 1.0E-6
-Q = 0.75
-Rm = 4.88
-coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
+    # For false test
+    gridnum = 64
+    norm = False
+    
+    #Pm = 1E-4: Q = 0.747, Rm = 4.88
+    Pm = 1.0E-4
+    Q = 0.747
+    Rm = 4.88
+    coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
+    
+
+    #Pm = 1E-3, Q = 0.75, Rm = 4.8775
+    Pm = 1.0E-3
+    Q = 0.75
+    Rm = 4.8775
+    coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
+
+    #Pm = 1E-2: Q = 0.757, Rm = 4.93
+    Pm = 1.0E-2
+    Q = 0.757
+    Rm = 4.93
+    coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
 
 
-#Pm = 1E-5, Q = 0.747, Rm = 4.88
-gridnum = 512
-Pm = 1.0E-5
-Q = 0.747
-Rm = 4.88
-coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
+else:
+    #Pm = 1E-7: Q = 0.745, Rm = 4.90
+    """
+    gridnum = 1024#512
+    Pm = 1.0E-7
+    Q = 0.745
+    Rm = 4.90
+
+    coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+".p", "rb"))
+    """
+
+    # Pm = 1E-6: Q = 0.75, Rm = 4.88, beta = 25
+    gridnum = 1024
+    Pm = 1.0E-6
+    Q = 0.75
+    Rm = 4.88
+    coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
 
 
-#Pm = 1E-4: Q = 0.747, Rm = 4.88
-"""
-Pm = 1.0E-4
-Q = 0.747
-Rm = 4.88
-coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
-"""
+    #Pm = 1E-5, Q = 0.747, Rm = 4.88
+    gridnum = 512
+    Pm = 1.0E-5
+    Q = 0.747
+    Rm = 4.88
+    coeffs[1] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
 
-#Pm = 1E-3, Q = 0.75, Rm = 4.8775
-gridnum = 256
-Pm = 1.0E-3
-Q = 0.75
-Rm = 4.8775
-coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
 
-#Pm = 1E-2: Q = 0.757, Rm = 4.93
-gridnum =  256
-Pm = 1.0E-2
-Q = 0.757
-Rm = 4.93
-coeffs[3] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
+    #Pm = 1E-4: Q = 0.747, Rm = 4.88
+    """
+    Pm = 1.0E-4
+    Q = 0.747
+    Rm = 4.88
+    coeffs[0] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
+    """
+
+    #Pm = 1E-3, Q = 0.75, Rm = 4.8775
+    gridnum = 256
+    Pm = 1.0E-3
+    Q = 0.75
+    Rm = 4.8775
+    coeffs[2] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
+
+    #Pm = 1E-2: Q = 0.757, Rm = 4.93
+    gridnum =  256
+    Pm = 1.0E-2
+    Q = 0.757
+    Rm = 4.93
+    coeffs[3] = pickle.load(open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "rb"))
 
 num = len(coeffs)
 print("Considering %d Pm's" % num)
@@ -170,7 +199,9 @@ def plot4():
         #if i == 1:
         #    print("i = 1")
         #else: 
-            ax1.plot(coeffs[i]["t_array"], coeffs[i]["alpha_array"], '.', label = coeffs[i]["Pm"])
+            ax1.plot(coeffs[i]["t_array"], coeffs[i]["alpha_array"].real, '.', label = coeffs[i]["Pm"])
+            #ax1.plot(coeffs[i]["t_array"], np.sqrt(coeffs[i]["alpha_array"].real**2 + coeffs[i]["alpha_array"].imag**2), '.', label = coeffs[i]["Pm"])
+            
             #ax1.plot(coeffs[i]["t_array"], coeffs[i]["alpha_array"][:, 0], '.', label = coeffs[i]["Pm"])
             #ax1.loglog(coeffs[i]["Pm"], coeffs[i]["alpha_array"][-1][0], '.', label = coeffs[i]["Pm"])
             #ax1.semilogx(coeffs[i]["Pm"], coeffs[i]["c"]/coeffs[i]["a"], '.', label = coeffs[i]["Pm"])
@@ -216,14 +247,24 @@ def plot_widths_byhand():
     plt.loglog(Pms, widths, '.')
     plt.xlim(1E-8, 1E-2)
         
-def saturation_amp_from_coeffs():
+def saturation_amp_from_coeffs(sqmag=False):
+    fig = plt.figure()
     Pms = np.zeros(len(coeffs))
-    asat = np.zeros(len(coeffs))
+    asat = np.zeros(len(coeffs), dtype = np.complex128)
     for i in range(len(coeffs)):
         Pms[i] = coeffs[i]["Pm"]
-        asat[i] = np.sqrt((-coeffs[i]["b"]*1j*coeffs[i]["Q"] + coeffs[i]["g"]*1j*coeffs[i]["Q"]**3)/coeffs[i]["c"])
+        asat[i] = np.sqrt((coeffs[i]["b"]*1j*coeffs[i]["Q"] - coeffs[i]["g"]*1j*coeffs[i]["Q"]**3)/coeffs[i]["c"])
         
-    plt.loglog(Pms, asat)
+    print(Pms, asat)
+    
+    if sqmag == True:
+        plt.loglog(Pms, asat.real**2 + asat.imag**2, "+", markersize = 10)
+    else:
+        plt.loglog(Pms, asat, "+", markersize = 10)
+    
+    plt.xlim(min(Pms) - min(Pms)/2, max(Pms) + max(Pms)/2)
+    plt.xlabel("Pm")
+    plt.ylabel(r"$\alpha_{saturation}$")
 
     
 def plot5():

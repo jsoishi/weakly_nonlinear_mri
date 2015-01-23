@@ -2154,7 +2154,7 @@ class SolveAmplitudeAlpha():
         # stopping criteria
         solver.stop_sim_time = np.inf
         solver.stop_wall_time = np.inf
-        solver.stop_iteration = 500000
+        solver.stop_iteration = 50000#0
         
         # reference local grid and state fields
         Z = domain.grid(0)
@@ -2163,7 +2163,7 @@ class SolveAmplitudeAlpha():
 
         # initial conditions ... plus noise!
         #noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
-        alpha['g'] = 1.0E-5 #+ noise
+        alpha['g'] = 1.0E-5 + 1.0E-5j #+ noise
         alpha.differentiate(0, out=alphaZ)
         
         # Setup storage

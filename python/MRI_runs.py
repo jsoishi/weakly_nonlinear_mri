@@ -109,6 +109,7 @@ coeffs["h"] = pc.saa.alpha_amp.h
 coeffs["g"] = pc.saa.alpha_amp.g
 coeffs["t_array"] = pc.saa.t_array
 coeffs["alpha_array"] = pc.saa.alpha_array[:, 0]
+coeffs["alpha_s"] = pc.saa.alpha_s
 coeffs["x"] = pc.saa.alpha_amp.x
 coeffs["eps"] = pc.eps
 coeffs["u_x first order"] = pc.V1_ux1
@@ -141,4 +142,4 @@ plotOE(pc.saa.alpha_amp, outname=outname)
 
 #print(coeffs)
 
-pickle.dump(coeffs, open("pspace/coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "wb"))
+pickle.dump(coeffs, open("pspace/test_coeffs_gridnum"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Q)+"_Rm_"+str(Rm)+"_q_"+str(q)+"_beta_"+str(beta)+"_norm_"+str(norm)+".p", "wb"))
