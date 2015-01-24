@@ -422,29 +422,59 @@ class N2():
         self.psi_1_star.name = 'psi_1_star'
         self.psi_1_star['g'] = self.psi_1['g'].conj()
         
-        self.psi_1_star_x = self.psi_1_star.differentiate(0)
-        self.psi_1_star_xx = self.psi_1_star_x.differentiate(0)
-        self.psi_1_star_xxx = self.psi_1_star_xx.differentiate(0)
+        self.psi_1_star_x = domain.new_field()
+        self.psi_1_star_x.name = 'psi_1_star_x'
+        self.psi_1_star_x['g'] = self.psi_1_x['g'].conj()
+        
+        self.psi_1_star_xx = domain.new_field()
+        self.psi_1_star_xx.name = 'psi_1_star_xx'
+        self.psi_1_star_xx['g'] = self.psi_1_xx['g'].conj()
+        
+        self.psi_1_star_xxx = domain.new_field()
+        self.psi_1_star_xxx.name = 'psi_1_star_xxx'
+        self.psi_1_star_xxx['g'] = self.psi_1_xxx['g'].conj()
+        
+        #self.psi_1_star_x = self.psi_1_star.differentiate(0)
+        #self.psi_1_star_xx = self.psi_1_star_x.differentiate(0)
+        #self.psi_1_star_xxx = self.psi_1_star_xx.differentiate(0)
         
         self.u_1_star = domain.new_field()
         self.u_1_star.name = 'u_1_star'
         self.u_1_star['g'] = self.u_1['g'].conj()
         
-        self.u_1_star_x = self.u_1_star.differentiate(0)
+        self.u_1_star_x = domain.new_field()
+        self.u_1_star_x.name = 'u_1_star_x'
+        self.u_1_star_x['g'] = self.u_1_x['g'].conj()
+        #self.u_1_star_x = self.u_1_star.differentiate(0)
    
         self.A_1_star = domain.new_field()
         self.A_1_star.name = 'A_1_star'
         self.A_1_star['g'] = self.A_1['g'].conj()
         
-        self.A_1_star_x = self.A_1_star.differentiate(0)
-        self.A_1_star_xx = self.A_1_star_x.differentiate(0)
-        self.A_1_star_xxx = self.A_1_star_xx.differentiate(0)
+        self.A_1_star_x = domain.new_field()
+        self.A_1_star_x.name = 'A_1_star_x'
+        self.A_1_star_x['g'] = self.A_1_x['g'].conj()
+        
+        self.A_1_star_xx = domain.new_field()
+        self.A_1_star_xx.name = 'A_1_star_xx'
+        self.A_1_star_xx['g'] = self.A_1_xx['g'].conj()
+        
+        self.A_1_star_xxx = domain.new_field()
+        self.A_1_star_xxx.name = 'A_1_star_xxx'
+        self.A_1_star_xxx['g'] = self.A_1_xxx['g'].conj()
+        
+        #self.A_1_star_x = self.A_1_star.differentiate(0)
+        #self.A_1_star_xx = self.A_1_star_x.differentiate(0)
+        #self.A_1_star_xxx = self.A_1_star_xx.differentiate(0)
         
         self.B_1_star = domain.new_field()
         self.B_1_star.name = 'B_1_star'
         self.B_1_star['g'] = self.B_1['g'].conj()
         
-        self.B_1_star_x = self.B_1_star.differentiate(0)
+        #self.B_1_star_x = self.B_1_star.differentiate(0)
+        self.B_1_star_x = domain.new_field()
+        self.B_1_star_x.name = 'B_1_star_x'
+        self.B_1_star_x['g'] = self.B_1_x['g'].conj()
         
         # define nonlinear terms N22 and N20
         N22psi = 1j*Q*self.psi_1*(self.psi_1_xxx - Q**2*self.psi_1_x) - self.psi_1_x*(1j*Q*self.psi_1_xx - 1j*Q**3*self.psi_1) + (2/self.beta)*self.A_1_x*(1j*Q*self.A_1_xx - 1j*Q**3*self.A_1) - (2/self.beta)*1j*Q*self.A_1*(self.A_1_xxx - Q**2*self.A_1_x)
@@ -1307,29 +1337,59 @@ class N3():
         self.v11_psi_star.name = 'v11_psi_star'
         self.v11_psi_star['g'] = self.v11_psi['g'].conj()
         
-        self.v11_psi_star_x = self.v11_psi_star.differentiate(0)
-        self.v11_psi_star_xx = self.v11_psi_star_x.differentiate(0)
-        self.v11_psi_star_xxx = self.v11_psi_star_xx.differentiate(0)
+        #self.v11_psi_star_x = self.v11_psi_star.differentiate(0)
+        #self.v11_psi_star_xx = self.v11_psi_star_x.differentiate(0)
+        #self.v11_psi_star_xxx = self.v11_psi_star_xx.differentiate(0)
+        
+        self.v11_psi_star_x = domain.new_field()
+        self.v11_psi_star_x.name = 'v22_psi_star_x'
+        self.v11_psi_star_x['g'] = self.v11_psi_x['g'].conj()
+        
+        self.v11_psi_star_xx = domain.new_field()
+        self.v11_psi_star_xx.name = 'v22_psi_star_xx'
+        self.v11_psi_star_xx['g'] = self.v11_psi_xx['g'].conj()
+        
+        self.v11_psi_star_xxx = domain.new_field()
+        self.v11_psi_star_xxx.name = 'v22_psi_star_xxx'
+        self.v11_psi_star_xxx['g'] = self.v11_psi_xxx['g'].conj()
         
         self.v11_u_star = domain.new_field()
         self.v11_u_star.name = 'v11_u_star'
         self.v11_u_star['g'] = self.v11_u['g'].conj()
         
-        self.v11_u_star_x = self.v11_u_star.differentiate(0)
+        #self.v11_u_star_x = self.v11_u_star.differentiate(0)
+        self.v11_u_star_x = domain.new_field()
+        self.v11_u_star_x.name = 'v11_u_star_x'
+        self.v11_u_star_x['g'] = self.v11_u_x['g'].conj()
    
         self.v11_A_star = domain.new_field()
         self.v11_A_star.name = 'v11_A_star'
         self.v11_A_star['g'] = self.v11_A['g'].conj()
         
-        self.v11_A_star_x = self.v11_A_star.differentiate(0)
-        self.v11_A_star_xx = self.v11_A_star_x.differentiate(0)
-        self.v11_A_star_xxx = self.v11_A_star_xx.differentiate(0)
+        #self.v11_A_star_x = self.v11_A_star.differentiate(0)
+        #self.v11_A_star_xx = self.v11_A_star_x.differentiate(0)
+        #self.v11_A_star_xxx = self.v11_A_star_xx.differentiate(0)
+        
+        self.v11_A_star_x = domain.new_field()
+        self.v11_A_star_x.name = 'v11_A_star_x'
+        self.v11_A_star_x['g'] = self.v11_A_x['g'].conj()
+        
+        self.v11_A_star_xx = domain.new_field()
+        self.v11_A_star_xx.name = 'v11_A_star_xx'
+        self.v11_A_star_xx['g'] = self.v11_A_xx['g'].conj()
+        
+        self.v11_A_star_xxx = domain.new_field()
+        self.v11_A_star_xxx.name = 'v11_A_star_xxx'
+        self.v11_A_star_xxx['g'] = self.v11_A_xxx['g'].conj()
         
         self.v11_B_star = domain.new_field()
         self.v11_B_star.name = 'v11_B_star'
         self.v11_B_star['g'] = self.v11_B['g'].conj()
         
-        self.v11_B_star_x = self.v11_B_star.differentiate(0)
+        #self.v11_B_star_x = self.v11_B_star.differentiate(0)
+        self.v11_B_star_x = domain.new_field()
+        self.v11_B_star_x.name = 'v11_B_star_x'
+        self.v11_B_star_x['g'] = self.v11_B_x['g'].conj()
         
         # V22 derivatives
         self.v22_psi_x = self.v22_psi.differentiate(0)
@@ -1349,29 +1409,59 @@ class N3():
         self.v22_psi_star.name = 'v22_psi_star'
         self.v22_psi_star['g'] = self.v22_psi['g'].conj()
         
-        self.v22_psi_star_x = self.v22_psi_star.differentiate(0)
-        self.v22_psi_star_xx = self.v22_psi_star_x.differentiate(0)
-        self.v22_psi_star_xxx = self.v22_psi_star_xx.differentiate(0)
+        self.v22_psi_star_x = domain.new_field()
+        self.v22_psi_star_x.name = 'v22_psi_star_x'
+        self.v22_psi_star_x['g'] = self.v22_psi_x['g'].conj()
+        
+        self.v22_psi_star_xx = domain.new_field()
+        self.v22_psi_star_xx.name = 'v22_psi_star_xx'
+        self.v22_psi_star_xx['g'] = self.v22_psi_xx['g'].conj()
+        
+        self.v22_psi_star_xxx = domain.new_field()
+        self.v22_psi_star_xxx.name = 'v22_psi_star_xxx'
+        self.v22_psi_star_xxx['g'] = self.v22_psi_xxx['g'].conj()
+        
+        #self.v22_psi_star_x = self.v22_psi_star.differentiate(0)
+        #self.v22_psi_star_xx = self.v22_psi_star_x.differentiate(0)
+        #self.v22_psi_star_xxx = self.v22_psi_star_xx.differentiate(0)
         
         self.v22_u_star = domain.new_field()
         self.v22_u_star.name = 'v22_u_star'
         self.v22_u_star['g'] = self.v22_u['g'].conj()
         
-        self.v22_u_star_x = self.v22_u_star.differentiate(0)
+        self.v22_u_star_x = domain.new_field()
+        self.v22_u_star_x.name = 'v22_u_star_x'
+        self.v22_u_star_x['g'] = self.v22_u_x['g'].conj()
+        #self.v22_u_star_x = self.v22_u_star.differentiate(0)
    
         self.v22_A_star = domain.new_field()
         self.v22_A_star.name = 'v22_A_star'
         self.v22_A_star['g'] = self.v22_A['g'].conj()
         
-        self.v22_A_star_x = self.v22_A_star.differentiate(0)
-        self.v22_A_star_xx = self.v22_A_star_x.differentiate(0)
-        self.v22_A_star_xxx = self.v22_A_star_xx.differentiate(0)
+        self.v22_A_star_x = domain.new_field()
+        self.v22_A_star_x.name = 'v22_A_star_x'
+        self.v22_A_star_x['g'] = self.v22_A_x['g'].conj()
+        
+        self.v22_A_star_xx = domain.new_field()
+        self.v22_A_star_xx.name = 'v22_A_star_xx'
+        self.v22_A_star_xx['g'] = self.v22_A_xx['g'].conj()
+        
+        self.v22_A_star_xxx = domain.new_field()
+        self.v22_A_star_xxx.name = 'v22_A_star_xxx'
+        self.v22_A_star_xxx['g'] = self.v22_A_xxx['g'].conj()
+        
+        #self.v22_A_star_x = self.v22_A_star.differentiate(0)
+        #self.v22_A_star_xx = self.v22_A_star_x.differentiate(0)
+        #self.v22_A_star_xxx = self.v22_A_star_xx.differentiate(0)
         
         self.v22_B_star = domain.new_field()
         self.v22_B_star.name = 'v22_B_star'
         self.v22_B_star['g'] = self.v22_B['g'].conj()
         
-        self.v22_B_star_x = self.v22_B_star.differentiate(0)
+        #self.v22_B_star_x = self.v22_B_star.differentiate(0)
+        self.v22_B_star_x = domain.new_field()
+        self.v22_B_star_x.name = 'v22_B_star_x'
+        self.v22_B_star_x['g'] = self.v22_B_x['g'].conj()
         
         # V20 derivatives
         self.v20_psi_x = self.v20_psi.differentiate(0)
@@ -1391,29 +1481,59 @@ class N3():
         self.v20_psi_star.name = 'v20_psi_star'
         self.v20_psi_star['g'] = self.v20_psi['g'].conj()
         
-        self.v20_psi_star_x = self.v20_psi_star.differentiate(0)
-        self.v20_psi_star_xx = self.v20_psi_star_x.differentiate(0)
-        self.v20_psi_star_xxx = self.v20_psi_star_xx.differentiate(0)
+        self.v20_psi_star_x = domain.new_field()
+        self.v20_psi_star_x.name = 'v20_psi_star_x'
+        self.v20_psi_star_x['g'] = self.v20_psi_x['g'].conj()
+        
+        self.v20_psi_star_xx = domain.new_field()
+        self.v20_psi_star_xx.name = 'v20_psi_star_xx'
+        self.v20_psi_star_xx['g'] = self.v20_psi_xx['g'].conj()
+        
+        self.v20_psi_star_xxx = domain.new_field()
+        self.v20_psi_star_xxx.name = 'v20_psi_star_xxx'
+        self.v20_psi_star_xxx['g'] = self.v20_psi_xxx['g'].conj()
+        
+        #self.v20_psi_star_x = self.v20_psi_star.differentiate(0)
+        #self.v20_psi_star_xx = self.v20_psi_star_x.differentiate(0)
+        #self.v20_psi_star_xxx = self.v20_psi_star_xx.differentiate(0)
         
         self.v20_u_star = domain.new_field()
         self.v20_u_star.name = 'v20_u_star'
         self.v20_u_star['g'] = self.v20_u['g'].conj()
         
-        self.v20_u_star_x = self.v20_u_star.differentiate(0)
+        #self.v20_u_star_x = self.v20_u_star.differentiate(0)
+        self.v20_u_star_x = domain.new_field()
+        self.v20_u_star_x.name = 'v20_u_star_x'
+        self.v20_u_star_x['g'] = self.v20_u_x['g'].conj()
    
         self.v20_A_star = domain.new_field()
         self.v20_A_star.name = 'v20_A_star'
         self.v20_A_star['g'] = self.v20_A['g'].conj()
         
-        self.v20_A_star_x = self.v20_A_star.differentiate(0)
-        self.v20_A_star_xx = self.v20_A_star_x.differentiate(0)
-        self.v20_A_star_xxx = self.v20_A_star_xx.differentiate(0)
+        #self.v20_A_star_x = self.v20_A_star.differentiate(0)
+        #self.v20_A_star_xx = self.v20_A_star_x.differentiate(0)
+        #self.v20_A_star_xxx = self.v20_A_star_xx.differentiate(0)
+        
+        self.v20_A_star_x = domain.new_field()
+        self.v20_A_star_x.name = 'v20_A_star_x'
+        self.v20_A_star_x['g'] = self.v20_A_x['g'].conj()
+        
+        self.v20_A_star_xx = domain.new_field()
+        self.v20_A_star_xx.name = 'v20_A_star_xx'
+        self.v20_A_star_xx['g'] = self.v20_A_xx['g'].conj()
+        
+        self.v20_A_star_xxx = domain.new_field()
+        self.v20_A_star_xxx.name = 'v20_A_star_xxx'
+        self.v20_A_star_xxx['g'] = self.v20_A_xxx['g'].conj()
         
         self.v20_B_star = domain.new_field()
         self.v20_B_star.name = 'v20_B_star'
         self.v20_B_star['g'] = self.v20_B['g'].conj()
         
-        self.v20_B_star_x = self.v20_B_star.differentiate(0)
+        #self.v20_B_star_x = self.v20_B_star.differentiate(0)
+        self.v20_B_star_x = domain.new_field()
+        self.v20_B_star_x.name = 'v20_B_star_x'
+        self.v20_B_star_x['g'] = self.v20_B_x['g'].conj()
         
         # V21 derivatives
         self.v21_psi_x = self.v21_psi.differentiate(0)
@@ -1426,25 +1546,37 @@ class N3():
         self.v21_psi_star.name = 'v21_psi_star'
         self.v21_psi_star['g'] = self.v21_psi['g'].conj()
         
-        self.v21_psi_star_x = self.v21_psi_star.differentiate(0)
+        self.v21_psi_star_x = domain.new_field()
+        self.v21_psi_star_x.name = 'v21_psi_star_x'
+        self.v21_psi_star_x['g'] = self.v21_psi_x['g'].conj()
+        #self.v21_psi_star_x = self.v21_psi_star.differentiate(0)
         
         self.v21_u_star = domain.new_field()
         self.v21_u_star.name = 'v21_u_star'
         self.v21_u_star['g'] = self.v21_u['g'].conj()
         
-        self.v21_u_star_x = self.v21_u_star.differentiate(0)
+        self.v21_u_star_x = domain.new_field()
+        self.v21_u_star_x.name = 'v21_u_star_x'
+        self.v21_u_star_x['g'] = self.v21_u_x['g'].conj()
+        #self.v21_u_star_x = self.v21_u_star.differentiate(0)
         
         self.v21_A_star = domain.new_field()
         self.v21_A_star.name = 'v21_A_star'
         self.v21_A_star['g'] = self.v21_A['g'].conj()
         
-        self.v21_A_star_x = self.v21_A_star.differentiate(0)
+        self.v21_A_star_x = domain.new_field()
+        self.v21_A_star_x.name = 'v21_A_star_x'
+        self.v21_A_star_x['g'] = self.v21_A_x['g'].conj()
+        #self.v21_A_star_x = self.v21_A_star.differentiate(0)
         
         self.v21_B_star = domain.new_field()
         self.v21_B_star.name = 'v21_B_star'
         self.v21_B_star['g'] = self.v21_B['g'].conj()
         
-        self.v21_B_star_x = self.v21_B_star.differentiate(0)
+        self.v21_B_star_x = domain.new_field()
+        self.v21_B_star_x.name = 'v21_B_star_x'
+        self.v21_B_star_x['g'] = self.v21_B_x['g'].conj()
+        #self.v21_B_star_x = self.v21_B_star.differentiate(0)
     
         N31_psi_my1 = 1j*self.Q*(self.v11_psi*self.v20_psi_xxx) + 1j*self.Q*(self.v11_psi*self.v20_psi_star_xxx) - 1j*self.Q*(self.v11_psi_star*self.v22_psi_xxx) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_psi_xx) + 1j*8*self.Q**3*(self.v11_psi_star_x*self.v22_psi) + 1j*4*self.Q**3*(self.v11_psi_star*self.v22_psi_x)
         N31_psi_my2 = -1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_A_xxx) - 1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_A_star_xxx) + 1j*self.Q*(2/self.beta)*(self.v11_A_star*self.v22_A_xxx) + 1j*2*self.Q*(2/self.beta)*(self.v11_A_star_x*self.v22_A_xx) - 1j*8*self.Q**3*(2/self.beta)*(self.v11_A_star_x*self.v22_A) - 1j*4*self.Q**3*(2/self.beta)*(self.v11_A_star*self.v22_A_x)
@@ -2196,7 +2328,7 @@ class SolveAmplitudeAlpha():
         t_list = [solver.sim_time]
 
         # Main loop
-        dt = 2e-3#2e-3
+        dt = 2e-2#2e-3
         while solver.ok:
             solver.step(dt)
             if solver.iteration % 20 == 0:
