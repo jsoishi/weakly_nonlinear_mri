@@ -68,10 +68,16 @@ class AdjointHomogenous():
         q = self.q
 
         # equations to solve
-        lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
-        lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
-        lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
-        lv1.add_equation("1j*dt(B) - iRm*Q**2*B + iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+        #lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
+        #lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
+        #lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
+        #lv1.add_equation("1j*dt(B) - iRm*Q**2*B + iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+
+        lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
+        lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
+        lv1.add_equation("1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
+        lv1.add_equation("1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+
 
         lv1.add_equation("dx(psi) - psix = 0")
         lv1.add_equation("dx(psix) - psixx = 0")
@@ -1741,7 +1747,7 @@ class AmplitudeAlpha():
         
             self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.va.solve(save = False)
-        
+            
             self.v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.v1.solve(save=False)
             
@@ -2012,7 +2018,7 @@ class AmplitudeAlpha():
         h_psi = h_psi.evaluate()
         
         #l2twiddlel1twiddle_u = -(2/self.beta)*self.v21_B - 2*1j*self.iR*self.Q*self.v21_u - (self.q - 2)*self.v21_psi + self.iR*self.v11_u
-        l2twiddlel1twiddle_u = (2/self.beta)*self.v11_B - 1j*self.Q*(2/self.beta)*self.v21_B - 1j*self.Q*(2 - self.q)*self.v21_psi + self.iR*self.v11_u
+        l2twiddlel1twiddle_u = (2/self.beta)*self.v11_B - 1j*self.Q*(2/self.beta)*self.v21_B - 1j*self.Q*(self.q - 2)*self.v21_psi + self.iR*self.v11_u
         l2l1t_u = l2twiddlel1twiddle_u.evaluate()
         l2l1t_u_conj = domain.new_field()
         l2l1t_u_conj.name = 'l2l1t_u_conj'
@@ -2064,17 +2070,17 @@ class AmplitudeAlpha():
         
         
         # print all the coefficients
-        print("a :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.a))
+        print("a :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.a))
         
-        print("c :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.c))
+        print("c :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.c))
         
-        print("c~ :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.c_twiddle))
+        print("c~ :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.c_twiddle))
         
-        print("b :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.b))
+        print("b :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.b))
         
-        print("h :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.h))
+        print("h :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.h))
         
-        print("g :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.g))
+        print("g :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.g))
         
         
 class AmplitudeBeta():
@@ -2105,6 +2111,8 @@ class AmplitudeBeta():
         if run == True:
         
             self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+            # Plot adjoint soln
+            self.va.plot()
             self.va.solve(save = False, norm = True)
         
             v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
