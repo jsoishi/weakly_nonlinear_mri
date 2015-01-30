@@ -182,7 +182,9 @@ class AdjointHomogenous():
         ax4.plot(self.x, self.B['g'].imag*norm1, color="black")
         ax4.plot(self.x, self.B['g'].real*norm1, color="red")
         ax4.set_title("Im($B^\dagger$)")
-        fig.savefig("ah1.png")
+        #fig.savefig("ah1_"+str(self.Pm)+".png")
+        print("plotting adjoint solution")
+        pylab.savefig("ah1_"+str(self.Pm)+".png")
         
         
         
@@ -813,7 +815,7 @@ class OrderE2():
         lv21.add_equation("1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs21_psi")
         lv21.add_equation("-1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs21_u")
         lv21.add_equation("iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs21_A")
-        lv21.add_equation("1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")
+        lv21.add_equation("1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")    
 
         lv21.add_equation("dx(psi21) - psi21x = 0")
         lv21.add_equation("dx(psi21x) - psi21xx = 0")
@@ -1748,6 +1750,9 @@ class AmplitudeAlpha():
             self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.va.solve(save = False)
             
+            # Plot adjoint soln
+            self.va.plot()
+            
             self.v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.v1.solve(save=False)
             
@@ -2111,8 +2116,6 @@ class AmplitudeBeta():
         if run == True:
         
             self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
-            # Plot adjoint soln
-            self.va.plot()
             self.va.solve(save = False, norm = True)
         
             v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
