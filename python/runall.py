@@ -87,7 +87,8 @@ def sat_amp_from_IVP(coeffs):
     for i in range(len(coeffs)):
         Pms[i] = coeffs[i]["Pm"]
         amps[i] = coeffs[i]["alpha_s"]
-        asat[i] = np.sqrt((coeffs[i]["b"]*1j*coeffs[i]["Q"] - coeffs[i]["g"]*1j*coeffs[i]["Q"]**3)/coeffs[i]["c"])
+        #asat[i] = np.sqrt((coeffs[i]["b"]*1j*coeffs[i]["Q"] - coeffs[i]["g"]*1j*coeffs[i]["Q"]**3)/coeffs[i]["c"])
+        asat[i] = np.sqrt((-coeffs[i]["b"]*1j*coeffs[i]["Q"] - coeffs[i]["g"]*1j*coeffs[i]["Q"]**3)/coeffs[i]["c"]) # changed sign of b...
     plt.loglog(Pms, amps, '+')
     plt.legend(["from ivp", "from coefficients"])
     plt.xlim(min(Pms) - min(Pms)/2, max(Pms) + max(Pms)/2)
@@ -107,7 +108,7 @@ def saturation_amp_from_coeffs(coeffs, mag=False):
     asat = np.zeros(len(coeffs), dtype = np.complex128)
     for i in range(len(coeffs)):
         Pms[i] = coeffs[i]["Pm"]
-        asat[i] = np.sqrt((coeffs[i]["b"]*1j*coeffs[i]["Q"] - coeffs[i]["g"]*1j*coeffs[i]["Q"]**3)/coeffs[i]["c"])
+        asat[i] = np.sqrt((-coeffs[i]["b"]*1j*coeffs[i]["Q"] + coeffs[i]["g"]*1j*coeffs[i]["Q"]**3)/coeffs[i]["c"])
         
     print(Pms, asat)
     
@@ -185,7 +186,55 @@ def plot_U_coeffs():
     ax2.set_ylabel("1/alpha")
     pylab.savefig("test_Uplus_alpha_coeffs.png")
     
+def plot_sat_components(coeffs):
+    """
+    b, g, and c enter into the saturation amplitude
+    """
+    num = len(coeffs)
     
+    c_arr = np.zeros(num, dtype=np.complex128)
+    b_arr = np.zeros(num, dtype=np.complex128)
+    g_arr = np.zeros(num, dtype=np.complex128)
+    Pm_arr = np.zeros(num, dtype=np.complex128)
+    Q_arr = np.zeros(num, dtype=np.complex128)
+    for i in range(num):
+        c_arr[i] = coeffs[i]["c"]
+        b_arr[i] = coeffs[i]["b"]
+        g_arr[i] = coeffs[i]["g"]
+        Pm_arr[i] = coeffs[i]["Pm"]
+        Q_arr[i] = coeffs[i]["Q"]
+        
+    print("Pms", Pm_arr, "c", c_arr)
+    print("b", b_arr, "g", g_arr)
+    
+    xmin = np.nanmin(Pm_arr) - 0.5*np.nanmin(Pm_arr)
+    xmax = np.nanmax(Pm_arr) + 0.5*np.nanmax(Pm_arr)
+    
+    fig = plt.figure()
+    ax1 = fig.add_subplot(311)
+    ax1.semilogx(Pm_arr, 1j*Q_arr*b_arr, '+', color = "black")
+    ax1.set_title("b")
+    #ax1.set_xlim(10**(-7.5), 10**(-1.5))
+    ax1.set_xlim(xmin, xmax)
+    ax1.set_xlabel("Pm")
+    ax1.set_ylabel("b")
+    
+    ax2 = fig.add_subplot(312)
+    ax2.semilogx(Pm_arr, 1j*Q_arr**3*g_arr, '+', color = "black")
+    ax2.set_title("g")
+    #ax2.set_xlim(10**(-7.5), 10**(-1.5))
+    ax2.set_xlim(xmin, xmax)
+    ax2.set_xlabel("Pm")
+    ax2.set_ylabel("g")
+    
+    ax3 = fig.add_subplot(313)
+    ax3.semilogx(Pm_arr, c_arr, '+', color = "black")
+    ax3.set_title("c")
+    #ax3.set_xlim(10**(-7.5), 10**(-1.5))
+    ax3.set_xlim(xmin, xmax)
+    ax3.set_ylim(np.nanmin(c_arr) - 0.05*np.nanmin(c_arr), np.nanmax(c_arr) + 0.05*np.nanmax(c_arr))
+    ax3.set_xlabel("Pm")
+    ax3.set_ylabel("c")
     
 if __name__ == "__main__":
     gridnum = 64
@@ -194,31 +243,33 @@ if __name__ == "__main__":
     domain = Domain([x_basis], grid_dtype=np.complex128)
 
     coeffs = {}
-    norm = True
+    norm = False
 
     #Pm = 1E-2: Q = 0.757, Rm = 4.93
 
     #Pm = 1E-3: Q = 0.75, Rm = 4.8775
-    onerun(Pm = 1E-3, Q = 0.75, Rm = 4.88, gridnum = 64, norm = norm)
-    coeffs[0] = loader(Pm = 1E-3, Q = 0.75, Rm = 4.88, gridnum = 64, norm = norm)
+    onerun(Pm = 1E-3, Q = 0.75, Rm = 4.95, gridnum = gridnum, norm = norm)
+    coeffs[0] = loader(Pm = 1E-3, Q = 0.75, Rm = 4.95, gridnum = gridnum, norm = norm)
 
     #Pm = 1E-4: Q = 0.747, Rm = 4.88
-    onerun(Pm = 1E-4, Q = 0.75, Rm = 4.88, gridnum = 64, norm = norm)
-    coeffs[1] = loader(Pm = 1E-4, Q = 0.75, Rm = 4.88, gridnum = 64, norm = norm)
+    onerun(Pm = 2E-3, Q = 0.75, Rm = 4.9, gridnum = gridnum, norm = norm)
+    coeffs[1] = loader(Pm = 2E-3, Q = 0.75, Rm = 4.9, gridnum = gridnum, norm = norm)
 
     #Pm = 1E-5, Q = 0.747, Rm = 4.88
-    onerun(Pm = 1E-5, Q = 0.75, Rm = 4.88, gridnum = 64, norm = norm)
-    coeffs[2] = loader(Pm = 1E-5, Q = 0.75, Rm = 4.88, gridnum = 64, norm = norm)
+    onerun(Pm = 3E-3, Q = 0.75, Rm = 4.9, gridnum = gridnum, norm = norm)
+    coeffs[2] = loader(Pm = 3E-3, Q = 0.75, Rm = 4.9, gridnum = gridnum, norm = norm)
 
     # Plotting
     plot_alpha_vs_T(coeffs)
-    pylab.savefig("test_plot4.png")
+    pylab.savefig("test_plot4_noconj.png")
     saturation_amp_from_coeffs(coeffs, mag=False)
-    pylab.savefig("test_sat_amp_from_coeffs.png")
+    pylab.savefig("test_sat_amp_from_coeffs_noconj.png")
     sat_amp_from_IVP(coeffs)
-    pylab.savefig("test_sat_amp_from_ivp.png")
-    plot_U_coeffs()
+    pylab.savefig("test_sat_amp_from_ivp_noconj.png")
+    #plot_U_coeffs()
     #pylab.savefig("test_Uplus_coeffs.png")
+    plot_sat_components(coeffs)
+    pylab.savefig("test_sat_amp_components.png")
 
 
     # Pm = 1E-6: Q = 0.75, Rm = 4.88, beta = 25
