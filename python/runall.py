@@ -237,7 +237,7 @@ def plot_sat_components(coeffs):
     ax3.set_ylabel("c")
     
 if __name__ == "__main__":
-    gridnum = 64
+    gridnum = 128
     print(gridnum)
     x_basis = Chebyshev(gridnum)
     domain = Domain([x_basis], grid_dtype=np.complex128)
@@ -248,8 +248,8 @@ if __name__ == "__main__":
     #Pm = 1E-2: Q = 0.757, Rm = 4.93
 
     #Pm = 1E-3: Q = 0.75, Rm = 4.8775
-    onerun(Pm = 1E-3, Q = 0.75, Rm = 4.95, gridnum = gridnum, norm = norm)
-    coeffs[0] = loader(Pm = 1E-3, Q = 0.75, Rm = 4.95, gridnum = gridnum, norm = norm)
+    onerun(Pm = 1E-3, Q = 0.75, Rm = 4.9, gridnum = gridnum, norm = norm)
+    coeffs[0] = loader(Pm = 1E-3, Q = 0.75, Rm = 4.9, gridnum = gridnum, norm = norm)
 
     #Pm = 1E-4: Q = 0.747, Rm = 4.88
     onerun(Pm = 2E-3, Q = 0.75, Rm = 4.9, gridnum = gridnum, norm = norm)

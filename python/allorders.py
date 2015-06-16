@@ -18,7 +18,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 64
+gridnum = 128
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -2998,12 +2998,12 @@ def find_nearest_above(my_array, target):
     diff_masked = np.ma.masked_invalid(diff)
 
     # Anything greater than or equal to target value
-    gt_target = np.ma.less_equal(diff_masked, 0)
+    gt_target = np.ma.less_equal(diff_masked, 0 + 0j)
 
     if np.all(gt_target):
         return None # returns None if target is greater than any value
     
-    final_arr = np.ma.masked_array(diff_masked, gt_target)
+    final_arr = np.ma.masked_array(np.absolute(diff_masked), gt_target)
     return final_arr.argmin()
     
     
