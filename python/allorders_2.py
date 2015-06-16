@@ -333,7 +333,7 @@ class OrderE(MRI):
         self.take_derivatives(self.LEV)
         self.take_complex_conjugates(self.LEV)
         
-class N2(MRI, o1 = None):
+class N2(MRI):
 
     """
     Solves the nonlinear term N2
@@ -341,14 +341,16 @@ class N2(MRI, o1 = None):
     
     """
     
-    if o1 == None:
-        o1 = OrderE()
+    def __init__(self, o1 = None):
+        MRI.__init__(self)
     
-    N22psi = 1j*self.Q*o1.psi*(o1.psi_xxx - self.Q**2*o1.psi_x) - o1.psi_x*(1j*self.Q*o1.psi_xx - 1j*self.Q**3*o1.psi) + (2/self.beta)*o1.A_x*(1j*self.Q*o1.A_xx - 1j*self.Q**3*o1.A) - (2/self.beta)*1j*self.Q*o1.A_1*(o1.A_xxx - self.Q**2*o1.A_x)
-    self.N22_psi = N22psi.evaluate()
+        if o1 == None:
+            o1 = OrderE()
     
-   
-
+        N22psi = 1j*self.Q*o1.psi*(o1.psi_xxx - self.Q**2*o1.psi_x) - o1.psi_x*(1j*self.Q*o1.psi_xx - 1j*self.Q**3*o1.psi) + (2/self.beta)*o1.A_x*(1j*self.Q*o1.A_xx - 1j*self.Q**3*o1.A) - (2/self.beta)*1j*self.Q*o1.A_1*(o1.A_xxx - self.Q**2*o1.A_x)
+        self.N22_psi = N22psi.evaluate()
+    
+    
             
 
         
