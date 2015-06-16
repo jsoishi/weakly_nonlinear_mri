@@ -154,20 +154,69 @@ class MRI():
         Take complex conjugates of all terms, including derivatives.
         """
         
-        allterms = [self.psi, self.psi_x, self.psi_xx, self.psi_xxx,
-                    self.u, self.u_x, self.u_xx, self.u_xxx,
-                    self.A, self.A_x, self.A_xx, self.A_xxx,
-                    self.B, self.B_x, self.B_xx, self.B_xxx]
+        self.psi_star = domain.new_field()
+        self.psi_star.name = "psi_star"
+        self.psi_star['g'] = self.psi['g'].conj()
         
-        allterms = [self.psi_star, self.psi_x_star, self.psi_xx, self.psi_xxx,
-                    self.u, self.u_x, self.u_xx, self.u_xxx,
-                    self.A, self.A_x, self.A_xx, self.A_xxx,
-                    self.B, self.B_x, self.B_xx, self.B_xxx]
-                    
-        for term in allterms:
-            self.psi_1_star = domain.new_field()
-        self.psi_1_star.name = 'psi_1_star'
-        self.psi_1_star['g'] = self.psi_1['g'].conj()
+        self.psi_x_star = domain.new_field()
+        self.psi_x_star.name = "psi_x_star"
+        self.psi_x_star['g'] = self.psi_x['g'].conj()
+        
+        self.psi_xx_star = domain.new_field()
+        self.psi_xx_star.name = "psi_xx_star"
+        self.psi_xx_star['g'] = self.psi_xx['g'].conj()
+        
+        self.psi_xxx_star = domain.new_field()
+        self.psi_xxx_star.name = "psi_xx_star"
+        self.psi_xxx_star['g'] = self.psi_xxx['g'].conj()
+        
+        self.u_star = domain.new_field()
+        self.u_star.name = "u_star"
+        self.u_star['g'] = self.u['g'].conj()
+        
+        self.u_x_star = domain.new_field()
+        self.u_x_star.name = "u_x_star"
+        self.u_x_star['g'] = self.u_x['g'].conj()
+        
+        self.u_xx_star = domain.new_field()
+        self.u_xx_star.name = "u_xx_star"
+        self.u_xx_star['g'] = self.u_xx['g'].conj()
+        
+        self.u_xxx_star = domain.new_field()
+        self.u_xxx_star.name = "u_xx_star"
+        self.u_xxx_star['g'] = self.u_xxx['g'].conj()
+        
+        self.A_star = domain.new_field()
+        self.A_star.name = "A_star"
+        self.A_star['g'] = self.A['g'].conj()
+        
+        self.A_x_star = domain.new_field()
+        self.A_x_star.name = "A_x_star"
+        self.A_x_star['g'] = self.A_x['g'].conj()
+        
+        self.A_xx_star = domain.new_field()
+        self.A_xx_star.name = "A_xx_star"
+        self.A_xx_star['g'] = self.A_xx['g'].conj()
+        
+        self.A_xxx_star = domain.new_field()
+        self.A_xxx_star.name = "A_xx_star"
+        self.A_xxx_star['g'] = self.A_xxx['g'].conj()
+        
+        self.B_star = domain.new_field()
+        self.B_star.name = "B_star"
+        self.B_star['g'] = self.B['g'].conj()
+        
+        self.B_x_star = domain.new_field()
+        self.B_x_star.name = "B_x_star"
+        self.B_x_star['g'] = self.B_x['g'].conj()
+        
+        self.B_xx_star = domain.new_field()
+        self.B_xx_star.name = "B_xx_star"
+        self.B_xx_star['g'] = self.B_xx['g'].conj()
+        
+        self.B_xxx_star = domain.new_field()
+        self.B_xxx_star.name = "B_xx_star"
+        self.B_xxx_star['g'] = self.B_xxx['g'].conj()
         
     
 class AdjointHomogenous(MRI):
@@ -224,8 +273,9 @@ class AdjointHomogenous(MRI):
             self.A = self.LEV.state['A']
             self.B = self.LEV.state['B']
             
-        # Take all relevant derivates for use with higher order terms
-        self.make_derivatives(self.LEV)
+        # Take all relevant derivates and complex conjugates for use with higher order terms
+        self.take_derivatives(self.LEV)
+        self.take_complex_conjugates(self.LEV)
             
 class OrderE(MRI):
 
@@ -278,6 +328,20 @@ class OrderE(MRI):
             self.u = self.LEV.state['u']
             self.A = self.LEV.state['A']
             self.B = self.LEV.state['B']
+            
+        # Take all relevant derivates and complex conjugates for use with higher order terms
+        self.take_derivatives(self.LEV)
+        self.take_complex_conjugates(self.LEV)
+        
+class N2():
+
+    """
+    Solves the nonlinear term N2
+    Returns N2
+    
+    """
+    
+    
             
 
         
