@@ -125,98 +125,33 @@ class MRI():
         scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
         
         return scale
-    
-    def take_derivatives(self, LEV):
-    
-        """
-        Take first, second, and third derivatives of all terms.
-        """
-    
-        self.psi_x = LEV.state['psi'].differentiate(0)
-        self.psi_xx = self.psi_x.differentiate(0)
-        self.psi_xxx = self.psi_xx.differentiate(0)
         
-        self.u_x = LEV.state['u'].differentiate(0)
-        self.u_xx = self.u_x.differentiate(0)
-        self.u_xxx = self.u_xx.differentiate(0)
-        
-        self.A_x = LEV.state['A'].differentiate(0)
-        self.A_xx = self.A_x.differentiate(0)
-        self.A_xxx = self.A_xx.differentiate(0)
-        
-        self.B_x = LEV.state['B'].differentiate(0)
-        self.B_xx = self.B_x.differentiate(0)
-        self.B_xxx = self.B_xx.differentiate(0)
-        
-    def take_complex_conjugates(self, LEV):
+    def get_derivative(self, field):
     
         """
-        Take complex conjugates of all terms, including derivatives.
+        Take derivative of a single field.
         """
         
-        self.psi_star = domain.new_field()
-        self.psi_star.name = "psi_star"
-        self.psi_star['g'] = self.psi['g'].conj()
+        field_x = field.differentiate(0)
         
-        self.psi_x_star = domain.new_field()
-        self.psi_x_star.name = "psi_x_star"
-        self.psi_x_star['g'] = self.psi_x['g'].conj()
+        if field.name.endswith("x"):
+            field_x.name = field.name + "x"
+        else:
+            field_x.name = field.name + "_x"
+            
+        return field_x
         
-        self.psi_xx_star = domain.new_field()
-        self.psi_xx_star.name = "psi_xx_star"
-        self.psi_xx_star['g'] = self.psi_xx['g'].conj()
+    def get_complex_conjugate(self, field):
         
-        self.psi_xxx_star = domain.new_field()
-        self.psi_xxx_star.name = "psi_xx_star"
-        self.psi_xxx_star['g'] = self.psi_xxx['g'].conj()
+        """
+        Take complex conjugate of a single field.
+        """
         
-        self.u_star = domain.new_field()
-        self.u_star.name = "u_star"
-        self.u_star['g'] = self.u['g'].conj()
+        field_star = domain.new_field()
+        field_star.name = field.name + "_star"
+        field_star['g'] = field['g'].conj()
         
-        self.u_x_star = domain.new_field()
-        self.u_x_star.name = "u_x_star"
-        self.u_x_star['g'] = self.u_x['g'].conj()
-        
-        self.u_xx_star = domain.new_field()
-        self.u_xx_star.name = "u_xx_star"
-        self.u_xx_star['g'] = self.u_xx['g'].conj()
-        
-        self.u_xxx_star = domain.new_field()
-        self.u_xxx_star.name = "u_xx_star"
-        self.u_xxx_star['g'] = self.u_xxx['g'].conj()
-        
-        self.A_star = domain.new_field()
-        self.A_star.name = "A_star"
-        self.A_star['g'] = self.A['g'].conj()
-        
-        self.A_x_star = domain.new_field()
-        self.A_x_star.name = "A_x_star"
-        self.A_x_star['g'] = self.A_x['g'].conj()
-        
-        self.A_xx_star = domain.new_field()
-        self.A_xx_star.name = "A_xx_star"
-        self.A_xx_star['g'] = self.A_xx['g'].conj()
-        
-        self.A_xxx_star = domain.new_field()
-        self.A_xxx_star.name = "A_xx_star"
-        self.A_xxx_star['g'] = self.A_xxx['g'].conj()
-        
-        self.B_star = domain.new_field()
-        self.B_star.name = "B_star"
-        self.B_star['g'] = self.B['g'].conj()
-        
-        self.B_x_star = domain.new_field()
-        self.B_x_star.name = "B_x_star"
-        self.B_x_star['g'] = self.B_x['g'].conj()
-        
-        self.B_xx_star = domain.new_field()
-        self.B_xx_star.name = "B_xx_star"
-        self.B_xx_star['g'] = self.B_xx['g'].conj()
-        
-        self.B_xxx_star = domain.new_field()
-        self.B_xxx_star.name = "B_xx_star"
-        self.B_xxx_star['g'] = self.B_xxx['g'].conj()
+        return field_star
         
     
 class AdjointHomogenous(MRI):
@@ -272,10 +207,25 @@ class AdjointHomogenous(MRI):
             self.u = self.LEV.state['u']
             self.A = self.LEV.state['A']
             self.B = self.LEV.state['B']
+        
+        self.psi.name = "psi"
+        self.u.name = "u"
+        self.A.name = "A"
+        self.B.name = "B"
             
-        # Take all relevant derivates and complex conjugates for use with higher order terms
-        self.take_derivatives(self.LEV)
-        self.take_complex_conjugates(self.LEV)
+        # Take all relevant derivates for use with higher order terms
+        self.psi_x = self.get_derivative(self.psi)
+        self.psi_xx = self.get_derivative(self.psi_x)
+        self.psi_xxx = self.get_derivative(self.psi_xx)
+      
+        self.u_x = self.get_derivative(self.u)
+        
+        self.A_x = self.get_derivative(self.A)
+        self.A_xx = self.get_derivative(self.A_x)
+        self.A_xxx = self.get_derivative(self.A_xx)
+        
+        self.B_x = self.get_derivative(self.B)
+        
             
 class OrderE(MRI):
 
@@ -329,9 +279,40 @@ class OrderE(MRI):
             self.A = self.LEV.state['A']
             self.B = self.LEV.state['B']
             
-        # Take all relevant derivates and complex conjugates for use with higher order terms
-        self.take_derivatives(self.LEV)
-        self.take_complex_conjugates(self.LEV)
+        self.psi.name = "psi"
+        self.u.name = "u"
+        self.A.name = "A"
+        self.B.name = "B"
+            
+        # Take all relevant derivates for use with higher order terms
+        self.psi_x = self.get_derivative(self.psi)
+        self.psi_xx = self.get_derivative(self.psi_x)
+        self.psi_xxx = self.get_derivative(self.psi_xx)
+      
+        self.u_x = self.get_derivative(self.u)
+        
+        self.A_x = self.get_derivative(self.A)
+        self.A_xx = self.get_derivative(self.A_x)
+        self.A_xxx = self.get_derivative(self.A_xx)
+        
+        self.B_x = self.get_derivative(self.B)
+        
+        # Also take relevant complex conjugates
+        self.psi_star = self.get_complex_conjugate(self.psi)
+        self.psi_star_x = self.get_derivative(self.psi_star)
+        self.psi_star_xx = self.get_derivative(self.psi_star_x)
+        self.psi_star_xxx = self.get_derivative(self.psi_star_xx)
+        
+        self.u_star = self.get_complex_conjugate(self.u)
+        self.u_star_x = self.get_derivative(self.u_star)
+        
+        self.A_star = self.get_complex_conjugate(self.A)
+        self.A_star_x = self.get_derivative(self.A_star)
+        self.A_star_xx = self.get_derivative(self.A_star_x)
+        self.A_star_xxx = self.get_derivative(self.A_star_xx)
+        
+        self.B_star = self.get_complex_conjugate(self.B)
+        self.B_star_x = self.get_derivative(self.B_star)
         
 class N2(MRI):
 
@@ -347,11 +328,37 @@ class N2(MRI):
         if o1 == None:
             o1 = OrderE()
     
-        N22psi = 1j*self.Q*o1.psi*(o1.psi_xxx - self.Q**2*o1.psi_x) - o1.psi_x*(1j*self.Q*o1.psi_xx - 1j*self.Q**3*o1.psi) + (2/self.beta)*o1.A_x*(1j*self.Q*o1.A_xx - 1j*self.Q**3*o1.A) - (2/self.beta)*1j*self.Q*o1.A_1*(o1.A_xxx - self.Q**2*o1.A_x)
+        N22psi = 1j*self.Q*o1.psi*(o1.psi_xxx - self.Q**2*o1.psi_x) - o1.psi_x*(1j*self.Q*o1.psi_xx - 1j*self.Q**3*o1.psi) + (2/self.beta)*o1.A_x*(1j*self.Q*o1.A_xx - 1j*self.Q**3*o1.A) - (2/self.beta)*1j*self.Q*o1.A*(o1.A_xxx - self.Q**2*o1.A_x)
         self.N22_psi = N22psi.evaluate()
+        self.N22_psi.name = "N22_psi"
     
-    
-            
+        N20psi = 1j*self.Q*o1.psi*(o1.psi_star_xxx - self.Q**2*o1.psi_star_x) - o1.psi_x*(-1j*self.Q*o1.psi_star_xx + 1j*self.Q**3*o1.psi_star) + (2/self.beta)*o1.A_x*(-1j*self.Q*o1.A_star_xx + 1j*self.Q**3*o1.A_star) - (2/self.beta)*1j*self.Q*o1.A*(o1.A_star_xxx - self.Q**2*o1.A_star_x)
+        self.N20_psi = N20psi.evaluate()
+        self.N20_psi.name = "N20_psi"
+        
+        N22u = 1j*self.Q*o1.psi*o1.u_x - o1.psi_x*1j*self.Q*o1.u - (2/self.beta)*1j*self.Q*o1.A*o1.B_x + (2/self.beta)*o1.A_x*1j*self.Q*o1.B
+        self.N22_u = N22u.evaluate()
+        self.N22_u.name = "N22_u"
+        
+        N20u = 1j*self.Q*o1.psi*o1.u_star_x + o1.psi_x*1j*self.Q*o1.u_star - (2/self.beta)*1j*self.Q*o1.A*o1.B_star_x - (2/self.beta)*o1.A_x*1j*self.Q*o1.B_star
+        self.N20_u = N20u.evaluate()
+        self.N20_u.name = "N20_u"
+        
+        N22A = -1j*self.Q*o1.A*o1.psi_x + o1.A_x*1j*self.Q*o1.psi
+        self.N22_A = N22A.evaluate()
+        self.N22_A.name = "N22_A"
+        
+        N20A = -1j*self.Q*o1.A*o1.psi_star_x - o1.A_x*1j*self.Q*o1.psi_star
+        self.N20_A = N20A.evaluate()
+        self.N20_A.name = "N20_A"
+
+        N22B = 1j*self.Q*o1.psi*o1.B_x - o1.psi_x*1j*self.Q*o1.B - 1j*self.Q*o1.A*o1.u_x + o1.A_x*1j*self.Q*o1.u
+        self.N22_B = N22B.evaluate()
+        self.N22_B.name = "N22_B"
+        
+        N20B = 1j*self.Q*o1.psi*o1.B_star_x + o1.psi_x*1j*self.Q*o1.B_star - 1j*self.Q*o1.A*o1.u_star_x - o1.A_x*1j*self.Q*o1.u_star
+        self.N20_B = N20B.evaluate()
+        self.N20_B.name = "N20_B"
 
         
         
