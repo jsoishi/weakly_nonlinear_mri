@@ -161,8 +161,8 @@ class AdjointHomogenous(MRI):
     Returns V^dagger
     """
 
-    def __init__(self):
-        MRI.__init__(self)
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
       
         # Set up problem object
         lv1 = ParsedProblem(['x'],
@@ -235,8 +235,8 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self):
-        MRI.__init__(self)
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
       
         lv1 = ParsedProblem(['x'],
                 field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
@@ -322,11 +322,13 @@ class N2(MRI):
     
     """
     
-    def __init__(self, o1 = None):
-        MRI.__init__(self)
+    def __init__(self, o1 = None, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         if o1 == None:
-            o1 = OrderE()
+            o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+        else:
+            MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
     
         N22psi = 1j*self.Q*o1.psi*(o1.psi_xxx - self.Q**2*o1.psi_x) - o1.psi_x*(1j*self.Q*o1.psi_xx - 1j*self.Q**3*o1.psi) + (2/self.beta)*o1.A_x*(1j*self.Q*o1.A_xx - 1j*self.Q**3*o1.A) - (2/self.beta)*1j*self.Q*o1.A*(o1.A_xxx - self.Q**2*o1.A_x)
         self.N22_psi = N22psi.evaluate()
