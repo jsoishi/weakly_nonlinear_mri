@@ -165,6 +165,21 @@ class MRI():
         
         return field_star
         
+    def take_inner_product(self, vector1, vector2):
+        
+        """
+        Take inner product < vector1 | vector2 >
+        """
+        
+        inner_product = vector1[0]['g']*vector2[0]['g'].conj() + vector1[1]['g']*vector2[1]['g'].conj() + vector1[2]['g']*vector2[2]['g'].conj() + vector1[3]['g']*vector2[3]['g'].conj()
+        
+        ip = domain.new_field()
+        ip.name = "inner product"
+        ip['g'] = inner_product
+        ip = ip.integrate(x_basis)
+        ip = ip['g'][0]/2.0
+        
+        return ip
     
 class AdjointHomogenous(MRI):
 
@@ -668,7 +683,8 @@ class N3(MRI):
             MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
             n2 = N2(Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
     
-        o2 = OrderE2(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        if o2 == None:
+            o2 = OrderE2(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         
         # Components of N31
         # psi component
@@ -708,8 +724,40 @@ class N3(MRI):
         N31_B = N31_B_my1 + N31_B_my2 + N31_B_my3 + N31_B_my4
         
         self.N31_B = N31_B.evaluate()
-      
         
+        
+class AmplitudeAlpha(MRI):
+
+    """
+    Solves the coefficients of the first amplitude equation for alpha -- e^(iQz) terms.
+    
+    """
+    
+    def __init__(self, o1 = None, o2 = None, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+        
+        print("initializing Amplitude Alpha")
+      
+        if o1 == None:
+            o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            n2 = N2(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+        else:
+            MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            n2 = N2(Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+    
+        if o2 == None:
+            o2 = OrderE2(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        
+        ah = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        
+        a_psi_rhs = o1.psi_xx - self.Q**2*o1.psi
+        a_psi_rhs = a_psi_rhs.evaluate()
+        
+        self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
+        
+        
+       
+  
       
     
     
