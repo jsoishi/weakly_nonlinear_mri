@@ -534,8 +534,61 @@ class OrderE2(MRI):
         self.B21 = self.BVP21.state['B21']
         
         #V22 equations are coupled
+        rhs22_psi = n2.N22_psi['g'] 
+        rhs22_u = n2.N22_u['g'] 
+        rhs22_A = n2.N22_A['g'] 
+        rhs22_B = n2.N22_B['g'] 
         
+        self.rhs22_psi = rhs22_psi
+        self.rhs22_u = rhs22_u
+        self.rhs22_A = rhs22_A
+        self.rhs22_B = rhs22_B
+                
+        # define problem using righthand side as nonconstant coefficients
+        bv22 = ParsedProblem(['x'],
+              field_names=['psi22', 'psi22x', 'psi22xx', 'psi22xxx', 'u22', 'u22x', 'A22', 'A22x', 'B22', 'B22x'],
+              param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rhs22_psi', 'rhs22_u', 'rhs22_A', 'rhs22_B'])
         
+        bv22.add_equation("-8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) + 4*1j*Q*u22 + 16*iR*Q**4*psi22 - 8*iR*Q**2*psi22xx + iR*dx(psi22xxx) = rhs22_psi")
+        bv22.add_equation("2*1j*(2/beta)*Q*B22 + 2*1j*Q*(q-2)*psi22 - 4*iR*Q**2*u22 + iR*dx(u22x) = rhs22_u")
+        bv22.add_equation("-iRm*4*Q**2*A22 + iRm*dx(A22x) + 2*1j*Q*psi22 = rhs22_A")
+        bv22.add_equation("-2*1j*Q*q*A22 - iRm*4*Q**2*B22 + iRm*dx(B22x) + 2*1j*Q*u22 = rhs22_B")
+        
+        bv22.add_equation("dx(psi22) - psi22x = 0")
+        bv22.add_equation("dx(psi22x) - psi22xx = 0")
+        bv22.add_equation("dx(psi22xx) - psi22xxx = 0")      
+        bv22.add_equation("dx(u22) - u22x = 0")
+        bv22.add_equation("dx(A22) - A22x = 0")
+        bv22.add_equation("dx(B22) - B22x = 0")
+
+        # boundary conditions
+        bv22.add_left_bc("psi22 = 0")
+        bv22.add_right_bc("psi22 = 0")
+        bv22.add_left_bc("u22 = 0")
+        bv22.add_right_bc("u22 = 0")
+        bv22.add_left_bc("A22 = 0")
+        bv22.add_right_bc("A22 = 0")
+        bv22.add_left_bc("psi22x = 0")
+        bv22.add_right_bc("psi22x = 0")
+        bv22.add_left_bc("B22x = 0")
+        bv22.add_right_bc("B22x = 0")
+
+        # parameters
+        bv22.parameters['Q'] = self.Q
+        bv22.parameters['iR'] = self.iR
+        bv22.parameters['iRm'] = self.iRm
+        bv22.parameters['q'] = self.q
+        bv22.parameters['beta'] = self.beta
+        bv22.parameters['rhs22_psi'] = rhs22_psi
+        bv22.parameters['rhs22_u'] = rhs22_u
+        bv22.parameters['rhs22_A'] = rhs22_A
+        bv22.parameters['rhs22_B'] = rhs22_B
+        
+        self.BVP22 = self.solve_BVP(bv22)
+        self.psi22 = self.BVP22.state['psi22']
+        self.u22 = self.BVP22.state['u22']
+        self.A22 = self.BVP22.state['A22']
+        self.B22 = self.BVP22.state['B22']
         
         # Take relevant derivatives and complex conjugates
         self.psi20_x = self.get_derivative(self.psi20)
