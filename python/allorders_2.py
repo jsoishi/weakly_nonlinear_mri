@@ -778,6 +778,22 @@ class AmplitudeAlpha(MRI):
         b_psi_rhs = (2/self.beta)*o1.A_xx
         b_psi_rhs = b_psi_rhs.evaluate()
         
+        l2twiddlel1twiddle_psi = 3*1j*(2/self.beta)*self.Q*o1.A + 3*(2/self.beta)*self.Q**2*o2.A21 - (2/self.beta)*o2.A21_xx - 6*self.Q**2*self.iR*o1.psi + 2*self.iR*o1.psi_xx + 4*1j*self.iR*self.Q**3*o2.psi21 - 4*self.iR*1j*self.Q*o2.psi21_xx - 2*o2.u21
+        l2twiddlel1twiddle_psi = l2twiddlel1twiddle_psi.evaluate()
+        
+        l2twiddlel1twiddle_u = (2/self.beta)*o1.B - 1j*self.Q*(2/self.beta)*o2.B21 - 1j*self.Q*(self.q - 2)*o2.psi21 + self.iR*o1.u
+        l2twiddlel1twiddle_u = l2twiddlel1twiddle_u.evaluate()
+        
+        l2twiddlel1twiddle_A = self.iRm*o1.A - 2*1j*self.iRm*self.Q*o2.A21 - o2.psi21
+        l2twiddlel1twiddle_A = l2twiddlel1twiddle_A.evaluate()
+        
+        l2twiddlel1twiddle_B = self.q*o1.A21 + self.iRm*o1.B - 2*1j*self.iRm*self.Q*o2.B21 - o2.u21
+        l2twiddlel1twiddle_B = l2twiddlel1twiddle_B.evaluate()
+        
+        g_psi = (2/self.beta)*o1.A
+        g_psi = g_psi.evaluate()
+        
+        
         # a = <va . D V11*>
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
         
@@ -791,6 +807,10 @@ class AmplitudeAlpha(MRI):
         self.b = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, o1.B, o1.psi, o1.u])
   
         # h = < va . (L2twiddle v11 - L1twiddle v21)* >
+        self.h = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [l2twiddlel1twiddle_psi, l2twiddlel1twiddle_u, l2twiddlel1twiddle_A, l2twiddlel1twiddle_B])
+  
+        # g = < va . (L3 v11) * >
+        self.g = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [g_psi, allzeros, allzeros, allzeros])
     
     
     
