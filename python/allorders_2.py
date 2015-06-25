@@ -170,7 +170,7 @@ class MRI():
         """
         Take inner product < vector1 | vector2 >
         """
-        
+
         inner_product = vector1[0]['g']*vector2[0]['g'].conj() + vector1[1]['g']*vector2[1]['g'].conj() + vector1[2]['g']*vector2[2]['g'].conj() + vector1[3]['g']*vector2[3]['g'].conj()
         
         ip = domain.new_field()
@@ -605,6 +605,10 @@ class OrderE2(MRI):
         self.A22 = self.BVP22.state['A22']
         self.B22 = self.BVP22.state['B22']
         
+        # These should be zero... 
+        self.psi20['g'] = np.zeros(gridnum, np.complex_)
+        self.B20['g'] = np.zeros(gridnum, np.complex_)
+        
         # Take relevant derivatives and complex conjugates
         self.psi20_x = self.get_derivative(self.psi20)
         self.psi20_xx = self.get_derivative(self.psi20_x)
@@ -748,12 +752,38 @@ class AmplitudeAlpha(MRI):
         if o2 == None:
             o2 = OrderE2(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         
+        n3 = N3(o1 = o1, o2 = o2, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         ah = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        
+        self.x = domain.grid(0)
         
         a_psi_rhs = o1.psi_xx - self.Q**2*o1.psi
         a_psi_rhs = a_psi_rhs.evaluate()
         
+        u20_twiddle = domain.new_field()
+        u20_twiddle.name = 'self.v20_utwiddle'
+        u20_twiddle['g'] = 0.5*(2/self.beta)*self.R*(self.x**2 - 1)
+        
+        allzeros = domain.new_field()
+        allzeros['g'] = np.zeros(len(self.x), np.complex_)
+        
+        u20_twiddle_x = self.get_derivative(u20_twiddle)
+        
+        c_twiddle_u_rhs = (1j*self.Q*o1.psi)*u20_twiddle_x
+        c_twiddle_u_rhs = c_twiddle_u_rhs.evaluate()
+        
+        c_twiddle_B_rhs = (-1j*self.Q*o1.psi)*(u20_twiddle_x)
+        c_twiddle_B_rhs = c_twiddle_B_rhs.evaluate()
+        
+        # a = <va . D V11*>
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
+        
+        # c = <va . N31*>
+        self.c = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
+        
+        # ctwiddle = < va . N31_twiddle_star >. Should be zero.
+        self.ctwiddle = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [allzeros, c_twiddle_u_rhs, allzeros, c_twiddle_B_rhs])
+        
         
         
        
