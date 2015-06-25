@@ -775,6 +775,9 @@ class AmplitudeAlpha(MRI):
         c_twiddle_B_rhs = (-1j*self.Q*o1.psi)*(u20_twiddle_x)
         c_twiddle_B_rhs = c_twiddle_B_rhs.evaluate()
         
+        b_psi_rhs = (2/self.beta)*o1.A_xx
+        b_psi_rhs = b_psi_rhs.evaluate()
+        
         # a = <va . D V11*>
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
         
@@ -784,11 +787,10 @@ class AmplitudeAlpha(MRI):
         # ctwiddle = < va . N31_twiddle_star >. Should be zero.
         self.ctwiddle = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [allzeros, c_twiddle_u_rhs, allzeros, c_twiddle_B_rhs])
         
-        
-        
-       
+        # b = < va . (X v11)* >
+        self.b = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, o1.B, o1.psi, o1.u])
   
-      
+        # h = < va . (L2twiddle v11 - L1twiddle v21)* >
     
     
     
