@@ -661,6 +661,9 @@ class OrderE2(MRI):
         self.A20_star_xx = self.get_derivative(self.A20_star_x)
         self.A20_star_xxx = self.get_derivative(self.A20_star_xx)
         
+        self.A21_x = self.get_derivative(self.A21)
+        self.A21_xx = self.get_derivative(self.A21_x)
+        
         self.A22_x = self.get_derivative(self.A22)
         self.A22_xx = self.get_derivative(self.A22_x)
         self.A22_xxx = self.get_derivative(self.A22_xx)
