@@ -620,6 +620,9 @@ class OrderE2(MRI):
         self.psi20_star_xx = self.get_derivative(self.psi20_star_x)
         self.psi20_star_xxx = self.get_derivative(self.psi20_star_xx)
         
+        self.psi21_x = self.get_derivative(self.psi21)
+        self.psi21_xx = self.get_derivative(self.psi21_x)
+        
         self.psi22_x = self.get_derivative(self.psi22)
         self.psi22_xx = self.get_derivative(self.psi22_x)
         self.psi22_xxx = self.get_derivative(self.psi22_xx)
@@ -790,7 +793,7 @@ class AmplitudeAlpha(MRI):
         l2twiddlel1twiddle_A = self.iRm*o1.A - 2*1j*self.iRm*self.Q*o2.A21 - o2.psi21
         l2twiddlel1twiddle_A = l2twiddlel1twiddle_A.evaluate()
         
-        l2twiddlel1twiddle_B = self.q*o1.A21 + self.iRm*o1.B - 2*1j*self.iRm*self.Q*o2.B21 - o2.u21
+        l2twiddlel1twiddle_B = self.q*o2.A21 + self.iRm*o1.B - 2*1j*self.iRm*self.Q*o2.B21 - o2.u21
         l2twiddlel1twiddle_B = l2twiddlel1twiddle_B.evaluate()
         
         g_psi = (2/self.beta)*o1.A
@@ -815,6 +818,6 @@ class AmplitudeAlpha(MRI):
         # g = < va . (L3 v11) * >
         self.g = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [g_psi, allzeros, allzeros, allzeros])
     
-    
+        print("saturation amp", (1j*self.Q*self.b - 1j*self.Q**3*self.g)/self.a)
     
     
