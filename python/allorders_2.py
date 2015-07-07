@@ -15,7 +15,7 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 64
+gridnum = 32
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -818,6 +818,6 @@ class AmplitudeAlpha(MRI):
         # g = < va . (L3 v11) * >
         self.g = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [g_psi, allzeros, allzeros, allzeros])
     
-        print("saturation amp", (1j*self.Q*self.b - 1j*self.Q**3*self.g)/self.a)
-    
+        self.sat_amp_coeffs = (1j*self.Q*self.b - 1j*self.Q**3*self.g)/self.a
+        print("saturation amp", self.sat_amp_coeffs)
     
