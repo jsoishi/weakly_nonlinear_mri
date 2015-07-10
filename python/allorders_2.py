@@ -15,9 +15,15 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 32
+gridnum = 128
+print("running at gridnum", gridnum)
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
+
+# Second basis for checking eigenvalues
+x_basis192 = Chebyshev(192)
+domain192 = Domain([x_basis192], grid_dtype = np.complex128)
+
 
 class MRI():
 
@@ -78,6 +84,19 @@ class MRI():
         
         return LEV
         
+    def solve_LEV_secondgrid(self, problem):
+    
+        """
+        Solves the linear eigenvalue problem for a ParsedProblem object.
+        Uses gridnum = 192 domain. For use in discarding spurious eigenvalues.
+        """
+        
+        problem.expand(domain192)
+        LEV = LinearEigenvalue(problem, domain192)
+        LEV.solve(LEV.pencils[0])
+        
+        return LEV
+        
     def solve_BVP(self, problem):
     
         """
@@ -89,6 +108,37 @@ class MRI():
         BVP.solve()
         
         return BVP
+        
+    def discard_spurious_eigenvalues(self, problem):
+    
+        """
+        Solves the linear eigenvalue problem for two different resolutions.
+        Returns deltas ordinance and nearest, from Boyd chapter 7.
+        """
+    
+        # Solve the linear eigenvalue problem at two different resolutions.
+        LEV1 = self.solve_LEV(problem)
+        LEV2 = self.solve_LEV_secondgrid(problem)
+        
+        lambda1 = LEV1.eigenvalues
+        lambda2 = LEV2.eigenvalues
+        
+        # Sort lambda1 and lambda2 by real parts
+        lambda1 = np.sort(lambda1.real)
+        lambda2 = np.sort(lambda2.real)
+        
+        # Compute sigma1 for gridnum = N1
+        sigmas = np.zeros(len(lambda2) - 1)
+        sigmas[0] = np.abs(lambda2[0] - lambda2[1])
+        sigmas[1:] = [0.5*(np.abs(lambda2[j] - lambda2[j - 1]) + np.abs(lambda2[j + 1] - lambda2[j])) for j in xrange(1, len(lambda2) - 1)]
+        
+        # Ordinal delta, calculated for the number of lambda1's.
+        delta_ord = (lambda1 - lambda2[:len(lambda1)])/sigmas[:len(lambda1)]
+        
+        # Nearest delta
+        delta_near = [np.nanmin(np.abs(lambda1[j] - lambda2)) for j in len(lambda1)]/sigmas[:len(lambda1)]
+        
+        return delta_ord, delta_near
         
     def get_smallest_eigenvalue_index(self, LEV):
         
@@ -296,6 +346,10 @@ class OrderE(MRI):
         lv1 = self.set_boundary_conditions(lv1)
         self.LEV = self.solve_LEV(lv1)
         smallest_eval_indx = self.get_smallest_eigenvalue_index_from_above(self.LEV)
+        
+        # Discard spurious eigenvalues
+        #certified_evals = self.discard_spurious_eigenvalues()
+        self.delta_ord, self.delta_near = self.discard_spurious_eigenvalues(lv1)
         
         self.LEV.set_state(smallest_eval_indx)
         
@@ -818,6 +872,14 @@ class AmplitudeAlpha(MRI):
         # g = < va . (L3 v11) * >
         self.g = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [g_psi, allzeros, allzeros, allzeros])
     
+        self.linear_term = 1j*self.Q*self.b - 1j*self.Q**3*self.g
+    
         self.sat_amp_coeffs = (1j*self.Q*self.b - 1j*self.Q**3*self.g)/self.a
         print("saturation amp", self.sat_amp_coeffs)
-    
+        
+        # For interactive diagnostic purposes only
+        self.o1 = o1
+        self.o2 = o2
+        self.n3 = n3
+        self.ah = ah
+        self.n2 = n2
