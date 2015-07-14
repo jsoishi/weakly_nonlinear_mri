@@ -11,7 +11,6 @@ import pylab
 import pickle
 import time
 
-
 gridnum = 128
 print("running at gridnum", gridnum)
 x_basis = Chebyshev(gridnum)
@@ -125,10 +124,9 @@ def discard_spurious_eigenvalues(problem):
     
     # Discard eigenvalues with 1/delta_near < 10^6
     delta_near_unsorted = delta_near[reverse_lambda1_indx]
-    goodevals = copy.copy(lambda1)
-    goodevals[np.where((1.0/delta_near_unsorted) < 1E6)] = None
+    lambda1[np.where((1.0/delta_near_unsorted) < 1E6)] = None
     
-    return goodevals, LEV1
+    return lambda1, LEV1
 
 def get_largest_eigenvalue_index(LEV, goodevals = None):
         
