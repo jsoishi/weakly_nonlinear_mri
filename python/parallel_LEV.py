@@ -42,6 +42,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
         for result in result_pool:
             try:
                 results.append(result.get(100))
+                print("Results appended.") 
             except mp.context.TimeoutError:
                 print("TimeoutError encountered. Continuing..") 
 
