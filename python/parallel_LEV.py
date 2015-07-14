@@ -144,6 +144,21 @@ def get_largest_eigenvalue_index(LEV, goodevals = None):
     largest_eval_indx = indx[np.abs(evals) == np.nanmax(np.abs(evals))]
     
     return largest_eval_indx
+    
+def get_largest_real_eigenvalue_index(LEV, goodevals = None):
+        
+    """
+    Return index of largest eigenvalue. Can be positive or negative.
+    """
+    if goodevals == None:
+        evals = LEV.eigenvalues
+    else:
+        evals = goodevals
+        
+    indx = np.arange(len(evals))
+    largest_eval_indx = indx[np.abs(evals.real) == np.nanmax(np.abs(evals.real))]
+    
+    return largest_eval_indx
 
 def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
 
@@ -199,7 +214,7 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
         goodevals, LEV = discard_spurious_eigenvalues(lv1)
         
         # Find the largest eigenvalue (fastest growing mode).
-        largest_eval_indx = get_largest_eigenvalue_index(LEV, goodevals = goodevals)
+        largest_eval_indx = get_largest_real_eigenvalue_index(LEV, goodevals = goodevals)
         
         val = goodevals[largest_eval_indx]
         return (run_id, val)
