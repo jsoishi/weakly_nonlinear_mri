@@ -113,7 +113,7 @@ class MRI():
     
         """
         Solves the linear eigenvalue problem for two different resolutions.
-        Returns deltas ordinance and nearest, from Boyd chapter 7.
+        Returns trustworthy eigenvalues using nearest delta, from Boyd chapter 7.
         """
     
         # Solve the linear eigenvalue problem at two different resolutions.
@@ -123,22 +123,101 @@ class MRI():
         lambda1 = LEV1.eigenvalues
         lambda2 = LEV2.eigenvalues
         
+        # Make sure argsort treats complex infs correctly
+        lambda1[np.where(np.isnan(lambda1) == True)] = None
+        lambda2[np.where(np.isnan(lambda2) == True)] = None
+        lambda1[np.where(np.isinf(lambda1) == True)] = None
+        lambda2[np.where(np.isinf(lambda2) == True)] = None
+        
         # Sort lambda1 and lambda2 by real parts
-        lambda1 = np.sort(lambda1.real)
-        lambda2 = np.sort(lambda2.real)
+        lambda1_indx = np.argsort(lambda1.real)
+        lambda1_sorted = lambda1.real[lambda1_indx]
+        lambda2_indx = np.argsort(lambda2.real)
+        lambda2_sorted = lambda2.real[lambda2_indx]
         
-        # Compute sigma1 for gridnum = N1
-        sigmas = np.zeros(len(lambda2) - 1)
-        sigmas[0] = np.abs(lambda2[0] - lambda2[1])
-        sigmas[1:] = [0.5*(np.abs(lambda2[j] - lambda2[j - 1]) + np.abs(lambda2[j + 1] - lambda2[j])) for j in xrange(1, len(lambda2) - 1)]
+        # Reverse engineer correct indices to make unsorted list from sorted
+        reverse_lambda1_indx = sorted(range(len(lambda1_indx)), key=lambda1_indx.__getitem__)
+        reverse_lambda2_indx = sorted(range(len(lambda2_indx)), key=lambda2_indx.__getitem__)
         
-        # Ordinal delta, calculated for the number of lambda1's.
-        delta_ord = (lambda1 - lambda2[:len(lambda1)])/sigmas[:len(lambda1)]
+        # Compute sigmas from lower resolution run (gridnum = N1)
+        sigmas = np.zeros(len(lambda1_sorted))
+        sigmas[0] = np.abs(lambda1_sorted[0] - lambda1_sorted[1])
+        sigmas[1:-1] = [0.5*(np.abs(lambda1_sorted[j] - lambda1_sorted[j - 1]) + np.abs(lambda1_sorted[j + 1] - lambda1_sorted[j])) for j in range(1, len(lambda1_sorted) - 1)]
+        sigmas[-1] = np.abs(lambda1_sorted[-2] - lambda1_sorted[-1])
         
         # Nearest delta
-        delta_near = [np.nanmin(np.abs(lambda1[j] - lambda2)) for j in len(lambda1)]/sigmas[:len(lambda1)]
+        delta_near = [np.nanmin(np.abs(lambda1_sorted[j] - lambda2_sorted)) for j in range(len(lambda1_sorted))]/sigmas
         
-        return delta_ord, delta_near
+        # Discard eigenvalues with 1/delta_near < 10^6
+        delta_near_unsorted = delta_near[reverse_lambda1_indx]
+        goodevals = copy.copy(lambda1)
+        goodevals[np.where((1.0/delta_near_unsorted) < 1E6)] = None
+        
+        #return delta_near, lambda1, lambda2, sigmas, goodevals, delta_near_unsorted, lambda1_sorted
+        return goodevals
+        
+    def find_spurious_eigenvalues(self, problem):
+    
+        """
+        Solves the linear eigenvalue problem for two different resolutions.
+        Returns drift ratios, from Boyd chapter 7.
+        """
+    
+        # Solve the linear eigenvalue problem at two different resolutions.
+        LEV1 = self.solve_LEV(problem)
+        LEV2 = self.solve_LEV_secondgrid(problem)
+        
+        lambda1 = LEV1.eigenvalues
+        lambda2 = LEV2.eigenvalues
+        
+        # Make sure argsort treats complex infs correctly
+        for i in range(len(lambda1)):
+            if (np.isnan(lambda1[i]) == True) or (np.isinf(lambda1[i]) == True):
+                lambda1[i] = None
+        for i in range(len(lambda2)):
+            if (np.isnan(lambda2[i]) == True) or (np.isinf(lambda2[i]) == True):
+                lambda2[i] = None        
+        
+        #lambda1[np.where(np.isnan(lambda1) == True)] = None
+        #lambda2[np.where(np.isnan(lambda2) == True)] = None
+                
+        # Sort lambda1 and lambda2 by real parts
+        lambda1_indx = np.argsort(lambda1.real)
+        lambda1 = lambda1[lambda1_indx]
+        lambda2_indx = np.argsort(lambda2.real)
+        lambda2 = lambda2[lambda2_indx]
+        
+        # try using lower res (gridnum = N1) instead
+        sigmas = np.zeros(len(lambda1))
+        sigmas[0] = np.abs(lambda1[0] - lambda1[1])
+        sigmas[1:-1] = [0.5*(np.abs(lambda1[j] - lambda1[j - 1]) + np.abs(lambda1[j + 1] - lambda1[j])) for j in range(1, len(lambda1) - 1)]
+        sigmas[-1] = np.abs(lambda1[-2] - lambda1[-1])
+        
+        # Ordinal delta, calculated for the number of lambda1's.
+        delta_ord = (lambda1 - lambda2[:len(lambda1)])/sigmas
+        
+        # Nearest delta
+        delta_near = [np.nanmin(np.abs(lambda1[j] - lambda2)) for j in range(len(lambda1))]/sigmas
+        
+        # Discard eigenvalues with 1/delta_near < 10^6
+        goodevals1 = lambda1[1/delta_near > 1E6]
+        
+        return delta_ord, delta_near, lambda1, lambda2, sigmas
+        
+    def get_largest_eigenvalue_index(self, LEV, goodevals = None):
+        
+        """
+        Return index of largest eigenvalue. Can be positive or negative.
+        """
+        if goodevals == None:
+            evals = LEV.eigenvalues
+        else:
+            evals = goodevals
+            
+        indx = np.arange(len(evals))
+        largest_eval_indx = indx[np.abs(evals) == np.nanmax(np.abs(evals))]
+        
+        return largest_eval_indx
         
     def get_smallest_eigenvalue_index(self, LEV):
         
@@ -344,14 +423,13 @@ class OrderE(MRI):
         lv1.parameters['beta'] = self.beta
     
         lv1 = self.set_boundary_conditions(lv1)
-        self.LEV = self.solve_LEV(lv1)
-        smallest_eval_indx = self.get_smallest_eigenvalue_index_from_above(self.LEV)
+        #self.LEV = self.solve_LEV(lv1)
+        #smallest_eval_indx = self.get_smallest_eigenvalue_index_from_above(self.LEV)
         
         # Discard spurious eigenvalues
-        #certified_evals = self.discard_spurious_eigenvalues()
-        self.delta_ord, self.delta_near = self.discard_spurious_eigenvalues(lv1)
-        
-        self.LEV.set_state(smallest_eval_indx)
+        goodevals = self.discard_spurious_eigenvalues(lv1)
+        largest_eval_indx = self.get_largest_eigenvalue_index(self.LEV, goodevals = goodevals)
+        self.LEV.set_state(largest_eval_indx)
         
         if self.norm == True:
             scale = self.normalize_all_real_or_imag(self.LEV)
@@ -400,7 +478,7 @@ class OrderE(MRI):
         
         self.B_star = self.get_complex_conjugate(self.B)
         self.B_star_x = self.get_derivative(self.B_star)
-        
+        """
 class N2(MRI):
 
     """
