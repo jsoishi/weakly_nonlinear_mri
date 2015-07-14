@@ -141,7 +141,7 @@ def get_largest_eigenvalue_index(LEV, goodevals = None):
     indx = np.arange(len(evals))
     largest_eval_indx = indx[np.abs(evals) == np.nanmax(np.abs(evals))]
     
-    return largest_eval_indx
+    return largest_eval_indx[0]
     
 def get_largest_real_eigenvalue_index(LEV, goodevals = None):
         

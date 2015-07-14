@@ -429,7 +429,10 @@ class OrderE(MRI):
         # Discard spurious eigenvalues
         goodevals, self.LEV = self.discard_spurious_eigenvalues(lv1)
         largest_eval_indx = self.get_largest_eigenvalue_index(self.LEV, goodevals = goodevals)
-        self.LEV.set_state(largest_eval_indx)
+        print(largest_eval_indx)
+        print(largest_eval_indx.shape)
+        print(largest_eval_indx[0])
+        self.LEV.set_state(largest_eval_indx[0])
         
         if self.norm == True:
             scale = self.normalize_all_real_or_imag(self.LEV)
