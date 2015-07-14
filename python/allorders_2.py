@@ -154,7 +154,7 @@ class MRI():
         goodevals[np.where((1.0/delta_near_unsorted) < 1E6)] = None
         
         #return delta_near, lambda1, lambda2, sigmas, goodevals, delta_near_unsorted, lambda1_sorted
-        return goodevals
+        return goodevals, LEV1
         
     def find_spurious_eigenvalues(self, problem):
     
@@ -427,7 +427,7 @@ class OrderE(MRI):
         #smallest_eval_indx = self.get_smallest_eigenvalue_index_from_above(self.LEV)
         
         # Discard spurious eigenvalues
-        goodevals = self.discard_spurious_eigenvalues(lv1)
+        goodevals, self.LEV = self.discard_spurious_eigenvalues(lv1)
         largest_eval_indx = self.get_largest_eigenvalue_index(self.LEV, goodevals = goodevals)
         self.LEV.set_state(largest_eval_indx)
         
@@ -478,7 +478,7 @@ class OrderE(MRI):
         
         self.B_star = self.get_complex_conjugate(self.B)
         self.B_star_x = self.get_derivative(self.B_star)
-        """
+        
 class N2(MRI):
 
     """
