@@ -145,7 +145,7 @@ def get_largest_eigenvalue_index(LEV, goodevals = None):
     
     return largest_eval_indx
 
-def run_mri_solve(Q, Pm, Rm, q, Co, run_id, gridnum):
+def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
 
     try:
 
