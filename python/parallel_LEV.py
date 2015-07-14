@@ -194,8 +194,6 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
         lv1.parameters['iRm'] = iRm
         lv1.parameters['q'] = q
         lv1.parameters['Co'] = Co
-        
-        lv1 = set_boundary_conditions(lv1)
        
         # Discard spurious eigenvalues
         goodevals, LEV = discard_spurious_eigenvalues(lv1)
