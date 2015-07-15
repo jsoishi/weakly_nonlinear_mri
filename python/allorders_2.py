@@ -136,6 +136,9 @@ class MRI():
         lambda2_indx = np.argsort(lambda2.real)
         lambda2_sorted = lambda2[lambda2_indx]
         
+        lambda1_sorted[200:] = None # Hack to check out first eigenvalues only
+        lambda2_sorted[200:] = None
+        
         # Reverse engineer correct indices to make unsorted list from sorted
         reverse_lambda1_indx = sorted(range(len(lambda1_indx)), key = lambda1_indx.__getitem__)
         reverse_lambda2_indx = sorted(range(len(lambda2_indx)), key = lambda2_indx.__getitem__)
