@@ -215,7 +215,22 @@ class MRI():
             evals = goodevals
             
         indx = np.arange(len(evals))
-        largest_eval_indx = indx[np.abs(evals) == np.nanmax(np.abs(evals))]
+        largest_eval_indx = indx[evals == np.nanmax(evals)]
+        
+        return largest_eval_indx
+        
+    def get_largest_real_eigenvalue_index(self, LEV, goodevals = None):
+        
+        """
+        Return index of largest eigenvalue. Can be positive or negative.
+        """
+        if goodevals == None:
+            evals = LEV.eigenvalues
+        else:
+            evals = goodevals
+            
+        indx = np.arange(len(evals))
+        largest_eval_indx = indx[evals.real == np.nanmax(evals.real)]
         
         return largest_eval_indx
         
@@ -427,8 +442,9 @@ class OrderE(MRI):
         #smallest_eval_indx = self.get_smallest_eigenvalue_index_from_above(self.LEV)
         
         # Discard spurious eigenvalues
-        goodevals, self.LEV = self.discard_spurious_eigenvalues(lv1)
-        largest_eval_indx = self.get_largest_eigenvalue_index(self.LEV, goodevals = goodevals)
+        self.goodevals, self.LEV = self.discard_spurious_eigenvalues(lv1)
+        largest_eval_indx = self.get_largest_real_eigenvalue_index(self.LEV, goodevals = goodevals)
+        #largest_eval_indx = self.get_largest_eigenvalue_index(self.LEV, goodevals = goodevals)
         print(largest_eval_indx)
         print(largest_eval_indx.shape)
         print(largest_eval_indx[0])
