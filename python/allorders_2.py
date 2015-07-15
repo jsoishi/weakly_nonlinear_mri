@@ -120,8 +120,9 @@ class MRI():
         LEV1 = self.solve_LEV(problem)
         LEV2 = self.solve_LEV_secondgrid(problem)
         
-        lambda1 = LEV1.eigenvalues
-        lambda2 = LEV2.eigenvalues
+        # Eigenvalues returned by dedalus must be multiplied by -1
+        lambda1 = -LEV1.eigenvalues
+        lambda2 = -LEV2.eigenvalues
         
         # Make sure argsort treats complex infs correctly
         lambda1[np.where(np.isnan(lambda1) == True)] = None
@@ -131,13 +132,13 @@ class MRI():
         
         # Sort lambda1 and lambda2 by real parts
         lambda1_indx = np.argsort(lambda1.real)
-        lambda1_sorted = lambda1.real[lambda1_indx]
+        lambda1_sorted = lambda1[lambda1_indx]
         lambda2_indx = np.argsort(lambda2.real)
-        lambda2_sorted = lambda2.real[lambda2_indx]
+        lambda2_sorted = lambda2[lambda2_indx]
         
         # Reverse engineer correct indices to make unsorted list from sorted
-        reverse_lambda1_indx = sorted(range(len(lambda1_indx)), key=lambda1_indx.__getitem__)
-        reverse_lambda2_indx = sorted(range(len(lambda2_indx)), key=lambda2_indx.__getitem__)
+        reverse_lambda1_indx = sorted(range(len(lambda1_indx)), key = lambda1_indx.__getitem__)
+        reverse_lambda2_indx = sorted(range(len(lambda2_indx)), key = lambda2_indx.__getitem__)
         
         # Compute sigmas from lower resolution run (gridnum = N1)
         sigmas = np.zeros(len(lambda1_sorted))
