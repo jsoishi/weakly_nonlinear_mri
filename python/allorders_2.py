@@ -136,8 +136,8 @@ class MRI():
         lambda2_indx = np.argsort(lambda2.real)
         lambda2_sorted = lambda2[lambda2_indx]
         
-        lambda1_sorted[200:] = None # Hack to check out first eigenvalues only
-        lambda2_sorted[200:] = None
+        #lambda1_sorted[100:] = None # Hack to check out first eigenvalues only
+        #lambda2_sorted[100:] = None
         
         # Reverse engineer correct indices to make unsorted list from sorted
         reverse_lambda1_indx = sorted(range(len(lambda1_indx)), key = lambda1_indx.__getitem__)
@@ -155,7 +155,15 @@ class MRI():
         # Discard eigenvalues with 1/delta_near < 10^6
         delta_near_unsorted = delta_near[reverse_lambda1_indx]
         goodevals = copy.copy(lambda1)
+        goodevals[np.where(np.isnan(1.0/delta_near_unsorted) == True)] = None
         goodevals[np.where((1.0/delta_near_unsorted) < 1E6)] = None
+        
+        # diagnostic purposes
+        self.delta_near = delta_near
+        self.delta_near_unsorted = delta_near_unsorted
+        self.lambda1_sorted = lambda1_sorted
+        self.lambda2_sorted = lambda2_sorted
+        self.sigmas = sigmas
         
         #return delta_near, lambda1, lambda2, sigmas, goodevals, delta_near_unsorted, lambda1_sorted
         return goodevals, LEV1
