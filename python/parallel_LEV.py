@@ -51,8 +51,6 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
         result_dict[x[0]] = x[1]
     
     print(result_dict)
-    print("test: ", result_dict[0])
-
 
     pickle.dump(result_dict, open("multirun/gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
 
