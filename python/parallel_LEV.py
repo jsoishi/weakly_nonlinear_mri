@@ -224,10 +224,10 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
         largest_eval_indx = get_largest_real_eigenvalue_index(LEV, goodevals = goodevals)
         
         val = goodevals[largest_eval_indx]
-        return (run_id, val[0])
+        return ((Rm, Q), val[0])
         
     except np.linalg.LinAlgError:
-        return (run_id, np.nan + np.nan*1j)
+        return ((Rm, Q), np.nan + np.nan*1j)
         
 if __name__ == '__main__':
 

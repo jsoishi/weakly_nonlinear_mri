@@ -92,16 +92,19 @@ def plot_paramspace():
 
     for i in range(len(data)):
         jj = data.popitem()
-        print(jj)
+        #print(jj)
         if np.isnan(jj[1]) == True:
             evals[i] = None
         else:
             evals[i] = jj[1]
         ids[i] = jj[0]
+        
         allRms[i] = Rms[ids[i]]
         allQs[i] = Qs[ids[i]]
+        
+        #if evals[i] > 1:
+        print(allRms[i], allQs[i], evals[i])
     
-    print(len(evals), len(ids), len(Qs), len(Rms))
     """
     all_possible = np.zeros(len(Qs), np.int)
     all_possible[ids.astype(int)] = 1
