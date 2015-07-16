@@ -235,10 +235,10 @@ if __name__ == '__main__':
     beta = 25.0
     Co = 0.08
 
-    #dQ = 0.001
-    #dRm = 0.001
-    dQ = 0.01
-    dRm = 0.01
+    dQ = 0.001
+    dRm = 0.001
+    #dQ = 0.01
+    #dRm = 0.01
     
     Qsearch = np.arange(0.74, 0.76, dQ)
     Rmsearch = np.arange(4.87, 4.91, dRm)

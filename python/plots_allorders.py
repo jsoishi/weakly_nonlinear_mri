@@ -62,7 +62,7 @@ def ploteigs(goodevals):
 
 def plot_paramspace():
     path = "/Users/susanclark/weakly_nonlinear_mri/python/multirun/"
-    data = pickle.load(open(path+"gridnum_128_Pm_0.1_Q_0.74_dQ_0.01_Rm_4.87_dRm_0.01.p", "rb"))
+    data = pickle.load(open(path+"gridnum_128_Pm_0.001_Q_0.74_dQ_0.01_Rm_4.87_dRm_0.01.p", "rb"))
     
     print(len(data))
     
@@ -98,10 +98,20 @@ def plot_paramspace():
     Rm = Rms[ids.astype(int)]
 
     #e = evals[ids.astype(int)]
+    # Get bounds for plotting
+    if np.abs(np.nanmax(evals.real)) > np.abs(np.nanmin(evals.real)):
+        vmax = np.nanmax(evals.real)
+        vmin = -np.nanmax(evals.real)
+    else:
+        vmin = np.nanmin(evals.real)
+        if np.nanmin(evals.real) < 0:
+            vmax = -np.nanmin(evals.real)
+        else:
+            vmax = np.nanmax(evals.real)
 
     fig = plt.figure()
     ax1 = fig.add_subplot(121)
-    cb = ax1.scatter(Q, Rm, c=np.real(evals), marker="s", s=40, vmin=-1E-7, vmax=1E-7, cmap = "RdBu")#, vmin=-1E-7, vmax=1E-7, cmap="bone")
+    cb = ax1.scatter(Q, Rm, c=np.real(evals), marker="s", s=40, vmin = vmin, vmax = vmax, cmap = "RdBu")#, vmin=-1E-7, vmax=1E-7, cmap="bone")
     fig.colorbar(cb)
     ax1.set_title("Real")
     ax1.set_xlabel("Q")
