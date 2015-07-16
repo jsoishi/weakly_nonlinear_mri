@@ -62,7 +62,7 @@ def ploteigs(goodevals):
 
 def plot_paramspace():
     path = "/Users/susanclark/weakly_nonlinear_mri/python/multirun/"
-    data = pickle.load(open(path+"gridnum_128_Pm_0.001_Q_0.74_dQ_0.01_Rm_4.87_dRm_0.01.p", "rb"))
+    data = pickle.load(open(path+"gridnum_128_Pm_0.001_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001.p", "rb"))
     
     print(len(data))
     
@@ -81,6 +81,11 @@ def plot_paramspace():
     ids = np.zeros(len(data))
     evals = np.zeros(len(data), np.complex128)
     
+    allRms = np.zeros(len(data))
+    allQs = np.zeros(len(data))
+    
+    print(len(ids), len(evals))
+    
     print(len(ids))
     print(len(Qs))
     print(len(evals))
@@ -88,14 +93,40 @@ def plot_paramspace():
     for i in range(len(data)):
         jj = data.popitem()
         print(jj)
-        if np.isnan(jj[0]) == True:
+        if np.isnan(jj[1]) == True:
             evals[i] = None
         else:
             evals[i] = jj[1]
         ids[i] = jj[0]
-        
-    Q = Qs[ids.astype(int)]
-    Rm = Rms[ids.astype(int)]
+        allRms[i] = Rms[ids[i]]
+        allQs[i] = Qs[ids[i]]
+    
+    print(len(evals), len(ids), len(Qs), len(Rms))
+    """
+    all_possible = np.zeros(len(Qs), np.int)
+    all_possible[ids.astype(int)] = 1
+    
+    allQs = np.zeros(len(Qs), np.float)
+    allRms = np.zeros(len(Qs), np.float)
+    allevals = np.zeros(len(Qs), np.complex128)
+    
+    allQs[all_possible == True] = [Qs[i] for i in ids.astype(int)]
+    allRms[all_possible == True] = [Rms[i] for i in ids.astype(int)]
+    allevals[all_possible == True] = evals
+    allevals[all_possible == False] = np.nan + np.nan*1j
+    """
+    #print(allevals)
+    #print(allRms)
+    #print(allevals)
+    
+    #Q = Qs[ids.astype(int)]
+    #Rm = Rms[ids.astype(int)]
+    Q = allQs
+    Rm = allRms
+    #evals = allevals
+    
+    # Some values are crazy!
+    evals.real[evals.real > 1] = None
 
     #e = evals[ids.astype(int)]
     # Get bounds for plotting
@@ -108,6 +139,10 @@ def plot_paramspace():
             vmax = -np.nanmin(evals.real)
         else:
             vmax = np.nanmax(evals.real)
+            
+    
+    vmin = np.nanmin(evals.real)
+    vmax = np.nanmax(evals.real)
 
     fig = plt.figure()
     ax1 = fig.add_subplot(121)

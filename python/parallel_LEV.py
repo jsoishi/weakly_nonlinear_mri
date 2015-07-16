@@ -133,6 +133,7 @@ def discard_spurious_eigenvalues(problem):
     # Discard eigenvalues with 1/delta_near < 10^6
     delta_near_unsorted = delta_near[reverse_lambda1_indx]
     lambda1[np.where((1.0/delta_near_unsorted) < 1E6)] = None
+    lambda1[np.where(np.isnan(1.0/delta_near_unsorted) == True)] = None
     
     return lambda1, LEV1
 
