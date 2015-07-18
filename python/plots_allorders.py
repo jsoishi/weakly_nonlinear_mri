@@ -84,26 +84,21 @@ def plot_paramspace():
     allRms = np.zeros(len(data))
     allQs = np.zeros(len(data))
     
-    print(len(ids), len(evals))
-    
-    print(len(ids))
-    print(len(Qs))
-    print(len(evals))
 
     for i in range(len(data)):
         jj = data.popitem()
-        #print(jj)
+        print(jj)
         if np.isnan(jj[1]) == True:
             evals[i] = None
         else:
             evals[i] = jj[1]
-        ids[i] = jj[0]
+        #ids[i] = jj[0]
         
-        allRms[i] = Rms[ids[i]]
-        allQs[i] = Qs[ids[i]]
+        allRms[i] = jj[0][0]
+        allQs[i] = jj[0][1]
         
         #if evals[i] > 1:
-        print(allRms[i], allQs[i], evals[i])
+        #print(allRms[i], allQs[i], evals[i])
     
     """
     all_possible = np.zeros(len(Qs), np.int)
@@ -129,7 +124,8 @@ def plot_paramspace():
     #evals = allevals
     
     # Some values are crazy!
-    evals.real[evals.real > 1] = None
+    #evals.real[evals.real > 1] = None
+    #evals.real[evals.real < -1E-3] = None
 
     #e = evals[ids.astype(int)]
     # Get bounds for plotting
@@ -144,8 +140,8 @@ def plot_paramspace():
             vmax = np.nanmax(evals.real)
             
     
-    vmin = np.nanmin(evals.real)
-    vmax = np.nanmax(evals.real)
+    vmin = -1E-7#np.nanmin(evals.real)
+    vmax = 1E-7#np.nanmax(evals.real)
 
     fig = plt.figure()
     ax1 = fig.add_subplot(121)

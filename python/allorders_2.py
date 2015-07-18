@@ -164,6 +164,8 @@ class MRI():
         self.lambda1_sorted = lambda1_sorted
         self.lambda2_sorted = lambda2_sorted
         self.sigmas = sigmas
+        self.reverse_lambda1_indx = reverse_lambda1_indx
+        self.reverse_lambda2_indx = reverse_lambda2_indx
         
         #return delta_near, lambda1, lambda2, sigmas, goodevals, delta_near_unsorted, lambda1_sorted
         return goodevals, LEV1
