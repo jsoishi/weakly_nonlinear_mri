@@ -60,11 +60,11 @@ def ploteigs(goodevals):
     #pylab.savefig("mri_eigenvalues.png", dpi = 500)
     
 
-def plot_paramspace():
-    path = "/Users/susanclark/weakly_nonlinear_mri/python/multirun/"
-    data = pickle.load(open(path+"gridnum_128_Pm_0.001_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001.p", "rb"))
+def plot_paramspace(path="/Users/susanclark/weakly_nonlinear_mri/python/multirun/",datafile="gridnum_128_Pm_0.001_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001.p",quiet=False):
+    data = pickle.load(open(path+datafile, "rb"))
     
-    print(len(data))
+    if not quiet:
+        print(len(data))
     
     Qsearch = data.pop("Qsearch")
     Rmsearch = data.pop("Rmsearch")
@@ -87,7 +87,8 @@ def plot_paramspace():
 
     for i in range(len(data)):
         jj = data.popitem()
-        print(jj)
+        if not quiet:
+            print(jj)
         if np.isnan(jj[1]) == True:
             evals[i] = None
         else:
