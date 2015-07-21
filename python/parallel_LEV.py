@@ -250,7 +250,7 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
             return ((Rm, Q), val[0], (goodevals))
         
     except np.linalg.LinAlgError:
-        return ((Rm, Q), np.nan + np.nan*1j, (goodevals*(np.nan + np.nan*1j)))
+        return ((Rm, Q), np.nan + np.nan*1j, ([np.nan + np.nan*1j]))
         
 if __name__ == '__main__':
 
