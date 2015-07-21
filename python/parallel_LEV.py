@@ -254,7 +254,8 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
         
 if __name__ == '__main__':
 
-    Pm = 1.0E-3
+    #Pm = 1.0E-3
+    Pm = 5.0E-3
     q = 1.5
     beta = 25.0
     Co = 0.08
