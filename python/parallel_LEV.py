@@ -104,6 +104,10 @@ def discard_spurious_eigenvalues(problem):
     # Eigenvalues returned by dedalus must be multiplied by -1
     lambda1 = -LEV1.eigenvalues
     lambda2 = -LEV2.eigenvalues
+
+    # remove nans
+    lambda1 = lambda1[np.isfinite(lambda1)]
+    lambda2 = lambda2[np.isfinite(lambda2)]
     
     # Make sure argsort treats complex infs correctly
     lambda1[np.where(np.isnan(lambda1) == True)] = None
@@ -126,9 +130,12 @@ def discard_spurious_eigenvalues(problem):
     sigmas[0] = np.abs(lambda1_sorted[0] - lambda1_sorted[1])
     sigmas[1:-1] = [0.5*(np.abs(lambda1_sorted[j] - lambda1_sorted[j - 1]) + np.abs(lambda1_sorted[j + 1] - lambda1_sorted[j])) for j in range(1, len(lambda1_sorted) - 1)]
     sigmas[-1] = np.abs(lambda1_sorted[-2] - lambda1_sorted[-1])
+
+    if not (np.isfinite(sigmas)).all():
+        print("WARNING: at least one eigenvalue spacings (sigmas) is non-finite (np.inf or np.nan)!")
     
     # Nearest delta
-    delta_near = [np.nanmin(np.abs(lambda1_sorted[j] - lambda2_sorted)) for j in range(len(lambda1_sorted))]/sigmas
+    delta_near = np.array([np.nanmin(np.abs(lambda1_sorted[j] - lambda2_sorted)/sigmas[j]) for j in range(len(lambda1_sorted))])
     
     # Discard eigenvalues with 1/delta_near < 10^6
     delta_near_unsorted = delta_near[reverse_lambda1_indx]
@@ -167,8 +174,20 @@ def get_largest_real_eigenvalue_index(LEV, goodevals = None):
     
     return largest_eval_indx
 
-def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
+def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
+    """Solve the numerical eigenvalue problem for a single value of parameters.
 
+    inputs:
+    Q: k_z
+    Pm: Magnetic Prandtl Number
+    Rm: Magnetic Reynolds Number
+    q: shear parameter (=3/2 for keplerian flow)
+    run_id: ?
+    all_mode (bool): if true, return all the good eigenvalues. if false,
+    return only the eigenvalue with the largest real part (which could be
+    less than zero, if the parameters specified are stable).
+
+    """
     try:
 
         # Rm is an input parameter
@@ -224,7 +243,11 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id):
         largest_eval_indx = get_largest_real_eigenvalue_index(LEV, goodevals = goodevals)
         
         val = goodevals[largest_eval_indx]
-        return ((Rm, Q), val[0])
+
+        if all_mode:
+            return goodevals
+        else:
+            return ((Rm, Q), val[0])
         
     except np.linalg.LinAlgError:
         return ((Rm, Q), np.nan + np.nan*1j)

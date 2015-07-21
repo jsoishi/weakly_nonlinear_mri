@@ -141,8 +141,8 @@ def plot_paramspace(path="/Users/susanclark/weakly_nonlinear_mri/python/multirun
             vmax = np.nanmax(evals.real)
             
     
-    vmin = -1E-7#np.nanmin(evals.real)
-    vmax = 1E-7#np.nanmax(evals.real)
+    vmin = np.nanmin(evals.real)#-1e-7
+    vmax = np.nanmax(evals.real)#1e-7
 
     fig = plt.figure()
     ax1 = fig.add_subplot(121)
