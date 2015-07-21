@@ -60,7 +60,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
     
     print(result_dict)
 
-    pickle.dump(result_dict, open("multirun/gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
+    pickle.dump(result_dict, open("multirun/gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+"_allgoodeigs.p", "wb"))
 
     print("process took %10.5e seconds" % (time.time() - start_time))
     
@@ -247,10 +247,10 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
         if all_mode:
             return goodevals
         else:
-            return ((Rm, Q), val[0])
+            return ((Rm, Q), val[0], (goodevals))
         
     except np.linalg.LinAlgError:
-        return ((Rm, Q), np.nan + np.nan*1j)
+        return ((Rm, Q), np.nan + np.nan*1j, (goodevals*(np.nan + np.nan*1j))
         
 if __name__ == '__main__':
 
