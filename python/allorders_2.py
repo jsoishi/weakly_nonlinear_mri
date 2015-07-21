@@ -130,6 +130,9 @@ class MRI():
         lambda1[np.where(np.isinf(lambda1) == True)] = None
         lambda2[np.where(np.isinf(lambda2) == True)] = None
         
+        lambda1 = lambda1[~np.isnan(lambda1)]
+        lambda2 = lambda2[~np.isnan(lambda2)]
+        
         # Sort lambda1 and lambda2 by real parts
         lambda1_indx = np.argsort(lambda1.real)
         lambda1_sorted = lambda1[lambda1_indx]
@@ -143,6 +146,7 @@ class MRI():
         reverse_lambda1_indx = sorted(range(len(lambda1_indx)), key = lambda1_indx.__getitem__)
         reverse_lambda2_indx = sorted(range(len(lambda2_indx)), key = lambda2_indx.__getitem__)
         
+        """
         # Compute sigmas from lower resolution run (gridnum = N1)
         sigmas = np.zeros(len(lambda1_sorted))
         sigmas[0] = np.abs(lambda1_sorted[0] - lambda1_sorted[1])
@@ -151,13 +155,24 @@ class MRI():
         
         # Nearest delta
         delta_near = [np.nanmin(np.abs(lambda1_sorted[j] - lambda2_sorted)) for j in range(len(lambda1_sorted))]/sigmas
+        """
+        # Compute sigmas from higher resolution run (gridnum = N2)
+        sigmas = np.zeros(len(lambda2_sorted))
+        sigmas[0] = np.abs(lambda2_sorted[0] - lambda2_sorted[1])
+        sigmas[1:-1] = [0.5*(np.abs(lambda2_sorted[j] - lambda2_sorted[j - 1]) + np.abs(lambda2_sorted[j + 1] - lambda2_sorted[j])) for j in range(1, len(lambda2_sorted) - 1)]
+        sigmas[-1] = np.abs(lambda2_sorted[-2] - lambda2_sorted[-1])
+    
+        # Nearest delta
+        delta_near = [np.nanmin(np.abs(lambda2_sorted[j] - lambda1_sorted)) for j in range(len(lambda1_sorted))]/sigmas[:len(lambda1_sorted)]    
         
         # Discard eigenvalues with 1/delta_near < 10^6
-        delta_near_unsorted = delta_near[reverse_lambda1_indx]
+        #delta_near_unsorted = delta_near[reverse_lambda1_indx]
+        delta_near_unsorted = delta_near[reverse_lambda2_indx]
         goodevals = copy.copy(lambda1)
+        #goodevals = copy.copy(lambda2)
         goodevals[np.where(np.isnan(1.0/delta_near_unsorted) == True)] = None
         goodevals[np.where((1.0/delta_near_unsorted) < 1E6)] = None
-        
+      
         # diagnostic purposes
         self.delta_near = delta_near
         self.delta_near_unsorted = delta_near_unsorted
