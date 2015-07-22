@@ -267,6 +267,7 @@ if __name__ == '__main__':
     #dRm = 0.01
     
     Qsearch = np.arange(0.74, 0.76, dQ)
-    Rmsearch = np.arange(4.87, 4.91, dRm)
+    #Rmsearch = np.arange(4.87, 4.91, dRm) # Great for <1E-3
+    Rmsearch = np.arange(4.91, 4.95, dRm)
     Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
     
