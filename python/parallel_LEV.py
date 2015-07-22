@@ -48,7 +48,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
 
     result_dict = {}    
     for x in results:
-        result_dict[x[0]] = x[1]
+        result_dict[x[0]] = [x[1], x[2]]
     
     result_dict["Qsearch"] = Qsearch
     result_dict["Rmsearch"] = Rmsearch
