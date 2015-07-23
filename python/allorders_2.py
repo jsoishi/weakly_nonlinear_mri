@@ -48,6 +48,7 @@ class MRI():
         self.iR = 1.0/self.R
         
         self.gridnum = gridnum
+        self.x = domain.grid(0)
         #self.x_basis = Chebyshev(gridnum)
         #self.domain = Domain([self.x_basis], grid_dtype=np.complex128)
     
@@ -239,7 +240,7 @@ class MRI():
         indx = np.arange(len(evals))
         largest_eval_indx = indx[evals.real == np.nanmax(evals.real)]
         
-        return largest_eval_indx
+        return largest_eval_indx[0]
         
     def get_smallest_eigenvalue_index(self, LEV):
         
@@ -456,7 +457,6 @@ class OrderE(MRI):
         
         print(largest_eval_indx)
         print(largest_eval_indx.shape)
-        print(largest_eval_indx[0])
         self.LEV.set_state(largest_eval_indx)
         
         if self.norm == True:

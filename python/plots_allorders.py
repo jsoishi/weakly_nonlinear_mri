@@ -16,6 +16,42 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
+def plot_eigenfunctions(allorders_object, savename = "scrap.png"):
+
+    """
+    Plot all eigenfunctions of a given allorders object, e.g.
+    
+    o1 = OrderE(**kwargs)
+    plot_eigenfunctions(o1)
+    
+    will plot the eigenfunctions of the order E object.
+    """
+    
+    fig = plt.figure(facecolor = "white")
+    
+    ax1 = fig.add_subplot(221)
+    l1, = ax1.plot(allorders_object.x, allorders_object.psi['g'].real, color="black", label = "real")
+    l2, = ax1.plot(allorders_object.x, allorders_object.psi['g'].imag, color="red", label = "imag")
+    ax1.set_title(r"Im($\psi$)")
+
+    ax2 = fig.add_subplot(222)
+    ax2.plot(allorders_object.x, allorders_object.u['g'].real, color="black")
+    ax2.plot(allorders_object.x, allorders_object.u['g'].imag, color="red")
+    ax2.set_title("Re($u$)")
+
+    ax3 = fig.add_subplot(223)
+    ax3.plot(allorders_object.x, allorders_object.A['g'].real, color="black")
+    ax3.plot(allorders_object.x, allorders_object.A['g'].imag, color="red")
+    ax3.set_title("Re($A$)")
+
+    ax4 = fig.add_subplot(224)
+    ax4.plot(allorders_object.x, allorders_object.B['g'].real, color="black")
+    ax4.plot(allorders_object.x, allorders_object.B['g'].imag, color="red")
+    ax4.set_title("Im($B$)")
+
+    fig.legend((l1, l2), ("real", "imag"), loc = "upper right")
+    
+    pylab.savefig(savename)
 
 def ploteigs(goodevals):
 

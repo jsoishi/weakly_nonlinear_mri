@@ -39,7 +39,6 @@ def get_parameter_space_data(data, allgoodeigs = True):
     if allgoodeigs == False:
         for i in range(len(data)):
             datum = data.popitem()
-            print(datum)
             if np.isnan(datum[1]) == True:
                 evals[i] = None
             else:
@@ -64,27 +63,25 @@ def get_parameter_space_data(data, allgoodeigs = True):
         
     return allRms, allQs, evals
     
-def get_critical_parameters_by_Pm(Pm):
+def get_critical_parameters_by_Pm(Pm, allgoodeigs = True):
     
     """
     Return critical Rm and vertical wavenumber Q for given input Pm
     """
-
+    
     path = "/Users/susanclark/weakly_nonlinear_mri/python/multirun/"
     
     if Pm == 0.01:
         datafile = "gridnum_128_Pm_0.01_Q_0.74_dQ_0.001_Rm_4.91_dRm_0.001_allgoodeigs.p"
-    else:
-        
-    datafile = "gridnum_128_Pm_"+str(Pm)+"_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001.p"
-    datafile = "gridnum_128_Pm_"+str(Pm)+"_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001_allgoodeigs.p"
-    datafile = "gridnum_128_Pm_0.01_Q_0.74_dQ_0.001_Rm_4.91_dRm_0.001_allgoodeigs.p"
-    datafile = "gridnum_128_Pm_0.0001_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001_allgoodeigs.p"
-    datafile = "gridnum_128_Pm_0.0005_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001_allgoodeigs.p"
-
+    elif (Pm == 0.001) or (Pm == 0.005):
+        datafile = "gridnum_128_Pm_"+str(Pm)+"_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001.p"
+        allgoodeigs = False
+    else:     
+        datafile = "gridnum_128_Pm_"+str(Pm)+"_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001_allgoodeigs.p"
+   
     pspace_grid = pickle.load(open(path+datafile, "rb"))
     
-    search_Rms, search_Qs, max_evals = get_parameter_space_data(pspace_grid, allgoodeigs = True)
+    search_Rms, search_Qs, max_evals = get_parameter_space_data(pspace_grid, allgoodeigs = allgoodeigs)
     
     plot_paramspace_run(search_Rms, search_Qs, max_evals)
     
@@ -100,7 +97,9 @@ def get_critical_parameters_by_Pm(Pm):
     marginal_Rm = search_Rms[marginal_indx]
     marginal_Q = search_Qs[marginal_indx]
     
-    print("Critical Rm is", marginal_Rm, " critical Q is", marginal_Q)
+    print("For Pm of", Pm, "critical Rm is", marginal_Rm, " critical Q is", marginal_Q)
+    
+    return marginal_Rm, marginal_Q
 
 def plot_paramspace_run(Rm, Q, evals):
 
@@ -125,35 +124,10 @@ def plot_paramspace_run(Rm, Q, evals):
 
 if __name__ == "__main__":
 
-    #Pm = 5.0E-3
-    Pm = 1.0E-2
+    Pms = [1.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
     
-    path = "/Users/susanclark/weakly_nonlinear_mri/python/multirun/"
-    #datafile = "gridnum_128_Pm_"+str(Pm)+"_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001.p"
-    datafile = "gridnum_128_Pm_"+str(Pm)+"_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001_allgoodeigs.p"
-    datafile = "gridnum_128_Pm_0.01_Q_0.74_dQ_0.001_Rm_4.91_dRm_0.001_allgoodeigs.p"
-    datafile = "gridnum_128_Pm_0.0001_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001_allgoodeigs.p"
-    datafile = "gridnum_128_Pm_0.0005_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001_allgoodeigs.p"
-
-    pspace_grid = pickle.load(open(path+datafile, "rb"))
-    
-    search_Rms, search_Qs, max_evals = get_parameter_space_data(pspace_grid, allgoodeigs = True)
-    
-    plot_paramspace_run(search_Rms, search_Qs, max_evals)
-    
-    # Modes with Re{eval} > 0 are growing
-    growing_modes = np.zeros(len(max_evals), np.int)
-    growing_modes[max_evals.real > 0] = 1
-    
-    if np.sum(growing_modes) < 1:
-        raise ValueError(" There are no growing modes in this run! ") 
-    
-    # Critical eigenvalues are the smallest Rm with a growing mode, and its associated vertical wavenumber Q
-    marginal_indx = np.nanargmin(search_Rms[np.where(growing_modes == 1)])
-    marginal_Rm = search_Rms[marginal_indx]
-    marginal_Q = search_Qs[marginal_indx]
-    
-    print("Critical Rm is", marginal_Rm, " critical Q is", marginal_Q)
+    for Pm in Pms:
+        marginal_Rm, marginal_Q = get_critical_parameters_by_Pm(Pm)
     
     
     
