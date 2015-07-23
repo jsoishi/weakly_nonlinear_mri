@@ -254,11 +254,11 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
         
 if __name__ == '__main__':
 
-    #Pm = 1.0E-3
+    Pm = 1.0E-3
     #Pm = 5.0E-3
     #Pm = 1.0E-2
     #Pm = 1.0E-4
-    Pm = 5.0E-4
+    #Pm = 5.0E-4
     
     q = 1.5
     beta = 25.0
@@ -270,7 +270,7 @@ if __name__ == '__main__':
     #dRm = 0.01
     
     Qsearch = np.arange(0.74, 0.76, dQ)
-    Rmsearch = np.arange(4.87, 4.91, dRm) # Great for <1E-3
+    Rmsearch = np.arange(4.87, 4.91, dRm) # Great for <1E-2
     #Rmsearch = np.arange(4.91, 4.95, dRm)
     Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
     

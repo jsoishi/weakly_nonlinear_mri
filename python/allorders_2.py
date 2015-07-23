@@ -115,75 +115,53 @@ class MRI():
         Solves the linear eigenvalue problem for two different resolutions.
         Returns trustworthy eigenvalues using nearest delta, from Boyd chapter 7.
         """
-    
+
         # Solve the linear eigenvalue problem at two different resolutions.
         LEV1 = self.solve_LEV(problem)
         LEV2 = self.solve_LEV_secondgrid(problem)
-        
+    
         # Eigenvalues returned by dedalus must be multiplied by -1
         lambda1 = -LEV1.eigenvalues
         lambda2 = -LEV2.eigenvalues
-        
+
+        # remove nans
+        lambda1 = lambda1[np.isfinite(lambda1)]
+        lambda2 = lambda2[np.isfinite(lambda2)]
+    
         # Make sure argsort treats complex infs correctly
         lambda1[np.where(np.isnan(lambda1) == True)] = None
         lambda2[np.where(np.isnan(lambda2) == True)] = None
         lambda1[np.where(np.isinf(lambda1) == True)] = None
         lambda2[np.where(np.isinf(lambda2) == True)] = None
-        
-        lambda1 = lambda1[~np.isnan(lambda1)]
-        lambda2 = lambda2[~np.isnan(lambda2)]
-        
+    
         # Sort lambda1 and lambda2 by real parts
         lambda1_indx = np.argsort(lambda1.real)
         lambda1_sorted = lambda1[lambda1_indx]
         lambda2_indx = np.argsort(lambda2.real)
         lambda2_sorted = lambda2[lambda2_indx]
-        
-        #lambda1_sorted[100:] = None # Hack to check out first eigenvalues only
-        #lambda2_sorted[100:] = None
-        
+    
         # Reverse engineer correct indices to make unsorted list from sorted
-        reverse_lambda1_indx = sorted(range(len(lambda1_indx)), key = lambda1_indx.__getitem__)
-        reverse_lambda2_indx = sorted(range(len(lambda2_indx)), key = lambda2_indx.__getitem__)
-        
-        """
+        reverse_lambda1_indx = sorted(range(len(lambda1_indx)), key=lambda1_indx.__getitem__)
+        reverse_lambda2_indx = sorted(range(len(lambda2_indx)), key=lambda2_indx.__getitem__)
+    
         # Compute sigmas from lower resolution run (gridnum = N1)
         sigmas = np.zeros(len(lambda1_sorted))
         sigmas[0] = np.abs(lambda1_sorted[0] - lambda1_sorted[1])
         sigmas[1:-1] = [0.5*(np.abs(lambda1_sorted[j] - lambda1_sorted[j - 1]) + np.abs(lambda1_sorted[j + 1] - lambda1_sorted[j])) for j in range(1, len(lambda1_sorted) - 1)]
         sigmas[-1] = np.abs(lambda1_sorted[-2] - lambda1_sorted[-1])
-        
-        # Nearest delta
-        delta_near = [np.nanmin(np.abs(lambda1_sorted[j] - lambda2_sorted)) for j in range(len(lambda1_sorted))]/sigmas
-        """
-        # Compute sigmas from higher resolution run (gridnum = N2)
-        sigmas = np.zeros(len(lambda2_sorted))
-        sigmas[0] = np.abs(lambda2_sorted[0] - lambda2_sorted[1])
-        sigmas[1:-1] = [0.5*(np.abs(lambda2_sorted[j] - lambda2_sorted[j - 1]) + np.abs(lambda2_sorted[j + 1] - lambda2_sorted[j])) for j in range(1, len(lambda2_sorted) - 1)]
-        sigmas[-1] = np.abs(lambda2_sorted[-2] - lambda2_sorted[-1])
+
+        if not (np.isfinite(sigmas)).all():
+            print("WARNING: at least one eigenvalue spacings (sigmas) is non-finite (np.inf or np.nan)!")
     
         # Nearest delta
-        delta_near = [np.nanmin(np.abs(lambda2_sorted[j] - lambda1_sorted)) for j in range(len(lambda1_sorted))]/sigmas[:len(lambda1_sorted)]    
-        
+        delta_near = np.array([np.nanmin(np.abs(lambda1_sorted[j] - lambda2_sorted)/sigmas[j]) for j in range(len(lambda1_sorted))])
+    
         # Discard eigenvalues with 1/delta_near < 10^6
-        #delta_near_unsorted = delta_near[reverse_lambda1_indx]
-        delta_near_unsorted = delta_near[reverse_lambda2_indx]
-        goodevals = copy.copy(lambda1)
-        #goodevals = copy.copy(lambda2)
-        goodevals[np.where(np.isnan(1.0/delta_near_unsorted) == True)] = None
-        goodevals[np.where((1.0/delta_near_unsorted) < 1E6)] = None
-      
-        # diagnostic purposes
-        self.delta_near = delta_near
-        self.delta_near_unsorted = delta_near_unsorted
-        self.lambda1_sorted = lambda1_sorted
-        self.lambda2_sorted = lambda2_sorted
-        self.sigmas = sigmas
-        self.reverse_lambda1_indx = reverse_lambda1_indx
-        self.reverse_lambda2_indx = reverse_lambda2_indx
-        
-        #return delta_near, lambda1, lambda2, sigmas, goodevals, delta_near_unsorted, lambda1_sorted
-        return goodevals, LEV1
+        delta_near_unsorted = delta_near[reverse_lambda1_indx]
+        lambda1[np.where((1.0/delta_near_unsorted) < 1E6)] = None
+        lambda1[np.where(np.isnan(1.0/delta_near_unsorted) == True)] = None
+    
+        return lambda1, LEV1
         
     def find_spurious_eigenvalues(self, problem):
     
@@ -393,10 +371,12 @@ class AdjointHomogenous(MRI):
         # Set boundary conditions for MRI problem
         lv1 = self.set_boundary_conditions(lv1)
         
-        # Solve linear eigenvalue problem
-        self.LEV = self.solve_LEV(lv1)
-        smallest_eval_indx = self.get_smallest_eigenvalue_index_from_above(self.LEV)
-        self.LEV.set_state(smallest_eval_indx)
+        # Discard spurious eigenvalues
+        self.goodevals, self.LEV = self.discard_spurious_eigenvalues(lv1)
+       
+        # Find the largest eigenvalue (fastest growing mode).
+        largest_eval_indx = self.get_largest_real_eigenvalue_index(self.LEV, goodevals = self.goodevals)
+        self.LEV.set_state(largest_eval_indx)
         
         if self.norm == True:
             scale = self.normalize_all_real_or_imag(self.LEV)
@@ -467,17 +447,17 @@ class OrderE(MRI):
         lv1.parameters['beta'] = self.beta
     
         lv1 = self.set_boundary_conditions(lv1)
-        #self.LEV = self.solve_LEV(lv1)
-        #smallest_eval_indx = self.get_smallest_eigenvalue_index_from_above(self.LEV)
-        
+       
         # Discard spurious eigenvalues
         self.goodevals, self.LEV = self.discard_spurious_eigenvalues(lv1)
+       
+        # Find the largest eigenvalue (fastest growing mode).
         largest_eval_indx = self.get_largest_real_eigenvalue_index(self.LEV, goodevals = self.goodevals)
-        #largest_eval_indx = self.get_largest_eigenvalue_index(self.LEV, goodevals = self.goodevals)
+        
         print(largest_eval_indx)
         print(largest_eval_indx.shape)
         print(largest_eval_indx[0])
-        self.LEV.set_state(largest_eval_indx[0])
+        self.LEV.set_state(largest_eval_indx)
         
         if self.norm == True:
             scale = self.normalize_all_real_or_imag(self.LEV)
