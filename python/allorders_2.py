@@ -124,14 +124,10 @@ class MRI():
         # Eigenvalues returned by dedalus must be multiplied by -1
         lambda1 = -LEV1.eigenvalues
         lambda2 = -LEV2.eigenvalues
-        
-        # Sorted indices for lambda1 and lambda2 by real parts
-        lambda1_indx = np.argsort(lambda1.real)
-        lambda2_indx = np.argsort(lambda2.real)
 
         # Reverse engineer correct indices to make unsorted list from sorted
-        reverse_lambda1_indx = sorted(range(len(lambda1_indx)), key=lambda1_indx.__getitem__)
-        reverse_lambda2_indx = sorted(range(len(lambda2_indx)), key=lambda2_indx.__getitem__)
+        reverse_lambda1_indx = np.arange(len(lambda1)) 
+        reverse_lambda2_indx = np.arange(len(lambda2))
     
         lambda1_and_indx = np.asarray(list(zip(lambda1, reverse_lambda1_indx)))
         lambda2_and_indx = np.asarray(list(zip(lambda2, reverse_lambda2_indx)))
