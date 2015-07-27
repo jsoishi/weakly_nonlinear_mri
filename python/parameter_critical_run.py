@@ -125,9 +125,18 @@ def plot_paramspace_run(Rm, Q, evals):
 if __name__ == "__main__":
 
     Pms = [1.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
+    coeffs = np.zeros(len(Pms))
     
-    for Pm in Pms:
+    for i, Pm in enumerate(Pms):
         marginal_Rm, marginal_Q = get_critical_parameters_by_Pm(Pm)
-    
-    
+        
+        amplitude_obj = AmplitudeAlpha(Pm = Pm, Rm = marginal_Rm, Q = marginal_Q)
+        coeffs[i] = amplitude_obj.sat_amp_coeffs
+        
+    plt.figure()
+    plt.plot(Pms, coeffs)
+    plt.semilogx()
+    plt.semilogy()
+    plt.show()
+    pylab.savefig("scrap.png", dpi = 100)
     

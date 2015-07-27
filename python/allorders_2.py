@@ -478,10 +478,11 @@ class AdjointHomogenous(MRI):
         lv1 = self.set_boundary_conditions(lv1)
         
         # Discard spurious eigenvalues
-        self.goodevals, self.LEV = self.discard_spurious_eigenvalues(lv1)
+        self.goodevals, self.goodevals_indx, self.LEV = self.discard_spurious_eigenvalues(lv1)
        
         # Find the largest eigenvalue (fastest growing mode).
-        largest_eval_indx = self.get_largest_real_eigenvalue_index(self.LEV, goodevals = self.goodevals)
+        largest_eval_indx = self.get_largest_real_eigenvalue_index(self.LEV, goodevals = self.goodevals, goodevals_indx = self.goodevals_indx)
+        
         self.LEV.set_state(largest_eval_indx)
         
         if self.norm == True:
@@ -560,8 +561,8 @@ class OrderE(MRI):
         # Find the largest eigenvalue (fastest growing mode).
         largest_eval_indx = self.get_largest_real_eigenvalue_index(self.LEV, goodevals = self.goodevals, goodevals_indx = self.goodevals_indx)
         
-        print(largest_eval_indx)
-        print(largest_eval_indx.shape)
+        #print(largest_eval_indx)
+        #print(largest_eval_indx.shape)
         self.LEV.set_state(largest_eval_indx)
         
         if self.norm == True:
