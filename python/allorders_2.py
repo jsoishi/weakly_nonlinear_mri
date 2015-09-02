@@ -15,13 +15,14 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 128
+gridnum = 32#gridnum = 128
 print("running at gridnum", gridnum)
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
 # Second basis for checking eigenvalues
-x_basis192 = Chebyshev(192)
+x_basis192 = Chebyshev(64)
+#x_basis192 = Chebyshev(192)
 domain192 = Domain([x_basis192], grid_dtype = np.complex128)
 
 
@@ -132,7 +133,7 @@ class MRI():
         lambda1_and_indx = np.asarray(list(zip(lambda1, reverse_lambda1_indx)))
         lambda2_and_indx = np.asarray(list(zip(lambda2, reverse_lambda2_indx)))
         
-        print(lambda1_and_indx, lambda1_and_indx.shape, lambda1, len(lambda1))
+        #print(lambda1_and_indx, lambda1_and_indx.shape, lambda1, len(lambda1))
 
         # remove nans
         lambda1_and_indx = lambda1_and_indx[np.isfinite(lambda1)]
@@ -159,7 +160,7 @@ class MRI():
     
         # Discard eigenvalues with 1/delta_near < 10^6
         lambda1_and_indx = lambda1_and_indx[np.where((1.0/delta_near) > 1E6)]
-        print(lambda1_and_indx)
+        #print(lambda1_and_indx)
         
         lambda1 = lambda1_and_indx[:, 0]
         indx = lambda1_and_indx[:, 1]
@@ -213,8 +214,8 @@ class MRI():
         lambda2_sorted = lambda2[lambda2_indx]
         
         self.lambda1_sorted = lambda1_sorted
-        print(lambda1_sorted)
-        print(len(lambda1_sorted), len(np.where(np.isfinite(lambda1) == True)))
+        #print(lambda1_sorted)
+        #print(len(lambda1_sorted), len(np.where(np.isfinite(lambda1) == True)))
     
         # Compute sigmas from lower resolution run (gridnum = N1)
         sigmas = np.zeros(len(lambda1_sorted))
@@ -228,13 +229,13 @@ class MRI():
         # Nearest delta
         delta_near = np.array([np.nanmin(np.abs(lambda1_sorted[j] - lambda2_sorted)/sigmas[j]) for j in range(len(lambda1_sorted))])
     
-        print(len(delta_near), len(reverse_lambda1_indx), len(LEV1.eigenvalues))
+        #print(len(delta_near), len(reverse_lambda1_indx), len(LEV1.eigenvalues))
         # Discard eigenvalues with 1/delta_near < 10^6
         delta_near_unsorted = np.zeros(len(LEV1.eigenvalues))
         for i in range(len(delta_near)):
             delta_near_unsorted[reverse_lambda1_indx[i]] = delta_near[i]
         #delta_near_unsorted[reverse_lambda1_indx] = delta_near#[reverse_lambda1_indx]
-        print(delta_near_unsorted)
+        #print(delta_near_unsorted)
         
         self.delta_near_unsorted = delta_near_unsorted
         self.delta_near = delta_near
@@ -343,7 +344,7 @@ class MRI():
         #largest_eval_indx = indx[evals.real == np.nanmax(evals.real)]
         largest_eval_indx = np.nanargmax(evals.real)
         
-        print(largest_eval_indx)
+        #print(largest_eval_indx)
         
         return largest_eval_indx[0]
         
@@ -394,6 +395,29 @@ class MRI():
         scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
         
         return scale
+        
+    def normalize_all_real_or_imag_bystate(self, state):
+        
+        """
+        Normalize state vectors such that they are purely real or purely imaginary.
+        """
+        
+        n = np.abs(state['g'])[13]
+        a = state['g'].real[13]/n
+        b = state['g'].imag[13]/n
+        scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
+        
+        return scale
+        
+    def normalize_vector(self, evector):
+        
+        """
+        Normalize state vectors such that they are purely real or purely imaginary.
+        """
+        
+        evector = evector/np.linalg.norm(evector)
+        
+        return evector
         
     def get_derivative(self, field):
     
@@ -485,18 +509,24 @@ class AdjointHomogenous(MRI):
         
         self.LEV.set_state(largest_eval_indx)
         
+        # All eigenfunctions must be scaled s.t. their max is 1
+        self.psi = self.LEV.state['psi']
+        self.u = self.LEV.state['u']
+        self.A = self.LEV.state['A']
+        self.B = self.LEV.state['B']
+        
+        self.psi['g'] = self.normalize_vector(self.psi['g'])
+        self.u['g'] = self.normalize_vector(self.u['g'])
+        self.A['g'] = self.normalize_vector(self.A['g'])
+        self.B['g'] = self.normalize_vector(self.B['g'])
+        
         if self.norm == True:
             scale = self.normalize_all_real_or_imag(self.LEV)
             
-            self.psi = (self.LEV.state['psi']*scale).evaluate()
-            self.u = (self.LEV.state['u']*scale).evaluate()
-            self.A = (self.LEV.state['A']*scale).evaluate()
-            self.B = (self.LEV.state['B']*scale).evaluate()
-        else:
-            self.psi = self.LEV.state['psi']
-            self.u = self.LEV.state['u']
-            self.A = self.LEV.state['A']
-            self.B = self.LEV.state['B']
+            self.psi = (self.psi*scale).evaluate()
+            self.u = (self.u*scale).evaluate()
+            self.A = (self.A*scale).evaluate()
+            self.B = (self.B*scale).evaluate()
         
         self.psi.name = "psi"
         self.u.name = "u"
@@ -565,18 +595,24 @@ class OrderE(MRI):
         #print(largest_eval_indx.shape)
         self.LEV.set_state(largest_eval_indx)
         
+        # All eigenfunctions must be scaled s.t. their max is 1
+        self.psi = self.LEV.state['psi']
+        self.u = self.LEV.state['u']
+        self.A = self.LEV.state['A']
+        self.B = self.LEV.state['B']
+        
+        self.psi['g'] = self.normalize_vector(self.psi['g'])
+        self.u['g'] = self.normalize_vector(self.u['g'])
+        self.A['g'] = self.normalize_vector(self.A['g'])
+        self.B['g'] = self.normalize_vector(self.B['g'])
+        
         if self.norm == True:
             scale = self.normalize_all_real_or_imag(self.LEV)
             
-            self.psi = (self.LEV.state['psi']*scale).evaluate()
-            self.u = (self.LEV.state['u']*scale).evaluate()
-            self.A = (self.LEV.state['A']*scale).evaluate()
-            self.B = (self.LEV.state['B']*scale).evaluate()
-        else:
-            self.psi = self.LEV.state['psi']
-            self.u = self.LEV.state['u']
-            self.A = self.LEV.state['A']
-            self.B = self.LEV.state['B']
+            self.psi = (self.psi*scale).evaluate()
+            self.u = (self.u*scale).evaluate()
+            self.A = (self.A*scale).evaluate()
+            self.B = (self.B*scale).evaluate()
             
         self.psi.name = "psi"
         self.u.name = "u"
@@ -871,9 +907,61 @@ class OrderE2(MRI):
         self.A22 = self.BVP22.state['A22']
         self.B22 = self.BVP22.state['B22']
         
+        # All eigenfunctions must be scaled s.t. their max is 1
+        self.psi20['g'] = self.normalize_vector(self.psi20['g'])
+        self.u20['g'] = self.normalize_vector(self.u20['g'])
+        self.A20['g'] = self.normalize_vector(self.A20['g'])
+        self.B20['g'] = self.normalize_vector(self.B20['g'])
+        self.psi21['g'] = self.normalize_vector(self.psi21['g'])
+        self.u21['g'] = self.normalize_vector(self.u21['g'])
+        self.A21['g'] = self.normalize_vector(self.A21['g'])
+        self.B21['g'] = self.normalize_vector(self.B21['g'])
+        self.psi22['g'] = self.normalize_vector(self.psi22['g'])
+        self.u22['g'] = self.normalize_vector(self.u22['g'])
+        self.A22['g'] = self.normalize_vector(self.A22['g'])
+        self.B22['g'] = self.normalize_vector(self.B22['g'])
+        
+        self.psi21.name = "psi21"
+        self.u21.name = "u21"
+        self.A21.name = "A21"
+        self.B21.name = "B21"
+                
+        self.psi22.name = "psi22"
+        self.u22.name = "u22"
+        self.A22.name = "A22"
+        self.B22.name = "B22"
+        
+        if self.norm == True:
+            #scale20 = self.normalize_all_real_or_imag(self.BVP20)
+            scale21 = self.normalize_all_real_or_imag_bystate(self.psi21)
+            scale22 = self.normalize_all_real_or_imag_bystate(self.psi22)
+            
+            #self.psi20 = (self.psi20*scale).evaluate()
+            #self.u20 = (self.u20*scale).evaluate()
+            #self.A20 = (self.A20*scale).evaluate()
+            #self.B20 = (self.B20*scale).evaluate()
+            
+            self.psi21 = (self.psi21*scale21).evaluate()
+            self.u21 = (self.u21*scale21).evaluate()
+            self.A21 = (self.A21*scale21).evaluate()
+            self.B21 = (self.B21*scale21).evaluate()
+            
+            self.psi22 = (self.psi22*scale22).evaluate()
+            self.u22 = (self.u22*scale22).evaluate()
+            self.A22 = (self.A22*scale22).evaluate()
+            self.B22 = (self.B22*scale22).evaluate()
+            
+        
         # These should be zero... 
         self.psi20['g'] = np.zeros(gridnum, np.complex_)
         self.B20['g'] = np.zeros(gridnum, np.complex_)
+        
+        self.u20['g'] = self.normalize_vector(self.u20['g'])
+        self.A20['g'] = self.normalize_vector(self.A20['g'])
+        if self.norm == True:
+            scale20 = self.normalize_all_real_or_imag_bystate(self.u20)
+            self.u20 = (self.u20*scale20).evaluate()
+            self.A20 = (self.A20*scale20).evaluate()
         
         # Take relevant derivatives and complex conjugates
         self.psi20_x = self.get_derivative(self.psi20)
@@ -1086,7 +1174,9 @@ class AmplitudeAlpha(MRI):
     
         self.linear_term = 1j*self.Q*self.b - 1j*self.Q**3*self.g
     
-        self.sat_amp_coeffs = (1j*self.Q*self.b - 1j*self.Q**3*self.g)/self.a
+        print("sat_amp_coeffs = np.sqrt((-1j*self.Q*self.b + 1j*self.Q**3*self.g)/self.c)")
+        self.sat_amp_coeffs = np.sqrt((-1j*self.Q*self.b + 1j*self.Q**3*self.g)/self.c)
+        print("a", self.a, "c", self.c, "ctwiddle", self.ctwiddle, "b", self.b, "h", self.h, "g", self.g)
         print("saturation amp", self.sat_amp_coeffs)
         
         # For interactive diagnostic purposes only

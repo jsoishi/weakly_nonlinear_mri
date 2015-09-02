@@ -134,9 +134,9 @@ if __name__ == "__main__":
         coeffs[i] = amplitude_obj.sat_amp_coeffs
         
     plt.figure()
-    plt.plot(Pms, coeffs)
+    plt.plot(Pms, coeffs, 'o')
     plt.semilogx()
     plt.semilogy()
     plt.show()
-    pylab.savefig("scrap.png", dpi = 100)
+    pylab.savefig("scrap3.png", dpi = 100)
     
