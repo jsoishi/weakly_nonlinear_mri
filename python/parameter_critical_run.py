@@ -126,6 +126,7 @@ if __name__ == "__main__":
 
     Pms = [1.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
     coeffs = np.zeros(len(Pms))
+    covera = np.zeros(len(Pms))
     
     for i, Pm in enumerate(Pms):
         marginal_Rm, marginal_Q = get_critical_parameters_by_Pm(Pm)
@@ -133,10 +134,24 @@ if __name__ == "__main__":
         amplitude_obj = AmplitudeAlpha(Pm = Pm, Rm = marginal_Rm, Q = marginal_Q)
         coeffs[i] = amplitude_obj.sat_amp_coeffs
         
+        # c/a value plotted in Umurhan+
+        covera[i] = amplitude_obj.c/amplitude_obj.a
+        
     plt.figure()
     plt.plot(Pms, coeffs, 'o')
     plt.semilogx()
     plt.semilogy()
+    plt.xlabel("Pm")
+    plt.ylabel("saturation amplitude")
     plt.show()
     pylab.savefig("scrap3.png", dpi = 100)
+    
+    plt.figure()
+    plt.plot(Pms, covera, 'o')
+    plt.semilogx()
+    plt.semilogy()
+    plt.xlabel("Pm")
+    plt.ylabel("c/a")
+    plt.show()
+    pylab.savefig("covera.png", dpi = 100)
     
