@@ -669,6 +669,7 @@ class OrderE(MRI):
         self.B_star_x = self.get_derivative(self.B_star)
         
         # Normalize derivatives and cc's as well... 
+        """
         self.psi_x['g'] = self.normalize_vector(self.psi_x['g'])
         self.psi_xx['g'] = self.normalize_vector(self.psi_xx['g'])
         self.psi_xxx['g'] = self.normalize_vector(self.psi_xxx['g'])
@@ -696,6 +697,7 @@ class OrderE(MRI):
         
         self.B_star['g'] = self.normalize_vector(self.B_star['g'])
         self.B_star_x['g'] = self.normalize_vector(self.B_star_x['g'])
+        """
         
 class N2(MRI):
 
@@ -748,6 +750,7 @@ class N2(MRI):
         self.N20_B.name = "N20_B"
         
         # Let's try normalizing N2 eigenvectors.
+        """
         self.N22_psi['g'] = self.normalize_vector(self.N22_psi['g'])
         self.N22_u['g'] = self.normalize_vector(self.N22_u['g'])
         self.N22_A['g'] = self.normalize_vector(self.N22_A['g'])
@@ -757,6 +760,7 @@ class N2(MRI):
         self.N20_u['g'] = self.normalize_vector(self.N20_u['g'])
         self.N20_A['g'] = self.normalize_vector(self.N20_A['g'])
         self.N20_B['g'] = self.normalize_vector(self.N20_B['g'])
+        """
        
         
 class OrderE2(MRI):
@@ -1084,6 +1088,7 @@ class OrderE2(MRI):
         self.A22_xxx = self.get_derivative(self.A22_xx)
         
         # Normalize derivatives and cc's as well.
+        """
         self.psi20_x['g'] = self.normalize_vector(self.psi20_x['g'])
         self.psi20_xx['g'] = self.normalize_vector(self.psi20_xx['g'])
         self.psi20_xxx['g'] = self.normalize_vector(self.psi20_xxx['g'])
@@ -1132,6 +1137,7 @@ class OrderE2(MRI):
         self.A22_x['g'] = self.normalize_vector(self.A22_x['g'])
         self.A22_xx['g'] = self.normalize_vector(self.A22_xx['g'])
         self.A22_xxx['g'] = self.normalize_vector(self.A22_xxx['g'])
+        """
         
 class N3(MRI):
 
@@ -1196,10 +1202,10 @@ class N3(MRI):
         self.N31_B = N31_B.evaluate()
         
         # Let's try normalizing N3 eigenvectors.
-        self.N31_psi['g'] = self.normalize_vector(self.N31_psi['g'])
-        self.N31_u['g'] = self.normalize_vector(self.N31_u['g'])
-        self.N31_A['g'] = self.normalize_vector(self.N31_A['g'])
-        self.N31_B['g'] = self.normalize_vector(self.N31_B['g'])
+        #self.N31_psi['g'] = self.normalize_vector(self.N31_psi['g'])
+        #self.N31_u['g'] = self.normalize_vector(self.N31_u['g'])
+        #self.N31_A['g'] = self.normalize_vector(self.N31_A['g'])
+        #self.N31_B['g'] = self.normalize_vector(self.N31_B['g'])
         
         
 class AmplitudeAlpha(MRI):
@@ -1265,6 +1271,18 @@ class AmplitudeAlpha(MRI):
         g_psi = (2/self.beta)*o1.A
         g_psi = g_psi.evaluate()
         
+        # Hack... normalize all the RHS's
+        a_psi_rhs['g'] = self.normalize_vector(a_psi_rhs['g'])
+        b_psi_rhs['g'] = self.normalize_vector(b_psi_rhs['g'])
+        n3.N31_psi['g'] = self.normalize_vector(n3.N31_psi['g'])
+        n3.N31_u['g'] = self.normalize_vector(n3.N31_u['g'])
+        n3.N31_A['g'] = self.normalize_vector(n3.N31_A['g'])
+        n3.N31_B['g'] = self.normalize_vector(n3.N31_B['g'])
+        l2twiddlel1twiddle_psi['g'] = self.normalize_vector(l2twiddlel1twiddle_psi['g'])
+        l2twiddlel1twiddle_u['g'] = self.normalize_vector(l2twiddlel1twiddle_u['g'])
+        l2twiddlel1twiddle_A['g'] = self.normalize_vector(l2twiddlel1twiddle_A['g'])
+        l2twiddlel1twiddle_B['g'] = self.normalize_vector(l2twiddlel1twiddle_B['g'])
+        g_psi['g'] = self.normalize_vector(g_psi['g'])
         
         # a = <va . D V11*>
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
