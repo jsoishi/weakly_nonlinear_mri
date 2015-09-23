@@ -15,13 +15,14 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 32#gridnum = 128
+gridnum = 64#gridnum = 128
 print("running at gridnum", gridnum)
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
 # Second basis for checking eigenvalues
-x_basis192 = Chebyshev(64)
+x_basis192 = Chebyshev(128)
+#x_basis192 = Chebyshev(64)
 #x_basis192 = Chebyshev(192)
 domain192 = Domain([x_basis192], grid_dtype = np.complex128)
 
@@ -32,7 +33,7 @@ class MRI():
     Base class for MRI equations.
     """
 
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         self.Q = Q
         self.Rm = Rm
@@ -425,15 +426,32 @@ class MRI():
         """
         Normalize total state vector.
         """
+        nz = self.gridnum
+        Lz = 2*np.pi/self.Q
+        z = np.linspace(0, Lz, nz, endpoint=False)
+        zz = z.reshape(nz, 1)
         
+        dz = z[1] - z[0]
+        
+        # structure in the z direction
+        self.eiqz = np.cos(self.Q*zz) + 1j*np.sin(self.Q*zz)
+        self.ei2qz = np.cos(2*self.Q*zz) + 1j*np.sin(2*self.Q*zz)
+        self.ei0qz = np.cos(0*self.Q*zz) + 1j*np.sin(0*self.Q*zz)
+        
+        veclen = len((psi['g']*self.eiqz).ravel())
+        
+        print("begin norm")
         veclen = len(psi['g'])
-        evector = np.zeros(veclen*4)
-        evector[0:veclen] = psi['g']
-        evector[veclen:veclen*2] = u['g']
-        evector[veclen*2:veclen*3] = A['g']
-        evector[veclen*3:] = B['g']
+        evector = np.zeros(veclen*4, np.complex_)
+        evector[0:veclen] = psi['g'] #+ psi['g'].conj()
+        evector[veclen:veclen*2] = u['g'] #+ u['g'].conj()
+        evector[veclen*2:veclen*3] = A['g'] #+ A['g'].conj()
+        evector[veclen*3:] = B['g'] #+ B['g'].conj()
         
         norm = np.linalg.norm(evector)
+        print(evector)
+        print(norm)
+        print("end norm")
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
@@ -441,6 +459,50 @@ class MRI():
         B['g'] = B['g']/norm
         
         return psi, u, A, B
+        
+    def normalize_state_vector2(self, psi0, u0, A0, B0, psi1, u1, A1, B1, psi2, u2, A2, B2):
+        
+        """
+        Normalize total state vector.
+        """
+        
+        veclen = len(psi0['g'])
+        evector = np.zeros(veclen*12, np.complex_)
+        evector[0:veclen] = psi0['g']
+        evector[veclen:veclen*2] = u0['g']
+        evector[veclen*2:veclen*3] = A0['g']
+        evector[veclen*3:veclen*4] = B0['g']
+        
+        evector[veclen*4:veclen*5] = psi1['g']
+        evector[veclen*5:veclen*6] = u1['g']
+        evector[veclen*6:veclen*7] = A1['g']
+        evector[veclen*7:veclen*8] = B1['g']
+        
+        evector[veclen*8:veclen*9] = psi2['g']
+        evector[veclen*9:veclen*10] = u2['g']
+        evector[veclen*10:veclen*11] = A2['g']
+        evector[veclen*11:] = B2['g']
+        
+        norm = np.linalg.norm(evector)
+        #print(evector)
+        print(norm)
+        
+        psi0['g'] = psi0['g']/norm
+        u0['g'] = u0['g']/norm
+        A0['g'] = A0['g']/norm
+        B0['g'] = B0['g']/norm
+        
+        psi1['g'] = psi1['g']/norm
+        u1['g'] = u1['g']/norm
+        A1['g'] = A1['g']/norm
+        B1['g'] = B1['g']/norm
+        
+        psi2['g'] = psi2['g']/norm
+        u2['g'] = u2['g']/norm
+        A2['g'] = A2['g']/norm
+        B2['g'] = B2['g']/norm
+        
+        return psi0, u0, A0, B0, psi1, u1, A1, B1, psi2, u2, A2, B2
         
     def get_derivative(self, field):
     
@@ -492,7 +554,7 @@ class AdjointHomogenous(MRI):
     Returns V^dagger
     """
 
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing Adjoint Homogenous")
         
@@ -507,11 +569,16 @@ class AdjointHomogenous(MRI):
         #lv1.add_equation("-1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
         #lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
         #lv1.add_equation("-1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+        
+        lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
+        lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
+        lv1.add_equation("1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
+        lv1.add_equation("1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
 
-        lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
-        lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
-        lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
-        lv1.add_equation("1j*dt(B) - iRm*Q**2*B + iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+        #lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
+        #lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
+        #lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
+        #lv1.add_equation("1j*dt(B) - iRm*Q**2*B + iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
 
 
         lv1.add_equation("dx(psi) - psix = 0")
@@ -538,13 +605,10 @@ class AdjointHomogenous(MRI):
         
         self.LEV.set_state(largest_eval_indx)
         
-        # All eigenfunctions must be scaled s.t. their max is 1
         self.psi = self.LEV.state['psi']
         self.u = self.LEV.state['u']
         self.A = self.LEV.state['A']
         self.B = self.LEV.state['B']
-        
-        self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
                
         #self.psi['g'] = self.normalize_vector(self.psi['g'])
         #self.u['g'] = self.normalize_vector(self.u['g'])
@@ -558,6 +622,8 @@ class AdjointHomogenous(MRI):
             self.u = (self.u*scale).evaluate()
             self.A = (self.A*scale).evaluate()
             self.B = (self.B*scale).evaluate()
+            
+        self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
         
         self.psi.name = "psi"
         self.u.name = "u"
@@ -600,7 +666,7 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing Order E")
         
@@ -735,7 +801,7 @@ class N2(MRI):
     
     """
     
-    def __init__(self, o1 = None, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         print("initializing N2")
     
@@ -799,7 +865,7 @@ class OrderE2(MRI):
     
     """
     
-    def __init__(self, o1 = None, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         print("initializing Order E2")
         
@@ -1012,7 +1078,6 @@ class OrderE2(MRI):
         #self.A22['g'] = self.normalize_vector(self.A22['g'])
         #self.B22['g'] = self.normalize_vector(self.B22['g'])
         
-        #self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
         self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector(self.psi21, self.u21, self.A21, self.B21)
         self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector(self.psi22, self.u22, self.A22, self.B22)
         
@@ -1048,6 +1113,7 @@ class OrderE2(MRI):
             
         
         self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
+        #self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector2(self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22)
         
         #self.u20['g'] = self.normalize_vector(self.u20['g'])
         #self.A20['g'] = self.normalize_vector(self.A20['g'])
@@ -1181,7 +1247,7 @@ class N3(MRI):
     
     """
     
-    def __init__(self, o1 = None, o2 = None, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, o2 = None, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing N3")
         
@@ -1263,7 +1329,7 @@ class AmplitudeAlpha(MRI):
     
     """
     
-    def __init__(self, o1 = None, o2 = None, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, o2 = None, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing Amplitude Alpha")
       

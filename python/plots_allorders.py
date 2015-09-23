@@ -52,6 +52,100 @@ def plot_eigenfunctions(allorders_object, savename = "scrap.png"):
     fig.legend((l1, l2), ("real", "imag"), loc = "upper right")
     
     pylab.savefig(savename)
+    
+def plotvector(obj, savetitle = "vectorplot"):
+    
+    fig = plt.figure()
+    ax1 = fig.add_subplot(221)
+    ax2 = fig.add_subplot(222)
+    ax3 = fig.add_subplot(223)
+    ax4 = fig.add_subplot(224)
+    
+    ax1.plot(obj.x, obj.psi['g'].real, color = "black")
+    ax1.plot(obj.x, obj.psi['g'].imag, color = "red")
+    ax1.set_title(r"$\Psi$")
+    
+    ax2.plot(obj.x, obj.u['g'].real, color = "black")
+    ax2.plot(obj.x, obj.u['g'].imag, color = "red")
+    ax2.set_title(r"$u$")
+    
+    ax3.plot(obj.x, obj.A['g'].real, color = "black")
+    ax3.plot(obj.x, obj.A['g'].imag, color = "red")
+    ax3.set_title(r"$A$")
+    
+    ax4.plot(obj.x, obj.B['g'].real, color = "black")
+    ax4.plot(obj.x, obj.B['g'].imag, color = "red")
+    ax4.set_title(r"$B$")
+    
+    plt.savefig(savetitle+".png")
+    
+def plotvector2(obj, savetitle = "vectorplot2"):
+    
+    fig = plt.figure()
+    ax1 = fig.add_subplot(341)
+    ax2 = fig.add_subplot(342)
+    ax3 = fig.add_subplot(343)
+    ax4 = fig.add_subplot(344)
+    
+    ax1.plot(obj.x, obj.psi20['g'].real, color = "black")
+    ax1.plot(obj.x, obj.psi20['g'].imag, color = "red")
+    ax1.set_title(r"$\Psi$")
+    
+    ax2.plot(obj.x, obj.u20['g'].real, color = "black")
+    ax2.plot(obj.x, obj.u20['g'].imag, color = "red")
+    ax2.set_title(r"$u$")
+    
+    ax3.plot(obj.x, obj.A20['g'].real, color = "black")
+    ax3.plot(obj.x, obj.A20['g'].imag, color = "red")
+    ax3.set_title(r"$A$")
+    
+    ax4.plot(obj.x, obj.B20['g'].real, color = "black")
+    ax4.plot(obj.x, obj.B20['g'].imag, color = "red")
+    ax4.set_title(r"$B$")
+    
+    ax1 = fig.add_subplot(345)
+    ax2 = fig.add_subplot(346)
+    ax3 = fig.add_subplot(347)
+    ax4 = fig.add_subplot(348)
+    
+    ax1.plot(obj.x, obj.psi21['g'].real, color = "black")
+    ax1.plot(obj.x, obj.psi21['g'].imag, color = "red")
+    ax1.set_title(r"$\Psi$")
+    
+    ax2.plot(obj.x, obj.u21['g'].real, color = "black")
+    ax2.plot(obj.x, obj.u21['g'].imag, color = "red")
+    ax2.set_title(r"$u$")
+    
+    ax3.plot(obj.x, obj.A21['g'].real, color = "black")
+    ax3.plot(obj.x, obj.A21['g'].imag, color = "red")
+    ax3.set_title(r"$A$")
+    
+    ax4.plot(obj.x, obj.B21['g'].real, color = "black")
+    ax4.plot(obj.x, obj.B21['g'].imag, color = "red")
+    ax4.set_title(r"$B$")
+    
+    ax1 = fig.add_subplot(349)
+    ax2 = fig.add_subplot(3,4,10)
+    ax3 = fig.add_subplot(3,4,11)
+    ax4 = fig.add_subplot(3,4,12)
+    
+    ax1.plot(obj.x, obj.psi22['g'].real, color = "black")
+    ax1.plot(obj.x, obj.psi22['g'].imag, color = "red")
+    ax1.set_title(r"$\Psi$")
+    
+    ax2.plot(obj.x, obj.u22['g'].real, color = "black")
+    ax2.plot(obj.x, obj.u22['g'].imag, color = "red")
+    ax2.set_title(r"$u$")
+    
+    ax3.plot(obj.x, obj.A22['g'].real, color = "black")
+    ax3.plot(obj.x, obj.A22['g'].imag, color = "red")
+    ax3.set_title(r"$A$")
+    
+    ax4.plot(obj.x, obj.B22['g'].real, color = "black")
+    ax4.plot(obj.x, obj.B22['g'].imag, color = "red")
+    ax4.set_title(r"$B$")
+    
+    plt.savefig(savetitle+".png")
 
 def ploteigs(goodevals):
 

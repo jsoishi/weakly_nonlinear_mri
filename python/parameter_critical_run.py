@@ -125,9 +125,11 @@ def plot_paramspace_run(Rm, Q, evals):
 if __name__ == "__main__":
 
     #Pms = [1.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
-    Pms = [1.0E-3]
+    Pms = [5.0E-4, 1.0E-3, 5.0E-3]
     coeffs = np.zeros(len(Pms))
     covera = np.zeros(len(Pms))
+    
+    objs = {}
     
     for i, Pm in enumerate(Pms):
         marginal_Rm, marginal_Q = get_critical_parameters_by_Pm(Pm)
@@ -137,6 +139,8 @@ if __name__ == "__main__":
         
         # c/a value plotted in Umurhan+
         covera[i] = amplitude_obj.c/amplitude_obj.a
+        
+        objs[Pm] = amplitude_obj
         
     plt.figure()
     plt.plot(Pms, coeffs, 'o')
