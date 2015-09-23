@@ -15,14 +15,14 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 64#gridnum = 128
+gridnum = 32#gridnum = 128
 print("running at gridnum", gridnum)
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
 # Second basis for checking eigenvalues
-x_basis192 = Chebyshev(128)
-#x_basis192 = Chebyshev(64)
+#x_basis192 = Chebyshev(128)
+x_basis192 = Chebyshev(64)
 #x_basis192 = Chebyshev(192)
 domain192 = Domain([x_basis192], grid_dtype = np.complex128)
 
@@ -565,22 +565,11 @@ class AdjointHomogenous(MRI):
                 field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
                 param_names=['Q', 'iR', 'iRm', 'q', 'beta'])
 
-        #lv1.add_equation("1j*Q**2*dt(psi) - 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
-        #lv1.add_equation("-1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
-        #lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
-        #lv1.add_equation("-1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+        lv1.add_equation("1j*Q**2*dt(psi) - 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
+        lv1.add_equation("-1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
+        lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
+        lv1.add_equation("-1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
         
-        lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
-        lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
-        lv1.add_equation("1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
-        lv1.add_equation("1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
-
-        #lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
-        #lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
-        #lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
-        #lv1.add_equation("1j*dt(B) - iRm*Q**2*B + iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
-
-
         lv1.add_equation("dx(psi) - psix = 0")
         lv1.add_equation("dx(psix) - psixx = 0")
         lv1.add_equation("dx(psixx) - psixxx = 0")

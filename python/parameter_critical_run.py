@@ -125,7 +125,7 @@ def plot_paramspace_run(Rm, Q, evals):
 if __name__ == "__main__":
 
     #Pms = [1.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
-    Pms = [5.0E-4, 1.0E-3, 5.0E-3]
+    Pms = [1.0E-3]
     coeffs = np.zeros(len(Pms))
     covera = np.zeros(len(Pms))
     
