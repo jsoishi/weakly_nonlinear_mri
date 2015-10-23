@@ -79,6 +79,80 @@ def plotvector(obj, savetitle = "vectorplot"):
     
     plt.savefig(savetitle+".png")
     
+def plotN2(obj, savetitle = "vectorplot"):
+    
+    fig = plt.figure()
+    ax1 = fig.add_subplot(241)
+    ax2 = fig.add_subplot(242)
+    ax3 = fig.add_subplot(243)
+    ax4 = fig.add_subplot(244)
+    
+    ax1.plot(obj.x, obj.N20_psi['g'].real, color = "black")
+    ax1.plot(obj.x, obj.N20_psi['g'].imag, color = "red")
+    ax1.set_title(r"$\Psi$")
+    
+    ax2.plot(obj.x, obj.N20_u['g'].real, color = "black")
+    ax2.plot(obj.x, obj.N20_u['g'].imag, color = "red")
+    ax2.set_title(r"$u$")
+    
+    ax3.plot(obj.x, obj.N20_A['g'].real, color = "black")
+    ax3.plot(obj.x, obj.N20_A['g'].imag, color = "red")
+    ax3.set_title(r"$A$")
+    
+    ax4.plot(obj.x, obj.N20_B['g'].real, color = "black")
+    ax4.plot(obj.x, obj.N20_B['g'].imag, color = "red")
+    ax4.set_title(r"$B$")
+    
+    ax1 = fig.add_subplot(245)
+    ax2 = fig.add_subplot(246)
+    ax3 = fig.add_subplot(247)
+    ax4 = fig.add_subplot(248)
+    
+    ax1.plot(obj.x, obj.N22_psi['g'].real, color = "black")
+    ax1.plot(obj.x, obj.N22_psi['g'].imag, color = "red")
+    ax1.set_title(r"$\Psi$")
+    
+    ax2.plot(obj.x, obj.N22_u['g'].real, color = "black")
+    ax2.plot(obj.x, obj.N22_u['g'].imag, color = "red")
+    ax2.set_title(r"$u$")
+    
+    ax3.plot(obj.x, obj.N22_A['g'].real, color = "black")
+    ax3.plot(obj.x, obj.N22_A['g'].imag, color = "red")
+    ax3.set_title(r"$A$")
+    
+    ax4.plot(obj.x, obj.N22_B['g'].real, color = "black")
+    ax4.plot(obj.x, obj.N22_B['g'].imag, color = "red")
+    ax4.set_title(r"$B$")
+    
+    plt.savefig(savetitle+".png")
+    
+def plotN3(obj, savetitle = "vectorplot"):
+    
+    fig = plt.figure(figsize = (12, 4))
+    ax1 = fig.add_subplot(141)
+    ax2 = fig.add_subplot(142)
+    ax3 = fig.add_subplot(143)
+    ax4 = fig.add_subplot(144)
+    
+    ax1.plot(obj.x, obj.N31_psi['g'].real, color = "black")
+    ax1.plot(obj.x, obj.N31_psi['g'].imag, color = "red")
+    ax1.set_title(r"$\Psi$")
+    
+    ax2.plot(obj.x, obj.N31_u['g'].real, color = "black")
+    ax2.plot(obj.x, obj.N31_u['g'].imag, color = "red")
+    ax2.set_title(r"$u$")
+    
+    ax3.plot(obj.x, obj.N31_A['g'].real, color = "black")
+    ax3.plot(obj.x, obj.N31_A['g'].imag, color = "red")
+    ax3.set_title(r"$A$")
+    
+    ax4.plot(obj.x, obj.N31_B['g'].real, color = "black")
+    ax4.plot(obj.x, obj.N31_B['g'].imag, color = "red")
+    ax4.set_title(r"$B$")
+    
+    plt.savefig(savetitle+".png")
+    
+    
 def plotvector2(obj, savetitle = "vectorplot2"):
     
     fig = plt.figure()

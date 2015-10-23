@@ -15,14 +15,14 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 32#gridnum = 128
+gridnum = 256
 print("running at gridnum", gridnum)
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
 # Second basis for checking eigenvalues
-#x_basis192 = Chebyshev(128)
-x_basis192 = Chebyshev(64)
+x_basis192 = Chebyshev(512)
+#x_basis192 = Chebyshev(64)
 #x_basis192 = Chebyshev(192)
 domain192 = Domain([x_basis192], grid_dtype = np.complex128)
 
@@ -426,19 +426,6 @@ class MRI():
         """
         Normalize total state vector.
         """
-        nz = self.gridnum
-        Lz = 2*np.pi/self.Q
-        z = np.linspace(0, Lz, nz, endpoint=False)
-        zz = z.reshape(nz, 1)
-        
-        dz = z[1] - z[0]
-        
-        # structure in the z direction
-        self.eiqz = np.cos(self.Q*zz) + 1j*np.sin(self.Q*zz)
-        self.ei2qz = np.cos(2*self.Q*zz) + 1j*np.sin(2*self.Q*zz)
-        self.ei0qz = np.cos(0*self.Q*zz) + 1j*np.sin(0*self.Q*zz)
-        
-        veclen = len((psi['g']*self.eiqz).ravel())
         
         print("begin norm")
         veclen = len(psi['g'])
@@ -449,8 +436,6 @@ class MRI():
         evector[veclen*3:] = B['g'] #+ B['g'].conj()
         
         norm = np.linalg.norm(evector)
-        print(evector)
-        print(norm)
         print("end norm")
         
         psi['g'] = psi['g']/norm
@@ -565,6 +550,19 @@ class AdjointHomogenous(MRI):
                 field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
                 param_names=['Q', 'iR', 'iRm', 'q', 'beta'])
 
+        #switched q-2 to 2-q
+        #lv1.add_equation("1j*Q**2*dt(psi) - 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
+        #lv1.add_equation("-1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
+        #lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
+        #lv1.add_equation("-1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+        
+        #psi and A are upside down
+        #lv1.add_equation("1j*Q**2*dt(psi) - 1j*dt(psixx) - 1j*Q*A - 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
+        #lv1.add_equation("-1j*dt(u) - 1j*Q*B - 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
+        #lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) + 1j*Q*q*B + 1j*(2/beta)*Q**3*psi - 1j*(2/beta)*Q*psixx = 0")
+        #lv1.add_equation("-1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) - 1j*(2/beta)*Q*u = 0")
+        
+        #wait - adjoint should be taken as (L.subs(dz, 1j*Q)).adjoint() -- the following are correct.
         lv1.add_equation("1j*Q**2*dt(psi) - 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
         lv1.add_equation("-1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
         lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
@@ -666,7 +664,7 @@ class OrderE(MRI):
                 param_names=['Q', 'iR', 'iRm', 'q', 'beta'])
 
         lv1.add_equation("-1j*dt(psixx) + 1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A = 0")
-        lv1.add_equation("-1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - (2/beta)*1j*Q*B = 0") 
+        lv1.add_equation("-1j*dt(u) - iR*dx(ux) + iR*Q**2*u - (q - 2)*1j*Q*psi - (2/beta)*1j*Q*B = 0") 
         lv1.add_equation("-1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
         lv1.add_equation("-1j*dt(B) - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
         
@@ -728,11 +726,17 @@ class OrderE(MRI):
       
         self.u_x = self.get_derivative(self.u)
         
+        # relevant for alternate O2 calculation
+        self.u_xx = self.get_derivative(self.u_x)
+        
         self.A_x = self.get_derivative(self.A)
         self.A_xx = self.get_derivative(self.A_x)
         self.A_xxx = self.get_derivative(self.A_xx)
         
         self.B_x = self.get_derivative(self.B)
+        
+        # relevant for alternate O2 calculation
+        self.B_xx = self.get_derivative(self.B_x)
         
         # Also take relevant complex conjugates
         self.psi_star = self.get_complex_conjugate(self.psi)
@@ -931,35 +935,41 @@ class OrderE2(MRI):
         
         # V21 equations are coupled
         # second term: L1twiddle V1
-        term2_psi = -3*(2/self.beta)*self.Q**2*o1.A + (2/self.beta)*o1.A_xx - 4*self.iR*1j*self.Q**3*o1.psi + 4*self.iR*1j*self.Q*o1.psi_xx + 2*o1.u
+        term2_psi = -1*(-3*(2/self.beta)*self.Q**2*o1.A + (2/self.beta)*o1.A_xx - 4*self.iR*1j*self.Q**3*o1.psi + 4*self.iR*1j*self.Q*o1.psi_xx + 2*o1.u)
         self.term2_psi = term2_psi.evaluate()
         
-        term2_u = (2/self.beta)*o1.B + 2*self.iR*self.Q*o1.u + (self.q - 2)*o1.psi
+        #term2_u = (2/self.beta)*o1.B + 2*self.iR*self.Q*o1.u + (self.q - 2)*o1.psi ## why does (q - 2) and (2 - q) make no diff here??
+        term2_u = -1*((2/self.beta)*o1.B + 2*self.iR*1j*self.Q*o1.u + (self.q - 2)*o1.psi) #added missing 1j in second term 11/14/15
         self.term2_u = term2_u.evaluate()
         
-        term2_A = 2*self.iRm*1j*self.Q*o1.A + o1.psi
+        term2_A = -1*(2*self.iRm*1j*self.Q*o1.A + o1.psi)
         self.term2_A = term2_A.evaluate()
         
-        term2_B = -self.q*o1.A + 2*self.iRm*1j*self.Q*o1.B + o1.u
+        term2_B = -1*(-self.q*o1.A + 2*self.iRm*1j*self.Q*o1.B + o1.u)
         self.term2_B = term2_B.evaluate()
         
-        # righthand side for the 21 terms (e^iQz)
-        rhs21_psi = -self.term2_psi['g']
-        rhs21_u = -self.term2_u['g']
-        rhs21_A = -self.term2_A['g']
-        rhs21_B = -self.term2_B['g']
+        # righthand side for the 21 terms (e^iQz dependence)
+        rhs21_psi = self.term2_psi['g']
+        rhs21_u = self.term2_u['g']
+        rhs21_A = self.term2_A['g']
+        rhs21_B = self.term2_B['g']
                 
         # define problem using righthand side as nonconstant coefficients
         
         bv21 = ParsedProblem(['x'],
               field_names=['psi21', 'psi21x', 'psi21xx', 'psi21xxx', 'u21', 'u21x', 'A21', 'A21x', 'B21', 'B21x'],
-              param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rhs20_psi', 'rhs20_u', 'rhs20_A', 'rhs20_B', 'rhs21_psi', 'rhs21_u', 'rhs21_A', 'rhs21_B', 'rhs22_psi', 'rhs22_u', 'rhs22_A', 'rhs22_B'])
+              param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rhs21_psi', 'rhs21_u', 'rhs21_A', 'rhs21_B'])
           
-        bv21.add_equation("1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs21_psi")
-        bv21.add_equation("-1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs21_u")
-        bv21.add_equation("iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs21_A")
-        bv21.add_equation("1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")    
-
+        #bv21.add_equation("1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs21_psi")
+        #bv21.add_equation("-1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs21_u")
+        #bv21.add_equation("iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs21_A")
+        #bv21.add_equation("1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")   
+        
+        bv21.add_equation("-1j*(2/beta)*Q**3*A21 + 1j*(2/beta)*Q*dx(A21x) + 2*1j*Q*u21 + iR*Q**4*psi21 - 2*iR*Q**2*psi21xx + iR*dx(psi21xxx) = rhs21_psi")
+        bv21.add_equation("1j*(2/beta)*Q*B21 + 1j*Q*(q - 2)*psi21 - iR*Q**2*u21 + iR*dx(u21x) = rhs21_u") 
+        bv21.add_equation("-iRm*Q**2*A21 + iRm*dx(A21x) + 1j*Q*psi21 = rhs21_A")
+        bv21.add_equation("-1j*Q*q*A21 - iRm*Q**2*B21 + iRm*dx(B21x) + 1j*Q*u21 = rhs21_B")   
+        
         bv21.add_equation("dx(psi21) - psi21x = 0")
         bv21.add_equation("dx(psi21x) - psi21xx = 0")
         bv21.add_equation("dx(psi21xx) - psi21xxx = 0")
@@ -995,6 +1005,12 @@ class OrderE2(MRI):
         self.u21 = self.BVP21.state['u21']
         self.A21 = self.BVP21.state['A21']
         self.B21 = self.BVP21.state['B21']
+        
+        #wild alternative version
+        #self.psi21['g'] = o1.psi['g']
+        #self.u21['g'] = o1.u['g']
+        #self.A21['g'] = o1.A['g']
+        #self.B21['g'] = o1.B['g']
         
         #V22 equations are coupled
         rhs22_psi = n2.N22_psi['g'] 
@@ -1052,20 +1068,6 @@ class OrderE2(MRI):
         self.u22 = self.BVP22.state['u22']
         self.A22 = self.BVP22.state['A22']
         self.B22 = self.BVP22.state['B22']
-        
-        # All eigenfunctions must be scaled s.t. their max is 1
-        #self.psi20['g'] = self.normalize_vector(self.psi20['g'])
-        #self.u20['g'] = self.normalize_vector(self.u20['g'])
-        #self.A20['g'] = self.normalize_vector(self.A20['g'])
-        #self.B20['g'] = self.normalize_vector(self.B20['g'])
-        #self.psi21['g'] = self.normalize_vector(self.psi21['g'])
-        #self.u21['g'] = self.normalize_vector(self.u21['g'])
-        #self.A21['g'] = self.normalize_vector(self.A21['g'])
-        #self.B21['g'] = self.normalize_vector(self.B21['g'])
-        #self.psi22['g'] = self.normalize_vector(self.psi22['g'])
-        #self.u22['g'] = self.normalize_vector(self.u22['g'])
-        #self.A22['g'] = self.normalize_vector(self.A22['g'])
-        #self.B22['g'] = self.normalize_vector(self.B22['g'])
         
         self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector(self.psi21, self.u21, self.A21, self.B21)
         self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector(self.psi22, self.u22, self.A22, self.B22)
@@ -1176,58 +1178,7 @@ class OrderE2(MRI):
         self.A22_xx = self.get_derivative(self.A22_x)
         self.A22_xxx = self.get_derivative(self.A22_xx)
         
-        # Normalize derivatives and cc's as well.
-        """
-        self.psi20_x['g'] = self.normalize_vector(self.psi20_x['g'])
-        self.psi20_xx['g'] = self.normalize_vector(self.psi20_xx['g'])
-        self.psi20_xxx['g'] = self.normalize_vector(self.psi20_xxx['g'])
-        
-        self.psi20_star['g'] = self.normalize_vector(self.psi20_star['g'])
-        
-        self.psi20_star_x['g'] = self.normalize_vector(self.psi20_star_x['g'])
-        self.psi20_star_xx['g'] = self.normalize_vector(self.psi20_star_xx['g'])
-        self.psi20_star_xxx['g'] = self.normalize_vector(self.psi20_star_xxx['g'])
-        
-        self.psi21_x['g'] = self.normalize_vector(self.psi21_x['g'])
-        self.psi21_xx['g'] = self.normalize_vector(self.psi21_xx['g'])
-        
-        self.psi22_x['g'] = self.normalize_vector(self.psi22_x['g'])
-        self.psi22_xx['g'] = self.normalize_vector(self.psi22_xx['g'])
-        self.psi22_xxx['g'] = self.normalize_vector(self.psi22_xxx['g'])
-        
-        self.u20_x['g'] = self.normalize_vector(self.u20_x['g'])
-        self.u20_star['g'] = self.normalize_vector(self.u20_star['g'])
-        self.u20_star_x['g'] = self.normalize_vector(self.u20_star_x['g'])
-        
-        self.u22_x['g'] = self.normalize_vector(self.u22_x['g'])
-        self.u22_star['g'] = self.normalize_vector(self.u22_star['g'])
-        self.u22_star_x['g'] = self.normalize_vector(self.u22_star_x['g'])
-        
-        self.B20_x['g'] = self.normalize_vector(self.B20_x['g'])
-        self.B20_star['g'] = self.normalize_vector(self.B20_star['g'])
-        self.B20_star_x['g'] = self.normalize_vector(self.B20_star_x['g'])
-        
-        self.B22_x['g'] = self.normalize_vector(self.B22_x['g'])
-        self.B22_star['g'] = self.normalize_vector(self.B22_star['g'])
-        self.B22_star_x['g'] = self.normalize_vector(self.B22_star_x['g'])
-        
-        self.A20_x['g'] = self.normalize_vector(self.A20_x['g'])
-        self.A20_xx['g'] = self.normalize_vector(self.A20_xx['g'])
-        self.A20_xxx['g'] = self.normalize_vector(self.A20_xxx['g'])
-        
-        self.A20_star['g'] = self.normalize_vector(self.A20_star['g'])
-        self.A20_star_x['g'] = self.normalize_vector(self.A20_star_x['g'])
-        self.A20_star_xx['g'] = self.normalize_vector(self.A20_star_xx['g'])
-        self.A20_star_xxx['g'] = self.normalize_vector(self.A20_star_xxx['g'])
-        
-        self.A21_x['g'] = self.normalize_vector(self.A21_x['g'])
-        self.A21_xx['g'] = self.normalize_vector(self.A21_xx['g'])
-        
-        self.A22_x['g'] = self.normalize_vector(self.A22_x['g'])
-        self.A22_xx['g'] = self.normalize_vector(self.A22_xx['g'])
-        self.A22_xxx['g'] = self.normalize_vector(self.A22_xxx['g'])
-        """
-        
+       
 class N3(MRI):
 
     """
@@ -1263,15 +1214,15 @@ class N3(MRI):
         self.N31_psi = N31_psi.evaluate()
         
         # diagnostics reveal that my_2 and my_4 are nan with the new normalizations. A_star? A22?
-        print(self.N31_psi['g'])
+        #print(self.N31_psi['g'])
         p1 = N31_psi_my1.evaluate()
         p2 = N31_psi_my2.evaluate()
         p3 = N31_psi_my3.evaluate()
         p4 = N31_psi_my4.evaluate()
-        print("N31_psi_my1", p1['g'])
-        print("N31_psi_my2", p2['g'])
-        print("N31_psi_my3", p3['g'])
-        print("N31_psi_my4", p4['g'])
+        #print("N31_psi_my1", p1['g'])
+        #print("N31_psi_my2", p2['g'])
+        #print("N31_psi_my3", p3['g'])
+        #print("N31_psi_my4", p4['g'])
         
         # u component
         N31_u_my1 = 1j*self.Q*(o1.psi*o2.u20_x) + 1j*self.Q*(o1.psi*o2.u20_star_x) - 1j*self.Q*(o1.psi_star*o2.u22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.u22)
@@ -1282,7 +1233,7 @@ class N3(MRI):
         N31_u = N31_u_my1 + N31_u_my2 + N31_u_my3 + N31_u_my4
         
         self.N31_u = N31_u.evaluate()
-        print(self.N31_u['g'])
+        #print(self.N31_u['g'])
         
         # A component
         N31_A_my1 = -1j*self.Q*(o1.A*o2.psi20_x) - 1j*self.Q*(o1.A*o2.psi20_star_x) + 1j*self.Q*(o1.A_star*o2.psi22_x) + 1j*2*self.Q*(o1.A_star_x*o2.psi22)
@@ -1291,7 +1242,7 @@ class N3(MRI):
         N31_A = N31_A_my1 + N31_A_my2
         
         self.N31_A = N31_A.evaluate()
-        print(self.N31_A['g'])
+        #print(self.N31_A['g'])
         
         # B component
         N31_B_my1 = 1j*self.Q*(o1.psi*o2.B20_x) + 1j*self.Q*(o1.psi*o2.B20_star_x) - 1j*self.Q*(o1.psi_star*o2.B22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.B22)
@@ -1302,15 +1253,15 @@ class N3(MRI):
         N31_B = N31_B_my1 + N31_B_my2 + N31_B_my3 + N31_B_my4
         
         self.N31_B = N31_B.evaluate()
-        print(self.N31_B['g'])
+        #print(self.N31_B['g'])
         
         # Let's try normalizing N3 eigenvectors.
         #self.N31_psi['g'] = self.normalize_vector(self.N31_psi['g'])
         #self.N31_u['g'] = self.normalize_vector(self.N31_u['g'])
         #self.N31_A['g'] = self.normalize_vector(self.N31_A['g'])
         #self.N31_B['g'] = self.normalize_vector(self.N31_B['g'])
-        
-        
+
+
 class AmplitudeAlpha(MRI):
 
     """
@@ -1420,3 +1371,69 @@ class AmplitudeAlpha(MRI):
         self.n3 = n3
         self.ah = ah
         self.n2 = n2
+        
+        # Actually solve the IVP
+        Absolute = operators.Absolute
+        
+        problem = ParsedProblem(axis_names=['Z'],
+                           field_names=['alpha', 'alphaZ'],
+                           param_names=['ac', 'bc', 'hc', 'gc', 'Q', 'Absolute'])
+        
+        problem.add_equation("ac*dt(alpha) + -bc*1j*Q*alpha - hc*dZ(alphaZ) - gc*1j*Q**3*alpha = alpha*Absolute(alpha**2)") #fixed to be gle
+        problem.add_equation("alphaZ - dZ(alpha) = 0")
+        
+        problem.parameters['ac'] = -self.a/self.c
+        problem.parameters['bc'] = -self.b/self.c
+        problem.parameters['hc'] = -self.h/self.c
+        problem.parameters['gc'] = -self.g/self.c
+        problem.parameters['Q'] = self.Q
+        
+        problem.parameters['Absolute'] = Absolute
+        
+        lambda_crit = 2*np.pi/self.Q
+        
+        Z_basis = Fourier(self.gridnum, interval=(-lambda_crit, lambda_crit), dealias=2/3)
+        Zdomain = Domain([Z_basis], np.complex128)
+        problem.expand(domain)
+        
+        solver = solvers.IVP(problem, domain, timesteppers.SBDF2)
+        
+        # stopping criteria
+        solver.stop_sim_time = np.inf
+        solver.stop_wall_time = np.inf
+        solver.stop_iteration = 50000#0
+        
+        # reference local grid and state fields
+        Z = Zdomain.grid(0)
+        alpha = solver.state['alpha']
+        alphaZ = solver.state['alphaZ']
+
+        # initial conditions ... plus noise!
+        #noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
+        alpha['g'] = 1.0#E-5 + 1.0E-5j #+ noise
+        alpha.differentiate(0, out=alphaZ)
+        
+        # Setup storage
+        alpha_list = [np.copy(alpha['g'])]
+        t_list = [solver.sim_time]
+
+        # Main loop
+        dt = 2e-2#2e-3
+        while solver.ok:
+            solver.step(dt)
+            if solver.iteration % 20 == 0:
+                alpha_list.append(np.copy(alpha['g']))
+                t_list.append(solver.sim_time)
+                
+        # Convert storage to arrays
+        alpha_array = np.array(alpha_list)
+        t_array = np.array(t_list)
+        
+        self.alpha = alpha
+        self.alphaZ = alphaZ
+        self.alpha_array = alpha_array
+        self.t_array = t_array
+    
+        self.saturation_amplitude = alpha_array[-1, 0]
+    
+        

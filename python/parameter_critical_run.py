@@ -124,9 +124,10 @@ def plot_paramspace_run(Rm, Q, evals):
 
 if __name__ == "__main__":
 
-    #Pms = [1.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
-    Pms = [1.0E-3]
+    Pms = [1.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
+    #Pms = [1.0E-3]
     coeffs = np.zeros(len(Pms))
+    ivpsa = np.zeros(len(Pms))
     covera = np.zeros(len(Pms))
     
     objs = {}
@@ -136,21 +137,47 @@ if __name__ == "__main__":
         
         amplitude_obj = AmplitudeAlpha(Pm = Pm, Rm = marginal_Rm, Q = marginal_Q)
         coeffs[i] = amplitude_obj.sat_amp_coeffs
+        ivpsa[i] = amplitude_obj.saturation_amplitude
         
         # c/a value plotted in Umurhan+
         covera[i] = amplitude_obj.c/amplitude_obj.a
         
         objs[Pm] = amplitude_obj
-        
-    plt.figure()
-    plt.plot(Pms, coeffs, 'o')
-    plt.semilogx()
-    plt.semilogy()
-    plt.xlabel("Pm")
-    plt.ylabel("saturation amplitude")
+    
+    # Saturation amplitude vs Pm plots 
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    ax2 = fig.add_subplot(122)
+    
+    ax1.plot(Pms, coeffs, 'o', color = "purple")
+    ax1.semilogx()
+    ax1.semilogy()
+    ax1.set_xlabel("Pm")
+    ax1.set_title("from coefficients")
+    
+    """
+    ax2.plot(Pms, ivpsa, 'o', color = "orange")
+    ax2.semilogx()
+    ax2.semilogy()
+    ax2.set_xlabel("Pm")
+    ax2.set_title("from IVP solve")
+    
+    plt.suptitle("saturation amplitude", size=20)
     plt.show()
     pylab.savefig("scrap3.png", dpi = 100)
     
+    # Amplitude as a function of time plot
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    
+    colors = _get_colors(len(Pms))
+    for i, Pm_ in enumerate(Pms):
+        ax1.plot(objs[Pm_].t_array, objs[Pm_].alpha_array[:, 0], color = colors[i])
+        
+    pylab.savefig("amplitude_plot.png")
+    """
+    
+    #c over a plot
     plt.figure()
     plt.plot(Pms, covera, 'o')
     plt.semilogx()
@@ -159,4 +186,13 @@ if __name__ == "__main__":
     plt.ylabel("c/a")
     plt.show()
     pylab.savefig("covera.png", dpi = 100)
+
+def _get_colors(num_colors):
+    colors=[]
+    for i in np.arange(0., 360., 360. / num_colors):
+        hue = i/360.
+        lightness = (50 + np.random.rand() * 10)/100.
+        saturation = (90 + np.random.rand() * 10)/100.
+        colors.append(colorsys.hls_to_rgb(hue, lightness, saturation))
+    return colors
     
