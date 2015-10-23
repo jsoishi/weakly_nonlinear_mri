@@ -939,7 +939,7 @@ class OrderE2(MRI):
         self.term2_psi = term2_psi.evaluate()
         
         #term2_u = (2/self.beta)*o1.B + 2*self.iR*self.Q*o1.u + (self.q - 2)*o1.psi ## why does (q - 2) and (2 - q) make no diff here??
-        term2_u = -1*((2/self.beta)*o1.B + 2*self.iR*1j*self.Q*o1.u + (self.q - 2)*o1.psi) #added missing 1j in second term 11/14/15
+        term2_u = -1*((2/self.beta)*o1.B + 2*self.iR*1j*self.Q*o1.u + (self.q - 2)*o1.psi) #added missing 1j in second term 10/14/15
         self.term2_u = term2_u.evaluate()
         
         term2_A = -1*(2*self.iRm*1j*self.Q*o1.A + o1.psi)
