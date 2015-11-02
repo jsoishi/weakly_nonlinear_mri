@@ -733,6 +733,12 @@ and
 
 The second order nonlinear terms are \\
 
+%\beq
+%\begin{split}
+%N_{22}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11} - k_c^2 \partial_x \Psi_{11}\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11} - i k_c^3 \Psi_{11}\right) \\
+%& + \frac{2}{\beta}\partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11} - i k_c^3 A_{11}\right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11} - k_c^2 \partial_x A_{11}\right)
+%\end{split}
+%\eeq
 \beq
 \begin{split}
 N_{22}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11} - k_c^2 \partial_x \Psi_{11}\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11} - i k_c^3 \Psi_{11}\right) \\
@@ -756,8 +762,8 @@ N_{22}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11} - \partial_x \Psi_{11} \c
 
 \beq
 \begin{split}
-N_{20}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - k_c^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11}^* - i k_c^3 \Psi_{11}^*\right) \\
-& \frac{2}{\beta} \partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11}^* - i k_c^3 A_{11}^*\right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11}^* - k_c^2 \partial_x A_{11}^*\right)
+N_{20}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - k_c^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i k_c^3 \Psi_{11}^* - i k_c \partial_x^2 \Psi_{11}^*\right) \\
+& +\frac{2}{\beta} \partial_x A_{11} \cdot \left(i k_c^3 A_{11}^* - i k_c \partial_x^2 A_{11}^* \right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11}^* - k_c^2 \partial_x A_{11}^*\right)
 \end{split}
 \eeq
 
