@@ -65,7 +65,7 @@ class Equations():
         
         self.analysis_tasks.append(analysis_profile)
 
-        analysis_scalar = solver.evaluator.add_file_handler(data_dir+"scalar", max_writes=20, parallel=False, **kwargs)
+        analysis_scalar = solver.evaluator.add_file_handler(data_dir+"scalar", max_writes=np.inf, parallel=False, **kwargs)
         analysis_scalar.add_task("vol_avg(KE)", name="KE")
         analysis_scalar.add_task("vol_avg(u_rms)", name="u_rms")
         analysis_scalar.add_task("vol_avg(v_rms)", name="v_rms")
