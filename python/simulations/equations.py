@@ -84,18 +84,18 @@ class Equations():
     def set_BC(self):
         self.problem.add_bc("left(u) = 0")
         self.problem.add_bc("right(u) = 0")
-        self.problem.add_bc("left(dz(psi)) = 0",condition="nz != 0")
-        self.problem.add_bc("right(dz(psi)) = 0",condition="nz != 0")
-        self.problem.add_bc("left(psi) = 0",condition="nz == 0")
-        self.problem.add_bc("right(psi) = 10",condition="nz == 0")
+        #self.problem.add_bc("left(dz(psi)) = 0",condition="nz != 0")
+        #self.problem.add_bc("right(dz(psi)) = 0",condition="nz != 0")
+        self.problem.add_bc("left(psi) = 0")#, condition="nz == 0")
+        self.problem.add_bc("right(psi) = 0")#, condition="nz == 0")
         self.problem.add_bc("left(psi_x) = 0")
         self.problem.add_bc("right(psi_x) = 0")
-        self.problem.add_bc("left(dz(A)) = 0",condition="nz != 0")
-        self.problem.add_bc("right(dz(A)) = 0",condition="nz != 0")
-        self.problem.add_bc("left(A) = 0",condition="nz == 0")
-        self.problem.add_bc("right(A) = 0",condition="nz == 0")
-        self.problem.add_bc("left(A_x) = 0")
-        self.problem.add_bc("right(A_x) = 0")
+        #self.problem.add_bc("left(dz(A)) = 0",condition="nz != 0")
+        #self.problem.add_bc("right(dz(A)) = 0",condition="nz != 0")
+        self.problem.add_bc("left(A) = 0")#,condition="nz == 0")
+        self.problem.add_bc("right(A) = 0")#,condition="nz == 0")
+        self.problem.add_bc("left(b_x) = 0")
+        self.problem.add_bc("right(b_x) = 0")
 
     def _set_subs(self):
         """
@@ -125,16 +125,18 @@ class MRI_equations(Equations):
     streamfunction/vector potential
     """
 
-    def __init__(self, nx=32, nz=32, grid_dtype=np.float64, dealias=3/2):
+    def __init__(self, nx=32, nz=32, grid_dtype=np.float64, dealias=3/2, linear=False):
         super(MRI_equations,self).__init__()
         self.nx = nx 
         self.nz = nz
         self.grid_dtype = grid_dtype
+        self.linear = linear
         logger.info("Grid_dtype = {}".format(self.grid_dtype))
         self.dealias = dealias
 
         self.equation_set = 'streamfunction/vector potential MRI'
-        self.variables = ['psi','u','A','b','psi_x','psi_xx','psi_xxx','u_x','A_x','A_xx', 'b_x']
+        #self.variables = ['psi','u','A','b','psi_x','psi_xx','psi_xxx','u_x','A_x','A_xx', 'b_x']
+        self.variables = ['psi','u','A','b','psi_x','psi_xx','psi_xxx','u_x','A_x','b_x']
 
     def _set_domain(self):
         """
@@ -176,7 +178,7 @@ class MRI_equations(Equations):
         self.Omega0 = Omega0
         self.q = qsh
         self.beta = beta
-        self.Lz = 2*np.pi/Q
+        self.Lz = 3*np.pi/Q
 
         self._eqn_params = {}
         self._eqn_params['Re'] = self.Rm * self.Pm
@@ -188,10 +190,18 @@ class MRI_equations(Equations):
         self._eqn_params['Lz'] = self.Lz
 
     def set_streamfunction(self):
-        self.problem.add_equation("dt(dx(psi_x)) + dz(dz(dt(psi))) - 2*dz(u) + (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re - 2*B0/beta*(dz(A_xx) + dz(dz(dz(A)))) = 2/beta*((dx(A_xx) + dz(dz(A_x))) * dz(A) - (dz(A_xx) + dz(dz(dz(A))))*A_x) - ((psi_xxx + dz(dz(A_x))) * dz(psi) - (dz(psi_xx) + dz(dz(dz(psi))))*psi_x)")
+        if self.linear:
+            RHS = "0"
+        else:
+            RHS = "2/beta*((dx(dx(A_x)) + dz(dz(A_x))) * dz(A) - (dz(dx(A_x)) + dz(dz(dz(A))))*A_x) - ((psi_xxx + dz(dz(A_x))) * dz(psi) - (dz(psi_xx) + dz(dz(dz(psi))))*psi_x)"
+        self.problem.add_equation("dt(psi_xx) + dt(dz(dz(psi))) - 2*dz(u) - (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re - 2*(dz(dz(psi_xx)))/Re - 2*B0/beta*(dz(dx(A_x)) + dz(dz(dz(A)))) = " + RHS)
 
     def set_vectorpotential(self):
-        self.problem.add_equation("dt(A) - B0 * dz(psi) - (A_xx + dz(dz(A)))/Rm = dz(A) * psi_x - A_x * dz(psi)")
+        if self.linear:
+            RHS = "0"
+        else:
+            RHS = "dz(A) * psi_x - A_x * dz(psi)"
+        self.problem.add_equation("dt(A) - B0 * dz(psi) - (dx(A_x) + dz(dz(A)))/Rm = "+RHS)
 
     def set_aux(self):
         self.problem.add_equation("psi_x - dx(psi) = 0")
@@ -199,11 +209,19 @@ class MRI_equations(Equations):
         self.problem.add_equation("psi_xxx - dx(psi_xx) = 0")
         self.problem.add_equation("u_x - dx(u) = 0")
         self.problem.add_equation("A_x - dx(A) = 0")
-        self.problem.add_equation("A_xx - dx(A_x) = 0")
+        #self.problem.add_equation("A_xx - dx(A_x) = 0")
         self.problem.add_equation("b_x - dx(b) = 0")
 
-    def set_u(self):
-        self.problem.add_equation("dt(b) - B0*dz(u) + q*Omega0 * dz(A) - (dx(b_x) + dz(dz(b)))/Rm = dz(A) * u_x - A_x * dz(u) - (b_x*dz(psi) - dz(b)*psi_x)")
-
     def set_b(self):
-        self.problem.add_equation("dt(u) + (2-q)*Omega0*dz(psi) - 2*B0/beta * dz(b) - (dx(u_x) + dz(dz(u)))/Re = 2./beta*(dz(A) * b_x - A_x * dz(b))")
+        if self.linear:
+            RHS = "0"
+        else:
+            RHS = "dz(A) * u_x - A_x * dz(u) - (b_x*dz(psi) - dz(b)*psi_x)"
+        self.problem.add_equation("dt(b) - B0*dz(u) + q*Omega0 * dz(A) - (dx(b_x) + dz(dz(b)))/Rm = " + RHS)
+
+    def set_u(self):
+        if self.linear:
+            RHS = "0"
+        else:
+            RHS = "-2./beta*(dz(A) * b_x - A_x * dz(b)) - (dz(psi)*u_x - psi_x*dz(u))"
+        self.problem.add_equation("dt(u) + (2-q)*Omega0*dz(psi) - 2*B0/beta * dz(b) - (dx(u_x) + dz(dz(u)))/Re = "+RHS)

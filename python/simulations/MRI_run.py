@@ -3,7 +3,7 @@ Dedalus script for 2D MRI simulations
 
 
 Usage:
-    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --nz=<nz>] 
+    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz>] 
 
 Options:
     --Rm=<Rm>                  magnetic Reynolds number [default: 4.8775]
@@ -14,6 +14,7 @@ Options:
     --Omega0=<Omega0>          background rotation rate  [default: 1.]
     --beta=<beta>              plasma Beta parateter  [default: 25.]
     --restart=<restart_file>   restart from checkpoint
+    --linear                   turn off non-linear terms
     --nz=<nz>                  vertical z (Fourier) resolution [default: 32]
 """
 import logging
@@ -39,6 +40,7 @@ nz = int(args['--nz'])
 nx = nz
 
 restart = args['--restart']
+linear = args['--linear']
 
 # save data in directory named after script
 data_dir = "scratch/" + sys.argv[0].split('.py')[0]
@@ -64,7 +66,7 @@ except ImportError:
 
 from equations import MRI_equations
 # configure MRI equations
-MRI = MRI_equations(nx=nx, nz=nz)
+MRI = MRI_equations(nx=nx, nz=nz, linear=linear)
 MRI.set_parameters(Rm, Pm, eps, Omega0, qsh, beta, Q)
 MRI.set_IVP_problem()
 MRI.set_BC()
@@ -114,25 +116,30 @@ period = 2*np.pi/Omega0
 
 solver.stop_sim_time = 12.5*period
 solver.stop_wall_time = np.inf
-solver.stop_iteration = np.inf
+solver.stop_iteration = 100#np.inf
 
 output_time_cadence = 0.1*period
-analysis_tasks = MRI.initialize_output(solver, data_dir, sim_dt=output_time_cadence)
+analysis_tasks = MRI.initialize_output(solver, data_dir, iter=1)#sim_dt=output_time_cadence)
+
+flow = flow_tools.GlobalFlowProperty(solver, cadence=10)
+flow.add_property("psi_x**2 + (dz(psi))**2 + u**2", name='Ekin')
 
 #CFL = flow_tools.CFL(solver, initial_dt=1e-3, cadence=5, safety=0.3,
 #                     max_change=1.5, min_change=0.5)
 #CFL.add_velocities(('dz(psi)', '-psi_x'))
 
 #dt = CFL.compute_dt()
-dt = 1e-3
+dt = 1e-4
 
 # Main loop
 start_time = time.time()
 
 while solver.ok:
     solver.step(dt)
-    logger.info('Iteration: %i, Time: %e, dt: %e' %(solver.iteration, solver.sim_time, dt))
-    dt = CFL.compute_dt()
+    if (solver.iteration-1) % 100 == 0:
+        logger.info('Iteration: %i, Time: %e, dt: %e' %(solver.iteration, solver.sim_time, dt))
+        logger.info('Max E_kin = %f' %flow.max('Ekin'))
+    #dt = CFL.compute_dt()
 
 
 end_time = time.time()
