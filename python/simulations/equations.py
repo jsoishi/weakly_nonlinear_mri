@@ -159,7 +159,7 @@ class MRI_equations(Equations):
         return trans_bases
 
     def _set_x_basis(self):
-        x_basis = de.Chebyshev('x', self.nx, interval=[0., 1.], dealias=3/2)
+        x_basis = de.Chebyshev('x', self.nx, interval=[-1., 1.], dealias=3/2)
         
         return [x_basis,]
 

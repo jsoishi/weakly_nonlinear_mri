@@ -25,6 +25,9 @@ import time
 import numpy as np
 from docopt import docopt
 
+# parameters
+filter_frac=0.5
+
 # parse arguments
 args = docopt(__doc__)
 
@@ -65,6 +68,7 @@ except ImportError:
     do_checkpointing=False
 
 from equations import MRI_equations
+from filter_field import filter_field
 # configure MRI equations
 MRI = MRI_equations(nx=nx, nz=nz, linear=linear)
 MRI.set_parameters(Rm, Pm, eps, Omega0, qsh, beta, Q)
@@ -101,25 +105,36 @@ if restart is None:
     rand = np.random.RandomState(seed=42)
     noise = rand.standard_normal(gshape)[slices]
 
-    A0 = 1e-6
+    A0 = 1e-3
 
     # ICs
     psi = solver.state['psi']
+    psi_x = solver.state['psi_x']
+    psi_xx = solver.state['psi_xx']
+    psi_xxx = solver.state['psi_xxx']
     psi.set_scales(MRI.domain.dealias, keep_data=False)
     x = MRI.domain.grid(-1,scales=MRI.domain.dealias)
     psi['g'] = A0 * noise * np.sin(np.pi*x)
+    if filter_frac != 1.: 
+        filter_field(psi,frac=filter_frac)
+    else:
+        logger.warn("No filtering applied to ICs! This is probably bad!")
+
+    psi.differentiate('x',out=psi_x)
+    psi_x.differentiate('x',out=psi_xx)
+    psi_xx.differentiate('x',out=psi_xxx)
 else:
     logger.info("restarting from {}".format(restart))
     checkpoint.restart(restart, solver)
 
 period = 2*np.pi/Omega0
 
-solver.stop_sim_time = 12.5*period
+solver.stop_sim_time = 15*period
 solver.stop_wall_time = np.inf
 solver.stop_iteration = np.inf
 
 output_time_cadence = 0.1*period
-analysis_tasks = MRI.initialize_output(solver, data_dir, iter=10)#sim_dt=output_time_cadence)
+analysis_tasks = MRI.initialize_output(solver, data_dir, iter=30)#sim_dt=output_time_cadence)
 
 flow = flow_tools.GlobalFlowProperty(solver, cadence=10)
 flow.add_property("psi_x**2 + (dz(psi))**2 + u**2", name='Ekin')
@@ -129,7 +144,7 @@ flow.add_property("psi_x**2 + (dz(psi))**2 + u**2", name='Ekin')
 #CFL.add_velocities(('dz(psi)', '-psi_x'))
 
 #dt = CFL.compute_dt()
-dt = 1e-2
+dt = 1e-1
 
 # Main loop
 start_time = time.time()
