@@ -126,16 +126,16 @@ if __name__ == "__main__":
 
     Pms = [1.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
     #Pms = [1.0E-3]
-    coeffs = np.zeros(len(Pms))
-    ivpsa = np.zeros(len(Pms))
-    covera = np.zeros(len(Pms))
+    coeffs = np.zeros(len(Pms), np.complex)
+    ivpsa = np.zeros(len(Pms), np.complex)
+    covera = np.zeros(len(Pms), np.complex)
     
     objs = {}
     
     for i, Pm in enumerate(Pms):
         marginal_Rm, marginal_Q = get_critical_parameters_by_Pm(Pm)
         
-        amplitude_obj = AmplitudeAlpha(Pm = Pm, Rm = marginal_Rm, Q = marginal_Q)
+        amplitude_obj = AmplitudeAlpha(Pm = Pm, Rm = marginal_Rm, Q = marginal_Q, norm = True)
         coeffs[i] = amplitude_obj.sat_amp_coeffs
         ivpsa[i] = amplitude_obj.saturation_amplitude
         
@@ -147,13 +147,14 @@ if __name__ == "__main__":
     # Saturation amplitude vs Pm plots 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
-    ax2 = fig.add_subplot(122)
+    #ax2 = fig.add_subplot(122)
     
     ax1.plot(Pms, coeffs, 'o', color = "purple")
     ax1.semilogx()
     ax1.semilogy()
     ax1.set_xlabel("Pm")
     ax1.set_title("from coefficients")
+    pylab.savefig("scrap3.png", dpi = 100)
     
     """
     ax2.plot(Pms, ivpsa, 'o', color = "orange")
