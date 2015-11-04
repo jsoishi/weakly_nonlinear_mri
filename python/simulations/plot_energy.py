@@ -13,7 +13,7 @@ base = pathlib.Path(datadir)
 
 f = base.joinpath("scalar/scalar_s1.h5")
 with h5py.File(str(f),'r') as ts:
-    plt.semilogy(ts['/scales/sim_time'],ts['/tasks/KE'][:,0,0])
+    plt.semilogy(ts['/scales/sim_time'],ts['/tasks/KE'][:,0,0],marker='o',linestyle='-')
 
 plt.ylabel("Kinetic Energy")
 plt.xlabel("time")

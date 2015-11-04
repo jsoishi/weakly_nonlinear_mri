@@ -178,10 +178,10 @@ class MRI_equations(Equations):
         self.Omega0 = Omega0
         self.q = qsh
         self.beta = beta
-        self.Lz = 3*np.pi/Q
+        self.Lz = 3.*np.pi/Q
 
         self._eqn_params = {}
-        self._eqn_params['Re'] = self.Rm * self.Pm
+        self._eqn_params['Re'] = self.Rm / self.Pm
         self._eqn_params['Rm'] = self.Rm
         self._eqn_params['B0'] = self.B0
         self._eqn_params['Omega0'] = self.Omega0
@@ -194,7 +194,7 @@ class MRI_equations(Equations):
             RHS = "0"
         else:
             RHS = "2/beta*((dx(dx(A_x)) + dz(dz(A_x))) * dz(A) - (dz(dx(A_x)) + dz(dz(dz(A))))*A_x) - ((psi_xxx + dz(dz(A_x))) * dz(psi) - (dz(psi_xx) + dz(dz(dz(psi))))*psi_x)"
-        self.problem.add_equation("dt(psi_xx) + dt(dz(dz(psi))) - 2*dz(u) - (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re - 2*(dz(dz(psi_xx)))/Re - 2*B0/beta*(dz(dx(A_x)) + dz(dz(dz(A)))) = " + RHS)
+        self.problem.add_equation("dt(psi_xx) + dt(dz(dz(psi))) - 2*Omega0*dz(u) - (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re - 2*(dz(dz(psi_xx)))/Re - 2*B0/beta*(dz(dx(A_x)) + dz(dz(dz(A)))) = " + RHS)
 
     def set_vectorpotential(self):
         if self.linear:

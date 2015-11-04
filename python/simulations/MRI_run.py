@@ -116,10 +116,10 @@ period = 2*np.pi/Omega0
 
 solver.stop_sim_time = 12.5*period
 solver.stop_wall_time = np.inf
-solver.stop_iteration = 100#np.inf
+solver.stop_iteration = np.inf
 
 output_time_cadence = 0.1*period
-analysis_tasks = MRI.initialize_output(solver, data_dir, iter=1)#sim_dt=output_time_cadence)
+analysis_tasks = MRI.initialize_output(solver, data_dir, iter=10)#sim_dt=output_time_cadence)
 
 flow = flow_tools.GlobalFlowProperty(solver, cadence=10)
 flow.add_property("psi_x**2 + (dz(psi))**2 + u**2", name='Ekin')
@@ -129,16 +129,16 @@ flow.add_property("psi_x**2 + (dz(psi))**2 + u**2", name='Ekin')
 #CFL.add_velocities(('dz(psi)', '-psi_x'))
 
 #dt = CFL.compute_dt()
-dt = 1e-4
+dt = 1e-2
 
 # Main loop
 start_time = time.time()
 
 while solver.ok:
     solver.step(dt)
-    if (solver.iteration-1) % 100 == 0:
-        logger.info('Iteration: %i, Time: %e, dt: %e' %(solver.iteration, solver.sim_time, dt))
-        logger.info('Max E_kin = %f' %flow.max('Ekin'))
+    if (solver.iteration-1) % 10 == 0:
+        logger.info('Iteration: %i, Time (in orbits): %e, dt: %e' %(solver.iteration, solver.sim_time/period, dt))
+        logger.info('Max E_kin = %5.3e' %flow.max('Ekin'))
     #dt = CFL.compute_dt()
 
 
