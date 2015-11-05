@@ -114,7 +114,7 @@ if restart is None:
     psi_xxx = solver.state['psi_xxx']
     psi.set_scales(MRI.domain.dealias, keep_data=False)
     x = MRI.domain.grid(-1,scales=MRI.domain.dealias)
-    psi['g'] = A0 * noise * np.sin(np.pi*x)
+    psi['g'] = A0 * noise * np.cos(np.pi*x/2.)
     if filter_frac != 1.: 
         filter_field(psi,frac=filter_frac)
     else:
