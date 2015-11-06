@@ -129,7 +129,7 @@ else:
 
 period = 2*np.pi/Omega0
 
-solver.stop_sim_time = 15*period
+solver.stop_sim_time = 100*period
 solver.stop_wall_time = np.inf
 solver.stop_iteration = np.inf
 
@@ -160,7 +160,7 @@ while solver.ok:
 end_time = time.time()
 
 # Print statistics
-logger.info('Total time: %f' %(end_time-start_time))
+logger.info('Total wall time: %f' %(end_time-start_time))
 logger.info('Iterations: %i' %solver.iteration)
 logger.info('Average timestep: %f' %(solver.sim_time/solver.iteration))
 
