@@ -48,7 +48,7 @@ class Equations():
         
     def initialize_output(self, solver ,data_dir, **kwargs):
         self.analysis_tasks = []
-        analysis_slice = solver.evaluator.add_file_handler(data_dir+"slices", max_writes=20, parallel=False, **kwargs)
+        analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), max_writes=20, parallel=False, **kwargs)
         analysis_slice.add_task("psi", name="psi")
         analysis_slice.add_task("A", name="A")
         analysis_slice.add_task("u", name="u")
@@ -56,7 +56,7 @@ class Equations():
         
         self.analysis_tasks.append(analysis_slice)
         
-        analysis_profile = solver.evaluator.add_file_handler(data_dir+"profiles", max_writes=20, parallel=False, **kwargs)
+        analysis_profile = solver.evaluator.add_file_handler(os.path.join(data_dir,"profiles"), max_writes=20, parallel=False, **kwargs)
         analysis_profile.add_task("plane_avg(KE)", name="KE")
 
         analysis_profile.add_task("plane_avg(u_rms)", name="u_rms")
@@ -65,7 +65,7 @@ class Equations():
         
         self.analysis_tasks.append(analysis_profile)
 
-        analysis_scalar = solver.evaluator.add_file_handler(data_dir+"scalar", max_writes=np.inf, parallel=False, **kwargs)
+        analysis_scalar = solver.evaluator.add_file_handler(os.path.join(data_dir,"scalar"), max_writes=np.inf, parallel=False, **kwargs)
         analysis_scalar.add_task("vol_avg(KE)", name="KE")
         analysis_scalar.add_task("vol_avg(u_rms)", name="u_rms")
         analysis_scalar.add_task("vol_avg(v_rms)", name="v_rms")
@@ -84,16 +84,12 @@ class Equations():
     def set_BC(self):
         self.problem.add_bc("left(u) = 0")
         self.problem.add_bc("right(u) = 0")
-        #self.problem.add_bc("left(dz(psi)) = 0",condition="nz != 0")
-        #self.problem.add_bc("right(dz(psi)) = 0",condition="nz != 0")
-        self.problem.add_bc("left(psi) = 0")#, condition="nz == 0")
-        self.problem.add_bc("right(psi) = 0")#, condition="nz == 0")
+        self.problem.add_bc("left(psi) = 0")
+        self.problem.add_bc("right(psi) = 0")
         self.problem.add_bc("left(psi_x) = 0")
         self.problem.add_bc("right(psi_x) = 0")
-        #self.problem.add_bc("left(dz(A)) = 0",condition="nz != 0")
-        #self.problem.add_bc("right(dz(A)) = 0",condition="nz != 0")
-        self.problem.add_bc("left(A) = 0")#,condition="nz == 0")
-        self.problem.add_bc("right(A) = 0")#,condition="nz == 0")
+        self.problem.add_bc("left(A) = 0")
+        self.problem.add_bc("right(A) = 0")
         self.problem.add_bc("left(b_x) = 0")
         self.problem.add_bc("right(b_x) = 0")
 
@@ -194,6 +190,7 @@ class MRI_equations(Equations):
             RHS = "0"
         else:
             RHS = "2/beta*(dz(A)*(dx(dx(A_x)) + dz(dz(A_x))) - A_x*(dz(dx(A_x)) + dz(dz(dz(A))))) - ((psi_xxx + dz(dz(psi_x))) * dz(psi) - (dz(psi_xx) + dz(dz(dz(psi))))*psi_x)"
+
         self.problem.add_equation("dt(psi_xx) + dt(dz(dz(psi))) - 2*Omega0*dz(u) - (dx(psi_xxx) + dz(dz(dz(dz(psi)))))/Re - 2*(dz(dz(psi_xx)))/Re - 2*B0/beta*(dz(dx(A_x)) + dz(dz(dz(A)))) = " + RHS)
 
     def set_vectorpotential(self):
@@ -201,6 +198,7 @@ class MRI_equations(Equations):
             RHS = "0"
         else:
             RHS = "dz(A) * psi_x - A_x * dz(psi)"
+
         self.problem.add_equation("dt(A) - B0 * dz(psi) - (dx(A_x) + dz(dz(A)))/Rm = "+RHS)
 
     def set_aux(self):
@@ -209,7 +207,6 @@ class MRI_equations(Equations):
         self.problem.add_equation("psi_xxx - dx(psi_xx) = 0")
         self.problem.add_equation("u_x - dx(u) = 0")
         self.problem.add_equation("A_x - dx(A) = 0")
-        #self.problem.add_equation("A_xx - dx(A_x) = 0")
         self.problem.add_equation("b_x - dx(b) = 0")
 
     def set_b(self):

@@ -1,4 +1,5 @@
 import sys
+import re
 import pathlib
 
 import h5py 
@@ -8,17 +9,74 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 
-datadir = sys.argv[-1]
-base = pathlib.Path(datadir)
+def compute_growth(f, t, period, start, stop, g_scale=80., verbose=True):
+    """compute a growth rate gamma for given timeseries f sampled at
+    points t, assuming an exponential growth:
+    
+    f(t) = f0 exp(gamma t)
 
-f = base.joinpath("scalar/scalar_s1.h5")
+    inputs:
+    f -- timeseries
+    t -- time points
+    period -- the unit for t
+    start -- beginning of timeseries to fit in units of period
+    stop -- end of timeseries to fit in units of period
 
-t_orb = 2*np.pi
-with h5py.File(str(f),'r') as ts:
-    plt.semilogy(ts['/scales/sim_time'][:]/t_orb,ts['/tasks/KE'][:,0,0],marker='o',linestyle='-')
+    outputs:
+    f0 -- t=0 value
+    gamma -- growth rate
 
-plt.ylabel("Kinetic Energy")
-plt.xlabel("time (orbits)")
+    """
+    t_window = (t/period > start) & (t/period < stop)
 
-outfile = base.joinpath("kinetic_energy.png")
-plt.savefig(str(outfile))
+    gamma_f, log_f0 = np.polyfit(t[t_window], np.log(f[t_window]),1)
+
+    return gamma_f, np.exp(log_f0)
+
+
+
+def parse_params(dirname,basename):
+    parstr = dirname.split(basename, 1)[1].lstrip("_")
+    parstr = parstr.split("_")
+
+    params = {}
+    for p in parstr:
+        m = re.match("([a-zA-Z]+)([\d.+-e]+)",p)
+        k, v = m.groups()
+        params[k] = v
+
+    return params
+
+
+if __name__ == "__main__":
+    datadir = sys.argv[-1]
+    base = pathlib.Path(datadir)
+
+    f = base.joinpath("scalar/scalar_s1.h5")
+
+    params = parse_params(str(base.stem), "MRI_run")
+
+    t_orb = 2*np.pi
+    start = 40
+    stop = 60
+    with h5py.File(str(f),'r') as ts:
+        t=  ts['/scales/sim_time'][:]
+        u_rms = ts['/tasks/u_rms'][:,0,0]
+        gamma, f0 = compute_growth(u_rms, t, t_orb, start, stop)
+        plt.subplot(121)
+        plt.semilogy(t/t_orb,ts['/tasks/KE'][:,0,0],linestyle='-')
+        plt.ylabel("Kinetic Energy")
+        plt.xlabel("time (orbits)")
+        plt.title("Rm = {:5.2e}".format(float(params["Rm"])))
+
+        plt.subplot(122)
+        plt.semilogy(t/t_orb,u_rms,linestyle='-')
+        plt.semilogy(t/t_orb,f0*np.exp(gamma*t),linestyle='--',label=r'$\gamma = {:5.3e}$'.format(gamma))
+        plt.legend(loc='upper left')
+
+        plt.ylabel("u_rms")
+        plt.xlabel("time (orbits)")
+        plt.title("Rm = {:5.2e}".format(float(params["Rm"])))
+
+    outfile = base.joinpath("kinetic_energy.png")
+    plt.savefig(str(outfile))

@@ -47,7 +47,10 @@ linear = args['--linear']
 
 # save data in directory named after script
 data_dir = "scratch/" + sys.argv[0].split('.py')[0]
-data_dir += "_Rm{0:5.02e}_eps{1:5.02e}_Pm{2:5.02e}_beta{3:5.02e}_Q{4:5.02e}_qsh{5:5.02e}_Omega{6:5.02e}_nz{7:d}/".format(Rm, eps, Pm, beta, Q, qsh, Omega0, nz)
+data_dir += "_Rm{0:5.02e}_eps{1:5.02e}_Pm{2:5.02e}_beta{3:5.02e}_Q{4:5.02e}_qsh{5:5.02e}_Omega{6:5.02e}_nz{7:d}".format(Rm, eps, Pm, beta, Q, qsh, Omega0, nz)
+
+if linear:
+    data_dir += "_linear"
 
 from dedalus.tools.config import config
 
@@ -129,7 +132,7 @@ else:
 
 period = 2*np.pi/Omega0
 
-solver.stop_sim_time = 100*period
+solver.stop_sim_time = 200*period
 solver.stop_wall_time = np.inf
 solver.stop_iteration = np.inf
 
