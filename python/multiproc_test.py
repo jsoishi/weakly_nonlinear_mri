@@ -48,6 +48,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
     print(result_dict)
     print("test: ", result_dict[0])
 
+    result
 
     pickle.dump(result_dict, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
 

@@ -79,7 +79,7 @@ def plotvector(obj, savetitle = "vectorplot"):
     
     plt.savefig(savetitle+".png")
     
-def plotN2(obj, savetitle = "vectorplot"):
+def plotN2(obj, savetitle = "N2vectorplot"):
     
     fig = plt.figure()
     ax1 = fig.add_subplot(241)
@@ -126,7 +126,7 @@ def plotN2(obj, savetitle = "vectorplot"):
     
     plt.savefig(savetitle+".png")
     
-def plotN3(obj, savetitle = "vectorplot"):
+def plotN3(obj, savetitle = "N3vectorplot"):
     
     fig = plt.figure(figsize = (12, 4))
     ax1 = fig.add_subplot(141)

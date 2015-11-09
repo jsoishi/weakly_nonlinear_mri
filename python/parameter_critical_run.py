@@ -91,11 +91,22 @@ def get_critical_parameters_by_Pm(Pm, allgoodeigs = True):
     
     if np.sum(growing_modes) < 1:
         raise ValueError(" There are no growing modes in this run! ") 
+    else: print(" There are %d growing modes! " %np.sum(growing_modes))
     
     # Critical eigenvalues are the smallest Rm with a growing mode, and its associated vertical wavenumber Q
     marginal_indx = np.nanargmin(search_Rms[np.where(growing_modes == 1)])
+    print(marginal_indx.dtype)
     marginal_Rm = search_Rms[marginal_indx]
     marginal_Q = search_Qs[marginal_indx]
+    
+    if marginal_Rm == np.nanmax(search_Rms):
+        print("Caution!! marginal_Rm == nanmax(search_Rms)")
+    if marginal_Rm == np.nanmin(search_Rms):
+        print("Caution!! marginal_Rm == nanmin(search_Rms)")
+    if marginal_Q == np.nanmax(search_Qs):
+        print("Caution!! marginal_Q == nanmax(search_Qs)")
+    if marginal_Q == np.nanmin(search_Qs):
+        print("Caution!! marginal_Q == nanmin(search_Qs)")
     
     print("For Pm of", Pm, "critical Rm is", marginal_Rm, " critical Q is", marginal_Q)
     
@@ -125,7 +136,7 @@ def plot_paramspace_run(Rm, Q, evals):
 if __name__ == "__main__":
 
     Pms = [1.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
-    #Pms = [1.0E-3]
+    #Pms = [1.0E-3, 1.0E-3, 1.0E-3, 1.0E-3, 1.0E-3]
     coeffs = np.zeros(len(Pms), np.complex)
     ivpsa = np.zeros(len(Pms), np.complex)
     covera = np.zeros(len(Pms), np.complex)
@@ -134,7 +145,7 @@ if __name__ == "__main__":
     
     for i, Pm in enumerate(Pms):
         marginal_Rm, marginal_Q = get_critical_parameters_by_Pm(Pm)
-        
+        """
         amplitude_obj = AmplitudeAlpha(Pm = Pm, Rm = marginal_Rm, Q = marginal_Q, norm = True)
         coeffs[i] = amplitude_obj.sat_amp_coeffs
         ivpsa[i] = amplitude_obj.saturation_amplitude
@@ -143,6 +154,7 @@ if __name__ == "__main__":
         covera[i] = amplitude_obj.c/amplitude_obj.a
         
         objs[Pm] = amplitude_obj
+        """
     
     # Saturation amplitude vs Pm plots 
     fig = plt.figure()
