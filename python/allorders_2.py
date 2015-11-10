@@ -15,13 +15,13 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 128
+gridnum = 50#128
 print("running at gridnum", gridnum)
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
 # Second basis for checking eigenvalues
-x_basis192 = Chebyshev(192)
+x_basis192 = Chebyshev(64)
 #x_basis192 = Chebyshev(64)
 #x_basis192 = Chebyshev(192)
 domain192 = Domain([x_basis192], grid_dtype = np.complex128)
@@ -701,17 +701,21 @@ class OrderE(MRI):
         self.A = self.LEV.state['A']
         self.B = self.LEV.state['B']
         
-        self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
+        # This does nothing
+        #self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
         
         #self.psi['g'] = self.normalize_vector(self.psi['g'])
         #self.u['g'] = self.normalize_vector(self.u['g'])
         #self.A['g'] = self.normalize_vector(self.A['g'])
         #self.B['g'] = self.normalize_vector(self.B['g'])
+        print("pre norm", self.psi['g'])
+        self.prenormpsi = self.psi
         
         if self.norm == True:
             scale = self.normalize_all_real_or_imag(self.LEV)
             
             self.psi = (self.psi*scale).evaluate()
+            print(self.psi['g'])
             self.u = (self.u*scale).evaluate()
             self.A = (self.A*scale).evaluate()
             self.B = (self.B*scale).evaluate()
@@ -900,8 +904,6 @@ class OrderE2(MRI):
         bv20psi.add_left_bc("psi20x = 0")
         bv20psi.add_right_bc("psi20x = 0")
         
-        print(rhs20_u)
-        
         bv20u = ParsedProblem(['x'],
                       field_names=['u20', 'u20x'],
                       param_names=['iR', 'rhs20_u'])
@@ -937,9 +939,6 @@ class OrderE2(MRI):
         
         self.BVPu = self.solve_BVP(bv20u)
         self.u20 = self.BVPu.state['u20']
-        
-        print("now printing u20")
-        print(self.u20['g'])
         
         self.BVPA = self.solve_BVP(bv20A)
         self.A20 = self.BVPA.state['A20']
@@ -1114,15 +1113,9 @@ class OrderE2(MRI):
             #self.u20 = (self.u20*scale20).evaluate()
             #self.A20 = (self.A20*scale20).evaluate()
         
-        print("printing u20 after all_real_or_imag")
-        print(self.u20['g'])
-        
         self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
         #self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector2(self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22)
-        
-        print("printing u20 after normalize_state_vector")
-        print(self.u20['g'])
-        
+
         #self.u20['g'] = self.normalize_vector(self.u20['g'])
         #self.A20['g'] = self.normalize_vector(self.A20['g'])
         

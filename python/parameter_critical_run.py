@@ -21,6 +21,7 @@ def get_parameter_space_data(data, allgoodeigs = True):
     Qsearch = data.pop("Qsearch")
     Rmsearch = data.pop("Rmsearch")
     Pm = data.pop("Pm")
+    print(Pm)
     q = data.pop("q")
     beta = data.pop("beta")
     dQ = data.pop("dQ")
@@ -79,6 +80,7 @@ def get_critical_parameters_by_Pm(Pm, allgoodeigs = True):
     else:     
         datafile = "gridnum_128_Pm_"+str(Pm)+"_Q_0.74_dQ_0.001_Rm_4.87_dRm_0.001_allgoodeigs.p"
    
+    print(datafile)
     pspace_grid = pickle.load(open(path+datafile, "rb"))
     
     search_Rms, search_Qs, max_evals = get_parameter_space_data(pspace_grid, allgoodeigs = allgoodeigs)
@@ -94,7 +96,23 @@ def get_critical_parameters_by_Pm(Pm, allgoodeigs = True):
     else: print(" There are %d growing modes! " %np.sum(growing_modes))
     
     # Critical eigenvalues are the smallest Rm with a growing mode, and its associated vertical wavenumber Q
-    marginal_indx = np.nanargmin(search_Rms[np.where(growing_modes == 1)])
+    #marginal_indx = np.nanargmin(search_Rms[np.where(growing_modes == 1)]) # this is wrong
+
+    jj = [(i, a) for i, a in enumerate(search_Rms) if growing_modes[i] == 1]
+    jj = np.asarray(jj)
+    print(jj.shape, len(jj))
+    jj_i = jj[:, 0]
+    jj_Rm = jj[:, 1]
+    print(np.nanargmin(jj_Rm))
+    print(np.nanmin(jj_Rm))
+    print(jj_i[np.nanargmin(jj_Rm)])
+    print(search_Rms[jj_i[np.nanargmin(jj_Rm)]])
+    
+    print(jj_Rm[jj_Rm == np.nanmin(jj_Rm)])
+    print(search_Qs[search_Rms == np.nanmin(jj_Rm)])
+    
+    marginal_indx = jj_i[np.nanargmin(jj_Rm)]
+    
     print(marginal_indx.dtype)
     marginal_Rm = search_Rms[marginal_indx]
     marginal_Q = search_Qs[marginal_indx]
@@ -116,7 +134,7 @@ def plot_paramspace_run(Rm, Q, evals):
 
     fig = plt.figure()
     ax1 = fig.add_subplot(121)
-    cb = ax1.scatter(Q, Rm, c=np.real(evals), marker="s", s=40, cmap = "RdBu", vmin=-1E-7, vmax=1E-7)
+    cb = ax1.scatter(Q, Rm, c=np.real(evals), marker="s", s=40, cmap = "RdBu")#, vmin=-1E-7, vmax=1E-7)
     fig.colorbar(cb)
     ax1.set_title("Real")
     ax1.set_xlabel("Q")
