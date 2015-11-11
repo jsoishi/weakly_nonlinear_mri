@@ -395,6 +395,11 @@ class MRI():
         b = self.LEV.state['psi']['g'].imag[13]/n
         scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
         
+        
+        #HACK
+        scale = -1*scale
+        
+        
         return scale
         
     def normalize_all_real_or_imag_bystate(self, state):
@@ -1430,10 +1435,10 @@ class AmplitudeAlpha(MRI):
                            param_names=['ac', 'bc', 'hc', 'Absolute'])
         
         #problem.add_equation("ac*dt(alpha) + -bc*1j*Q*alpha - hc*dZ(alphaZ) - gc*1j*Q**3*alpha = alpha*Absolute(alpha**2)") #fixed to be gle
-        problem.add_equation("ac*dt(alpha) + bc*alpha + hc*dZ(alphaZ) = alpha*Absolute(alpha**2)") 
+        problem.add_equation("-ac*dt(alpha) + bc*alpha + hc*dZ(alphaZ) = alpha*Absolute(alpha**2)") 
         problem.add_equation("alphaZ - dZ(alpha) = 0")
         
-        problem.parameters['ac'] = -self.a/self.c
+        problem.parameters['ac'] = self.a/self.c
         problem.parameters['bc'] = self.b/self.c
         problem.parameters['hc'] = self.h/self.c
         

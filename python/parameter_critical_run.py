@@ -150,6 +150,17 @@ def plot_paramspace_run(Rm, Q, evals):
     plt.tight_layout()
     plt.show()
     pylab.savefig("scrap.png", dpi = 100)
+    
+def plot_loglog_fit(xdata, ydata):
+    
+    x = np.log10(xdata)
+    y = np.log10(ydata)
+    
+    m, b = np.polyfit(x, y, 1)
+    
+    print("slope", m, "intercept", b)
+    
+    return m, b
 
 if __name__ == "__main__":
 
@@ -163,7 +174,7 @@ if __name__ == "__main__":
     
     for i, Pm in enumerate(Pms):
         marginal_Rm, marginal_Q = get_critical_parameters_by_Pm(Pm)
-        """
+        
         amplitude_obj = AmplitudeAlpha(Pm = Pm, Rm = marginal_Rm, Q = marginal_Q, norm = True)
         coeffs[i] = amplitude_obj.sat_amp_coeffs
         ivpsa[i] = amplitude_obj.saturation_amplitude
@@ -172,12 +183,15 @@ if __name__ == "__main__":
         covera[i] = amplitude_obj.c/amplitude_obj.a
         
         objs[Pm] = amplitude_obj
-        """
+        
     
     # Saturation amplitude vs Pm plots 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
     #ax2 = fig.add_subplot(122)
+    
+    #m, b = plot_loglot_fit(Pms, coeffs)
+    #print("slope", m, "intercept", b)
     
     ax1.plot(Pms, coeffs, 'o', color = "purple")
     ax1.semilogx()
