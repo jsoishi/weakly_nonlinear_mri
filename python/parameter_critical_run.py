@@ -110,12 +110,24 @@ def get_critical_parameters_by_Pm(Pm, allgoodeigs = True):
     
     print(jj_Rm[jj_Rm == np.nanmin(jj_Rm)])
     print(search_Qs[search_Rms == np.nanmin(jj_Rm)])
+    print(max_evals[search_Rms == np.nanmin(jj_Rm)])
     
-    marginal_indx = jj_i[np.nanargmin(jj_Rm)]
+    # Plot all the different eigenvalues vs Q - they have a nice peak at the critical Q
+    plt.figure()
+    plt.plot(search_Qs[search_Rms == np.nanmin(jj_Rm)], max_evals[search_Rms == np.nanmin(jj_Rm)], 'o')
+    pylab.savefig("scrap_Pm_"+str(Pm)+".png")
     
-    print(marginal_indx.dtype)
-    marginal_Rm = search_Rms[marginal_indx]
-    marginal_Q = search_Qs[marginal_indx]
+    possible_Rms = jj_Rm[jj_Rm == np.nanmin(jj_Rm)]
+    possible_Qs = search_Qs[search_Rms == np.nanmin(jj_Rm)]
+    possible_eigs = max_evals[search_Rms == np.nanmin(jj_Rm)]
+    
+    marginal_Rm = possible_Rms[0]
+    marginal_Q = possible_Qs[np.nanargmax(possible_eigs.real)]
+    
+    #marginal_indx = jj_i[np.nanargmin(jj_Rm)]
+    #print(marginal_indx.dtype)
+    #marginal_Rm = search_Rms[marginal_indx]
+    #marginal_Q = search_Qs[marginal_indx]
     
     if marginal_Rm == np.nanmax(search_Rms):
         print("Caution!! marginal_Rm == nanmax(search_Rms)")
@@ -164,7 +176,7 @@ def plot_loglog_fit(xdata, ydata):
 
 if __name__ == "__main__":
 
-    Pms = [1.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
+    Pms = [1.0E-4, 2.0E-4, 5.0E-4, 1.0E-3, 5.0E-3, 1.0E-2]
     #Pms = [1.0E-3, 1.0E-3, 1.0E-3, 1.0E-3, 1.0E-3]
     coeffs = np.zeros(len(Pms), np.complex)
     ivpsa = np.zeros(len(Pms), np.complex)

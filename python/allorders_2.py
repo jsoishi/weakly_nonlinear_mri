@@ -397,7 +397,7 @@ class MRI():
         
         
         #HACK
-        scale = -1*scale
+        #scale = -1*scale
         
         
         return scale
