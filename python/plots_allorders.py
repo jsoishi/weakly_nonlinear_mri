@@ -220,6 +220,32 @@ def plotvector2(obj, savetitle = "vectorplot2"):
     ax4.set_title(r"$B$")
     
     plt.savefig(savetitle+".png")
+    
+def plotcoeffs(objs, Pms):
+    
+    all_as = np.zeros(len(Pms), np.complex_)
+    all_bs = np.zeros(len(Pms), np.complex_)
+    all_cs = np.zeros(len(Pms), np.complex_)
+    all_hs = np.zeros(len(Pms), np.complex_)
+    
+    for i, Pm in enumerate(Pms):
+        all_as[i] = objs[Pm].a
+        all_bs[i] = objs[Pm].b
+        all_cs[i] = objs[Pm].c
+        all_hs[i] = objs[Pm].h
+    
+    all_lambda = all_bs/all_as
+    all_D = all_hs/all_as
+    all_alpha = all_cs/all_as
+    
+    plt.figure()
+    plt.plot(Pms, all_alpha, '.')
+    plt.plot(Pms, all_lambda, '.')
+    plt.plot(Pms, all_D, '.')
+    plt.legend(["alpha", "lambda", "D"])
+    pylab.savefig("scrap.png")
+    
+    return all_lambda, all_D, all_alpha, all_as, all_bs, all_cs, all_hs
 
 def ploteigs(goodevals):
 

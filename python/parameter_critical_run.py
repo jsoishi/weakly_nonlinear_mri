@@ -187,7 +187,7 @@ if __name__ == "__main__":
     for i, Pm in enumerate(Pms):
         marginal_Rm, marginal_Q = get_critical_parameters_by_Pm(Pm)
         
-        amplitude_obj = AmplitudeAlpha(Pm = Pm, Rm = marginal_Rm, Q = marginal_Q, norm = True)
+        amplitude_obj = AmplitudeAlpha(Pm = Pm, Rm = marginal_Rm, Q = marginal_Q, norm = False)
         coeffs[i] = amplitude_obj.sat_amp_coeffs
         ivpsa[i] = amplitude_obj.saturation_amplitude
         
