@@ -31,9 +31,11 @@ class MRI():
 
     """
     Base class for MRI equations.
+    
+    Defaults: For Pm of 0.001 critical Rm is 4.879  critical Q is 0.748
     """
 
-    def __init__(self, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         self.Q = Q
         self.Rm = Rm
@@ -527,9 +529,10 @@ class MRI():
         Take inner product < vector2 | vector1 > 
         Defined as integral of (vector2.conj * vector1)
         """
-
-        inner_product = vector1[0]['g']*vector2[0]['g'].conj() + vector1[1]['g']*vector2[1]['g'].conj() + vector1[2]['g']*vector2[2]['g'].conj() + vector1[3]['g']*vector2[3]['g'].conj()
+        print(vector1)
         
+        inner_product = vector1[0]['g']*vector2[0]['g'].conj() + vector1[1]['g']*vector2[1]['g'].conj() + vector1[2]['g']*vector2[2]['g'].conj() + vector1[3]['g']*vector2[3]['g'].conj()
+        print(inner_product)
         
         ip = domain.new_field()
         ip.name = "inner product"
@@ -564,7 +567,7 @@ class AdjointHomogenous(MRI):
     Returns V^dagger
     """
 
-    def __init__(self, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing Adjoint Homogenous")
         
@@ -678,7 +681,7 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing Order E")
         
@@ -823,7 +826,7 @@ class N2(MRI):
     
     """
     
-    def __init__(self, o1 = None, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         print("initializing N2")
     
@@ -890,7 +893,7 @@ class OrderE2(MRI):
     
     """
     
-    def __init__(self, o1 = None, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         print("initializing Order E2")
         
@@ -1123,7 +1126,7 @@ class OrderE2(MRI):
             self.B22 = (self.B22*scale22).evaluate()
             """
             
-        self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector(self.psi21, self.u21, self.A21, self.B21)
+        #self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector(self.psi21, self.u21, self.A21, self.B21)
         self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector(self.psi22, self.u22, self.A22, self.B22)
             
         # These should be zero... 
@@ -1220,7 +1223,7 @@ class N3(MRI):
     
     """
     
-    def __init__(self, o1 = None, o2 = None, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, o2 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing N3")
         
@@ -1280,7 +1283,7 @@ class N3(MRI):
         self.N31_u = N31_u.evaluate()
         #print(self.N31_u['g'])
         
-        # A component
+        # A component -- correct with all-positive V2 definition. Checked 11/14/15
         N31_A_my1 = -1j*self.Q*(o1.A*o2.psi20_x) - 1j*self.Q*(o1.A*o2.psi20_star_x) + 1j*self.Q*(o1.A_star*o2.psi22_x) + 1j*2*self.Q*(o1.A_star_x*o2.psi22)
         N31_A_my2 = 1j*self.Q*(o1.psi*o2.A20_x) + 1j*self.Q*(o1.psi*o2.A20_star_x) - 1j*self.Q*(o1.psi_star*o2.A22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.A22)
         
@@ -1324,7 +1327,7 @@ class AmplitudeAlpha(MRI):
     
     """
     
-    def __init__(self, o1 = None, o2 = None, Q = 0.752, Rm = 4.91, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, o2 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing Amplitude Alpha")
       
@@ -1346,6 +1349,9 @@ class AmplitudeAlpha(MRI):
         
         a_psi_rhs = o1.psi_xx - self.Q**2*o1.psi
         a_psi_rhs = a_psi_rhs.evaluate()
+        
+        a_psi_rhs2 = o1.psi_star_xx - self.Q**2*o1.psi #test
+        a_psi_rhs2 = a_psi_rhs2.evaluate()
         
         u20_twiddle = domain.new_field()
         u20_twiddle.name = 'self.v20_utwiddle'
@@ -1380,17 +1386,26 @@ class AmplitudeAlpha(MRI):
         b_B_rhs = b_B_rhs.evaluate()
                 
         l2twiddlel1twiddle_psi = 3*1j*(2/self.beta)*self.Q*o1.A - 3*(2/self.beta)*self.Q**2*o2.A21 + (2/self.beta)*o2.A21_xx - 6*self.Q**2*self.iR*o1.psi + 2*self.iR*o1.psi_xx - 4*1j*self.iR*self.Q**3*o2.psi21 + 4*self.iR*1j*self.Q*o2.psi21_xx + 2*o2.u21
+        #l2twiddlel1twiddle_psi = 6*1j*(2/self.beta)*self.Q*o1.A - 3*(2/self.beta)*self.Q**2*o2.A21 + (2/self.beta)*o2.A21_xx - 12*self.Q**2*self.iR*o1.psi + 4*self.iR*o1.psi_xx - 4*1j*self.iR*self.Q**3*o2.psi21 + 4*self.iR*1j*self.Q*o2.psi21_xx + 2*o2.u21 # Umurhan+'s wrong definition of L2twiddle
         l2twiddlel1twiddle_psi = l2twiddlel1twiddle_psi.evaluate()
         
         #l2twiddlel1twiddle_u = (2/self.beta)*o1.B - 1j*self.Q*(2/self.beta)*o2.B21 - 1j*self.Q*(self.q - 2)*o2.psi21 + self.iR*o1.u #what?
-        l2twiddlel1twiddle_u = (2/self.beta)*o2.B21 + 2*1j*self.iR*self.Q*o2.u21 + (self.q - 2)*o2.psi21 + self.iR*o1.u
+        l2twiddlel1twiddle_u = (2/self.beta)*o2.B21 + 2*1j*self.iR*self.Q*o2.u21 + (self.q - 2)*o2.psi21 + self.iR*o1.u #correct
+        #l2twiddlel1twiddle_u = (2/self.beta)*o2.B21 + 2*1j*self.iR*self.Q*o2.u21 + (self.q - 2)*o2.psi21 + 2*self.iR*o1.u #Umurhan+'s wrong def of L2twiddle
         l2twiddlel1twiddle_u = l2twiddlel1twiddle_u.evaluate()
         
         l2twiddlel1twiddle_A = self.iRm*o1.A + 2*1j*self.iRm*self.Q*o2.A21 + o2.psi21
+        #l2twiddlel1twiddle_A = 2*self.iRm*o1.A + 2*1j*self.iRm*self.Q*o2.A21 + o2.psi21 #Umurhan+'s wrong def of L2twiddle
         l2twiddlel1twiddle_A = l2twiddlel1twiddle_A.evaluate()
         
         l2twiddlel1twiddle_B = -self.q*o2.A21 + self.iRm*o1.B + 2*1j*self.iRm*self.Q*o2.B21 + o2.u21
+        #l2twiddlel1twiddle_B = -self.q*o2.A21 + 2*self.iRm*o1.B + 2*1j*self.iRm*self.Q*o2.B21 + o2.u21 #Umurhan+'s wrong def of L2twiddle
         l2twiddlel1twiddle_B = l2twiddlel1twiddle_B.evaluate()
+        
+        self.l2twiddlel1twiddle_psi = l2twiddlel1twiddle_psi
+        self.l2twiddlel1twiddle_u = l2twiddlel1twiddle_u
+        self.l2twiddlel1twiddle_A = l2twiddlel1twiddle_A
+        self.l2twiddlel1twiddle_B = l2twiddlel1twiddle_B
         
         g_psi = (2/self.beta)*o1.A
         g_psi = g_psi.evaluate()
@@ -1412,6 +1427,7 @@ class AmplitudeAlpha(MRI):
         
         # a = <va . D V11*>
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
+        self.a2 = self.take_inner_product2([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs2, o1.u_star, o1.A_star, o1.B_star]) #testing
         
         # c = <va . N31*>
         self.c = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])

@@ -53,7 +53,7 @@ def plot_eigenfunctions(allorders_object, savename = "scrap.png"):
     
     pylab.savefig(savename)
     
-def plotvector(obj, savetitle = "vectorplot"):
+def plotvector(obj, Pm, savetitle = "vectorplot", psimax = 1, psimin = -1, umax = 1, umin = -1, Amax = 1, Amin = -1, Bmax = 1, Bmin = -1):
     
     fig = plt.figure()
     ax1 = fig.add_subplot(221)
@@ -63,23 +63,30 @@ def plotvector(obj, savetitle = "vectorplot"):
     
     ax1.plot(obj.x, obj.psi['g'].real, color = "black")
     ax1.plot(obj.x, obj.psi['g'].imag, color = "red")
+    ax1.set_ylim(psimin, psimax)
     ax1.set_title(r"$\Psi$")
     
     ax2.plot(obj.x, obj.u['g'].real, color = "black")
     ax2.plot(obj.x, obj.u['g'].imag, color = "red")
+    ax2.set_ylim(umin, umax)
     ax2.set_title(r"$u$")
     
     ax3.plot(obj.x, obj.A['g'].real, color = "black")
     ax3.plot(obj.x, obj.A['g'].imag, color = "red")
+    ax3.set_ylim(Amin, Amax)
     ax3.set_title(r"$A$")
     
     ax4.plot(obj.x, obj.B['g'].real, color = "black")
     ax4.plot(obj.x, obj.B['g'].imag, color = "red")
+    ax4.set_ylim(Bmin, Bmax)
     ax4.set_title(r"$B$")
+    
+    plt.suptitle(r"$\mathrm{Pm} = $"+str(Pm), size = 20)
+    plt.tight_layout()
     
     plt.savefig(savetitle+".png")
     
-def plotN2(obj, savetitle = "N2vectorplot"):
+def plotN2(obj, Pm, savetitle = "N2vectorplot"):
     
     fig = plt.figure()
     ax1 = fig.add_subplot(241)
@@ -124,9 +131,11 @@ def plotN2(obj, savetitle = "N2vectorplot"):
     ax4.plot(obj.x, obj.N22_B['g'].imag, color = "red")
     ax4.set_title(r"$B$")
     
+    plt.suptitle(r"$\mathrm{Pm} = $"+str(Pm), size = 20)
+    plt.tight_layout()
     plt.savefig(savetitle+".png")
     
-def plotN3(obj, savetitle = "N3vectorplot"):
+def plotN3(obj, Pm, savetitle = "N3vectorplot"):
     
     fig = plt.figure(figsize = (12, 4))
     ax1 = fig.add_subplot(141)
@@ -150,10 +159,12 @@ def plotN3(obj, savetitle = "N3vectorplot"):
     ax4.plot(obj.x, obj.N31_B['g'].imag, color = "red")
     ax4.set_title(r"$B$")
     
+    plt.suptitle(r"$\mathrm{Pm} = $"+str(Pm), size = 20)
+    plt.tight_layout()
     plt.savefig(savetitle+".png")
     
     
-def plotvector2(obj, savetitle = "vectorplot2"):
+def plotvector2(obj, Pm, savetitle = "vectorplot2"):
     
     fig = plt.figure()
     ax1 = fig.add_subplot(341)
@@ -163,19 +174,19 @@ def plotvector2(obj, savetitle = "vectorplot2"):
     
     ax1.plot(obj.x, obj.psi20['g'].real, color = "black")
     ax1.plot(obj.x, obj.psi20['g'].imag, color = "red")
-    ax1.set_title(r"$\Psi$")
+    ax1.set_title(r"$\Psi_{20}$")
     
     ax2.plot(obj.x, obj.u20['g'].real, color = "black")
     ax2.plot(obj.x, obj.u20['g'].imag, color = "red")
-    ax2.set_title(r"$u$")
+    ax2.set_title(r"$u_{20}$")
     
     ax3.plot(obj.x, obj.A20['g'].real, color = "black")
     ax3.plot(obj.x, obj.A20['g'].imag, color = "red")
-    ax3.set_title(r"$A$")
+    ax3.set_title(r"$A_{20}$")
     
     ax4.plot(obj.x, obj.B20['g'].real, color = "black")
     ax4.plot(obj.x, obj.B20['g'].imag, color = "red")
-    ax4.set_title(r"$B$")
+    ax4.set_title(r"$B_{20}$")
     
     ax1 = fig.add_subplot(345)
     ax2 = fig.add_subplot(346)
@@ -184,19 +195,19 @@ def plotvector2(obj, savetitle = "vectorplot2"):
     
     ax1.plot(obj.x, obj.psi21['g'].real, color = "black")
     ax1.plot(obj.x, obj.psi21['g'].imag, color = "red")
-    ax1.set_title(r"$\Psi$")
+    ax1.set_title(r"$\Psi_{21}$")
     
     ax2.plot(obj.x, obj.u21['g'].real, color = "black")
     ax2.plot(obj.x, obj.u21['g'].imag, color = "red")
-    ax2.set_title(r"$u$")
+    ax2.set_title(r"$u_{21}$")
     
     ax3.plot(obj.x, obj.A21['g'].real, color = "black")
     ax3.plot(obj.x, obj.A21['g'].imag, color = "red")
-    ax3.set_title(r"$A$")
+    ax3.set_title(r"$A_{21}$")
     
     ax4.plot(obj.x, obj.B21['g'].real, color = "black")
     ax4.plot(obj.x, obj.B21['g'].imag, color = "red")
-    ax4.set_title(r"$B$")
+    ax4.set_title(r"$B_{21}$")
     
     ax1 = fig.add_subplot(349)
     ax2 = fig.add_subplot(3,4,10)
@@ -205,21 +216,104 @@ def plotvector2(obj, savetitle = "vectorplot2"):
     
     ax1.plot(obj.x, obj.psi22['g'].real, color = "black")
     ax1.plot(obj.x, obj.psi22['g'].imag, color = "red")
-    ax1.set_title(r"$\Psi$")
+    ax1.set_title(r"$\Psi_{22}$")
     
     ax2.plot(obj.x, obj.u22['g'].real, color = "black")
     ax2.plot(obj.x, obj.u22['g'].imag, color = "red")
-    ax2.set_title(r"$u$")
+    ax2.set_title(r"$u_{22}$")
     
     ax3.plot(obj.x, obj.A22['g'].real, color = "black")
     ax3.plot(obj.x, obj.A22['g'].imag, color = "red")
-    ax3.set_title(r"$A$")
+    ax3.set_title(r"$A_{22}$")
     
     ax4.plot(obj.x, obj.B22['g'].real, color = "black")
     ax4.plot(obj.x, obj.B22['g'].imag, color = "red")
-    ax4.set_title(r"$B$")
+    ax4.set_title(r"$B_{22}$")
     
+    plt.suptitle(r"$\mathrm{Pm} = $"+str(Pm), size = 20)
+    plt.tight_layout()
     plt.savefig(savetitle+".png")
+    
+def get_minmax_psi_allPms(objs, Pms):
+
+    psi_maxreal = [np.max(objs[Pm].o1.psi['g'].real) for Pm in Pms]
+    psi_maximag = [np.max(objs[Pm].o1.psi['g'].imag) for Pm in Pms]
+    psi_minreal = [np.min(objs[Pm].o1.psi['g'].real) for Pm in Pms]
+    psi_minimag = [np.min(objs[Pm].o1.psi['g'].imag) for Pm in Pms]
+    
+    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
+    psimin = max(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
+    
+    print(psimax, psimin)
+    
+    return psimax, psimin
+    
+def get_minmax_u_allPms(objs, Pms):
+
+    u_maxreal = [np.max(objs[Pm].o1.u['g'].real) for Pm in Pms]
+    u_maximag = [np.max(objs[Pm].o1.u['g'].imag) for Pm in Pms]
+    u_minreal = [np.min(objs[Pm].o1.u['g'].real) for Pm in Pms]
+    u_minimag = [np.min(objs[Pm].o1.u['g'].imag) for Pm in Pms]
+    
+    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
+    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
+    
+    print(umax, umin)
+    
+    return umax, umin
+    
+def get_minmax_A_allPms(objs, Pms):
+
+    A_maxreal = [np.max(objs[Pm].o1.A['g'].real) for Pm in Pms]
+    A_maximag = [np.max(objs[Pm].o1.A['g'].imag) for Pm in Pms]
+    A_minreal = [np.min(objs[Pm].o1.A['g'].real) for Pm in Pms]
+    A_minimag = [np.min(objs[Pm].o1.A['g'].imag) for Pm in Pms]
+    
+    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
+    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
+    
+    return Amax, Amin
+    
+def get_minmax_B_allPms(objs, Pms):
+
+    B_maxreal = [np.max(objs[Pm].o1.B['g'].real) for Pm in Pms]
+    B_maximag = [np.max(objs[Pm].o1.B['g'].imag) for Pm in Pms]
+    B_minreal = [np.min(objs[Pm].o1.B['g'].real) for Pm in Pms]
+    B_minimag = [np.min(objs[Pm].o1.B['g'].imag) for Pm in Pms]
+    
+    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
+    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
+    
+    print(Bmax, Bmin)
+    
+    return Bmax, Bmin
+    
+def plot_all_O2s(objs, Pms):
+    for Pm in Pms:
+        plotvector2(objs[Pm].o2, Pm, savetitle = "vectorplot2_"+str(Pm))
+        
+def plot_all_N3s(objs, Pms):
+    for Pm in Pms:
+        plotN3(objs[Pm].n3, Pm, savetitle = "N3_"+str(Pm))
+        
+def plot_all_ahs(objs, Pms):
+    for Pm in Pms:
+        plotvector(objs[Pm].ah, Pm, savetitle = "adjoint_homogenous_"+str(Pm))
+    
+def plot_all_o1s(objs, Pms):
+    psimax, psimin = get_minmax_psi_allPms(objs, Pms)
+    umax, umin = get_minmax_u_allPms(objs, Pms)
+    Amax, Amin = get_minmax_A_allPms(objs, Pms)
+    Bmax, Bmin = get_minmax_B_allPms(objs, Pms)
+    
+    print(psimax, psimin, umax, umin, Amax, Amin, Bmax, Bmin)
+    
+    for Pm in Pms:
+        plotvector(objs[Pm].o1, Pm, savetitle = "Order_E_"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
+
+def plot_all_N2s(objs, Pms):
+    for Pm in Pms:
+        plotN2(objs[Pm].n2, Pm, savetitle = "N2_"+str(Pm))
     
 def plotcoeffs(objs, Pms):
     
