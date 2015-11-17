@@ -15,13 +15,13 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 64#128
+gridnum = 50#128
 print("running at gridnum", gridnum)
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
 # Second basis for checking eigenvalues
-x_basis192 = Chebyshev(96)
+x_basis192 = Chebyshev(64)
 #x_basis192 = Chebyshev(64)
 #x_basis192 = Chebyshev(192)
 domain192 = Domain([x_basis192], grid_dtype = np.complex128)
@@ -728,7 +728,7 @@ class OrderE(MRI):
         self.B = self.LEV.state['B']
         
         # This does nothing
-        #self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
+        self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
         
         #self.psi['g'] = self.normalize_vector(self.psi['g'])
         #self.u['g'] = self.normalize_vector(self.u['g'])
@@ -976,18 +976,23 @@ class OrderE2(MRI):
         # second term: -L1twiddle V1
         term2_psi = 3*(2/self.beta)*self.Q**2*o1.A - (2/self.beta)*o1.A_xx + 4*self.iR*1j*self.Q**3*o1.psi - 4*self.iR*1j*self.Q*o1.psi_xx - 2*o1.u
         self.term2_psi = term2_psi.evaluate()
+        term2_psi = term2_psi.evaluate()
         
         #term2_u = (2/self.beta)*o1.B + 2*self.iR*self.Q*o1.u + (self.q - 2)*o1.psi ## why does (q - 2) and (2 - q) make no diff here??
         term2_u = -(2/self.beta)*o1.B - 2*self.iR*1j*self.Q*o1.u - (self.q - 2)*o1.psi #added missing 1j in second term 10/14/15
         self.term2_u = term2_u.evaluate()
+        term2_u = term2_u.evaluate()
         
         term2_A = -2*self.iRm*1j*self.Q*o1.A - o1.psi
         self.term2_A = term2_A.evaluate()
+        term2_A = term2_A.evaluate()
         
         term2_B = self.q*o1.A - 2*self.iRm*1j*self.Q*o1.B - o1.u
         self.term2_B = term2_B.evaluate()
+        term2_B = term2_B.evaluate()
         
         # righthand side for the 21 terms (e^iQz dependence)
+        print("with selfs on V21")
         rhs21_psi = self.term2_psi['g']
         rhs21_u = self.term2_u['g']
         rhs21_A = self.term2_A['g']
@@ -1126,8 +1131,8 @@ class OrderE2(MRI):
             self.B22 = (self.B22*scale22).evaluate()
             """
             
-        #self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector(self.psi21, self.u21, self.A21, self.B21)
-        #self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector(self.psi22, self.u22, self.A22, self.B22)
+        self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector(self.psi21, self.u21, self.A21, self.B21)
+        self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector(self.psi22, self.u22, self.A22, self.B22)
             
         # These should be zero... 
         self.psi20['g'] = np.zeros(gridnum, np.int_)
@@ -1139,7 +1144,7 @@ class OrderE2(MRI):
             #self.u20 = (self.u20*scale20).evaluate()
             #self.A20 = (self.A20*scale20).evaluate()
         
-        #self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
+        self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
         #self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector2(self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22)
 
         #self.u20['g'] = self.normalize_vector(self.u20['g'])

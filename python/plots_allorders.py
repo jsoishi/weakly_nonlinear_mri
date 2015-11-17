@@ -54,7 +54,7 @@ def plot_eigenfunctions(allorders_object, savename = "scrap.png"):
     
     pylab.savefig(savename)
     
-def plotvector(obj, Pm, savetitle = "vectorplot", psimax = 1, psimin = -1, umax = 1, umin = -1, Amax = 1, Amin = -1, Bmax = 1, Bmin = -1):
+def plotvector(obj, Pm, savetitle = "vectorplot", setlims = True, psimax = 1, psimin = -1, umax = 1, umin = -1, Amax = 1, Amin = -1, Bmax = 1, Bmin = -1):
     
     fig = plt.figure()
     ax1 = fig.add_subplot(221)
@@ -64,22 +64,26 @@ def plotvector(obj, Pm, savetitle = "vectorplot", psimax = 1, psimin = -1, umax 
     
     ax1.plot(obj.x, obj.psi['g'].real, color = "black")
     ax1.plot(obj.x, obj.psi['g'].imag, color = "red")
-    ax1.set_ylim(psimin, psimax)
+    if setlims == True:
+        ax1.set_ylim(psimin, psimax)
     ax1.set_title(r"$\Psi$")
     
     ax2.plot(obj.x, obj.u['g'].real, color = "black")
     ax2.plot(obj.x, obj.u['g'].imag, color = "red")
-    ax2.set_ylim(umin, umax)
+    if setlims == True:
+        ax2.set_ylim(umin, umax)
     ax2.set_title(r"$u$")
     
     ax3.plot(obj.x, obj.A['g'].real, color = "black")
     ax3.plot(obj.x, obj.A['g'].imag, color = "red")
-    ax3.set_ylim(Amin, Amax)
+    if setlims == True:
+        ax3.set_ylim(Amin, Amax)
     ax3.set_title(r"$A$")
     
     ax4.plot(obj.x, obj.B['g'].real, color = "black")
     ax4.plot(obj.x, obj.B['g'].imag, color = "red")
-    ax4.set_ylim(Bmin, Bmax)
+    if setlims == True:
+        ax4.set_ylim(Bmin, Bmax)
     ax4.set_title(r"$B$")
     
     plt.suptitle(r"$\mathrm{Pm} = $"+str(Pm), size = 20)
@@ -310,7 +314,7 @@ def plot_all_O2s(objs, Pms):
     Bmax22, Bmin22 = get_minmax_o22_B_allPms(objs, Pms)
 
     for Pm in Pms:
-        plotvector2(objs[Pm].o2, Pm, savetitle = "vectorplot2_"+str(Pm), psimax20 = psimax20, psimin20 = psimin20, umax20 = umax20, umin20 = umin20, Amax20 = Amax20, Amin20 = Amin20, Bmax20 = Bmax20, Bmin20 = Bmin20, psimax21 = psimax21, psimin21 = psimin21, umax21 = umax21, umin21 = umin21, Amax21 = Amax21, Amin21 = Amin21, Bmax21 = Bmax21, Bmin21 = Bmin21, psimax22 = psimax22, psimin22 = psimin22, umax22 = umax22, umin22 = umin22, Amax22 = Amax22, Amin22 = Amin22, Bmax22 = Bmax22, Bmin22 = Bmin22)
+        plotvector2(objs[Pm].o2, Pm, savetitle = "vectorplot2_norm_"+str(Pm), psimax20 = psimax20, psimin20 = psimin20, umax20 = umax20, umin20 = umin20, Amax20 = Amax20, Amin20 = Amin20, Bmax20 = Bmax20, Bmin20 = Bmin20, psimax21 = psimax21, psimin21 = psimin21, umax21 = umax21, umin21 = umin21, Amax21 = Amax21, Amin21 = Amin21, Bmax21 = Bmax21, Bmin21 = Bmin21, psimax22 = psimax22, psimin22 = psimin22, umax22 = umax22, umin22 = umin22, Amax22 = Amax22, Amin22 = Amin22, Bmax22 = Bmax22, Bmin22 = Bmin22)
         
 def plot_all_N3s(objs, Pms):
 
