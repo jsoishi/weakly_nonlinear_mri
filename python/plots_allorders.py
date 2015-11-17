@@ -10,6 +10,7 @@ import plot_tools
 import streamplot_uneven as su
 import random
 import itertools
+import decimal
 
 import matplotlib
 from matplotlib import rc
@@ -86,9 +87,9 @@ def plotvector(obj, Pm, savetitle = "vectorplot", psimax = 1, psimin = -1, umax 
     
     plt.savefig(savetitle+".png")
     
-def plotN2(obj, Pm, savetitle = "N2vectorplot"):
+def plotN2(obj, Pm, savetitle = "N2vectorplot", psimax20 = 1, psimin20 = -1, umax20 = 1, umin20 = -1, Amax20 = 1, Amin20 = -1, Bmax20 = 1, Bmin20 = -1, psimax22 = 1, psimin22 = -1, umax22 = 1, umin22 = -1, Amax22 = 1, Amin22 = -1, Bmax22 = 1, Bmin22 = -1):
     
-    fig = plt.figure()
+    fig = plt.figure(figsize = (10, 6))
     ax1 = fig.add_subplot(241)
     ax2 = fig.add_subplot(242)
     ax3 = fig.add_subplot(243)
@@ -96,19 +97,23 @@ def plotN2(obj, Pm, savetitle = "N2vectorplot"):
     
     ax1.plot(obj.x, obj.N20_psi['g'].real, color = "black")
     ax1.plot(obj.x, obj.N20_psi['g'].imag, color = "red")
-    ax1.set_title(r"$\Psi$")
+    ax1.set_ylim(psimin20, psimax20)
+    ax1.set_title(r"$\Psi_{20}$")
     
     ax2.plot(obj.x, obj.N20_u['g'].real, color = "black")
     ax2.plot(obj.x, obj.N20_u['g'].imag, color = "red")
-    ax2.set_title(r"$u$")
+    ax2.set_ylim(umin20, umax20)
+    ax2.set_title(r"$u_{20}$")
     
     ax3.plot(obj.x, obj.N20_A['g'].real, color = "black")
     ax3.plot(obj.x, obj.N20_A['g'].imag, color = "red")
-    ax3.set_title(r"$A$")
+    ax3.set_ylim(Amin20, Amax20)
+    ax3.set_title(r"$A_{20}$")
     
     ax4.plot(obj.x, obj.N20_B['g'].real, color = "black")
     ax4.plot(obj.x, obj.N20_B['g'].imag, color = "red")
-    ax4.set_title(r"$B$")
+    ax4.set_ylim(Bmin20, Bmax20)
+    ax4.set_title(r"$B_{20}$")
     
     ax1 = fig.add_subplot(245)
     ax2 = fig.add_subplot(246)
@@ -117,25 +122,29 @@ def plotN2(obj, Pm, savetitle = "N2vectorplot"):
     
     ax1.plot(obj.x, obj.N22_psi['g'].real, color = "black")
     ax1.plot(obj.x, obj.N22_psi['g'].imag, color = "red")
-    ax1.set_title(r"$\Psi$")
+    ax1.set_ylim(psimin22, psimax22)
+    ax1.set_title(r"$\Psi_{22}$")
     
     ax2.plot(obj.x, obj.N22_u['g'].real, color = "black")
     ax2.plot(obj.x, obj.N22_u['g'].imag, color = "red")
-    ax2.set_title(r"$u$")
+    ax2.set_ylim(umin22, umax22)
+    ax2.set_title(r"$u_{22}$")
     
     ax3.plot(obj.x, obj.N22_A['g'].real, color = "black")
     ax3.plot(obj.x, obj.N22_A['g'].imag, color = "red")
-    ax3.set_title(r"$A$")
+    ax3.set_ylim(Amin22, Amax22)
+    ax3.set_title(r"$A_{22}$")
     
     ax4.plot(obj.x, obj.N22_B['g'].real, color = "black")
     ax4.plot(obj.x, obj.N22_B['g'].imag, color = "red")
-    ax4.set_title(r"$B$")
+    ax4.set_ylim(Bmin22, Bmax22)
+    ax4.set_title(r"$B_{22}$")
     
     plt.suptitle(r"$\mathrm{Pm} = $"+str(Pm), size = 20)
     plt.tight_layout()
     plt.savefig(savetitle+".png")
     
-def plotN3(obj, Pm, savetitle = "N3vectorplot"):
+def plotN3(obj, Pm, savetitle = "N3vectorplot", psimax31 = 1, psimin31 = -1, umax31 = 1, umin31 = -1, Amax31 = 1, Amin31 = -1, Bmax31 = 1, Bmin31 = -1):
     
     fig = plt.figure(figsize = (12, 4))
     ax1 = fig.add_subplot(141)
@@ -145,26 +154,62 @@ def plotN3(obj, Pm, savetitle = "N3vectorplot"):
     
     ax1.plot(obj.x, obj.N31_psi['g'].real, color = "black")
     ax1.plot(obj.x, obj.N31_psi['g'].imag, color = "red")
+    ax1.set_ylim(psimin31, psimax31)
     ax1.set_title(r"$\Psi$")
     
     ax2.plot(obj.x, obj.N31_u['g'].real, color = "black")
     ax2.plot(obj.x, obj.N31_u['g'].imag, color = "red")
+    ax2.set_ylim(umin31, umax31)
     ax2.set_title(r"$u$")
     
     ax3.plot(obj.x, obj.N31_A['g'].real, color = "black")
     ax3.plot(obj.x, obj.N31_A['g'].imag, color = "red")
+    ax3.set_ylim(Amin31, Amax31)
     ax3.set_title(r"$A$")
     
     ax4.plot(obj.x, obj.N31_B['g'].real, color = "black")
     ax4.plot(obj.x, obj.N31_B['g'].imag, color = "red")
+    ax4.set_ylim(Bmin31, Bmax31)
     ax4.set_title(r"$B$")
     
     plt.suptitle(r"$\mathrm{Pm} = $"+str(Pm), size = 20)
     plt.tight_layout()
     plt.savefig(savetitle+".png")
+
+def plotV21_RHS(obj, Pm, savetitle = "V21_RHSvectorplot", psimax = 1, psimin = -1, umax = 1, umin = -1, Amax = 1, Amin = -1, Bmax = 1, Bmin = -1):
     
+    fig = plt.figure(figsize = (12, 4))
+    ax1 = fig.add_subplot(141)
+    ax2 = fig.add_subplot(142)
+    ax3 = fig.add_subplot(143)
+    ax4 = fig.add_subplot(144)
     
-def plotvector2(obj, Pm, savetitle = "vectorplot2"):
+    ax1.plot(obj.x, obj.term2_psi['g'].real, color = "black")
+    ax1.plot(obj.x, obj.term2_psi['g'].imag, color = "red")
+    ax1.set_ylim(psimin, psimax)
+    ax1.set_title(r"$\Psi$")
+    
+    ax2.plot(obj.x, obj.term2_u['g'].real, color = "black")
+    ax2.plot(obj.x, obj.term2_u['g'].imag, color = "red")
+    ax2.set_ylim(umin, umax)
+    ax2.set_title(r"$u$")
+    
+    ax3.plot(obj.x, obj.term2_A['g'].real, color = "black")
+    ax3.plot(obj.x, obj.term2_A['g'].imag, color = "red")
+    ax3.set_ylim(Amin, Amax)
+    ax3.set_title(r"$A$")
+    
+    ax4.plot(obj.x, obj.term2_B['g'].real, color = "black")
+    ax4.plot(obj.x, obj.term2_B['g'].imag, color = "red")
+    ax4.set_ylim(Bmin, Bmax)
+    ax4.set_title(r"$B$")
+    
+    decPm = '%.2E' % decimal.Decimal(Pm)
+    plt.suptitle(r"$\mathrm{Pm} = $"+decPm, size = 20)
+    plt.tight_layout()
+    plt.savefig(savetitle+".png")    
+    
+def plotvector2(obj, Pm, savetitle = "vectorplot2", psimax20 = 1, psimin20 = -1, umax20 = 1, umin20 = -1, Amax20 = 1, Amin20 = -1, Bmax20 = 1, Bmin20 = -1, psimax21 = 1, psimin21 = -1, umax21 = 1, umin21 = -1, Amax21 = 1, Amin21 = -1, Bmax21 = 1, Bmin21 = -1, psimax22 = 1, psimin22 = -1, umax22 = 1, umin22 = -1, Amax22 = 1, Amin22 = -1, Bmax22 = 1, Bmin22 = -1):
     
     fig = plt.figure()
     ax1 = fig.add_subplot(341)
@@ -174,18 +219,22 @@ def plotvector2(obj, Pm, savetitle = "vectorplot2"):
     
     ax1.plot(obj.x, obj.psi20['g'].real, color = "black")
     ax1.plot(obj.x, obj.psi20['g'].imag, color = "red")
+    ax1.set_ylim(psimin20, psimax20)
     ax1.set_title(r"$\Psi_{20}$")
     
     ax2.plot(obj.x, obj.u20['g'].real, color = "black")
     ax2.plot(obj.x, obj.u20['g'].imag, color = "red")
+    ax2.set_ylim(umin20, umax20)
     ax2.set_title(r"$u_{20}$")
     
     ax3.plot(obj.x, obj.A20['g'].real, color = "black")
     ax3.plot(obj.x, obj.A20['g'].imag, color = "red")
+    ax3.set_ylim(Amin20, Amax20)
     ax3.set_title(r"$A_{20}$")
     
     ax4.plot(obj.x, obj.B20['g'].real, color = "black")
     ax4.plot(obj.x, obj.B20['g'].imag, color = "red")
+    ax4.set_ylim(Bmin20, Bmax20)
     ax4.set_title(r"$B_{20}$")
     
     ax1 = fig.add_subplot(345)
@@ -195,18 +244,22 @@ def plotvector2(obj, Pm, savetitle = "vectorplot2"):
     
     ax1.plot(obj.x, obj.psi21['g'].real, color = "black")
     ax1.plot(obj.x, obj.psi21['g'].imag, color = "red")
+    ax1.set_ylim(psimin21, psimax21)
     ax1.set_title(r"$\Psi_{21}$")
     
     ax2.plot(obj.x, obj.u21['g'].real, color = "black")
     ax2.plot(obj.x, obj.u21['g'].imag, color = "red")
+    ax2.set_ylim(umin21, umax21)
     ax2.set_title(r"$u_{21}$")
     
     ax3.plot(obj.x, obj.A21['g'].real, color = "black")
     ax3.plot(obj.x, obj.A21['g'].imag, color = "red")
+    ax3.set_ylim(Amin21, Amax21)
     ax3.set_title(r"$A_{21}$")
     
     ax4.plot(obj.x, obj.B21['g'].real, color = "black")
     ax4.plot(obj.x, obj.B21['g'].imag, color = "red")
+    ax4.set_ylim(Bmin21, Bmax21)
     ax4.set_title(r"$B_{21}$")
     
     ax1 = fig.add_subplot(349)
@@ -216,89 +269,67 @@ def plotvector2(obj, Pm, savetitle = "vectorplot2"):
     
     ax1.plot(obj.x, obj.psi22['g'].real, color = "black")
     ax1.plot(obj.x, obj.psi22['g'].imag, color = "red")
+    ax1.set_ylim(psimin22, psimax22)
     ax1.set_title(r"$\Psi_{22}$")
     
     ax2.plot(obj.x, obj.u22['g'].real, color = "black")
     ax2.plot(obj.x, obj.u22['g'].imag, color = "red")
+    ax2.set_ylim(umin22, umax22)
     ax2.set_title(r"$u_{22}$")
     
     ax3.plot(obj.x, obj.A22['g'].real, color = "black")
     ax3.plot(obj.x, obj.A22['g'].imag, color = "red")
+    ax3.set_ylim(Amin22, Amax22)
     ax3.set_title(r"$A_{22}$")
     
     ax4.plot(obj.x, obj.B22['g'].real, color = "black")
     ax4.plot(obj.x, obj.B22['g'].imag, color = "red")
+    ax4.set_ylim(Bmin22, Bmax22)
     ax4.set_title(r"$B_{22}$")
     
-    plt.suptitle(r"$\mathrm{Pm} = $"+str(Pm), size = 20)
+    decPm = '%.2E' % decimal.Decimal(Pm)
+    plt.suptitle(r"$\mathrm{Pm} = $"+decPm, size = 20)
     plt.tight_layout()
     plt.savefig(savetitle+".png")
     
-def get_minmax_psi_allPms(objs, Pms):
-
-    psi_maxreal = [np.max(objs[Pm].o1.psi['g'].real) for Pm in Pms]
-    psi_maximag = [np.max(objs[Pm].o1.psi['g'].imag) for Pm in Pms]
-    psi_minreal = [np.min(objs[Pm].o1.psi['g'].real) for Pm in Pms]
-    psi_minimag = [np.min(objs[Pm].o1.psi['g'].imag) for Pm in Pms]
-    
-    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
-    psimin = max(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
-    
-    print(psimax, psimin)
-    
-    return psimax, psimin
-    
-def get_minmax_u_allPms(objs, Pms):
-
-    u_maxreal = [np.max(objs[Pm].o1.u['g'].real) for Pm in Pms]
-    u_maximag = [np.max(objs[Pm].o1.u['g'].imag) for Pm in Pms]
-    u_minreal = [np.min(objs[Pm].o1.u['g'].real) for Pm in Pms]
-    u_minimag = [np.min(objs[Pm].o1.u['g'].imag) for Pm in Pms]
-    
-    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
-    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
-    
-    print(umax, umin)
-    
-    return umax, umin
-    
-def get_minmax_A_allPms(objs, Pms):
-
-    A_maxreal = [np.max(objs[Pm].o1.A['g'].real) for Pm in Pms]
-    A_maximag = [np.max(objs[Pm].o1.A['g'].imag) for Pm in Pms]
-    A_minreal = [np.min(objs[Pm].o1.A['g'].real) for Pm in Pms]
-    A_minimag = [np.min(objs[Pm].o1.A['g'].imag) for Pm in Pms]
-    
-    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
-    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
-    
-    return Amax, Amin
-    
-def get_minmax_B_allPms(objs, Pms):
-
-    B_maxreal = [np.max(objs[Pm].o1.B['g'].real) for Pm in Pms]
-    B_maximag = [np.max(objs[Pm].o1.B['g'].imag) for Pm in Pms]
-    B_minreal = [np.min(objs[Pm].o1.B['g'].real) for Pm in Pms]
-    B_minimag = [np.min(objs[Pm].o1.B['g'].imag) for Pm in Pms]
-    
-    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
-    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
-    
-    print(Bmax, Bmin)
-    
-    return Bmax, Bmin
-    
 def plot_all_O2s(objs, Pms):
+    
+    psimax20, psimin20 = get_minmax_o20_psi_allPms(objs, Pms)
+    umax20, umin20 = get_minmax_o20_u_allPms(objs, Pms)
+    Amax20, Amin20 = get_minmax_o20_A_allPms(objs, Pms)
+    Bmax20, Bmin20 = get_minmax_o20_B_allPms(objs, Pms)
+    
+    psimax21, psimin21 = get_minmax_o21_psi_allPms(objs, Pms)
+    umax21, umin21 = get_minmax_o21_u_allPms(objs, Pms)
+    Amax21, Amin21 = get_minmax_o21_A_allPms(objs, Pms)
+    Bmax21, Bmin21 = get_minmax_o21_B_allPms(objs, Pms)
+    
+    psimax22, psimin22 = get_minmax_o22_psi_allPms(objs, Pms)
+    umax22, umin22 = get_minmax_o22_u_allPms(objs, Pms)
+    Amax22, Amin22 = get_minmax_o22_A_allPms(objs, Pms)
+    Bmax22, Bmin22 = get_minmax_o22_B_allPms(objs, Pms)
+
     for Pm in Pms:
-        plotvector2(objs[Pm].o2, Pm, savetitle = "vectorplot2_"+str(Pm))
+        plotvector2(objs[Pm].o2, Pm, savetitle = "vectorplot2_"+str(Pm), psimax20 = psimax20, psimin20 = psimin20, umax20 = umax20, umin20 = umin20, Amax20 = Amax20, Amin20 = Amin20, Bmax20 = Bmax20, Bmin20 = Bmin20, psimax21 = psimax21, psimin21 = psimin21, umax21 = umax21, umin21 = umin21, Amax21 = Amax21, Amin21 = Amin21, Bmax21 = Bmax21, Bmin21 = Bmin21, psimax22 = psimax22, psimin22 = psimin22, umax22 = umax22, umin22 = umin22, Amax22 = Amax22, Amin22 = Amin22, Bmax22 = Bmax22, Bmin22 = Bmin22)
         
 def plot_all_N3s(objs, Pms):
+
+    psimax31, psimin31 = get_minmax_N31_psi_allPms(objs, Pms)
+    umax31, umin31 = get_minmax_N31_u_allPms(objs, Pms)
+    Amax31, Amin31 = get_minmax_N31_A_allPms(objs, Pms)
+    Bmax31, Bmin31 = get_minmax_N31_B_allPms(objs, Pms)
+
     for Pm in Pms:
-        plotN3(objs[Pm].n3, Pm, savetitle = "N3_"+str(Pm))
+        plotN3(objs[Pm].n3, Pm, savetitle = "N3_"+str(Pm), psimax31 = psimax31, psimin31 = psimin31, umax31 = umax31, umin31 = umin31, Amax31 = Amax31, Amin31 = Amin31, Bmax31 = Bmax31, Bmin31 = Bmin31)
         
 def plot_all_ahs(objs, Pms):
+    psimax, psimin = get_minmax_ah_psi_allPms(objs, Pms)
+    umax, umin = get_minmax_ah_u_allPms(objs, Pms)
+    Amax, Amin = get_minmax_ah_A_allPms(objs, Pms)
+    Bmax, Bmin = get_minmax_ah_B_allPms(objs, Pms)
+
     for Pm in Pms:
-        plotvector(objs[Pm].ah, Pm, savetitle = "adjoint_homogenous_"+str(Pm))
+        plotvector(objs[Pm].ah, Pm, savetitle = "adjoint_homogenous_"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
     
 def plot_all_o1s(objs, Pms):
     psimax, psimin = get_minmax_psi_allPms(objs, Pms)
@@ -311,9 +342,32 @@ def plot_all_o1s(objs, Pms):
     for Pm in Pms:
         plotvector(objs[Pm].o1, Pm, savetitle = "Order_E_"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
 
-def plot_all_N2s(objs, Pms):
+def plot_all_v21_rhss(objs, Pms):
+    psimax, psimin = get_minmax_psi21_rhs_allPms(objs, Pms)
+    umax, umin = get_minmax_u21_rhs_allPms(objs, Pms)
+    Amax, Amin = get_minmax_A21_rhs_allPms(objs, Pms)
+    Bmax, Bmin = get_minmax_B21_rhs_allPms(objs, Pms)
+    
+    print(psimax, psimin, umax, umin, Amax, Amin, Bmax, Bmin)
+    
     for Pm in Pms:
-        plotN2(objs[Pm].n2, Pm, savetitle = "N2_"+str(Pm))
+        plotV21_RHS(objs[Pm].o2, Pm, savetitle = "V21_RHS_"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
+
+
+def plot_all_N2s(objs, Pms):
+    
+    psimax20, psimin20 = get_minmax_N20_psi_allPms(objs, Pms)
+    umax20, umin20 = get_minmax_N20_u_allPms(objs, Pms)
+    Amax20, Amin20 = get_minmax_N20_A_allPms(objs, Pms)
+    Bmax20, Bmin20 = get_minmax_N20_B_allPms(objs, Pms)
+    
+    psimax22, psimin22 = get_minmax_N22_psi_allPms(objs, Pms)
+    umax22, umin22 = get_minmax_N22_u_allPms(objs, Pms)
+    Amax22, Amin22 = get_minmax_N22_A_allPms(objs, Pms)
+    Bmax22, Bmin22 = get_minmax_N22_B_allPms(objs, Pms)
+
+    for Pm in Pms:
+        plotN2(objs[Pm].n2, Pm, savetitle = "N2_"+str(Pm), psimax20 = psimax20, psimin20 = psimin20, umax20 = umax20, umin20 = umin20, Amax20 = Amax20, Amin20 = Amin20, Bmax20 = Bmax20, Bmin20 = Bmin20, psimax22 = psimax22, psimin22 = psimin22, umax22 = umax22, umin22 = umin22, Amax22 = Amax22, Amin22 = Amin22, Bmax22 = Bmax22, Bmin22 = Bmin22)
     
 def plotcoeffs(objs, Pms):
     
@@ -340,6 +394,439 @@ def plotcoeffs(objs, Pms):
     pylab.savefig("scrap.png")
     
     return all_lambda, all_D, all_alpha, all_as, all_bs, all_cs, all_hs
+    
+def get_minmax_psi_allPms(objs, Pms):
+
+    psi_maxreal = [np.max(objs[Pm].o1.psi['g'].real) for Pm in Pms]
+    psi_maximag = [np.max(objs[Pm].o1.psi['g'].imag) for Pm in Pms]
+    psi_minreal = [np.min(objs[Pm].o1.psi['g'].real) for Pm in Pms]
+    psi_minimag = [np.min(objs[Pm].o1.psi['g'].imag) for Pm in Pms]
+    
+    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
+    psimin = min(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
+    
+    return psimax, psimin
+    
+def get_minmax_u_allPms(objs, Pms):
+
+    u_maxreal = [np.max(objs[Pm].o1.u['g'].real) for Pm in Pms]
+    u_maximag = [np.max(objs[Pm].o1.u['g'].imag) for Pm in Pms]
+    u_minreal = [np.min(objs[Pm].o1.u['g'].real) for Pm in Pms]
+    u_minimag = [np.min(objs[Pm].o1.u['g'].imag) for Pm in Pms]
+    
+    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
+    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
+    
+    return umax, umin
+    
+def get_minmax_A_allPms(objs, Pms):
+
+    A_maxreal = [np.max(objs[Pm].o1.A['g'].real) for Pm in Pms]
+    A_maximag = [np.max(objs[Pm].o1.A['g'].imag) for Pm in Pms]
+    A_minreal = [np.min(objs[Pm].o1.A['g'].real) for Pm in Pms]
+    A_minimag = [np.min(objs[Pm].o1.A['g'].imag) for Pm in Pms]
+    
+    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
+    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
+    
+    return Amax, Amin
+    
+def get_minmax_B_allPms(objs, Pms):
+
+    B_maxreal = [np.max(objs[Pm].o1.B['g'].real) for Pm in Pms]
+    B_maximag = [np.max(objs[Pm].o1.B['g'].imag) for Pm in Pms]
+    B_minreal = [np.min(objs[Pm].o1.B['g'].real) for Pm in Pms]
+    B_minimag = [np.min(objs[Pm].o1.B['g'].imag) for Pm in Pms]
+    
+    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
+    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
+    
+    return Bmax, Bmin
+    
+def get_minmax_psi21_rhs_allPms(objs, Pms):
+
+    psi_maxreal = [np.max(objs[Pm].o2.term2_psi['g'].real) for Pm in Pms]
+    psi_maximag = [np.max(objs[Pm].o2.term2_psi['g'].imag) for Pm in Pms]
+    psi_minreal = [np.min(objs[Pm].o2.term2_psi['g'].real) for Pm in Pms]
+    psi_minimag = [np.min(objs[Pm].o2.term2_psi['g'].imag) for Pm in Pms]
+    
+    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
+    psimin = min(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
+    
+    return psimax, psimin
+    
+def get_minmax_u21_rhs_allPms(objs, Pms):
+
+    u_maxreal = [np.max(objs[Pm].o2.term2_u['g'].real) for Pm in Pms]
+    u_maximag = [np.max(objs[Pm].o2.term2_u['g'].imag) for Pm in Pms]
+    u_minreal = [np.min(objs[Pm].o2.term2_u['g'].real) for Pm in Pms]
+    u_minimag = [np.min(objs[Pm].o2.term2_u['g'].imag) for Pm in Pms]
+    
+    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
+    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
+    
+    return umax, umin
+    
+def get_minmax_A21_rhs_allPms(objs, Pms):
+
+    A_maxreal = [np.max(objs[Pm].o2.term2_A['g'].real) for Pm in Pms]
+    A_maximag = [np.max(objs[Pm].o2.term2_A['g'].imag) for Pm in Pms]
+    A_minreal = [np.min(objs[Pm].o2.term2_A['g'].real) for Pm in Pms]
+    A_minimag = [np.min(objs[Pm].o2.term2_A['g'].imag) for Pm in Pms]
+    
+    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
+    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
+    
+    return Amax, Amin
+    
+def get_minmax_B21_rhs_allPms(objs, Pms):
+
+    B_maxreal = [np.max(objs[Pm].o2.term2_B['g'].real) for Pm in Pms]
+    B_maximag = [np.max(objs[Pm].o2.term2_B['g'].imag) for Pm in Pms]
+    B_minreal = [np.min(objs[Pm].o2.term2_B['g'].real) for Pm in Pms]
+    B_minimag = [np.min(objs[Pm].o2.term2_B['g'].imag) for Pm in Pms]
+    
+    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
+    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
+    
+    return Bmax, Bmin
+    
+def get_minmax_ah_psi_allPms(objs, Pms):
+
+    psi_maxreal = [np.max(objs[Pm].ah.psi['g'].real) for Pm in Pms]
+    psi_maximag = [np.max(objs[Pm].ah.psi['g'].imag) for Pm in Pms]
+    psi_minreal = [np.min(objs[Pm].ah.psi['g'].real) for Pm in Pms]
+    psi_minimag = [np.min(objs[Pm].ah.psi['g'].imag) for Pm in Pms]
+    
+    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
+    psimin = min(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
+    
+    return psimax, psimin
+    
+def get_minmax_ah_u_allPms(objs, Pms):
+
+    u_maxreal = [np.max(objs[Pm].ah.u['g'].real) for Pm in Pms]
+    u_maximag = [np.max(objs[Pm].ah.u['g'].imag) for Pm in Pms]
+    u_minreal = [np.min(objs[Pm].ah.u['g'].real) for Pm in Pms]
+    u_minimag = [np.min(objs[Pm].ah.u['g'].imag) for Pm in Pms]
+    
+    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
+    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
+    
+    return umax, umin
+    
+def get_minmax_ah_A_allPms(objs, Pms):
+
+    A_maxreal = [np.max(objs[Pm].ah.A['g'].real) for Pm in Pms]
+    A_maximag = [np.max(objs[Pm].ah.A['g'].imag) for Pm in Pms]
+    A_minreal = [np.min(objs[Pm].ah.A['g'].real) for Pm in Pms]
+    A_minimag = [np.min(objs[Pm].ah.A['g'].imag) for Pm in Pms]
+    
+    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
+    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
+    
+    return Amax, Amin
+    
+def get_minmax_ah_B_allPms(objs, Pms):
+
+    B_maxreal = [np.max(objs[Pm].ah.B['g'].real) for Pm in Pms]
+    B_maximag = [np.max(objs[Pm].ah.B['g'].imag) for Pm in Pms]
+    B_minreal = [np.min(objs[Pm].ah.B['g'].real) for Pm in Pms]
+    B_minimag = [np.min(objs[Pm].ah.B['g'].imag) for Pm in Pms]
+    
+    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
+    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
+    
+    return Bmax, Bmin
+    
+def get_minmax_N20_psi_allPms(objs, Pms):
+
+    psi_maxreal = [np.max(objs[Pm].n2.N20_psi['g'].real) for Pm in Pms]
+    psi_maximag = [np.max(objs[Pm].n2.N20_psi['g'].imag) for Pm in Pms]
+    psi_minreal = [np.min(objs[Pm].n2.N20_psi['g'].real) for Pm in Pms]
+    psi_minimag = [np.min(objs[Pm].n2.N20_psi['g'].imag) for Pm in Pms]
+    
+    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
+    psimin = min(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
+    
+    return psimax, psimin
+    
+def get_minmax_N20_u_allPms(objs, Pms):
+
+    u_maxreal = [np.max(objs[Pm].n2.N20_u['g'].real) for Pm in Pms]
+    u_maximag = [np.max(objs[Pm].n2.N20_u['g'].imag) for Pm in Pms]
+    u_minreal = [np.min(objs[Pm].n2.N20_u['g'].real) for Pm in Pms]
+    u_minimag = [np.min(objs[Pm].n2.N20_u['g'].imag) for Pm in Pms]
+    
+    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
+    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
+    
+    return umax, umin
+    
+def get_minmax_N20_A_allPms(objs, Pms):
+
+    A_maxreal = [np.max(objs[Pm].n2.N20_A['g'].real) for Pm in Pms]
+    A_maximag = [np.max(objs[Pm].n2.N20_A['g'].imag) for Pm in Pms]
+    A_minreal = [np.min(objs[Pm].n2.N20_A['g'].real) for Pm in Pms]
+    A_minimag = [np.min(objs[Pm].n2.N20_A['g'].imag) for Pm in Pms]
+    
+    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
+    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
+    
+    return Amax, Amin
+    
+def get_minmax_N20_B_allPms(objs, Pms):
+
+    B_maxreal = [np.max(objs[Pm].n2.N20_B['g'].real) for Pm in Pms]
+    B_maximag = [np.max(objs[Pm].n2.N20_B['g'].imag) for Pm in Pms]
+    B_minreal = [np.min(objs[Pm].n2.N20_B['g'].real) for Pm in Pms]
+    B_minimag = [np.min(objs[Pm].n2.N20_B['g'].imag) for Pm in Pms]
+    
+    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
+    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
+    
+    return Bmax, Bmin
+    
+def get_minmax_N22_psi_allPms(objs, Pms):
+
+    psi_maxreal = [np.max(objs[Pm].n2.N22_psi['g'].real) for Pm in Pms]
+    psi_maximag = [np.max(objs[Pm].n2.N22_psi['g'].imag) for Pm in Pms]
+    psi_minreal = [np.min(objs[Pm].n2.N22_psi['g'].real) for Pm in Pms]
+    psi_minimag = [np.min(objs[Pm].n2.N22_psi['g'].imag) for Pm in Pms]
+    
+    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
+    psimin = min(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
+    
+    return psimax, psimin
+    
+def get_minmax_N22_u_allPms(objs, Pms):
+
+    u_maxreal = [np.max(objs[Pm].n2.N22_u['g'].real) for Pm in Pms]
+    u_maximag = [np.max(objs[Pm].n2.N22_u['g'].imag) for Pm in Pms]
+    u_minreal = [np.min(objs[Pm].n2.N22_u['g'].real) for Pm in Pms]
+    u_minimag = [np.min(objs[Pm].n2.N22_u['g'].imag) for Pm in Pms]
+    
+    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
+    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
+    
+    return umax, umin
+    
+def get_minmax_N22_A_allPms(objs, Pms):
+
+    A_maxreal = [np.max(objs[Pm].n2.N22_A['g'].real) for Pm in Pms]
+    A_maximag = [np.max(objs[Pm].n2.N22_A['g'].imag) for Pm in Pms]
+    A_minreal = [np.min(objs[Pm].n2.N22_A['g'].real) for Pm in Pms]
+    A_minimag = [np.min(objs[Pm].n2.N22_A['g'].imag) for Pm in Pms]
+    
+    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
+    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
+    
+    return Amax, Amin
+    
+def get_minmax_N22_B_allPms(objs, Pms):
+
+    B_maxreal = [np.max(objs[Pm].n2.N22_B['g'].real) for Pm in Pms]
+    B_maximag = [np.max(objs[Pm].n2.N22_B['g'].imag) for Pm in Pms]
+    B_minreal = [np.min(objs[Pm].n2.N22_B['g'].real) for Pm in Pms]
+    B_minimag = [np.min(objs[Pm].n2.N22_B['g'].imag) for Pm in Pms]
+    
+    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
+    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
+    
+    return Bmax, Bmin
+    
+def get_minmax_N31_psi_allPms(objs, Pms):
+
+    psi_maxreal = [np.max(objs[Pm].n3.N31_psi['g'].real) for Pm in Pms]
+    psi_maximag = [np.max(objs[Pm].n3.N31_psi['g'].imag) for Pm in Pms]
+    psi_minreal = [np.min(objs[Pm].n3.N31_psi['g'].real) for Pm in Pms]
+    psi_minimag = [np.min(objs[Pm].n3.N31_psi['g'].imag) for Pm in Pms]
+    
+    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
+    psimin = min(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
+    
+    return psimax, psimin
+    
+def get_minmax_N31_u_allPms(objs, Pms):
+
+    u_maxreal = [np.max(objs[Pm].n3.N31_u['g'].real) for Pm in Pms]
+    u_maximag = [np.max(objs[Pm].n3.N31_u['g'].imag) for Pm in Pms]
+    u_minreal = [np.min(objs[Pm].n3.N31_u['g'].real) for Pm in Pms]
+    u_minimag = [np.min(objs[Pm].n3.N31_u['g'].imag) for Pm in Pms]
+    
+    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
+    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
+    
+    return umax, umin
+    
+def get_minmax_N31_A_allPms(objs, Pms):
+
+    A_maxreal = [np.max(objs[Pm].n3.N31_A['g'].real) for Pm in Pms]
+    A_maximag = [np.max(objs[Pm].n3.N31_A['g'].imag) for Pm in Pms]
+    A_minreal = [np.min(objs[Pm].n3.N31_A['g'].real) for Pm in Pms]
+    A_minimag = [np.min(objs[Pm].n3.N31_A['g'].imag) for Pm in Pms]
+    
+    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
+    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
+    
+    return Amax, Amin
+    
+def get_minmax_N31_B_allPms(objs, Pms):
+
+    B_maxreal = [np.max(objs[Pm].n3.N31_B['g'].real) for Pm in Pms]
+    B_maximag = [np.max(objs[Pm].n3.N31_B['g'].imag) for Pm in Pms]
+    B_minreal = [np.min(objs[Pm].n3.N31_B['g'].real) for Pm in Pms]
+    B_minimag = [np.min(objs[Pm].n3.N31_B['g'].imag) for Pm in Pms]
+    
+    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
+    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
+    
+    return Bmax, Bmin
+    
+def get_minmax_o20_psi_allPms(objs, Pms):
+
+    psi_maxreal = [np.max(objs[Pm].o2.psi20['g'].real) for Pm in Pms]
+    psi_maximag = [np.max(objs[Pm].o2.psi20['g'].imag) for Pm in Pms]
+    psi_minreal = [np.min(objs[Pm].o2.psi20['g'].real) for Pm in Pms]
+    psi_minimag = [np.min(objs[Pm].o2.psi20['g'].imag) for Pm in Pms]
+    
+    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
+    psimin = min(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
+    
+    return psimax, psimin
+    
+def get_minmax_o20_u_allPms(objs, Pms):
+
+    u_maxreal = [np.max(objs[Pm].o2.u20['g'].real) for Pm in Pms]
+    u_maximag = [np.max(objs[Pm].o2.u20['g'].imag) for Pm in Pms]
+    u_minreal = [np.min(objs[Pm].o2.u20['g'].real) for Pm in Pms]
+    u_minimag = [np.min(objs[Pm].o2.u20['g'].imag) for Pm in Pms]
+    
+    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
+    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
+    
+    return umax, umin
+    
+def get_minmax_o20_A_allPms(objs, Pms):
+
+    A_maxreal = [np.max(objs[Pm].o2.A20['g'].real) for Pm in Pms]
+    A_maximag = [np.max(objs[Pm].o2.A20['g'].imag) for Pm in Pms]
+    A_minreal = [np.min(objs[Pm].o2.A20['g'].real) for Pm in Pms]
+    A_minimag = [np.min(objs[Pm].o2.A20['g'].imag) for Pm in Pms]
+    
+    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
+    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
+    
+    return Amax, Amin
+    
+def get_minmax_o20_B_allPms(objs, Pms):
+
+    B_maxreal = [np.max(objs[Pm].o2.B20['g'].real) for Pm in Pms]
+    B_maximag = [np.max(objs[Pm].o2.B20['g'].imag) for Pm in Pms]
+    B_minreal = [np.min(objs[Pm].o2.B20['g'].real) for Pm in Pms]
+    B_minimag = [np.min(objs[Pm].o2.B20['g'].imag) for Pm in Pms]
+    
+    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
+    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
+    
+    return Bmax, Bmin
+    
+def get_minmax_o21_psi_allPms(objs, Pms):
+
+    psi_maxreal = [np.max(objs[Pm].o2.psi21['g'].real) for Pm in Pms]
+    psi_maximag = [np.max(objs[Pm].o2.psi21['g'].imag) for Pm in Pms]
+    psi_minreal = [np.min(objs[Pm].o2.psi21['g'].real) for Pm in Pms]
+    psi_minimag = [np.min(objs[Pm].o2.psi21['g'].imag) for Pm in Pms]
+    
+    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
+    psimin = min(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
+    
+    return psimax, psimin
+    
+def get_minmax_o21_u_allPms(objs, Pms):
+
+    u_maxreal = [np.max(objs[Pm].o2.u21['g'].real) for Pm in Pms]
+    u_maximag = [np.max(objs[Pm].o2.u21['g'].imag) for Pm in Pms]
+    u_minreal = [np.min(objs[Pm].o2.u21['g'].real) for Pm in Pms]
+    u_minimag = [np.min(objs[Pm].o2.u21['g'].imag) for Pm in Pms]
+    
+    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
+    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
+    
+    return umax, umin
+    
+def get_minmax_o21_A_allPms(objs, Pms):
+
+    A_maxreal = [np.max(objs[Pm].o2.A21['g'].real) for Pm in Pms]
+    A_maximag = [np.max(objs[Pm].o2.A21['g'].imag) for Pm in Pms]
+    A_minreal = [np.min(objs[Pm].o2.A21['g'].real) for Pm in Pms]
+    A_minimag = [np.min(objs[Pm].o2.A21['g'].imag) for Pm in Pms]
+    
+    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
+    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
+    
+    return Amax, Amin
+    
+def get_minmax_o21_B_allPms(objs, Pms):
+
+    B_maxreal = [np.max(objs[Pm].o2.B21['g'].real) for Pm in Pms]
+    B_maximag = [np.max(objs[Pm].o2.B21['g'].imag) for Pm in Pms]
+    B_minreal = [np.min(objs[Pm].o2.B21['g'].real) for Pm in Pms]
+    B_minimag = [np.min(objs[Pm].o2.B21['g'].imag) for Pm in Pms]
+    
+    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
+    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
+    
+    return Bmax, Bmin
+    
+def get_minmax_o22_psi_allPms(objs, Pms):
+
+    psi_maxreal = [np.max(objs[Pm].o2.psi22['g'].real) for Pm in Pms]
+    psi_maximag = [np.max(objs[Pm].o2.psi22['g'].imag) for Pm in Pms]
+    psi_minreal = [np.min(objs[Pm].o2.psi22['g'].real) for Pm in Pms]
+    psi_minimag = [np.min(objs[Pm].o2.psi22['g'].imag) for Pm in Pms]
+    
+    psimax = max(np.nanmax(psi_maxreal), np.nanmax(psi_maximag))
+    psimin = min(np.nanmin(psi_minreal), np.nanmin(psi_minimag))
+    
+    return psimax, psimin
+    
+def get_minmax_o22_u_allPms(objs, Pms):
+
+    u_maxreal = [np.max(objs[Pm].o2.u22['g'].real) for Pm in Pms]
+    u_maximag = [np.max(objs[Pm].o2.u22['g'].imag) for Pm in Pms]
+    u_minreal = [np.min(objs[Pm].o2.u22['g'].real) for Pm in Pms]
+    u_minimag = [np.min(objs[Pm].o2.u22['g'].imag) for Pm in Pms]
+    
+    umax = max(np.nanmax(u_maxreal), np.nanmax(u_maximag))
+    umin = min(np.nanmin(u_minreal), np.nanmin(u_minimag))
+    
+    return umax, umin
+    
+def get_minmax_o22_A_allPms(objs, Pms):
+
+    A_maxreal = [np.max(objs[Pm].o2.A22['g'].real) for Pm in Pms]
+    A_maximag = [np.max(objs[Pm].o2.A22['g'].imag) for Pm in Pms]
+    A_minreal = [np.min(objs[Pm].o2.A22['g'].real) for Pm in Pms]
+    A_minimag = [np.min(objs[Pm].o2.A22['g'].imag) for Pm in Pms]
+    
+    Amax = max(np.nanmax(A_maxreal), np.nanmax(A_maximag))
+    Amin = min(np.nanmin(A_minreal), np.nanmin(A_minimag))
+    
+    return Amax, Amin
+    
+def get_minmax_o22_B_allPms(objs, Pms):
+
+    B_maxreal = [np.max(objs[Pm].o2.B22['g'].real) for Pm in Pms]
+    B_maximag = [np.max(objs[Pm].o2.B22['g'].imag) for Pm in Pms]
+    B_minreal = [np.min(objs[Pm].o2.B22['g'].real) for Pm in Pms]
+    B_minimag = [np.min(objs[Pm].o2.B22['g'].imag) for Pm in Pms]
+    
+    Bmax = max(np.nanmax(B_maxreal), np.nanmax(B_maximag))
+    Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
+    
+    return Bmax, Bmin
+    
 
 def ploteigs(goodevals):
 

@@ -15,13 +15,13 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 50#128
+gridnum = 64#128
 print("running at gridnum", gridnum)
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
 # Second basis for checking eigenvalues
-x_basis192 = Chebyshev(64)
+x_basis192 = Chebyshev(96)
 #x_basis192 = Chebyshev(64)
 #x_basis192 = Chebyshev(192)
 domain192 = Domain([x_basis192], grid_dtype = np.complex128)
@@ -1127,7 +1127,7 @@ class OrderE2(MRI):
             """
             
         #self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector(self.psi21, self.u21, self.A21, self.B21)
-        self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector(self.psi22, self.u22, self.A22, self.B22)
+        #self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector(self.psi22, self.u22, self.A22, self.B22)
             
         # These should be zero... 
         self.psi20['g'] = np.zeros(gridnum, np.int_)
@@ -1139,7 +1139,7 @@ class OrderE2(MRI):
             #self.u20 = (self.u20*scale20).evaluate()
             #self.A20 = (self.A20*scale20).evaluate()
         
-        self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
+        #self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
         #self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector2(self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22)
 
         #self.u20['g'] = self.normalize_vector(self.u20['g'])
