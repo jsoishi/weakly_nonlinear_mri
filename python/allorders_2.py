@@ -727,7 +727,6 @@ class OrderE(MRI):
         self.A = self.LEV.state['A']
         self.B = self.LEV.state['B']
         
-        # This does nothing
         self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
         
         #self.psi['g'] = self.normalize_vector(self.psi['g'])
@@ -883,6 +882,8 @@ class N2(MRI):
         self.N20_A['g'] = self.normalize_vector(self.N20_A['g'])
         self.N20_B['g'] = self.normalize_vector(self.N20_B['g'])
         """
+        self.N20_psi, self.N20_u, self.N20_A, self.N20_B = self.normalize_state_vector(self.N20_psi, self.N20_u, self.N20_A, self.N20_B)
+        self.N22_psi, self.N22_u, self.N22_A, self.N22_B = self.normalize_state_vector(self.N22_psi, self.N22_u, self.N22_A, self.N22_B)
        
         
 class OrderE2(MRI):
@@ -1145,6 +1146,7 @@ class OrderE2(MRI):
             #self.A20 = (self.A20*scale20).evaluate()
         
         self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
+        #print("big normalization of V2")
         #self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector2(self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22)
 
         #self.u20['g'] = self.normalize_vector(self.u20['g'])
@@ -1323,6 +1325,8 @@ class N3(MRI):
         #self.N31_u['g'] = self.normalize_vector(self.N31_u['g'])
         #self.N31_A['g'] = self.normalize_vector(self.N31_A['g'])
         #self.N31_B['g'] = self.normalize_vector(self.N31_B['g'])
+        
+        self.N31_psi, self.N31_u, self.N31_A, self.N31_B = self.normalize_state_vector(self.N31_psi, self.N31_u, self.N31_A, self.N31_B)
 
 
 class AmplitudeAlpha(MRI):
