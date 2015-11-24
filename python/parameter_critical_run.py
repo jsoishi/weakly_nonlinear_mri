@@ -163,8 +163,14 @@ def plot_paramspace_run(Rm, Q, evals):
     plt.show()
     pylab.savefig("scrap.png", dpi = 100)
     
-def plot_loglog_fit(xdata, ydata):
+def func(x, a, b):
+    return x**a + b
     
+def plot_loglog_fit(xdata, ydata):
+
+    popt, pcov = curve_fit(func, xdata, ydata)
+    plt.plot(xdata, func(xdata, *popt))
+    """
     x = np.log10(xdata)
     y = np.log10(ydata)
     
@@ -173,6 +179,7 @@ def plot_loglog_fit(xdata, ydata):
     print("slope", m, "intercept", b)
     
     return m, b
+    """
 
 if __name__ == "__main__":
 

@@ -11,6 +11,8 @@ import streamplot_uneven as su
 import random
 import itertools
 import decimal
+from scipy import polyfit
+from scipy.optimize import curve_fit
 
 import matplotlib
 from matplotlib import rc
@@ -314,7 +316,7 @@ def plot_all_O2s(objs, Pms):
     Bmax22, Bmin22 = get_minmax_o22_B_allPms(objs, Pms)
 
     for Pm in Pms:
-        plotvector2(objs[Pm].o2, Pm, savetitle = "vectorplot2_norm_"+str(Pm), psimax20 = psimax20, psimin20 = psimin20, umax20 = umax20, umin20 = umin20, Amax20 = Amax20, Amin20 = Amin20, Bmax20 = Bmax20, Bmin20 = Bmin20, psimax21 = psimax21, psimin21 = psimin21, umax21 = umax21, umin21 = umin21, Amax21 = Amax21, Amin21 = Amin21, Bmax21 = Bmax21, Bmin21 = Bmin21, psimax22 = psimax22, psimin22 = psimin22, umax22 = umax22, umin22 = umin22, Amax22 = Amax22, Amin22 = Amin22, Bmax22 = Bmax22, Bmin22 = Bmin22)
+        plotvector2(objs[Pm].o2, Pm, savetitle = "vectorplot2_norm_indiv2_"+str(Pm), psimax20 = psimax20, psimin20 = psimin20, umax20 = umax20, umin20 = umin20, Amax20 = Amax20, Amin20 = Amin20, Bmax20 = Bmax20, Bmin20 = Bmin20, psimax21 = psimax21, psimin21 = psimin21, umax21 = umax21, umin21 = umin21, Amax21 = Amax21, Amin21 = Amin21, Bmax21 = Bmax21, Bmin21 = Bmin21, psimax22 = psimax22, psimin22 = psimin22, umax22 = umax22, umin22 = umin22, Amax22 = Amax22, Amin22 = Amin22, Bmax22 = Bmax22, Bmin22 = Bmin22)
         
 def plot_all_N3s(objs, Pms):
 
@@ -333,7 +335,7 @@ def plot_all_ahs(objs, Pms):
     Bmax, Bmin = get_minmax_ah_B_allPms(objs, Pms)
 
     for Pm in Pms:
-        plotvector(objs[Pm].ah, Pm, savetitle = "adjoint_homogenous_"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
+        plotvector(objs[Pm].ah, Pm, savetitle = "adjoint_homogenous_ipnorms_"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
     
 def plot_all_o1s(objs, Pms):
     psimax, psimin = get_minmax_psi_allPms(objs, Pms)
@@ -344,7 +346,7 @@ def plot_all_o1s(objs, Pms):
     print(psimax, psimin, umax, umin, Amax, Amin, Bmax, Bmin)
     
     for Pm in Pms:
-        plotvector(objs[Pm].o1, Pm, savetitle = "Order_E_"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
+        plotvector(objs[Pm].o1, Pm, savetitle = "Order_E_ipnorms"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
 
 def plot_all_v21_rhss(objs, Pms):
     psimax, psimin = get_minmax_psi21_rhs_allPms(objs, Pms)
@@ -830,7 +832,17 @@ def get_minmax_o22_B_allPms(objs, Pms):
     Bmin = min(np.nanmin(B_minreal), np.nanmin(B_minimag))
     
     return Bmax, Bmin
+
+def linfunc(x, a, b):
+    return a*x + b
     
+def fit_loglog(xdata, ydata):
+    xd, yd = np.log10(xdata), np.log10(ydata)
+    polycoef = polyfit(xd, yd, 1)
+    yfit = 10**( polycoef[0]*xd+polycoef[1] )
+    print("slope", 10**polycoef[0], "intercept", 10**polycoef[1],)
+    plt.plot(xdata, yfit, label = r"$"+str(polycoef[1])+"*x^{"+str(polycoef[0])+"}$")
+    plt.legend()
 
 def ploteigs(goodevals):
 
