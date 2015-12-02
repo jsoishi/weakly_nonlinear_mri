@@ -454,24 +454,52 @@ class MRI():
         evector[veclen*3:] = B['g'] #+ B['g'].conj()
         
         #norm = np.linalg.norm(evector)
-        #print("norm hack: div by max abs rather than norm")
-        #norm = np.max(np.abs(evector))
-        print("norm hack: u(x = 0) = 1")
-        norm = u['g'][len(u['g'])/2]
-        normmult = (1.0)/norm
+        print("norm hack: max(abs(A)) = 1")
+        norm = np.max(np.abs(A['g']))
+        #print("norm hack: u(x = 0) = 1")
+        #norm = u['g'][len(u['g'])/2]
+        #normmult = (1.0)/norm
         print("end norm")
         
-        #psi['g'] = psi['g']/norm
-        #u['g'] = u['g']/norm
-        #A['g'] = A['g']/norm
-        #B['g'] = B['g']/norm
+        psi['g'] = psi['g']/norm
+        u['g'] = u['g']/norm
+        A['g'] = A['g']/norm
+        B['g'] = B['g']/norm
+        #psi['g'] = psi['g']*normmult
+        #u['g'] = u['g']*normmult
+        #A['g'] = A['g']*normmult
+        #B['g'] = B['g']*normmult
+        
+        return psi, u, A, B
+
+    def normalize_state_vector_toRHS(self, psi, u, A, B, rhsu):
+        
+        """
+        Normalize total state vector s.t. V(x = 0) = RHS(x = 0).
+        """
+        
+        print("begin norm")
+        veclen = len(psi['g'])
+        evector = np.zeros(veclen*4, np.complex_)
+        evector[0:veclen] = psi['g'] 
+        evector[veclen:veclen*2] = u['g'] 
+        evector[veclen*2:veclen*3] = A['g'] 
+        evector[veclen*3:] = B['g']
+        
+        print("norm hack: u(x = 0) = u_RHS(x = 0)")
+        print(rhsu['g'][len(rhsu['g'])/2])
+        norm = u['g'][len(u['g'])/2]
+        normmult = (rhsu['g'][len(rhsu['g'])/2])/norm
+        print("end norm")
+        
         psi['g'] = psi['g']*normmult
         u['g'] = u['g']*normmult
         A['g'] = A['g']*normmult
         B['g'] = B['g']*normmult
         
         return psi, u, A, B
-        
+                
+
     def normalize_state_vector2(self, psi0, u0, A0, B0, psi1, u1, A1, B1, psi2, u2, A2, B2):
         
         """
@@ -834,7 +862,7 @@ class OrderE(MRI):
             self.A = (self.A*scale).evaluate()
             self.B = (self.B*scale).evaluate()
             
-        #self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
+        self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
         #print("normalizing o1 s.t. <o1 | o1> = 1")
         #o1o1ip = self.take_inner_product([self.psi, self.u, self.A, self.B], [self.psi, self.u, self.A, self.B])
         #normc = 1.0/(o1o1ip)
@@ -1105,6 +1133,8 @@ class OrderE2(MRI):
         ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         sctest = self.take_inner_product((ah.psi, ah.u, ah.A, ah.B), (term2_psi, term2_u, term2_A, term2_B))
         print("solvability condition satisfied?", sctest)
+        if np.abs(sctest) > 1E-10:
+            print("CAUTION: solvability condition <V^dagger | RHS> = 0 failed for V21")
                 
         # define problem using righthand side as nonconstant coefficients
         
@@ -1239,23 +1269,29 @@ class OrderE2(MRI):
             self.B22 = (self.B22*scale22).evaluate()
             """
             
-        #self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector(self.psi21, self.u21, self.A21, self.B21)
-        #self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector(self.psi22, self.u22, self.A22, self.B22)
+        self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector(self.psi21, self.u21, self.A21, self.B21)
+        self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector(self.psi22, self.u22, self.A22, self.B22)
         
         #self.psi21, self.u21, self.A21, self.B21 = self.normalize_inner_product_eq_1(self.psi21, self.u21, self.A21, self.B21, o1.psi, o1.u, o1.A, o1.B)
         #self.psi22, self.u22, self.A22, self.B22 = self.normalize_inner_product_eq_1(self.psi22, self.u22, self.A22, self.B22, o1.psi, o1.u, o1.A, o1.B)
         
         # These should be zero... 
-        self.psi20['g'] = np.zeros(gridnum, np.int_)
-        self.B20['g'] = np.zeros(gridnum, np.int_)
+        self.psi20['g'] = np.zeros(gridnum, np.complex_)
+        self.B20['g'] = np.zeros(gridnum, np.complex_)
         
         if self.norm == True:
             print("not normalize_all_real_or_imag - ing u20 and A20")
             #scale20 = self.normalize_all_real_or_imag_bystate(self.u20)
             #self.u20 = (self.u20*scale20).evaluate()
             #self.A20 = (self.A20*scale20).evaluate()
+            
+        # Try normalizing to RHS(x = 0) value
+        #print("Normalizing s.t. u(x = 0) = u_RHS(x = 0)")
+        #self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector_toRHS(self.psi20, self.u20, self.A20, self.B20, n2.N20_u)
+        #self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector_toRHS(self.psi21, self.u21, self.A21, self.B21, term2_u)
+        #self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector_toRHS(self.psi22, self.u22, self.A22, self.B22, n2.N22_u)
         
-        #self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
+        self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
         #print("big normalization of V2")
         #self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector2(self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22)
         
@@ -1263,6 +1299,33 @@ class OrderE2(MRI):
 
         #self.u20['g'] = self.normalize_vector(self.u20['g'])
         #self.A20['g'] = self.normalize_vector(self.A20['g'])
+        
+        """
+        print("normalizing o1 s.t. <o1 | o2>/<o2 | o1> = -1")
+        o1o1ip = self.take_inner_product([self.psi20, self.u20, self.A20, self.B20], [o1.psi, o1.u, o1.A, o1.B])
+        o1o1ipflip = self.take_inner_product([o1.psi, o1.u, o1.A, o1.B], [self.psi20, self.u20, self.A20, self.B20])
+        normc = -1.0/(o1o1ip/o1o1ipflip)
+        self.psi20 = (self.psi20*normc).evaluate()
+        self.u20 = (self.u20*normc).evaluate()
+        self.A20 = (self.A20*normc).evaluate()
+        self.B20 = (self.B20*normc).evaluate()
+        
+        o1o1ip = self.take_inner_product([self.psi21, self.u21, self.A21, self.B21], [o1.psi, o1.u, o1.A, o1.B])
+        o1o1ipflip = self.take_inner_product([o1.psi, o1.u, o1.A, o1.B], [self.psi21, self.u21, self.A21, self.B21])
+        normc = -1.0/(o1o1ip/o1o1ipflip)
+        self.psi21 = (self.psi21*normc).evaluate()
+        self.u21 = (self.u21*normc).evaluate()
+        self.A21 = (self.A21*normc).evaluate()
+        self.B21 = (self.B21*normc).evaluate()
+        
+        o1o1ip = self.take_inner_product([self.psi22, self.u22, self.A22, self.B22], [o1.psi, o1.u, o1.A, o1.B])
+        o1o1ipflip = self.take_inner_product([o1.psi, o1.u, o1.A, o1.B], [self.psi22, self.u22, self.A22, self.B22])
+        normc = -1.0/(o1o1ip/o1o1ipflip)
+        self.psi22 = (self.psi22*normc).evaluate()
+        self.u22 = (self.u22*normc).evaluate()
+        self.A22 = (self.A22*normc).evaluate()
+        self.B22 = (self.B22*normc).evaluate()
+        """
         
         self.psi20.name = "psi20"
         self.u20.name = "u20"
@@ -1464,12 +1527,21 @@ class AmplitudeAlpha(MRI):
             o2 = OrderE2(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         
         # Dumb, crazy hack
-        o1.psi, o1.u, o1.A, o1.B, o2.psi20, o2.u20, o2.A20, o2.B20, o2.psi21, o2.u21, o2.A21, o2.B21, o2.psi22, o2.u22, o2.A22, o2.B22 = self.bignorm(o1.psi, o1.u, o1.A, o1.B, o2.psi20, o2.u20, o2.A20, o2.B20, o2.psi21, o2.u21, o2.A21, o2.B21, o2.psi22, o2.u22, o2.A22, o2.B22)
-        n2 = N2(o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+        #o1.psi, o1.u, o1.A, o1.B, o2.psi20, o2.u20, o2.A20, o2.B20, o2.psi21, o2.u21, o2.A21, o2.B21, o2.psi22, o2.u22, o2.A22, o2.B22 = self.bignorm(o1.psi, o1.u, o1.A, o1.B, o2.psi20, o2.u20, o2.A20, o2.B20, o2.psi21, o2.u21, o2.A21, o2.B21, o2.psi22, o2.u22, o2.A22, o2.B22)
+        #n2 = N2(o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
         
         n3 = N3(o1 = o1, o2 = o2, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         
+        magicnumberhack = False
+        print("magicnumberhack is ", magicnumberhack)
+        if magicnumberhack == True:
+            o1scale = -0.55
+            o1.psi['g'] = o1.psi['g']*o1scale
+            o1.u['g'] = o1.u['g']*o1scale
+            o1.A['g'] = o1.A['g']*o1scale
+            o1.B['g'] = o1.B['g']*o1scale
+            
         self.x = domain.grid(0)
         
         a_psi_rhs = o1.psi_xx - self.Q**2*o1.psi
@@ -1549,6 +1621,10 @@ class AmplitudeAlpha(MRI):
         l2twiddlel1twiddle_B['g'] = self.normalize_vector(l2twiddlel1twiddle_B['g'])
         g_psi['g'] = self.normalize_vector(g_psi['g'])
         """
+        # Normalize s.t. a = 1
+        if magicnumberhack == False:
+            print("Normalizing V^dagger s.t. a = 1")
+            ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
         # a = <va . D V11*>
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])

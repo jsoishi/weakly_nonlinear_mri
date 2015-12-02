@@ -316,7 +316,7 @@ def plot_all_O2s(objs, Pms):
     Bmax22, Bmin22 = get_minmax_o22_B_allPms(objs, Pms)
 
     for Pm in Pms:
-        plotvector2(objs[Pm].o2, Pm, savetitle = "vectorplot2_norm_indiv2_"+str(Pm), psimax20 = psimax20, psimin20 = psimin20, umax20 = umax20, umin20 = umin20, Amax20 = Amax20, Amin20 = Amin20, Bmax20 = Bmax20, Bmin20 = Bmin20, psimax21 = psimax21, psimin21 = psimin21, umax21 = umax21, umin21 = umin21, Amax21 = Amax21, Amin21 = Amin21, Bmax21 = Bmax21, Bmin21 = Bmin21, psimax22 = psimax22, psimin22 = psimin22, umax22 = umax22, umin22 = umin22, Amax22 = Amax22, Amin22 = Amin22, Bmax22 = Bmax22, Bmin22 = Bmin22)
+        plotvector2(objs[Pm].o2, Pm, savetitle = "vectorplot2_Amaxnorms_"+str(Pm), psimax20 = psimax20, psimin20 = psimin20, umax20 = umax20, umin20 = umin20, Amax20 = Amax20, Amin20 = Amin20, Bmax20 = Bmax20, Bmin20 = Bmin20, psimax21 = psimax21, psimin21 = psimin21, umax21 = umax21, umin21 = umin21, Amax21 = Amax21, Amin21 = Amin21, Bmax21 = Bmax21, Bmin21 = Bmin21, psimax22 = psimax22, psimin22 = psimin22, umax22 = umax22, umin22 = umin22, Amax22 = Amax22, Amin22 = Amin22, Bmax22 = Bmax22, Bmin22 = Bmin22)
         
 def plot_all_N3s(objs, Pms):
 
@@ -326,7 +326,7 @@ def plot_all_N3s(objs, Pms):
     Bmax31, Bmin31 = get_minmax_N31_B_allPms(objs, Pms)
 
     for Pm in Pms:
-        plotN3(objs[Pm].n3, Pm, savetitle = "N3_"+str(Pm), psimax31 = psimax31, psimin31 = psimin31, umax31 = umax31, umin31 = umin31, Amax31 = Amax31, Amin31 = Amin31, Bmax31 = Bmax31, Bmin31 = Bmin31)
+        plotN3(objs[Pm].n3, Pm, savetitle = "N3_V21norms"+str(Pm), psimax31 = psimax31, psimin31 = psimin31, umax31 = umax31, umin31 = umin31, Amax31 = Amax31, Amin31 = Amin31, Bmax31 = Bmax31, Bmin31 = Bmin31)
         
 def plot_all_ahs(objs, Pms):
     psimax, psimin = get_minmax_ah_psi_allPms(objs, Pms)
@@ -335,7 +335,7 @@ def plot_all_ahs(objs, Pms):
     Bmax, Bmin = get_minmax_ah_B_allPms(objs, Pms)
 
     for Pm in Pms:
-        plotvector(objs[Pm].ah, Pm, savetitle = "adjoint_homogenous_ipnorms_"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
+        plotvector(objs[Pm].ah, Pm, savetitle = "adjoint_homogenous_V21norms_"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
     
 def plot_all_o1s(objs, Pms):
     psimax, psimin = get_minmax_psi_allPms(objs, Pms)
@@ -346,7 +346,7 @@ def plot_all_o1s(objs, Pms):
     print(psimax, psimin, umax, umin, Amax, Amin, Bmax, Bmin)
     
     for Pm in Pms:
-        plotvector(objs[Pm].o1, Pm, savetitle = "Order_E_ipnorms"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
+        plotvector(objs[Pm].o1, Pm, savetitle = "Order_E_Amaxnorms"+str(Pm), psimax = psimax, psimin = psimin, umax = umax, umin = umin, Amax = Amax, Amin = Amin, Bmax = Bmax, Bmin = Bmin)
 
 def plot_all_v21_rhss(objs, Pms):
     psimax, psimin = get_minmax_psi21_rhs_allPms(objs, Pms)
@@ -373,7 +373,7 @@ def plot_all_N2s(objs, Pms):
     Bmax22, Bmin22 = get_minmax_N22_B_allPms(objs, Pms)
 
     for Pm in Pms:
-        plotN2(objs[Pm].n2, Pm, savetitle = "N2_"+str(Pm), psimax20 = psimax20, psimin20 = psimin20, umax20 = umax20, umin20 = umin20, Amax20 = Amax20, Amin20 = Amin20, Bmax20 = Bmax20, Bmin20 = Bmin20, psimax22 = psimax22, psimin22 = psimin22, umax22 = umax22, umin22 = umin22, Amax22 = Amax22, Amin22 = Amin22, Bmax22 = Bmax22, Bmin22 = Bmin22)
+        plotN2(objs[Pm].n2, Pm, savetitle = "N2_V21norms"+str(Pm), psimax20 = psimax20, psimin20 = psimin20, umax20 = umax20, umin20 = umin20, Amax20 = Amax20, Amin20 = Amin20, Bmax20 = Bmax20, Bmin20 = Bmin20, psimax22 = psimax22, psimin22 = psimin22, umax22 = umax22, umin22 = umin22, Amax22 = Amax22, Amin22 = Amin22, Bmax22 = Bmax22, Bmin22 = Bmin22)
     
 def plotcoeffs(objs, Pms):
     
