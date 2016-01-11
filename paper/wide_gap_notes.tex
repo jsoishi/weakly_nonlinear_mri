@@ -1,0 +1,137 @@
+\documentclass{paper}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\hyd}    {{\rm H}}
+\newcommand{\vobs}{v_{\rm obs}}
+\newcommand{\hi}{H{\sc i}~}
+\newcommand{\hii}{H{\sc ii}~}
+\newcommand{\hia}{H{\sc i}}
+\newcommand{\hiia}{H{\sc ii}}
+
+\usepackage[colorlinks,urlcolor=blue,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{gensymb}
+\usepackage{amsmath}
+\usepackage{color}
+%\usepackage{appendix}
+\usepackage[titletoc,title]{appendix}
+\usepackage{cleveref}
+
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt}
+\setlength{\@fpsep}{0pt}
+\makeatother
+
+\newcommand{\citei}[1]{\citeauthor{#1} \citeyear{#1}}
+\newcommand{\unit}[1]{\textrm{ #1}}
+\newcommand{\kms}{km ${\rm s^{-1}}$}
+\newcommand{\kmsa}{km ${\rm s^{-1}}$}
+\newcommand{\citeia}[2]{\citeauthor{#1}~(\citeyear{#1};~#2)}
+
+\newcommand{\uphi}{\ensuremath{u_\phi}}
+\newcommand{\rhat}{\ensuremath{\mathbf{\hat{r}}}}
+\newcommand{\phihat}{\ensuremath{\mathbf{\hat{\phi}}}}
+\newcommand{\zhat}{\ensuremath{\mathbf{\hat{z}}}}
+
+\newcommand\reye{\mathrm{Re}}
+\newcommand\reym{\mathrm{Rm}}
+
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+
+\begin{document}
+
+\title{Notes on Wide Gap}
+
+\section{Basic Equations}
+\label{sec:equations}
+The so-called Stokes stream function, used in axisymmetric situations, is given by 
+\begin{equation}
+  \label{eq:stokes}
+  \mathbf{u} \, = \, \left[\begin{matrix}
+\frac{1}{r} \partial_z \psi\ \rhat\\
+\uphi \ \phihat\\
+-\frac{1}{r} \partial_r \psi\ \zhat\\
+\end{matrix}\right];
+\end{equation}
+here we define $A$ in the same way. 
+
+Using the definitions in 
+
+\begin{multline}
+  \label{eq:psi}
+\partial_t \left[ \frac{1}{r} \left(\nabla^2 \psi - \frac{2 \partial_r \psi}{r} \right) \right] + \frac{1}{r^2} J(\psi, \nabla^2 A - \frac{2 \partial_r \psi}{r}) = \frac{\partial_z A}{r^3} \left( \nabla^2 A - \frac{2 \partial_r A}{r}\right) \\
++ \frac{1}{r} J\left(A,\frac{1}{r}\left( \nabla^2 A - \frac{2 \partial_r A}{r}\right)\right) - \frac{2 B_\phi \partial_z B_\phi}{r}\\
++ \nu \left\{ \nabla^2 \left[ \frac{1}{r} \left(\nabla^2 \psi - \frac{2 \partial_r \psi}{r}\right) \right]  -\frac{1}{r^2} \left(\nabla^2 \psi - \frac{2 \partial_r \psi}{r}\right) \right\}
+\end{multline}
+
+\begin{equation}
+  \label{eq:uy}
+\partial_t \uphi + J(\psi, \uphi) + \frac{\uphi \partial_r \psi}{r^2} = J(B_\phi, A) - \frac{B_\phi \partial_z A}{r^2} + \nu \left( \nabla^2 \uphi - \frac{\uphi}{r}\right)
+\end{equation}
+
+\begin{equation}
+  \label{eq:A}
+\partial_t A = \frac{1}{r^2} J(\psi, A) - \eta \left[ \frac{1}{r}\left( \nabla^2 A - \frac{2 \partial_r A}{r} \right)\right]
+\end{equation}
+
+\begin{multline}
+  \label{eq:By}
+\partial_t B_\phi = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)\\
++ \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A + \eta \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right)
+\end{multline}
+
+\section{Recovery of Narrow Gap Equations}
+\label{sec:narrow_gap_recovery}
+
+\appendix
+
+\section{Cylindrical derivatives}
+\label{sec:cylindrical_deriv}
+
+Everything here follows \url{http://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node177.html#scyl}.
+
+For a scalar field $\psi$, 
+
+\begin{equation}
+  \label{eq:del_scalar}
+  \nabla \psi = \frac{\partial \psi}{\partial r} \rhat + \frac{1}{r} \frac{\partial \psi}{\partial \phi} \phihat + \frac{\partial \psi}{\partial z} \zhat.
+\end{equation}
+
+However, for a \emph{vector} field $\mathbf{u}$,
+\begin{equation}
+  \label{eq:div}
+  \mathbf{\nabla \cdot u} = \frac{1}{r} \frac{\partial (r u_r)}{\partial r} + \frac{1}{r} \frac{\partial \uphi}{\partial \phi}  + \frac{\partial u_z}{\partial z}
+\end{equation}
+
+and 
+
+\begin{equation}
+  \label{eq:curl}
+  \mathbf{\nabla \times u} = \left( \frac{1}{r} \frac{\partial u_z}{\partial \phi} - \frac{\partial u_\phi}{\partial z}\right)\ \rhat + \left(\frac{\partial u_r}{\partial z} - \frac{\partial u_z}{\partial r}\right)\ \phihat  + \left( \frac{1}{r} \frac{\partial (r \uphi)}{\partial r} - \frac{1}{r}\frac{\partial u_r}{\partial \phi}\right)\ \zhat.
+\end{equation}
+
+We also need the $\phi$ component of the convective derivative $\mathbf{u \cdot \nabla u}$,
+\begin{equation}
+  \label{eq:convective_deriv_phi}
+  \left[\mathbf{u \cdot \nabla u} \right]_\phi = \mathbf{u \cdot \nabla} \uphi + \frac{ u_r \uphi}{r},
+\end{equation}
+and finally, the vector Laplacian,
+\begin{equation}
+  \label{eq:vec_lap_r}
+  (\nabla^2 \mathbf{u})_r = \nabla^2 u_r - \frac{u_r}{r^2} - \frac{2}{r^2} \frac{\partial \uphi}{\partial \phi}
+\end{equation}
+
+\begin{equation}
+  \label{eq:vec_lap_phi}
+  (\nabla^2 \mathbf{u})_\phi = \nabla^2 u_\phi + \frac{2}{r^2} \frac{\partial u_r}{\partial \phi} - \frac{u_\phi}{r^2} 
+\end{equation}
+
+\begin{equation}
+  \label{eq:vec_lap_z}
+  (\nabla^2 \mathbf{u})_z = \nabla^2 u_z,
+\end{equation}
+where $\nabla$ on the vector components is given by equation~(\ref{eq:del_scalar}).
+\end{document}
