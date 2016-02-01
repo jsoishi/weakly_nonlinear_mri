@@ -67,6 +67,13 @@ Using the definitions in
 + \nu \left\{ \nabla^2 \left[ \frac{1}{r} \left(\nabla^2 \psi - \frac{2 \partial_r \psi}{r}\right) \right]  -\frac{1}{r^2} \left(\nabla^2 \psi - \frac{2 \partial_r \psi}{r}\right) \right\}
 \end{multline}
 
+For the expanded form of the $\Psi$ equation, Susan gets:
+
+\begin{multline}
+[\rhat]: \partial_t \partial_z \Psi - \frac{1}{r^2} \partial_z^2 \Psi + \frac{1}{r}\partial_z^2\partial_r \Psi - \frac{1}{r}\partial_r\partial_z^2 \Psi - u_\phi^2 = \\
+-\frac{1}{r} \partial_z^2\partial_r A + \frac{1}{r^2} \partial_z\partial_r^2 A - \frac{1}{r}\partial_z\partial_r^3 A + \frac{1}{\reye} \left[ - \frac{1}{r}\partial_z\partial_r \Psi + \partial_z\partial_r^2 \Psi + \partial_z^3 \Psi \right]
+\end{multline}
+
 \begin{equation}
   \label{eq:uy}
 \partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} = \frac{J(A, B_\phi)}{r} + \frac{B_\phi \partial_z A}{r^2} + \nu \left( \nabla^2 \uphi - \frac{\uphi}{r}\right)
@@ -144,4 +151,8 @@ and finally, the vector Laplacian,
   (\nabla^2 \mathbf{u})_z = \nabla^2 u_z,
 \end{equation}
 where $\nabla$ on the vector components is given by equation~(\ref{eq:del_scalar}).
+
+Note that, expanding the definition of the vector Laplacian, where the cylindrical scalar Laplacian is substituted in for $\nabla^2 u_r$ and $\nabla^2 u_z$  
+
+
 \end{document}
