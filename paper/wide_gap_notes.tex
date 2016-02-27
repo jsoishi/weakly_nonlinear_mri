@@ -125,7 +125,8 @@ and take $\partial_z$ of the expanded equation to obtain
 
 \begin{multline}
 \frac{1}{r} \partial_t \partial_z^2 \Psi - \frac{1}{r^3} \partial_z \left(\partial_z \Psi \partial_z \Psi\right) + \frac{1}{r^2} \partial_z\left(\partial_z\Psi \partial_z\partial_r \Psi\right) - \frac{1}{r^2} \partial_z \left(\partial_r \Psi \partial_z^2 \Psi\right) - \frac{1}{r} 2 u_\theta \partial_z u_\theta \\
-= - \frac{1}{r^2} \partial_z^3 A \partial_r A - \frac{1}{r^2} \partial_z^2 A \partial_r \partial_z A + \frac{2}{r^3} \partial_r\partial_z A \partial_r A - \frac{1}{r^2} \partial_r^2 \partial_z A \partial_rA - \frac{1}{r^2} \partial_r^2 A \partial_r \partial_z A
+= - \frac{1}{r^2} \partial_z^3 A \partial_r A - \frac{1}{r^2} \partial_z^2 A \partial_r \partial_z A + \frac{2}{r^3} \partial_r\partial_z A \partial_r A - \frac{1}{r^2} \partial_r^2 \partial_z A \partial_rA - \frac{1}{r^2} \partial_r^2 A \partial_r \partial_z A \\
++ \frac{1}{\reye} \left[ -\frac{1}{r^2} \partial_z^2 \partial_r \Psi + \frac{1}{r} \partial_z^2 \partial_r^2 + \frac{1}{r} \partial_z^4\right]
 \end{multline}
 
 It is clear from the $\partial_t$ terms that we must combine these equations by subtracting the $\zhat$ equation from the $\rhat$ equation.
@@ -136,7 +137,7 @@ When we do, we can simplify the LHS of the equation to:
 \frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\theta \partial_z u_\theta
 \eeq
 
-Note that the relevant quantity appears to be $\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi$, and that the $\frac{1}{r^2}$ in the second term cannot come out of the Jacobian (a point of disagreement with Jeff's equation above).
+Note that the relevant quantity appears to be $\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi$, and that the $\frac{1}{r^2}$ in the second term cannot come out of the Jacobian (a point of disagreement with Jeff's equation above). Also I'm confused why Jeff's has no $u_\theta$ term. The RHS of this equation is significantly more complicated.
 
 \section{Recovery of Narrow Gap Equations}
 \label{sec:narrow_gap_recovery}
