@@ -110,9 +110,24 @@ We sub in our stream/flux function notation and expand the operators in cylindri
 \begin{multline}
 \frac{1}{r^2} \partial_t \partial_r \Psi - \frac{1}{r} \partial_t \partial_r^2 \Psi - \frac{3}{r^4}\partial_z \Psi \partial_r \Psi + \frac{1}{r^3} \partial_r \left( \partial_z \Psi \partial_r \Psi \right) + \frac{2}{r^3} \partial_z \Psi \partial_r^2 \Psi - \frac{1}{r^2} \partial_r \left(\partial_z \Psi \partial_r^2 \Psi \right)\\
 - \frac{2}{r^3} \partial_r \Psi \partial_r\partial_z \Psi + \frac{1}{r^2} \partial_r \left(\partial_r \Psi \partial_r \partial_z \Psi\right) = \\
-\partial_r\left(B_\theta \partial_z B_\theta\right) + \frac{2}{r^3} \partial_z^2 A \partial_z A - \frac{1}{r^2} \partial_r \left(\partial_z^2 A \partial_z A\right) + \frac{3}{r^4} \partial_z A \partial_r A - \frac{1}{r^3} \partial_r \left(\partial_z A \partial_r A \right) - \frac{2}{r^3} \partial_z A \partial_r^2 A + \frac{1}{r^2} \partial_r \left(\partial_z A \partial_r^2 A \right) \\
+\partial_r\left(B_\theta \partial_z B_\theta\right) + \frac{2}{r^3} \partial_z^2 A \partial_z A - \frac{1}{r^2} \partial_r \left(\partial_z^2 A \partial_z A\right) + \frac{3}{r^4} \partial_z A \partial_r A - \frac{1}{r^3} \partial_r \left(\partial_z A \partial_r A \right) - \frac{2}{r^3} \partial_z A \partial_r^2 A \\
++ \frac{1}{r^2} \partial_r \left(\partial_z A \partial_r^2 A \right) 
 + \frac{1}{\reye} \left[\frac{3}{r^4} \partial_r \Psi - \frac{3}{r^3} \partial_r^2 \Psi + \frac{2}{r^2} \partial_r^3 \psi - \frac{1}{r} \partial_r^4 \Psi\right]
 \end{multline}
+
+Repeat this process for the r component of the momentum equation,
+
+\beq
+\partial_t u_r + \left[u \cdot \nabla u \right]_r = \left[ \left( \nabla \times B \right) \times B \right]_r + \frac{1}{\reye}\left[ \nabla^2 u \right] _r
+\eeq
+
+and take $\partial_z$ of the expanded equation to obtain
+
+\begin{multline}
+\frac{1}{r} \partial_t \partial_z^2 \Psi - \frac{1}{r^3} \partial_z \left(\partial_z \Psi \partial_z \Psi\right) + \frac{1}{r^2} \partial_z\left(\partial_z\Psi \partial_z\partial_r \Psi\right) - \frac{1}{r^2} \partial_z \left(\partial_r \Psi \partial_z^2 \Psi\right) - \frac{1}{r} 2 u_\theta \partial_z u_\theta \\
+= - \frac{1}{r^2} \partial_z^3 A \partial_r A - \frac{1}{r^2} \partial_z^2 A \partial_r \partial_z A + \frac{2}{r^3} \partial_r\partial_z A \partial_r A - \frac{1}{r^2} \partial_r^2 \partial_z A \partial_rA - \frac{1}{r^2} \partial_r^2 A \partial_r \partial_z A
+\end{multline}
+
 
 \section{Recovery of Narrow Gap Equations}
 \label{sec:narrow_gap_recovery}
