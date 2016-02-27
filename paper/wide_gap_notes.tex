@@ -99,7 +99,7 @@ Susan gets:
 \section{Detailed Derivation of $\Psi$ Equation}
 The $\Psi$ equation, governing the x- and z-components of the velocity, is particularly tricky to derive so I will write out the steps here.
 
-1. Find x and z components of the momentum equation, i.e.:
+1. Find $\rhat$ and $\zhat$ components of the momentum equation, i.e.:
 
 \beq
 \partial_t u_z + \left[u \cdot \nabla u \right]_z = \left[ \left( \nabla \times B \right) \times B \right]_z + \frac{1}{\reye}\left[ \nabla^2 u \right] _z
@@ -115,7 +115,7 @@ We sub in our stream/flux function notation and expand the operators in cylindri
 + \frac{1}{\reye} \left[\frac{3}{r^4} \partial_r \Psi - \frac{3}{r^3} \partial_r^2 \Psi + \frac{2}{r^2} \partial_r^3 \psi - \frac{1}{r} \partial_r^4 \Psi\right]
 \end{multline}
 
-Repeat this process for the r component of the momentum equation,
+Repeat this process for the $\rhat$ component of the momentum equation,
 
 \beq
 \partial_t u_r + \left[u \cdot \nabla u \right]_r = \left[ \left( \nabla \times B \right) \times B \right]_r + \frac{1}{\reye}\left[ \nabla^2 u \right] _r
@@ -128,6 +128,15 @@ and take $\partial_z$ of the expanded equation to obtain
 = - \frac{1}{r^2} \partial_z^3 A \partial_r A - \frac{1}{r^2} \partial_z^2 A \partial_r \partial_z A + \frac{2}{r^3} \partial_r\partial_z A \partial_r A - \frac{1}{r^2} \partial_r^2 \partial_z A \partial_rA - \frac{1}{r^2} \partial_r^2 A \partial_r \partial_z A
 \end{multline}
 
+It is clear from the $\partial_t$ terms that we must combine these equations by subtracting the $\zhat$ equation from the $\rhat$ equation.
+
+When we do, we can simplify the LHS of the equation to:
+
+\beq
+\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\theta \partial_z u_\theta
+\eeq
+
+Note that the relevant quantity appears to be $\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi$, and that the $\frac{1}{r^2}$ in the second term cannot come out of the Jacobian (a point of disagreement with Jeff's equation above).
 
 \section{Recovery of Narrow Gap Equations}
 \label{sec:narrow_gap_recovery}
