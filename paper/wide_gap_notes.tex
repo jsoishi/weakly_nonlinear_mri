@@ -140,6 +140,22 @@ When we do, we can simplify the LHS of the equation to:
 
 Note that the relevant quantity appears to be $\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi$, and that the $\frac{1}{r^2}$ in the second term cannot come out of the Jacobian (a point of disagreement with Jeff's equation above). Also I'm confused why Jeff's has no $u_\theta$ term. The RHS of this equation is significantly more complicated.
 
+RHS viscous term:
+
+\beq
+\frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right]
+\eeq
+
+Full $\Psi$ equation according to Susan:
+
+\begin{multline}
+\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\theta \partial_z u_\theta \\
+= J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\theta \partial_z B_\theta \\
++ \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right]
+\end{multline}
+
+Note that this is actually beautifully symmetric. Except the viscous term which still seems clunky.....
+
 \section{Recovery of Narrow Gap Equations}
 \label{sec:narrow_gap_recovery}
 
