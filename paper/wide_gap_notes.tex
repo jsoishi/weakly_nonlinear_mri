@@ -156,6 +156,27 @@ Full $\Psi$ equation according to Susan:
 
 Note that this is actually beautifully symmetric. Except the viscous term which still seems clunky.....
 
+The derivation of the non-viscous term on the righthand side of the momentum equation ($J \times B$) is as follows. 
+
+\beq
+\partial_z\left(\left[\left(\nabla \times B \right) \times B \right]_r\right) - \partial_r \left(\left[\left(\nabla \times B\right) \times B \right]_z\right)
+\eeq
+
+\beq
+= \partial_z\left(\left[\left(\partial_z B_r - \partial_r B_z \right) B_z - \left(\frac{1}{r}\partial_r\left(r B_\theta\right)\right) B_\theta \right] \right) - \partial_r \left(\left[\left(-\partial_z B_\theta\right)B_\theta - \left(\partial_z B_r - \partial_r B_z \right) B_r\right]\right)
+\eeq
+
+\begin{multline}
+= -\frac{1}{r^2} \partial_z^3 A \partial_r A + \frac{1}{r^3} \partial_r \partial_z A \partial_r A - \frac{1}{r^2} \partial_r^2 \partial_z A \partial_r A - \frac{2}{r^3} \partial_z^2 A \partial_z A \\
++ \frac{1}{r^2} \partial_z^2 \partial_r A \partial_z A + \frac{3}{r^4} \partial_r A \partial_z A - \frac{3}{r^3} \partial_r^2 A \partial_z A + \frac{1}{r^2} \partial_r^3 A \partial_z A - \frac{2}{r} B_\theta \partial_z B_\theta
+\end{multline}
+
+This simplifies to 
+
+\beq
+J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\theta \partial_z B_\theta
+\eeq
+
 \section{Recovery of Narrow Gap Equations}
 \label{sec:narrow_gap_recovery}
 
