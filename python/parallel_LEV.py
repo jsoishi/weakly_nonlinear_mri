@@ -60,7 +60,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
     
     print(result_dict)
 
-    pickle.dump(result_dict, open("multirun/gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+"_allgoodeigs.p", "wb"))
+    pickle.dump(result_dict, open("multirun/gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+"_allgoodeigs_testbiharmonic.p", "wb"))
 
     print("process took %10.5e seconds" % (time.time() - start_time))
     
@@ -205,7 +205,8 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
         domain = Domain([x_basis])
 
         # In terms of Co ....multiplied dt terms by -1j
-        lv1.add_equation("-1j*dt(psixx) - -1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - Co*1j*Q*dx(Ax) + Co*Q**3*1j*A = 0")
+        #lv1.add_equation("-1j*dt(psixx) - -1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - Co*1j*Q*dx(Ax) + Co*Q**3*1j*A = 0")
+        lv1.add_equation("-1j*dt(psixx) - -1j*Q**2*dt(psi) - iR*dx(psixxx) - iR*Q**4*psi - 2*1j*Q*u - Co*1j*Q*dx(Ax) + Co*Q**3*1j*A = 0") # testing alternative biharmonic operator def
         lv1.add_equation("-1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - Co*1j*Q*B = 0") 
         lv1.add_equation("-1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
         lv1.add_equation("-1j*dt(B) - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0") 
@@ -254,7 +255,7 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
         
 if __name__ == '__main__':
 
-    #Pm = 1.0E-3
+    Pm = 1.0E-3
     #Pm = 5.0E-3
     #Pm = 1.0E-2
     #Pm = 2.0E-4
@@ -265,7 +266,7 @@ if __name__ == '__main__':
     #Pm = 2.0E-3
     #Pm = 5.0E-6
     #Pm = 7.0E-4
-    Pm = 7.0E-3
+    #Pm = 7.0E-3
     
     q = 1.5
     beta = 25.0
@@ -277,7 +278,7 @@ if __name__ == '__main__':
     #dRm = 0.01
     
     Qsearch = np.arange(0.74, 0.76, dQ)
-    Rmsearch = np.arange(4.87, 4.91, dRm) # Great for <1E-2
-    #Rmsearch = np.arange(4.91, 4.95, dRm)
+    #Rmsearch = np.arange(4.87, 4.91, dRm) # Great for <1E-2
+    Rmsearch = np.arange(4.91, 4.95, dRm)
     Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
     

@@ -156,7 +156,7 @@ Full $\Psi$ equation according to Susan:
 
 Note that this is actually beautifully symmetric. Except the viscous term which still seems clunky.....
 
-The derivation of the non-viscous term on the righthand side of the momentum equation ($J \times B$) is as follows. 
+The derivation of the non-viscous term on the righthand side of the momentum equation ($\mathbf{J} \times \mathbf{B}$) is as follows. 
 
 \beq
 \partial_z\left(\left[\left(\nabla \times B \right) \times B \right]_r\right) - \partial_r \left(\left[\left(\nabla \times B\right) \times B \right]_z\right)
@@ -176,6 +176,21 @@ This simplifies to
 \beq
 J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\theta \partial_z B_\theta
 \eeq
+
+Full derivation of viscous term:
+
+\beq
+\partial_z \left(\frac{1}{\reye}\left[\nabla^2 u\right]_r\right) - \partial_r \left(\frac{1}{\reye}\left[\nabla^2 u\right]_z\right)
+\eeq
+
+\beq
+= \frac{1}{\reye}\left[\partial_z \left(\nabla^2 u_r - \frac{1}{r^2} u_r\right) - \partial_r \left(\nabla^2 u_z\right)\right]
+\eeq
+
+\begin{multline}
+= \frac{1}{\reye} \left[ - \frac{2}{r^2} \partial_z^2 \partial_r \Psi + \frac{2}{r} \partial_z^2 \partial_r^2 \Psi + \frac{1}{r} \partial_z^4 \Psi - \frac{3}{r^4} \partial_r \Psi + \frac{3}{r^3} \partial_r^2 \Psi - \frac{2}{r^2} \partial_r^3 \Psi + \frac{1}{r} \partial_r^4 \Psi \right]
+\end{multline}
+
 
 \section{Recovery of Narrow Gap Equations}
 \label{sec:narrow_gap_recovery}
