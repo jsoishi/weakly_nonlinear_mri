@@ -205,7 +205,7 @@ We perturb the wide gap equations according to
 \eeq
 
 \beq
-\mathbf{u} = u_0 \hat{\phi} + \mathbf{u_1}
+\mathbf{u} = -q \Omega_0 r \hat{\phi} + \mathbf{u_1}
 \eeq
 
 The only term gained in the $(\hat{r}, \hat{z})$ component of the induction equation is $(B_0 \hat{z} \cdot \nabla) \mathbf{u_1}$, and Equation \ref{eq:A} becomes
@@ -214,6 +214,16 @@ The only term gained in the $(\hat{r}, \hat{z})$ component of the induction equa
  \label{eq:A_perturbed}
 \partial_t A = \frac{1}{r} J(A, \psi) + \frac{1}{\reym} \left( \nabla^2 A - \frac{2 \partial_r A}{r} \right) + B_0 \partial_z \Psi
 \eeq
+
+Note that this is perfectly analogous to the thin-gap version of this equation.
+
+The $\hat{\phi}$ component of the induction equation becomes
+
+\begin{multline}
+  \label{eq:By_perturbed}
+\partial_t B_\phi = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)\\
++ \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A + \frac{1}{\reym} \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right) + B_0 \partial_z u_\phi - \frac{1}{r} q \Omega_0 \partial_z A
+\end{multline}
 
 \appendix
 
