@@ -916,10 +916,12 @@ def plot_paramspace(path="/Users/susanclark/weakly_nonlinear_mri/python/multirun
         jj = data.popitem()
         if not quiet:
             print(jj)
-        if np.isnan(jj[1]) == True:
+        #if np.isnan(jj[1]) is True:
+        if np.all(jj == np.nan) is True:
             evals[i] = None
         else:
-            evals[i] = jj[1]
+            #evals[i] = jj[1]
+            evals[i] = jj[1][0]
         #ids[i] = jj[0]
         
         allRms[i] = jj[0][0]

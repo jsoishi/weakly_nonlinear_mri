@@ -82,6 +82,7 @@ For the expanded form of the $\Psi$ equation, Susan gets:
 
 %Susan confirms correct (just switched eta -> 1/Rm)
 \beq
+ \label{eq:A}
 \partial_t A = \frac{1}{r} J(A, \psi) + \frac{1}{\reym} \left( \nabla^2 A - \frac{2 \partial_r A}{r} \right)
 %\partial_t A = \frac{1}{r} J(A, \Psi) + \frac{1}{Rm} \left[ -\frac{1}{r} \partial_r A + \partial_r^2 A + \partial_z^2 A\right]
 \eeq
@@ -111,7 +112,7 @@ We sub in our stream/flux function notation and expand the operators in cylindri
 \begin{multline}
 \frac{1}{r^2} \partial_t \partial_r \Psi - \frac{1}{r} \partial_t \partial_r^2 \Psi - \frac{3}{r^4}\partial_z \Psi \partial_r \Psi + \frac{1}{r^3} \partial_r \left( \partial_z \Psi \partial_r \Psi \right) + \frac{2}{r^3} \partial_z \Psi \partial_r^2 \Psi - \frac{1}{r^2} \partial_r \left(\partial_z \Psi \partial_r^2 \Psi \right)\\
 - \frac{2}{r^3} \partial_r \Psi \partial_r\partial_z \Psi + \frac{1}{r^2} \partial_r \left(\partial_r \Psi \partial_r \partial_z \Psi\right) = \\
-\partial_r\left(B_\theta \partial_z B_\theta\right) + \frac{2}{r^3} \partial_z^2 A \partial_z A - \frac{1}{r^2} \partial_r \left(\partial_z^2 A \partial_z A\right) + \frac{3}{r^4} \partial_z A \partial_r A - \frac{1}{r^3} \partial_r \left(\partial_z A \partial_r A \right) - \frac{2}{r^3} \partial_z A \partial_r^2 A \\
+\partial_r\left(B_\phi \partial_z B_\phi\right) + \frac{2}{r^3} \partial_z^2 A \partial_z A - \frac{1}{r^2} \partial_r \left(\partial_z^2 A \partial_z A\right) + \frac{3}{r^4} \partial_z A \partial_r A - \frac{1}{r^3} \partial_r \left(\partial_z A \partial_r A \right) - \frac{2}{r^3} \partial_z A \partial_r^2 A \\
 + \frac{1}{r^2} \partial_r \left(\partial_z A \partial_r^2 A \right) 
 + \frac{1}{\reye} \left[\frac{3}{r^4} \partial_r \Psi - \frac{3}{r^3} \partial_r^2 \Psi + \frac{2}{r^2} \partial_r^3 \Psi - \frac{1}{r} \partial_r^4 \Psi\right]
 \end{multline}
@@ -125,7 +126,7 @@ Repeat this process for the $\rhat$ component of the momentum equation,
 and take $\partial_z$ of the expanded equation to obtain
 
 \begin{multline}
-\frac{1}{r} \partial_t \partial_z^2 \Psi - \frac{1}{r^3} \partial_z \left(\partial_z \Psi \partial_z \Psi\right) + \frac{1}{r^2} \partial_z\left(\partial_z\Psi \partial_z\partial_r \Psi\right) - \frac{1}{r^2} \partial_z \left(\partial_r \Psi \partial_z^2 \Psi\right) - \frac{1}{r} 2 u_\theta \partial_z u_\theta \\
+\frac{1}{r} \partial_t \partial_z^2 \Psi - \frac{1}{r^3} \partial_z \left(\partial_z \Psi \partial_z \Psi\right) + \frac{1}{r^2} \partial_z\left(\partial_z\Psi \partial_z\partial_r \Psi\right) - \frac{1}{r^2} \partial_z \left(\partial_r \Psi \partial_z^2 \Psi\right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi \\
 = - \frac{1}{r^2} \partial_z^3 A \partial_r A - \frac{1}{r^2} \partial_z^2 A \partial_r \partial_z A + \frac{2}{r^3} \partial_r\partial_z A \partial_r A - \frac{1}{r^2} \partial_r^2 \partial_z A \partial_rA - \frac{1}{r^2} \partial_r^2 A \partial_r \partial_z A \\
 + \frac{1}{\reye} \left[ -\frac{1}{r^2} \partial_z^2 \partial_r \Psi + \frac{1}{r} \partial_z^2 \partial_r^2 \Psi + \frac{1}{r} \partial_z^4\Psi \right]
 \end{multline}
@@ -135,10 +136,10 @@ It is clear from the $\partial_t$ terms that we must combine these equations by 
 When we do, we can simplify the LHS of the equation to:
 
 \beq
-\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\theta \partial_z u_\theta
+\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi
 \eeq
 
-Note that the relevant quantity appears to be $\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi$, and that the $\frac{1}{r^2}$ in the second term cannot come out of the Jacobian (a point of disagreement with Jeff's equation above). Also I'm confused why Jeff's has no $u_\theta$ term. The RHS of this equation is significantly more complicated.
+Note that the relevant quantity appears to be $\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi$, and that the $\frac{1}{r^2}$ in the second term cannot come out of the Jacobian (a point of disagreement with Jeff's equation above). Also I'm confused why Jeff's has no $u_\phi$ term. The RHS of this equation is significantly more complicated.
 
 RHS viscous term:
 
@@ -149,8 +150,8 @@ RHS viscous term:
 Full $\Psi$ equation according to Susan:
 
 \begin{multline}
-\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\theta \partial_z u_\theta \\
-= J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\theta \partial_z B_\theta \\
+\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi \\
+= J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\phi \partial_z B_\phi \\
 + \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right]
 \end{multline}
 
@@ -163,18 +164,18 @@ The derivation of the non-viscous term on the righthand side of the momentum equ
 \eeq
 
 \beq
-= \partial_z\left(\left[\left(\partial_z B_r - \partial_r B_z \right) B_z - \left(\frac{1}{r}\partial_r\left(r B_\theta\right)\right) B_\theta \right] \right) - \partial_r \left(\left[\left(-\partial_z B_\theta\right)B_\theta - \left(\partial_z B_r - \partial_r B_z \right) B_r\right]\right)
+= \partial_z\left(\left[\left(\partial_z B_r - \partial_r B_z \right) B_z - \left(\frac{1}{r}\partial_r\left(r B_\phi\right)\right) B_\phi \right] \right) - \partial_r \left(\left[\left(-\partial_z B_\phi\right)B_\phi - \left(\partial_z B_r - \partial_r B_z \right) B_r\right]\right)
 \eeq
 
 \begin{multline}
 = -\frac{1}{r^2} \partial_z^3 A \partial_r A + \frac{1}{r^3} \partial_r \partial_z A \partial_r A - \frac{1}{r^2} \partial_r^2 \partial_z A \partial_r A - \frac{2}{r^3} \partial_z^2 A \partial_z A \\
-+ \frac{1}{r^2} \partial_z^2 \partial_r A \partial_z A + \frac{3}{r^4} \partial_r A \partial_z A - \frac{3}{r^3} \partial_r^2 A \partial_z A + \frac{1}{r^2} \partial_r^3 A \partial_z A - \frac{2}{r} B_\theta \partial_z B_\theta
++ \frac{1}{r^2} \partial_z^2 \partial_r A \partial_z A + \frac{3}{r^4} \partial_r A \partial_z A - \frac{3}{r^3} \partial_r^2 A \partial_z A + \frac{1}{r^2} \partial_r^3 A \partial_z A - \frac{2}{r} B_\phi \partial_z B_\phi
 \end{multline}
 
 This simplifies to 
 
 \beq
-J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\theta \partial_z B_\theta
+J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\phi \partial_z B_\phi
 \eeq
 
 Full derivation of viscous term:
@@ -194,6 +195,25 @@ Full derivation of viscous term:
 
 \section{Recovery of Narrow Gap Equations}
 \label{sec:narrow_gap_recovery}
+
+\section{Perturbed Equations}
+
+We perturb the wide gap equations according to 
+
+\beq
+\mathbf{B} = B_0 \hat{z} + \mathbf{B_1}
+\eeq
+
+\beq
+\mathbf{u} = u_0 \hat{\phi} + \mathbf{u_1}
+\eeq
+
+The only term gained in the $(\hat{r}, \hat{z})$ component of the induction equation is $(B_0 \hat{z} \cdot \nabla) \mathbf{u_1}$, and Equation \ref{eq:A} becomes
+
+\beq
+ \label{eq:A_perturbed}
+\partial_t A = \frac{1}{r} J(A, \psi) + \frac{1}{\reym} \left( \nabla^2 A - \frac{2 \partial_r A}{r} \right) + B_0 \partial_z \Psi
+\eeq
 
 \appendix
 
