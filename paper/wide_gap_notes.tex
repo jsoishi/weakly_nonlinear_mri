@@ -15,7 +15,7 @@
 %\usepackage{appendix}
 \usepackage[titletoc,title]{appendix}
 \usepackage{cleveref}
-
+\usepackage{mathtools}
 
 \makeatletter
 \setlength{\@fptop}{0pt}
@@ -195,6 +195,38 @@ Full derivation of viscous term:
 
 \section{Recovery of Narrow Gap Equations}
 \label{sec:narrow_gap_recovery}
+
+\section{Nondimensionalization}
+
+The momentum equation must be nondimensionalized. Here are the definitions of all of the dimensional components: 
+
+\begin{equation}
+\begin{multlined}
+\widetilde{u} = \Omega_0 r_0 \delta u \\
+\widetilde{x} = \delta r_0 x \\
+\widetilde{\nabla} = \frac{\nabla}{\delta r_0}\\
+\widetilde{t} = \frac{t}{\Omega_0}\\ 
+\widetilde{B} = B_0 B \\
+\widetilde{P} = P_0 P \\
+\widetilde{\rho} = \rho_0 \rho 
+\end{multlined}
+\end{equation}
+
+If we define the velocity scale $v_0$ as the local sound speed scale $\left(c_{s0} \equiv \sqrt{\frac{P_0}{\rho_0}}\right)$, then $\Omega_0 r_0 \delta = \sqrt{\frac{P_0}{\rho_0}}$.
+
+Nondimensionalizing the momentum equation and dividing by a factor of $\Omega_0^2 r_0 \delta$ yields
+
+\beq
+\partial_t \mathbf{u} + \mathbf{u}\cdot \mathbf{\nabla} \mathbf{u} = \frac{1}{4 \pi \rho} \frac{B_0^2}{\rho_0 \Omega_0^2 r_0^2 \delta^2} (\mathbf{\nabla}\times\mathbf{B})\times\mathbf{B} + \frac{1}{\reye}\nabla^2 \mathbf{u} - 2 \mathbf{\Omega} \times \mathbf{u} - \mathbf{\Omega} \times (\mathbf{\Omega} \times \mathbf{r})
+\eeq
+
+If we define
+
+\beq
+\beta \equiv \frac{P}{P_{mag}} = \frac{\rho_0 \Omega_0^2 r_0^2 8 \pi}{B_0^2}
+\eeq
+
+where $P_{mag} = \frac{B_0^2}{8 \pi}$, then the factor in front of $(\mathbf{\nabla}\times\mathbf{B})\times\mathbf{B} $ should be $\frac{2}{\beta}$. Agreed?
 
 \section{Perturbed Equations}
 
