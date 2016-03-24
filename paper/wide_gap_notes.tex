@@ -230,7 +230,7 @@ where $P_{mag} = \frac{B_0^2}{8 \pi}$, then the factor in front of $(\mathbf{\na
 
 \section{Perturbed Equations}
 
-Note: two things are currently missing. The constant $\beta$ from the nondimensionalization, and the Coriolis term in the momentum equation.
+Note: currently missing the Coriolis term in the momentum equation.
 
 We perturb the wide gap equations according to 
 
@@ -246,15 +246,15 @@ The $\Psi$ equation becomes
 
 \begin{multline}
 \frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi \\
-= J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\phi \partial_z B_\phi \\
-+ \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] + \frac{1}{r}B_0 \partial_z \left(\nabla^2 A - \frac{2}{r} \partial_r A\right)
+= \frac{2}{\beta} J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{\beta} \frac{2}{r}B_\phi \partial_z B_\phi \\
++ \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] + \frac{2}{\beta} \frac{1}{r}B_0 \partial_z \left(\nabla^2 A - \frac{2}{r} \partial_r A\right)
 \end{multline}
 
 Equation \ref{eq:uy} becomes
 
 \begin{equation}
   \label{eq:uy_perturbed}
-\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} - \frac{2}{r}q \Omega_0 \partial_z \Psi= \frac{J(A, B_\phi)}{r} + \frac{B_\phi \partial_z A}{r^2} + \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{\uphi}{r}\right) + B_0 \partial_z B_\phi
+\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} - \frac{2}{r}q \Omega_0 \partial_z \Psi= \frac{2}{\beta} \frac{J(A, B_\phi)}{r} + \frac{2}{\beta} \frac{B_\phi \partial_z A}{r^2} + \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{\uphi}{r}\right) + \frac{2}{\beta} B_0 \partial_z B_\phi
 \end{equation}
 
 The only term gained in the $(\hat{r}, \hat{z})$ component of the induction equation is $(B_0 \hat{z} \cdot \nabla) \mathbf{u_1}$, and Equation \ref{eq:A} becomes
