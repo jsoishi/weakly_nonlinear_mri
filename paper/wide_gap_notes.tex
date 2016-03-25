@@ -230,17 +230,27 @@ where $P_{mag} = \frac{B_0^2}{8 \pi}$, then the factor in front of $(\mathbf{\na
 
 \section{Perturbed Equations}
 
-Note: currently missing the Coriolis term in the momentum equation.
+Note: currently missing the Coriolis term in the momentum equation. %The Coriolis and centrifugal terms add a $-2\partial_z u_\phi$ term to the LHS of the $\Psi$ equation and a $+2$
 
 We perturb the wide gap equations according to 
 
 \beq
-\mathbf{B} = B_0 \hat{z} + \mathbf{B_1}
+\mathbf{B} = B_0 \hat{z} + \mathbf{B_1},
 \eeq
+
+which is the same perturbation we used in the thin-gap construction. But wait! We perturbed the thin-gap equations according to 
 
 \beq
 \mathbf{u} = -q \Omega_0 r \hat{\phi} + \mathbf{u_1}
 \eeq
+
+but I don't think this is valid in the wide-gap case. To be sure, I'm going to perturb instead by 
+
+\beq
+\mathbf{u} = r\Omega(r)\hat{\phi}+ \mathbf{u_1}
+\eeq
+
+where $\Omega(r) = \Omega_0 \left(\frac{r}{r_0}\right)^{-q} = \Omega_0 \left(r\right)^{-q}$ in dimensionless coordinates (but keeping $\Omega_0$ to flag a rotational term...) Agreed?
 
 The $\Psi$ equation becomes
 
