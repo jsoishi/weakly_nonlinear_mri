@@ -264,15 +264,20 @@ Equation \ref{eq:uy} becomes
 
 \begin{equation}
   \label{eq:uy_perturbed}
-\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} + \left(\frac{2}{r} + 1\right)\Omega(r) \partial_z \Psi= \frac{2}{\beta} \frac{J(A, B_\phi)}{r} + \frac{2}{\beta} \frac{B_\phi \partial_z A}{r^2} + \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{\uphi}{r}\right) + \frac{2}{\beta} B_0 \partial_z B_\phi
+\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} + \partial_z\Psi\left( \frac{2}{r}\Omega(r) + \partial_r \Omega(r) \right) = \frac{2}{\beta} \frac{J(A, B_\phi)}{r} + \frac{2}{\beta} \frac{B_\phi \partial_z A}{r^2} + \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{\uphi}{r}\right) + \frac{2}{\beta} B_0 \partial_z B_\phi
 \end{equation}
+
+%$\frac{2}{r} \partial_z \Psi \Omega(r) + \partial_z\Psi \partial_r \Omega(r)
+%=\partial_z\Psi\left( \frac{2}{r}\Omega(r) + \partial_r \Omega(r) \right)$
 
 %\begin{equation}
  % \label{eq:uy_perturbed}
 %\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} - \frac{2}{r}q \Omega_0 \partial_z \Psi= \frac{2}{\beta} \frac{J(A, B_\phi)}{r} + \frac{2}{\beta} \frac{B_\phi \partial_z A}{r^2} + \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{\uphi}{r}\right) + \frac{2}{\beta} B_0 \partial_z B_\phi
 %\end{equation}
 
-The only term gained in the $(\hat{r}, \hat{z})$ component of the induction equation is $(B_0 \hat{z} \cdot \nabla) \mathbf{u_1}$, and Equation \ref{eq:A} becomes
+%The only term gained in the $(\hat{r}, \hat{z})$ component of the induction equation is $(B_0 \hat{z} \cdot \nabla) \mathbf{u_1}$, and 
+
+Equation \ref{eq:A} picks up $+\Omega(r) B_\phi$ from the term $- ({u_0}\hat{\phi} \cdot \nabla)\mathbf{B_1}$ and $-\Omega(r) B_\phi$ from the term $+(\mathbf{B_1} \cdot \nabla) \hat{\phi}$ and, so those cancel and the equation becomes
 
 \beq
  \label{eq:A_perturbed}
@@ -286,7 +291,7 @@ The $\hat{\phi}$ component of the induction equation, Equation \ref{eq:By}, beco
 \begin{multline}
   \label{eq:By_perturbed}
 \partial_t B_\phi = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)\\
-+ \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A + \frac{1}{\reym} \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right) + B_0 \partial_z u_\phi - \frac{1}{r} q \Omega_0 \partial_z A
++ \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A + \frac{1}{\reym} \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right) + B_0 \partial_z u_\phi + \partial_z A \left( \frac{2}{r}\Omega(r) + \partial_r \Omega(r) \right) %- \frac{1}{r} q \Omega_0 \partial_z A
 \end{multline}
 
 \appendix
