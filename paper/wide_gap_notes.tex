@@ -230,8 +230,6 @@ where $P_{mag} = \frac{B_0^2}{8 \pi}$, then the factor in front of $(\mathbf{\na
 
 \section{Perturbed Equations}
 
-Note: currently missing the Coriolis term in the momentum equation. %The Coriolis and centrifugal terms add a $-2\partial_z u_\phi$ term to the LHS of the $\Psi$ equation and a $+2$
-
 We perturb the wide gap equations according to 
 
 \beq
@@ -252,14 +250,27 @@ but I don't think this is valid in the wide-gap case. To be sure, I'm going to p
 
 where $\Omega(r) = \Omega_0 \left(\frac{r}{r_0}\right)^{-q} = \Omega_0 \left(r\right)^{-q}$ in dimensionless coordinates (but keeping $\Omega_0$ to flag a rotational term...) Agreed?
 
+We also add the Coriolis and centrifugal terms $-2 \mathbf{\Omega} \times \mathbf{u} - \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r}\right)$ which expand as follows:
+
+\beq
+-2\Omega(r)\zhat \times \left( \mathbf{u_1} + r\Omega(r)\phihat\right) = -2\Omega(r)u_{r}\phihat + 2\Omega(r)u_\phi\rhat + 2r\Omega(r)^2\rhat
+\eeq
+
+\beq
+-\Omega(r)\zhat \times \left(\Omega(r)\zhat \times r\rhat\right) = +\Omega(r)^2 r \rhat
+\eeq
+
+The $\rhat$ terms will have $\partial_z$ applied to them, which will destroy the $3\Omega(r)^2 r \rhat$ term and so the righthand side of the $\Psi$ equation will ultimately gain only the term $2 \Omega(r) \partial_z u_\phi \rhat$.
+
 The $\Psi$ equation becomes
 
 \begin{multline}
 \frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi - \partial_z\left(u_\phi \Omega(r) \right)\\
-= \frac{2}{\beta} J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{\beta} \frac{2}{r}B_\phi \partial_z B_\phi \\
-+ \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] + \frac{2}{\beta} \frac{1}{r}B_0 \partial_z \left(\nabla^2 A - \frac{2}{r} \partial_r A\right)
+= \frac{2}{\beta} J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{\beta} \frac{2}{r}B_\phi \partial_z B_\phi + 2 \Omega(r) \partial_z u_\phi \\
++ \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] + \frac{2}{\beta} \frac{1}{r}B_0 \partial_z \left(\nabla^2 A - \frac{2}{r} \partial_r A\right) 
 \end{multline}
 
+Note that one of the terms gained from the base state in the $(\mathbf{u}\cdot \nabla)\mathbf{u}$ term can be combined with the term gained from the Coriolis term, but here I write them separately so we can check the equation.
 Equation \ref{eq:uy} becomes
 
 \begin{equation}
