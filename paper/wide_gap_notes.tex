@@ -260,7 +260,7 @@ We also add the Coriolis and centrifugal terms $-2 \mathbf{\Omega} \times \mathb
 -\Omega(r)\zhat \times \left(\Omega(r)\zhat \times r\rhat\right) = +\Omega(r)^2 r \rhat
 \eeq
 
-The $\rhat$ terms will have $\partial_z$ applied to them, which will destroy the $3\Omega(r)^2 r \rhat$ term and so the righthand side of the $\Psi$ equation will ultimately gain only the term $2 \Omega(r) \partial_z u_\phi \rhat$.
+The $\rhat$ terms will have $\partial_z$ applied to them, which will destroy the $3\Omega(r)^2 r \rhat$ term and so the righthand side of the $\Psi$ equation will ultimately gain only the term $2 \Omega(r) \partial_z u_\phi \rhat$. The $\phihat$ equation gains the term $-\frac{2}{r} \Omega(r) \partial_z \Psi$ on the righthand side. 
 
 The $\Psi$ equation becomes
 
@@ -273,10 +273,11 @@ The $\Psi$ equation becomes
 Note that one of the terms gained from the base state in the $(\mathbf{u}\cdot \nabla)\mathbf{u}$ term can be combined with the term gained from the Coriolis term, but here I write them separately so we can check the equation.
 Equation \ref{eq:uy} becomes
 
-\begin{equation}
+\begin{multline}
   \label{eq:uy_perturbed}
-\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} + \partial_z\Psi\left( \frac{2}{r}\Omega(r) + \partial_r \Omega(r) \right) = \frac{2}{\beta} \frac{J(A, B_\phi)}{r} + \frac{2}{\beta} \frac{B_\phi \partial_z A}{r^2} + \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{\uphi}{r}\right) + \frac{2}{\beta} B_0 \partial_z B_\phi
-\end{equation}
+\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} + \partial_z\Psi\left( \frac{2}{r}\Omega(r) + \partial_r \Omega(r) \right) = \\
+\frac{2}{\beta} \frac{J(A, B_\phi)}{r} + \frac{2}{\beta} \frac{B_\phi \partial_z A}{r^2} + \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{\uphi}{r}\right) + \frac{2}{\beta} B_0 \partial_z B_\phi -\frac{2}{r} \Omega(r) \partial_z \Psi
+\end{multline}
 
 %$\frac{2}{r} \partial_z \Psi \Omega(r) + \partial_z\Psi \partial_r \Omega(r)
 %=\partial_z\Psi\left( \frac{2}{r}\Omega(r) + \partial_r \Omega(r) \right)$
