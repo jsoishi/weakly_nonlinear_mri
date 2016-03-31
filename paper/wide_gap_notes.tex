@@ -325,6 +325,17 @@ J\left(\Psi, \frac{1}{r^2} \left(\nabla^2 \Psi - \frac{2}{r}\partial_r \Psi \rig
 
 Note that these differ from the thin-gap nonlinear terms not only because of the curvature terms in the Jacobians, but also because of the additional advective terms in all but the $\mathbf{A}$ equation.
 
+The $\partial_t$ terms are grouped together into 
+
+\beq
+\partial_t D = \partial_t \left[\begin{matrix}
+\frac{1}{r}\nabla^2 - \frac{2}{r^2} \partial_r & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{matrix}\right]
+\eeq
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                              APPENDIX                                                             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
