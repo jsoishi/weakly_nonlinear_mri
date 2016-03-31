@@ -265,6 +265,7 @@ The $\rhat$ terms will have $\partial_z$ applied to them, which will destroy the
 The $\Psi$ equation becomes
 
 \begin{multline}
+\label{eq:Psi_perturbed}
 \frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi - \partial_z\left(u_\phi \Omega(r) \right)\\
 = \frac{2}{\beta} J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{\beta} \frac{2}{r}B_\phi \partial_z B_\phi + 2 \Omega(r) \partial_z u_\phi \\
 + \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] + \frac{2}{\beta} \frac{1}{r}B_0 \partial_z \left(\nabla^2 A - \frac{2}{r} \partial_r A\right) 
@@ -306,6 +307,27 @@ The $\hat{\phi}$ component of the induction equation, Equation \ref{eq:By}, beco
 + \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A + \frac{1}{\reym} \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right) + B_0 \partial_z u_\phi + \partial_z A \left( \frac{2}{r}\Omega(r) + \partial_r \Omega(r) \right) %- \frac{1}{r} q \Omega_0 \partial_z A
 \end{multline}
 
+
+\section{Matrix Formulation}
+
+This is all pending a rigorous check of Equations \ref{eq:Psi_perturbed} - \ref{eq:By_perturbed}, which Jeff is working on, but I'll start putting this into a matrix construction.
+
+First, the nonlinear vector, on the lefthand side of the equation, is
+
+\beq
+\mathbf{N} = \left[\begin{matrix}
+J\left(\Psi, \frac{1}{r^2} \left(\nabla^2 \Psi - \frac{2}{r}\partial_r \Psi \right) \right) - \frac{2}{\beta} J \left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_r A\right)\right) - \frac{2}{r} u_\phi \partial_z u_\phi + \frac{2}{\beta} \frac{2}{r} B_\phi \partial_z B_\phi \\
+\frac{1}{r} J \left(\Psi, u_\phi\right) - \frac{1}{r} \frac{2}{\beta} J \left(A, B_\phi\right) + \frac{1}{r^2} u_\phi \partial_z \Psi - \frac{2}{\beta} \frac{1}{r^2} B_\phi \partial_z A \\
+-\frac{1}{r} J \left(A, \Psi\right)\\
+-\frac{1}{r} J \left(A, u_\phi\right) - \frac{1}{r} J \left(B_\phi, \Psi\right) - \frac{1}{r^2} B_\phi \partial_z \Psi + \frac{1}{r^2} u_\phi \partial_z A
+\end{matrix}\right] 
+\eeq
+
+Note that these differ from the thin-gap nonlinear terms not only because of the curvature terms in the Jacobians, but also because of the additional advective terms in all but the $\mathbf{A}$ equation.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                              APPENDIX                                                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
 
 \section{Cylindrical derivatives}
