@@ -336,6 +336,32 @@ The $\partial_t$ terms are grouped together into
 \end{matrix}\right]
 \eeq
 
+For the righthand side of the equation, I'll follow the same process that I did with the thin-gap. That is I'll first separate the matrices by physical meaning, and then regroup terms based on $z$-dependence. The RHS can be described by three matrices: one representing the rotational terms, one representing the background field terms, and one representing the viscous/resistive terms.
+
+\begin{multline}
+RHS = \left[\begin{matrix}
+3 \Omega(r) \partial_z u_\phi \\
+-\frac{4}{r} \Omega(r)\partial_z \Psi - \partial_r \Omega(r) \partial_z \Psi \\
+0 \\
+\frac{2}{r} \Omega(r) \partial_z A + \partial_r \Omega(r) \partial_z A
+\end{matrix}\right]
++ 
+\left[\begin{matrix}
+\frac{2}{\beta} \frac{1}{r} B_0 \partial_z \left(\nabla^2 A - \frac{2}{r} \partial_r A\right)\\
+\frac{2}{\beta} B_0 \partial_z B_\phi \\
+B_0 \partial_z \Psi\\
+B_0 \partial_z u_\phi
+\end{matrix}\right]
++
+\left[\begin{matrix}
+\frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4} \partial_r \Psi\right]\\
+\frac{1}{\reye} \left(\nabla^2 u_\phi - \frac{1}{r} u_\phi\right)\\
+\frac{1}{\reym} \left(\nabla^2 A - \frac{2}{r} \partial_r A\right)\\
+\frac{1}{\reym} \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi\right)
+\end{matrix}\right] \\
+=
+\end{multline}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                              APPENDIX                                                             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
