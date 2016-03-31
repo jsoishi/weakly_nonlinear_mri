@@ -360,7 +360,31 @@ B_0 \partial_z u_\phi
 \frac{1}{\reym} \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi\right)
 \end{matrix}\right] \\
 =
+\left[\begin{matrix}
+0 & 3\Omega(r) \partial_z & 0 & 0 \\
+-\frac{4}{r} \Omega(r) \partial_z - \partial_r \Omega(r) \partial_z & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & \frac{2}{r} \Omega(r) \partial_z + \partial_r \Omega(r) \partial_z & 0
+\end{matrix}\right]
++\\
+\left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} \frac{1}{r} B_0 \partial_z \left(\nabla^2 - \frac{2}{r} \partial_r\right) & 0\\
+0 & 0 & 0 & \frac{2}{\beta} B_0 \partial_z\\
+B_0 \partial_z & 0 & 0 & 0 \\
+0 & B_0 \partial_z & 0 & 0
+\end{matrix}\right]
++ 
+\left[\begin{matrix}
+\frac{1}{\reye} \left(\nabla^2\left(\frac{1}{r}\nabla^2\right) - \frac{1}{r^3}\partial_r^2 - \frac{1}{r^4}\partial_r\right)\\
+\frac{1}{\reye} \left(\nabla^2  - \frac{1}{r} \right)\\
+\frac{1}{\reym} \left(\nabla^2 - \frac{2}{r} \partial_r \right)\\
+\frac{1}{\reym} \left(\nabla^2 - \frac{1}{r^2} \right)
+\end{matrix}\right]
 \end{multline}
+
+We separate the viscous/resistive matrix out in terms of $\partial_z$ dependence.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                              APPENDIX                                                             %
