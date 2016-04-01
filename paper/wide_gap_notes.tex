@@ -495,6 +495,64 @@ We now define, in analogy to the thin-gap matrices, the following:
 \end{matrix}\right]
 \eeq
 
+\beq
+\mathcal{G} = \left[\begin{matrix}
+0 & 3\Omega(r) & 0 & 0 \\
+-\frac{4}{r} \Omega(r)  - \partial_r \Omega(r)  & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & \frac{2}{r} \Omega(r)  + \partial_r \Omega(r)  & 0
+\end{matrix}\right]
+\eeq
+
+Defining 
+
+\beq
+\mathcal{L}  = \mathcal{L}_0 + \mathcal{L}_1\partial_z + \mathcal{L}_2\partial_z^2 + \mathcal{L}_3\partial_z^3 + \mathcal{L}_4\partial_z^4
+\eeq
+
+and
+
+\beq
+\mathcal{\widetilde{G}} = - \mathcal{G} \partial_z - \mathcal{L}_3 \partial_z^3, 
+\eeq
+
+we have 
+
+\beq
+\mathcal{D} \partial_t \mathbf{V} + \mathbf{N} = \mathcal{L}\mathbf{V} + \epsilon^2 \mathcal{\widetilde{G}} \mathbf{V}
+\eeq
+
+which we then expand:
+
+\beq
+\begin{split}
+ \partial_t & \rightarrow \epsilon^2 \partial_T \\
+ \partial_z & \rightarrow \partial_z + \epsilon \partial_Z
+\end{split}
+\eeq
+
+and perturb:
+
+\beq
+\mathbf{V} = \epsilon\mathbf{V}_1 + \epsilon^2 \mathbf{V}_2 + \epsilon^3 \mathbf{V}_3
+\eeq
+
+Note that as we have defined these matrices, the matrices are of course different than in the thin-gap case, and the nonlinear terms are different, but the equations for behavior at each order in $\epsilon$ are identical, that is
+
+\beq
+\mathcal{L} \mathbf{V}_1 = 0
+\eeq
+
+\beq
+\mathcal{L} \mathbf{V}_2 = \mathbf{N}_2 - \mathcal{\widetilde{L}}_1 \partial_Z \mathbf{V}_1
+\eeq
+
+\beq
+\mathcal{D}\partial_T\mathbf{V}_1 + \mathbf{N}_3 = \mathcal{L}\mathbf{V}_3 + \mathcal{\widetilde{L}}_1 \partial_Z \mathbf{V}_2 + \mathcal{\widetilde{L}}_2\partial_Z^2 \mathbf{V}_1 + \mathcal{\widetilde{G}}\mathbf{V}_1
+\eeq
+
+are still the correct equations to orders $\epsilon$, $\epsilon^2$, and $\epsilon^3$, respectively.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                              APPENDIX                                                             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
