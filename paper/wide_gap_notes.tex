@@ -385,7 +385,7 @@ B_0 \partial_z & 0 & 0 & 0 \\
 We separate the viscous/resistive matrix out in terms of $\partial_z$ dependence.
 
 \begin{multline}
-\mathrm{viscous}\, \,\mathrm{term}  = \\
+\mathrm{viscous}\, \,\mathrm{terms}  = \\
  \left[\begin{matrix}
 \frac{1}{\reye} \left(-\frac{3}{r^4} \partial_r + \frac{3}{r^3} \partial_r^2 - \frac{2}{r^2} \partial_r^3 + \frac{1}{r} \partial_r^4\right) & 0 & 0 & 0\\
 0 & \frac{1}{\reye} \left(\partial_r^2 + \frac{1}{r} \partial_r - \frac{1}{r} \right) & 0 & 0 \\
@@ -409,6 +409,25 @@ We separate the viscous/resistive matrix out in terms of $\partial_z$ dependence
 \end{multline}
 
 Note that the form of each of the terms is different in the first matrix.
+
+We also separate the terms in the $B0$ matrix by $\partial_z$ dependence:
+
+\beq
+B_0 \, \mathrm{terms} = 
+\partial_z \left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} \frac{1}{r} B_0 \left(\partial_r^2 - \frac{1}{r}\partial_r\right) & 0 \\
+0 & 0 & 0 & \frac{2}{\beta}B_0\\
+B_0 & 0 & 0 & 0\\
+0 & B_0 & 0 & 0
+\end{matrix}\right] 
++
+\partial_z^3 \left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} \frac{1}{r} B_0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{matrix}\right]
+\eeq
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                              APPENDIX                                                             %
