@@ -204,12 +204,9 @@ class OrderE(MRI):
         # Add in r terms as nonconstant coefficients
         lv1 = ParsedProblem(['r'], 
                 field_names=['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],
-                param_names=['Q', 'iR', 'iRm', 'q', 'beta'])
-                
-        ncc = domain.new_field(name='c')
-        ncc['g'] = z**2
-        ncc.meta['x', 'y']['constant'] = True
-        problem.parameters['c'] = ncc
+                param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rvar', 'rvarsq'])
+        
+        r = domain.grid(0)
                 
         # equations defined in wide_gap_eqns.ipynb
         # -1j*((D*dt)*V).subs(dz, 1j*Q) - (L*V).subs(dz, 1j*Q)
@@ -220,10 +217,10 @@ class OrderE(MRI):
         #lv1.add_equation("-1j*dt(B) + 1j*(1/r)*Q*q*r**(-q)*A - 2*1j*(1/r)*Q*r**(-q)*A + iRm*Q**2*B - 1j*Q*u - iRm*dr(Br) - iRm*(1/r)*Br + iRm*(1/r**2)*B = 0")
 
         # Multiply through by r**2
-        lv1.add_equation("1j*r*Q**2*dt(psi) + -1j*r*dt(psirr) + 1j*dt(psir) - 3*1j*Q*r**2*r**(-q)*u - iR*(Q**4)*r*psi + (2/beta)*1j*Q**3*r*A + 2*Q**2*iR*r*psirr - iR*2*Q**2*psir - (2/beta)*1j*Q*r*dr(Ar) + (2/beta)*1j*Q*Ar - iR*r*dr(psirrr) + iR*2*psirrr - iR*(3/r)*psirr + iR*(3/r**2)*psir = 0")
-        lv1.add_equation("-1j*r**2*dt(u) - 1j*r*Q*q*r**(-q)*psi + 1j*4*r*Q*r**(-q)*psi + iR*r**2*Q**2*u - (2/beta)*1j*Q*r**2*B - iR*r**2*dr(ur) - iR*r*ur + iR*r*u = 0")
-        lv1.add_equation("-1j*r**2*dt(A) + iRm*r**2*Q**2*A - 1j*r**2*Q*psi - iRm*r**2*dr(Ar) + iRm*r*Ar = 0")
-        lv1.add_equation("-1j*r**2*dt(B) + 1j*r*Q*q*r**(-q)*A - 2*1j*r*Q*r**(-q)*A + iRm*r**2*Q**2*B - 1j*r**2*Q*u - iRm*r**2*dr(Br) - iRm*r*Br + iRm*B = 0")
+        lv1.add_equation("1j*rvar*Q**2*dt(psi) + -1j*rvar*dt(psirr) + 1j*dt(psir) - 3*1j*Q*rvarsq*rvar**(-q)*u - iR*(Q**4)*rvar*psi + (2/beta)*1j*Q**3*rvar*A + 2*Q**2*iR*rvar*psirr - iR*2*Q**2*psir - (2/beta)*1j*Q*rvar*dr(Ar) + (2/beta)*1j*Q*Ar - iR*rvar*dr(psirrr) + iR*2*psirrr - iR*(3/rvar)*psirr + iR*(3/rvarsq)*psir = 0")
+        lv1.add_equation("-1j*rvarsq*dt(u) - 1j*rvar*Q*q*rvar**(-q)*psi + 1j*4*rvar*Q*rvar**(-q)*psi + iR*rvarsq*Q**2*u - (2/beta)*1j*Q*rvarsq*B - iR*rvarsq*dr(ur) - iR*rvar*ur + iR*rvar*u = 0")
+        lv1.add_equation("-1j*rvarsq*dt(A) + iRm*rvarsq*Q**2*A - 1j*rvarsq*Q*psi - iRm*rvarsq*dr(Ar) + iRm*rvar*Ar = 0")
+        lv1.add_equation("-1j*rvarsq*dt(B) + 1j*rvar*Q*q*rvar**(-q)*A - 2*1j*rvar*Q*rvar**(-q)*A + iRm*rvarsq*Q**2*B - 1j*rvarsq*Q*u - iRm*rvarsq*dr(Br) - iRm*rvar*Br + iRm*B = 0")
 
 
         lv1.add_equation("dr(psi) - psir = 0")
@@ -238,6 +235,8 @@ class OrderE(MRI):
         lv1.parameters['iRm'] = self.iRm
         lv1.parameters['q'] = self.q
         lv1.parameters['beta'] = self.beta
+        lv1.parameters['rvar'] = r
+        lv1.parameters['rvarsq'] = r**2
     
         self.lv1 = self.set_boundary_conditions(lv1)
         
