@@ -83,6 +83,7 @@ class MRI():
         
         problem.expand(domain)
         LEV = LinearEigenvalue(problem, domain)
+        print(LEV.pencils[0].L)
         LEV.solve(LEV.pencils[0])
         
         return LEV
@@ -209,18 +210,19 @@ class OrderE(MRI):
         r = domain.grid(0)
                 
         # equations defined in wide_gap_eqns.ipynb
-        # -1j*((D*dt)*V).subs(dz, 1j*Q) - (L*V).subs(dz, 1j*Q)
-        # Note dt terms multiplied by -1j as necessitated by Dedalus hard-coded temporal eigenvalue definition
+        # 1j*((D*dt)*V).subs(dz, 1j*Q) - (L*V).subs(dz, 1j*Q)
+        # Note dt terms multiplied by 1j as necessitated by Dedalus hard-coded temporal eigenvalue definition
+        
         #lv1.add_equation("1j*(1/r)*Q**2*dt(psi) + -1j*(1/r)*dt(psirr) + 1j*(1/r**2)*dt(psir) - 3*1j*Q*r**(-q)*u - iR*(Q**4/r)*psi + (2/beta)*1j*Q**3*(1/r)*A + 2*Q**2*iR*(1/r)*psirr - iR*2*Q**2*(1/r**2)*psir - (2/beta)*1j*Q*(1/r)*dr(Ar) + (2/beta)*1j*Q*(1/r**2)*Ar - iR*(1/r)*dr(psirrr) + iR*(2/r**2)*psirrr - iR*(3/r**3)*psirr + iR*(3/r**4)*psir = 0")
         #lv1.add_equation("-1j*dt(u) - (1j/r)*Q*q*r**(-q)*psi + 1j*(4/r)*Q*r**(-q)*psi + iR*Q**2*u - (2/beta)*1j*Q*B - iR*dr(ur) - iR*(1/r)*ur + iR*(1/r)*u = 0")
         #lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - 1j*Q*psi - iRm*dr(Ar) + iRm*(1/r)*Ar = 0")
         #lv1.add_equation("-1j*dt(B) + 1j*(1/r)*Q*q*r**(-q)*A - 2*1j*(1/r)*Q*r**(-q)*A + iRm*Q**2*B - 1j*Q*u - iRm*dr(Br) - iRm*(1/r)*Br + iRm*(1/r**2)*B = 0")
 
         # Multiply through by r**2
-        lv1.add_equation("1j*rvar*Q**2*dt(psi) + -1j*rvar*dt(psirr) + 1j*dt(psir) - 3*1j*Q*rvarsq*rvar**(-q)*u - iR*(Q**4)*rvar*psi + (2/beta)*1j*Q**3*rvar*A + 2*Q**2*iR*rvar*psirr - iR*2*Q**2*psir - (2/beta)*1j*Q*rvar*dr(Ar) + (2/beta)*1j*Q*Ar - iR*rvar*dr(psirrr) + iR*2*psirrr - iR*(3/rvar)*psirr + iR*(3/rvarsq)*psir = 0")
-        lv1.add_equation("-1j*rvarsq*dt(u) - 1j*rvar*Q*q*rvar**(-q)*psi + 1j*4*rvar*Q*rvar**(-q)*psi + iR*rvarsq*Q**2*u - (2/beta)*1j*Q*rvarsq*B - iR*rvarsq*dr(ur) - iR*rvar*ur + iR*rvar*u = 0")
-        lv1.add_equation("-1j*rvarsq*dt(A) + iRm*rvarsq*Q**2*A - 1j*rvarsq*Q*psi - iRm*rvarsq*dr(Ar) + iRm*rvar*Ar = 0")
-        lv1.add_equation("-1j*rvarsq*dt(B) + 1j*rvar*Q*q*rvar**(-q)*A - 2*1j*rvar*Q*rvar**(-q)*A + iRm*rvarsq*Q**2*B - 1j*rvarsq*Q*u - iRm*rvarsq*dr(Br) - iRm*rvar*Br + iRm*B = 0")
+        lv1.add_equation("-1j*rvar*Q**2*dt(psi) + 1j*rvar*dt(psirr) - 1j*dt(psir) - 3*1j*Q*rvarsq*rvar**(-q)*u - iR*(Q**4)*rvar*psi + (2/beta)*1j*Q**3*rvar*A + 2*Q**2*iR*rvar*psirr - iR*2*Q**2*psir - (2/beta)*1j*Q*rvar*dr(Ar) + (2/beta)*1j*Q*Ar - iR*rvar*dr(psirrr) + iR*2*psirrr - iR*(3/rvar)*psirr + iR*(3/rvarsq)*psir = 0")
+        lv1.add_equation("1j*rvarsq*dt(u) - 1j*rvar*Q*q*rvar**(-q)*psi + 1j*4*rvar*Q*rvar**(-q)*psi + iR*rvarsq*Q**2*u - (2/beta)*1j*Q*rvarsq*B - iR*rvarsq*dr(ur) - iR*rvar*ur + iR*rvar*u = 0")
+        lv1.add_equation("1j*rvarsq*dt(A) + iRm*rvarsq*Q**2*A - 1j*rvarsq*Q*psi - iRm*rvarsq*dr(Ar) + iRm*rvar*Ar = 0")
+        lv1.add_equation("1j*rvarsq*dt(B) + 1j*rvar*Q*q*rvar**(-q)*A - 2*1j*rvar*Q*rvar**(-q)*A + iRm*rvarsq*Q**2*B - 1j*rvarsq*Q*u - iRm*rvarsq*dr(Br) - iRm*rvar*Br + iRm*B = 0")
 
 
         lv1.add_equation("dr(psi) - psir = 0")

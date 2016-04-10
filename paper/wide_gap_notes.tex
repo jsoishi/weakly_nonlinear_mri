@@ -198,6 +198,59 @@ Full derivation of viscous term:
 
 \section{Nondimensionalization}
 
+\subsection{Controlled gap width nondimensionalization}
+
+The idea is to parameterize the gap width rather than simply nondimensionalizing lengths by a point in the center of the channel $r_0$, as we did below.
+
+There are many ways to do this but one option is to define
+
+\beq
+\widetilde{r} = r_0 + \widetilde{x}
+\eeq 
+
+Where tildes indicate dimensional quantities. Then for $\widetilde{x}$ to stay Cartesian, we need
+
+\beq
+\widetilde{r} - r_0 \ll r_2 - r_1 = d
+\eeq
+
+where $r_2 = r_1 = d$ is the gap width. Also define $\widetilde{x} \ll d$ and $d/r_0 << 1$ for the small gap approximation. Thus when we nondimensionalize,
+
+\beq
+r = \frac{\widetilde{r}}{r_0} = 1 + \frac{\widetilde{x}}{r_0}
+\eeq
+
+Note that we could control the gap width in terms of a small parameter $\epsilon x$ instead of a fraction $\frac{x}{r_0}$, but I believe both should work the same way.
+
+In the example Jeff worked out before, we looked at the base velocity profile in the thin gap limit. The rotation profile is given by $\Omega(r) = \Omega_0 r^{-q}$ in dimensionless quantities, and the background flow $u = r\Omega(r)$, so in our new notation:
+
+\beq
+u = \left(1 + \frac{\widetilde{x}}{r_0}\right) \Omega_0 \left(1 + \frac{\widetilde{x}}{r_0}\right)^{-q} = \Omega_0 \left(1 + \frac{\widetilde{x}}{r_0}\right)^{1-q}  
+\eeq
+
+Taylor expanding the exp(1-q) quantity, we arrive at
+
+\beq
+u = \Omega_0 \left(1 + \frac{\widetilde{x}}{r_0}\right) - \Omega_0 q \frac{\widetilde{x}}{r_0}
+\eeq
+
+Then if we define this with respect to a rest frame $\Omega_0 \left(1 + \frac{\widetilde{x}}{r_0}\right)$ and define a dimensionless $x = \widetilde{x}/r_0$, we get the Umurhan+ base flow $u = - \Omega_0 q x$. 
+
+This makes sense to me but I'm having trouble extending it to the actual equations. This implies, for example, that the term $\frac{1}{\eta} \nabla^2 B$, which in the $\hat{\phi}$ equation is
+
+\beq
+\left[\nabla^2 B\right]_\phi = \nabla^2 B_\phi - \frac{B_\phi}{r^2},
+\eeq
+
+should become 
+
+\beq
+\nabla^2 B_\phi - B_\phi \left(1 - \frac{2 \widetilde{x}}{r_0}\right)
+\eeq
+
+after substitution and Taylor expansion of the $r^{-2}$. But clearly there's no $- B_\phi \left(1 - \frac{2 \widetilde{x}}{r_0}\right)$ in the thin gap equation. What am I missing?? Is this not the right place to be substituting in the new definition of r??
+
+\subsection{Typical nondimensionalization}
 The momentum equation must be nondimensionalized. Here are the definitions of all of the dimensional components: 
 
 \begin{equation}
