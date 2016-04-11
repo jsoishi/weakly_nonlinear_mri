@@ -196,6 +196,30 @@ Full derivation of viscous term:
 \section{Recovery of Narrow Gap Equations}
 \label{sec:narrow_gap_recovery}
 
+In order to recover the narrow gap, we take the transformation from dimensional, cylindrical coordinates $(\widetilde{r},\widetilde{z})$ to dimensioneless quantities $(x,z)$. In order to do so, we use $\widetilde{r} = r_0 (1 + \delta x)$, where $\delta = (r_{out} - r_{in})/r_0 \to 0$. Then, we recall that we must change all derivatives $\partial_{\widetilde{r}} \psi = \partial_x \psi \partial_{\widetilde{r}} x$ and likewise for $\partial_{\widetilde{z}}$. In order that the $x$ and $z$ parts of the equations come in at the same order, we must choose $\widetilde{z} = r_0 \delta z$. Then, $\partial_{\widetilde{r}} x = \delta^{-1}$ and $\partial_{\widetilde{z}} z = \delta^{-1}$. When you finally expand out all terms, you should see that everything that is not $\partial^2_x$ and $\partial^2_z$ will be at higher order in $\delta$, and thus will go to zero. For example, just taking the scalar Laplacian of $B_\phi$, 
+
+\begin{equation}
+  \nabla^2 B_\phi = \frac{1}{r} \frac{\partial}{\partial r}\left(r \frac{\partial \psi}{\partial r} \right) + \frac{\partial^2 \psi}{\partial z^2}
+\end{equation}
+
+gives
+
+\begin{equation}
+  \frac{1}{(1 + \delta x)} \delta^{-2} \partial_x \left[(1 + \delta x) \partial_x B_\psi \right] + \delta^{-2} \partial_z^2 B_\phi,
+\end{equation}
+and using the binomial expansion, 
+
+\begin{equation}
+  (1 - \delta x) \delta^{-2} \left(\partial_x^2 B_\psi + \delta \partial_x B_\psi + \delta x \partial_x^2 B_\psi \right) + \delta^{-2} \partial_z^2 B_\phi.
+\end{equation}
+
+When $\delta \to 0$, this leaves
+
+\begin{equation}
+  \partial_x^2 B_\phi + \partial_z^2 B_\phi,
+\end{equation}
+as expected. Of course, we'd also do $B_\phi \to B_y$ at the same time.
+
 \section{Nondimensionalization}
 
 \subsection{Controlled gap width nondimensionalization}
@@ -686,7 +710,14 @@ For a scalar field $\psi$,
 
 \begin{equation}
   \label{eq:del_scalar}
-  \nabla \psi = \frac{\partial \psi}{\partial r} \rhat + \frac{1}{r} \frac{\partial \psi}{\partial \phi} \phihat + \frac{\partial \psi}{\partial z} \zhat.
+  \nabla \psi = \frac{\partial \psi}{\partial r} \rhat + \frac{1}{r} \frac{\partial \psi}{\partial \phi} \phihat + \frac{\partial \psi}{\partial z} \zhat,
+\end{equation}
+
+and
+
+\begin{equation}
+  \label{eq:del2_scalar}
+  \nabla^2 \psi = \frac{1}{r} \frac{\partial}{\partial r}\left(r \frac{\partial \psi}{\partial r} \right) + \frac{1}{r^2} \frac{\partial^2 \psi}{\partial \phi^2} + \frac{\partial^2 \psi}{\partial z^2},
 \end{equation}
 
 However, for a \emph{vector} field $\mathbf{u}$,
