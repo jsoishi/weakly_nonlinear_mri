@@ -367,7 +367,7 @@ This is all pending a rigorous check of Equations \ref{eq:Psi_perturbed} - \ref{
 
 First, the nonlinear vector, on the lefthand side of the equation, is
 
-\beq
+\beq\label{eq:nonlinearvector}
 \mathbf{N} = \left[\begin{matrix}
 J\left(\Psi, \frac{1}{r^2} \left(\nabla^2 \Psi - \frac{2}{r}\partial_r \Psi \right) \right) - \frac{2}{\beta} J \left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_r A\right)\right) - \frac{2}{r} u_\phi \partial_z u_\phi + \frac{2}{\beta} \frac{2}{r} B_\phi \partial_z B_\phi \\
 \frac{1}{r} J \left(\Psi, u_\phi\right) - \frac{1}{r} \frac{2}{\beta} J \left(A, B_\phi\right) + \frac{1}{r^2} u_\phi \partial_z \Psi - \frac{2}{\beta} \frac{1}{r^2} B_\phi \partial_z A \\
@@ -605,6 +605,23 @@ Note that as we have defined these matrices, the matrices are of course differen
 \eeq
 
 are still the correct equations to orders $\epsilon$, $\epsilon^2$, and $\epsilon^3$, respectively.
+
+
+\section{Expansion of Nonlinear Terms}
+
+Expanding the terms in Equation \ref{eq:nonlinearvector}, we find.
+
+\beq
+\mathbf{N} = \epsilon^2 \mathbf{N}_2 + \epsilon^3 \mathbf{N}_3
+\eeq
+
+\beq
+\begin{split}
+N_2^{\Psi} & = J\left(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1\right) + J\left(\Psi_1, -\frac{2}{r^3}\partial_r\Psi_1\right) \\
+&- \frac{2}{\beta} J \left(A_1, \frac{1}{r^2} \nabla^2 A_1\right) - \frac{2}{\beta} J\left(A_1, -\frac{2}{r^3} \partial_r A_1\right) - \frac{2}{r} u_1 \partial_z u_1 + \frac{2}{\beta} \frac{2}{r} B_1 \partial_z B_1
+\end{split}
+\eeq
+
 
 
 \section{Notes for paper}
