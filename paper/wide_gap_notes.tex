@@ -33,6 +33,8 @@
 \newcommand{\rhat}{\ensuremath{\mathbf{\hat{r}}}}
 \newcommand{\phihat}{\ensuremath{\mathbf{\hat{\phi}}}}
 \newcommand{\zhat}{\ensuremath{\mathbf{\hat{z}}}}
+\newcommand{\xhat}{\ensuremath{\mathbf{\hat{x}}}}
+\newcommand{\yhat}{\ensuremath{\mathbf{\hat{y}}}}
 
 \newcommand\reye{\mathrm{Re}}
 \newcommand\reym{\mathrm{Rm}}
@@ -220,13 +222,30 @@ When $\delta \to 0$, this leaves
 \end{equation}
 as expected. Of course, we'd also do $B_\phi \to B_y$ at the same time.
 
+Another operator we need is the curl $\nabla \times \mathbf{A}$,
+
+\beq
+\nabla \times \mathbf{A} = -\partial_{\widetilde{z}} A_\phi \rhat + \left(\partial_{\widetilde{z}} A_r - \partial_{\widetilde{r}} A_z \right) \phihat + \frac{1}{\widetilde{r}} \partial_{\widetilde{r}} \left( \widetilde{r} A_\phi\right) \zhat
+\eeq
+
+\beq
+= - \frac{1}{\delta} \partial_z A_\phi \rhat + \left(\frac{1}{\delta} \partial_z A_r - \frac{1}{\delta} \partial_x A_z\right) \phihat + \left(1 - \delta x\right) \frac{1}{\delta} \left(\partial_x A_\phi + \delta A_\phi + \delta x \partial_x A_\phi \right) \zhat
+\eeq
+
+Taking $\lim\limits_{\delta \to 0}$ of the above and changing variables $\phi \to y$, etc., we get
+
+\beq
+\nabla \times \mathbf{A} = -\partial_z A_y \xhat + \left(\partial_z A_x - \partial_x A_z\right) \yhat + \partial_x A_y \zhat
+\eeq
+
+
 \section{Nondimensionalization}
 
 \subsection{Controlled gap width nondimensionalization}
 
 The idea is to parameterize the gap width rather than simply nondimensionalizing lengths by a point in the center of the channel $r_0$, as we did below.
 
-There are many ways to do this but one option is to define
+There are many ways to do this but one option is to define 
 
 \beq
 \widetilde{r} = r_0 + \widetilde{x}
