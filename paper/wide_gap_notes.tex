@@ -238,6 +238,23 @@ Taking $\lim\limits_{\delta \to 0}$ of the above and changing variables $\phi \t
 \nabla \times \mathbf{A} = -\partial_z A_y \xhat + \left(\partial_z A_x - \partial_x A_z\right) \yhat + \partial_x A_y \zhat
 \eeq
 
+The $A$ equation reduces as follows.
+
+\beq
+\partial_t A = \frac{1}{r} J (A, \Psi) + \frac{1}{\reym} \left(\nabla^2 A - \frac{2}{r}\partial_r A \right)
+\eeq
+
+\beq
+\partial_t A = (1 - \delta x)\delta^{-2} J(A, \Psi) + \frac{1}{\reym} \left[(1 - \delta x) \delta^{-2} \left(\partial_x^2 A + \delta\partial_x A + \delta x \partial_x^2 A \right) + \delta^{-2} \partial_z^2 A - \frac{2}{\delta}(1 - \delta x) \partial_x A \right]
+\eeq
+
+This reduces to 
+
+\beq
+\partial_t A = J(A, \Psi) + \frac{1}{\reym} \nabla^2 A,
+\eeq
+
+which is the (unperturbed) thin-gap equation, when we drop all terms that are higher order than $\delta^{-2}$. Note that this means we have to drop terms of $\mathcal{O}(\delta^{-1})$, which means that this formalism cannot be applied to the perturbed equations (see Equation \ref{eq:A_perturbed}), because the term $B_0\partial_zA$ would drop out, but shouldn't. I'm also not sure how the $\partial_t$ term formally picks up a $\delta^{-2}$...? 
 
 \section{Nondimensionalization}
 
