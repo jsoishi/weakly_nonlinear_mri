@@ -238,6 +238,24 @@ Taking $\lim\limits_{\delta \to 0}$ of the above and changing variables $\phi \t
 \nabla \times \mathbf{A} = -\partial_z A_y \xhat + \left(\partial_z A_x - \partial_x A_z\right) \yhat + \partial_x A_y \zhat
 \eeq
 
+The $u_\phi$ equation (Equation \ref{eq:uy}) reduces as follows:
+\begin{equation}
+\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} = \frac{J(A, B_\phi)}{r} + \frac{B_\phi \partial_z A}{r^2} + \nu \left( \nabla^2 \uphi - \frac{\uphi}{r}\right)
+\end{equation}
+
+\beq
+\begin{split}
+& \delta^{-2} \partial_t u_\phi + (1 - \delta r)\delta^{-2} J(\Psi, u_\phi) + (1 - 2\delta r)\delta^{-1} u_\phi \partial_z \Psi  = \\
+& (1 - \delta r)\delta^{-2} J(A, B_\phi) + (1 - 2\delta r)\delta^{-1} B_\phi \partial_z A + \\
+& \nu \left[(1 - \delta x) \delta^{-2} \left(\partial_x^2 u_\phi + \delta \partial_x u_\phi + \delta x \partial_x^2 u_\phi \right) + \delta^{-2} \partial_z^2 u_\phi \right] - \nu(1 - \delta r) u_\phi
+\end{split}
+\eeq
+
+\beq
+\partial_t u_\phi + J(\Psi, u_\phi) = J(A, B_\phi) + \nu(\partial_x^2 u_\phi + \partial_z^2 u_\phi)
+\eeq
+
+
 The $A$ equation reduces as follows. We also choose $\widetilde{t} = \delta^2 \Omega_0 t$ so that time comes in at the same order as the other dimensions...
 
 \beq
@@ -273,6 +291,7 @@ The $B_\phi$ equation
 \beq
 \partial_t B_\phi = J(A, u_\phi) + J(B_\phi, \Psi) + \eta(\partial_x^2 B_\phi + \partial_z^2 B_\phi)
 \eeq
+
 
 \section{Nondimensionalization}
 
