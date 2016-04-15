@@ -238,7 +238,7 @@ Taking $\lim\limits_{\delta \to 0}$ of the above and changing variables $\phi \t
 \nabla \times \mathbf{A} = -\partial_z A_y \xhat + \left(\partial_z A_x - \partial_x A_z\right) \yhat + \partial_x A_y \zhat
 \eeq
 
-The $A$ equation reduces as follows. We also choose $\widetilde{t} = \delta \Omega_0 t$ so that time comes in at the same order as the other dimensions...
+The $A$ equation reduces as follows. We also choose $\widetilde{t} = \delta^2 \Omega_0 t$ so that time comes in at the same order as the other dimensions...
 
 \beq
 \partial_t A = \frac{1}{r} J (A, \Psi) + \frac{1}{\reym} \left(\nabla^2 A - \frac{2}{r}\partial_r A \right)
@@ -255,6 +255,24 @@ This reduces to
 \eeq
 
 which is the (unperturbed) thin-gap equation, when we drop all terms that are higher order than $\delta^{-2}$. Note that this means we have to drop terms of $\mathcal{O}(\delta^{-1})$, which means that this formalism cannot be applied to the perturbed equations (see Equation \ref{eq:A_perturbed}), because the term $B_0\partial_zA$ would drop out, but shouldn't. (??)
+
+The $B_\phi$ equation
+\begin{multline}
+\partial_t B_\phi = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)\\
++ \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A + \eta \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right)
+\end{multline}
+
+\beq
+\begin{split}
+\delta^{-2} \partial_t B_\phi  & = (1 - \delta r) \delta^{-2} J(A, u_\phi) + (1 - \delta r) \delta^{-2} J(B_\phi, \Psi) \\
+& + (1 - 2 \delta r) \delta^{-1} B_\phi \partial_z \Psi - (1 - 2 \delta r) \delta^{-1} u_\phi \partial_z A + \\
+& \eta\left[(1 - \delta x) \delta^{-2} \left(\partial_x^2 B_\phi + \delta \partial_x B_\phi + \delta x \partial_x^2 B_\phi \right) + \delta^{-2} \partial_z^2 B_\phi\right] - \eta (1 - 2\delta r) B_\phi
+\end{split}
+\eeq
+
+\beq
+\partial_t B_\phi = J(A, u_\phi) + J(B_\phi, \Psi) + \eta(\partial_x^2 B_\phi + \partial_z^2 B_\phi)
+\eeq
 
 \section{Nondimensionalization}
 
