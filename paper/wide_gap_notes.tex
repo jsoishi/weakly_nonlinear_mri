@@ -152,6 +152,7 @@ RHS viscous term:
 Full $\Psi$ equation according to Susan:
 
 \begin{multline}
+\label{eq:Psi_unperturbed}
 \frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi \\
 = J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\phi \partial_z B_\phi \\
 + \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right]
@@ -290,6 +291,25 @@ The $B_\phi$ equation
 
 \beq
 \partial_t B_\phi = J(A, u_\phi) + J(B_\phi, \Psi) + \eta(\partial_x^2 B_\phi + \partial_z^2 B_\phi)
+\eeq
+
+The $\Psi$ equation (Equation \ref{eq:Psi_unperturbed}) reduces as follows
+
+\beq
+\begin{split}
+& (1 - \delta x) \delta^{-2} \left[(1 - \delta x) \delta^{-2} \left(\partial_x^2 \Psi + \delta \partial_x \Psi + \delta x \partial_x^2 \Psi \right) + \delta^{-2} \partial_z^2 \Psi - 2(1 - \delta x)\delta^{-1}\partial_x \Psi \right] \\
+& + \delta^{-2} J(\Psi, (1-2\delta x)\left((1 - \delta x) \delta^{-2} \left(\partial_x^2 \Psi + \delta \partial_x \Psi + \delta x \partial_x^2 \Psi \right) + \delta^{-2} \partial_z^2 \Psi - 2(1 - \delta x)\delta^{-1}\partial_x \Psi \right)) \\
+& - (1 - \delta x)2\delta^{-1} u_\phi \partial_z u_\phi \\
+& = \delta^{-2} J(A, (1 - 2 \delta)\left((1 - \delta x) \delta^{-2} \left(\partial_x^2 \Psi + \delta \partial_x \Psi + \delta x \partial_x^2 \Psi \right) + \delta^{-2} \partial_z^2 \Psi - 2(1 - \delta x) \delta^{-1} A \right)) \\
+& - 2(1 - \delta x)\delta^{-1} B_\phi \partial_z B_\phi + \frac{1}{\reye} \left[\delta^{-2}(\partial_x^2 + \delta \partial_x + \delta x \partial_x^2 + \partial_z^2)((1 - \delta x)(\partial_x^2\Psi + \delta \partial_x\Psi + \delta x \partial_x^2\Psi + \partial_z^2\Psi))\right] \\
+& + \frac{1}{\reye}\left[(1 - 3\delta x)\delta^{-2} \partial_x^2 \Psi - (1 - 4 \delta x)\delta^{-1}\partial_x \Psi \right]
+\end{split}
+\eeq
+
+The viscous term is
+
+\beq
+\frac{1}{\reye} (1 - 
 \eeq
 
 
