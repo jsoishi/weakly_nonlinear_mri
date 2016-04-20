@@ -3,21 +3,22 @@ import multiprocessing as mp
 import itertools
 import numpy as np
 import matplotlib.pyplot as plt
-config['logging']['stdout_level'] = 'critical'
+#config['logging']['stdout_level'] = 'critical'
 import dedalus.public as de
 import pylab
 import pickle
 import time
 
-gridnum = 128
-print("running at gridnum", gridnum)
-x_basis = Chebyshev(gridnum)
-domain = Domain([x_basis], grid_dtype=np.complex128)
+nr1 = 256#512
+r1 = de.Chebyshev('r', nr1, interval=(80, 120))
+d1 = de.Domain([r1])
 
-# Second basis for checking eigenvalues
-x_basis192 = Chebyshev(192)
-domain192 = Domain([x_basis192], grid_dtype = np.complex128)
+nr2 = 512#768
+r2 = de.Chebyshev('r', nr2, interval=(80, 120))
+d2 = de.Domain([r2])
 
+
+print("grid number {}, spurious eigenvalue check at {}".format(nr1, nr2))
 
 def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):       
 
