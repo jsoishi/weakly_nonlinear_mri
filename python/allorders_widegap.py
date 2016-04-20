@@ -1,12 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from dedalus2.public import *
-from dedalus2.pde.solvers import LinearEigenvalue, LinearBVP
+import dedalus.public as de
 from scipy.linalg import eig, norm
 import pylab
 import copy
 import pickle
-import plot_tools
+#import plot_tools
 import streamplot_uneven as su
 import random
 
@@ -15,16 +14,15 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 128
-print("running at gridnum", gridnum)
-x_basis = Chebyshev(gridnum)
-domain = Domain([x_basis], grid_dtype=np.complex128)
+nr1 = 256#512
+r1 = de.Chebyshev('r', nr1, interval=(80, 120))
+d1 = de.Domain([r1])
 
-# Second basis for checking eigenvalues
-#x_basis192 = Chebyshev(64)
-#x_basis192 = Chebyshev(64)
-x_basis192 = Chebyshev(192)
-domain192 = Domain([x_basis192], grid_dtype = np.complex128)
+nr2 = 512#768
+r2 = de.Chebyshev('r', nr2, interval=(80, 120))
+d2 = de.Domain([r2])
+
+print("grid number {}, spurious eigenvalue check at {}".format(nr1, nr2))
 
 class MRI():
 
@@ -50,8 +48,9 @@ class MRI():
         self.R = self.Rm/self.Pm
         self.iR = 1.0/self.R
         
-        self.gridnum = gridnum
-        self.x = domain.grid(0)
+        self.gridnum1 = nr1
+        self.gridnum2 = nr2
+        self.r = r1.grid()
     
         print("MRI parameters: ", self.Q, self.Rm, self.Pm, self.q, self.beta, 'norm = ', norm, "Reynolds number", self.R)
         
@@ -62,16 +61,16 @@ class MRI():
         Adds MRI problem boundary conditions to a ParsedProblem object.
         """
         
-        problem.add_left_bc("u = 0")
-        problem.add_right_bc("u = 0")
-        problem.add_left_bc("psi = 0")
-        problem.add_right_bc("psi = 0")
-        problem.add_left_bc("A = 0")
-        problem.add_right_bc("A = 0")
-        problem.add_left_bc("psir = 0")
-        problem.add_right_bc("psir = 0")
-        problem.add_left_bc("Br = 0")
-        problem.add_right_bc("Br = 0")
+        problem.add_bc('left(u) = 0')
+        problem.add_bc('right(u) = 0')
+        problem.add_bc('left(psi) = 0')
+        problem.add_bc('right(psi) = 0')
+        problem.add_bc('left(A) = 0')
+        problem.add_bc('right(A) = 0')
+        problem.add_bc('left(psi + r*psir) = 0')
+        problem.add_bc('right(psi + r*psir) = 0')
+        problem.add_bc('left(B + r*Br) = 0')
+        problem.add_bc('right(B + r*Br) = 0')
         
         return problem
     
@@ -114,20 +113,15 @@ class MRI():
         return BVP
         
         
-    def discard_spurious_eigenvalues(self, problem):
+    def discard_spurious_eigenvalues(lambda1, lambda2):
     
         """
+        lambda1 :: eigenvalues from low res run
+        lambda2 :: eigenvalues from high res run
+        
         Solves the linear eigenvalue problem for two different resolutions.
         Returns trustworthy eigenvalues using nearest delta, from Boyd chapter 7.
         """
-
-        # Solve the linear eigenvalue problem at two different resolutions.
-        LEV1 = self.solve_LEV(problem)
-        LEV2 = self.solve_LEV_secondgrid(problem)
-    
-        # Eigenvalues returned by dedalus must be multiplied by -1
-        lambda1 = -LEV1.eigenvalues
-        lambda2 = -LEV2.eigenvalues
 
         # Reverse engineer correct indices to make unsorted list from sorted
         reverse_lambda1_indx = np.arange(len(lambda1)) 
@@ -136,8 +130,6 @@ class MRI():
         lambda1_and_indx = np.asarray(list(zip(lambda1, reverse_lambda1_indx)))
         lambda2_and_indx = np.asarray(list(zip(lambda2, reverse_lambda2_indx)))
         
-        #print(lambda1_and_indx, lambda1_and_indx.shape, lambda1, len(lambda1))
-
         # remove nans
         lambda1_and_indx = lambda1_and_indx[np.isfinite(lambda1)]
         lambda2_and_indx = lambda2_and_indx[np.isfinite(lambda2)]
@@ -168,7 +160,7 @@ class MRI():
         lambda1 = lambda1_and_indx[:, 0]
         indx = lambda1_and_indx[:, 1]
         
-        return lambda1, indx, LEV1
+        return lambda1, indx
 
     def get_largest_real_eigenvalue_index(self, LEV, goodevals = None, goodevals_indx = None):
         
@@ -198,65 +190,127 @@ class OrderE(MRI):
 
     def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
-        print("initializing Order epsilon")
+        print("initializing wide gap Order epsilon")
         
         MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-
-        # Add in r terms as nonconstant coefficients
-        lv1 = ParsedProblem(['r'], 
-                field_names=['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],
-                param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rvar', 'rvarsq'])
-        
-        r = domain.grid(0)
-                
-        # equations defined in wide_gap_eqns.ipynb
-        # 1j*((D*dt)*V).subs(dz, 1j*Q) - (L*V).subs(dz, 1j*Q)
-        # Note dt terms multiplied by 1j as necessitated by Dedalus hard-coded temporal eigenvalue definition
-        
-        #lv1.add_equation("1j*(1/r)*Q**2*dt(psi) + -1j*(1/r)*dt(psirr) + 1j*(1/r**2)*dt(psir) - 3*1j*Q*r**(-q)*u - iR*(Q**4/r)*psi + (2/beta)*1j*Q**3*(1/r)*A + 2*Q**2*iR*(1/r)*psirr - iR*2*Q**2*(1/r**2)*psir - (2/beta)*1j*Q*(1/r)*dr(Ar) + (2/beta)*1j*Q*(1/r**2)*Ar - iR*(1/r)*dr(psirrr) + iR*(2/r**2)*psirrr - iR*(3/r**3)*psirr + iR*(3/r**4)*psir = 0")
-        #lv1.add_equation("-1j*dt(u) - (1j/r)*Q*q*r**(-q)*psi + 1j*(4/r)*Q*r**(-q)*psi + iR*Q**2*u - (2/beta)*1j*Q*B - iR*dr(ur) - iR*(1/r)*ur + iR*(1/r)*u = 0")
-        #lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - 1j*Q*psi - iRm*dr(Ar) + iRm*(1/r)*Ar = 0")
-        #lv1.add_equation("-1j*dt(B) + 1j*(1/r)*Q*q*r**(-q)*A - 2*1j*(1/r)*Q*r**(-q)*A + iRm*Q**2*B - 1j*Q*u - iRm*dr(Br) - iRm*(1/r)*Br + iRm*(1/r**2)*B = 0")
-
-        # Multiply through by r**2
-        lv1.add_equation("-1j*rvar*Q**2*dt(psi) + 1j*rvar*dt(psirr) - 1j*dt(psir) - 3*1j*Q*rvarsq*rvar**(-q)*u - iR*(Q**4)*rvar*psi + (2/beta)*1j*Q**3*rvar*A + 2*Q**2*iR*rvar*psirr - iR*2*Q**2*psir - (2/beta)*1j*Q*rvar*dr(Ar) + (2/beta)*1j*Q*Ar - iR*rvar*dr(psirrr) + iR*2*psirrr - iR*(3/rvar)*psirr + iR*(3/rvarsq)*psir = 0")
-        lv1.add_equation("1j*rvarsq*dt(u) - 1j*rvar*Q*q*rvar**(-q)*psi + 1j*4*rvar*Q*rvar**(-q)*psi + iR*rvarsq*Q**2*u - (2/beta)*1j*Q*rvarsq*B - iR*rvarsq*dr(ur) - iR*rvar*ur + iR*rvar*u = 0")
-        lv1.add_equation("1j*rvarsq*dt(A) + iRm*rvarsq*Q**2*A - 1j*rvarsq*Q*psi - iRm*rvarsq*dr(Ar) + iRm*rvar*Ar = 0")
-        lv1.add_equation("1j*rvarsq*dt(B) + 1j*rvar*Q*q*rvar**(-q)*A - 2*1j*rvar*Q*rvar**(-q)*A + iRm*rvarsq*Q**2*B - 1j*rvarsq*Q*u - iRm*rvarsq*dr(Br) - iRm*rvar*Br + iRm*B = 0")
-
-
-        lv1.add_equation("dr(psi) - psir = 0")
-        lv1.add_equation("dr(psir) - psirr = 0")
-        lv1.add_equation("dr(psirr) - psirrr = 0")
-        lv1.add_equation("dr(u) - ur = 0")
-        lv1.add_equation("dr(A) - Ar = 0")
-        lv1.add_equation("dr(B) - Br = 0")
-
-        lv1.parameters['Q'] = self.Q
-        lv1.parameters['iR'] = self.iR
-        lv1.parameters['iRm'] = self.iRm
-        lv1.parameters['q'] = self.q
-        lv1.parameters['beta'] = self.beta
-        lv1.parameters['rvar'] = r
-        lv1.parameters['rvarsq'] = r**2
     
-        self.lv1 = self.set_boundary_conditions(lv1)
+        # widegap order epsilon
+        widegap1 = de.EVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
+        widegap2 = de.EVP(d2,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
         
+        # Add equations
+        for widegap in [widegap1, widegap2]:
+            widegap.parameters['Q'] = self.Q
+            widegap.parameters['iR'] = self.iR
+            widegap.parameters['iRm'] = self.iRm
+            widegap.parameters['q'] = self.q
+            widegap.parameters['beta'] = self.beta
+        
+            widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - 3*1j*Q*r**(4 - q)*u - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + iR*2*Q**2*r**3*psirr - iR*2*Q**2*r**2*psir - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - iR*3*r*psirr + iR*3*psir = 0")
+            widegap.add_equation("sigma*(r**4*u) - 1j*Q*q*r**(3 - q)*psi + 4*1j*Q*r**(3 - q)*psi + iR*r**4*Q**2*u - (2/beta)*1j*Q*r**4*B - iR*r**4*dr(ur) - iR*r**3*ur + iR*r**3*u = 0")
+            widegap.add_equation("sigma*(r**4*A) + iRm*r**4*Q**2*A - 1j*Q*r**4*psi - iRm*r**4*dr(Ar) + iRm*r**3*Ar = 0")
+            widegap.add_equation("sigma*(r**4*B) + 1j*Q*q*r**(3 - q)*A - 2*1j*Q*r**(3 - q)*A + iRm*r**4*Q**2*B - 1j*Q*r**4*u - iRm*r**4*dr(Br) - iRm*r**3*Br + iRm*r**2*B = 0")
 
-    
+            widegap.add_equation("dr(psi) - psir = 0")
+            widegap.add_equation("dr(psir) - psirr = 0")
+            widegap.add_equation("dr(psirr) - psirrr = 0")
+            widegap.add_equation("dr(u) - ur = 0")
+            widegap.add_equation("dr(A) - Ar = 0")
+            widegap.add_equation("dr(B) - Br = 0")
+        
+            widegap = self.set_boundary_conditions(widegap)
+        
+        solver1 = widegap1.build_solver()
+        solver2 = widegap2.build_solver()
+        
+        solver1.solve(solver1.pencils[0])
+        solver2.solve(solver2.pencils[0])
+        
         # Discard spurious eigenvalues
-        self.goodevals, self.goodevals_indx, self.LEV = self.discard_spurious_eigenvalues(lv1)
-       
+        ev1 = solver1.eigenvalues
+        ev2 = solver2.eigenvalues
+        goodeigs, goodeigs_indices = discard_spurious_eigenvalues(ev1, ev2)
+
         # Find the largest eigenvalue (fastest growing mode).
         largest_eval_indx = self.get_largest_real_eigenvalue_index(self.LEV, goodevals = self.goodevals, goodevals_indx = self.goodevals_indx)
         
-        self.LEV.set_state(largest_eval_indx)
+        goodeigs_index = np.where(goodeigs.real == np.nanmax(goodeigs.real))[0][0]
+        marginal_mode_index = int(goodeigs_indices[goodeigs_index])
+        
+        solver1.set_state(marginal_mode_index)
+        
+        # r grid for plotting
+        r = r1.grid()
         
         # All eigenfunctions must be scaled s.t. their max is 1
-        self.psi = self.LEV.state['psi']
-        self.u = self.LEV.state['u']
-        self.A = self.LEV.state['A']
-        self.B = self.LEV.state['B']
+        self.psi = self.solver1.state['psi']
+        self.u = self.solver1.state['u']
+        self.A = self.solver1.state['A']
+        self.B = self.solver1.state['B']
     
+class OrderE2(MRI):
 
+    """
+    Solves the order(epsilon) equation L V_1 = 0
+    This is simply the linearized wide-gap MRI.
+    Returns V_1
+    """
+
+    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+        
+        print("initializing wide gap Order epsilon")
+        
+        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+    
+        # widegap order epsilon
+        widegap1 = de.EVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
+        widegap2 = de.EVP(d2,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
+        
+        # Add equations
+        for widegap in [widegap1, widegap2]:
+            widegap.parameters['Q'] = self.Q
+            widegap.parameters['iR'] = self.iR
+            widegap.parameters['iRm'] = self.iRm
+            widegap.parameters['q'] = self.q
+            widegap.parameters['beta'] = self.beta
+        
+            widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - 3*1j*Q*r**(4 - q)*u - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + iR*2*Q**2*r**3*psirr - iR*2*Q**2*r**2*psir - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - iR*3*r*psirr + iR*3*psir = 0")
+            widegap.add_equation("sigma*(r**4*u) - 1j*Q*q*r**(3 - q)*psi + 4*1j*Q*r**(3 - q)*psi + iR*r**4*Q**2*u - (2/beta)*1j*Q*r**4*B - iR*r**4*dr(ur) - iR*r**3*ur + iR*r**3*u = 0")
+            widegap.add_equation("sigma*(r**4*A) + iRm*r**4*Q**2*A - 1j*Q*r**4*psi - iRm*r**4*dr(Ar) + iRm*r**3*Ar = 0")
+            widegap.add_equation("sigma*(r**4*B) + 1j*Q*q*r**(3 - q)*A - 2*1j*Q*r**(3 - q)*A + iRm*r**4*Q**2*B - 1j*Q*r**4*u - iRm*r**4*dr(Br) - iRm*r**3*Br + iRm*r**2*B = 0")
+
+            widegap.add_equation("dr(psi) - psir = 0")
+            widegap.add_equation("dr(psir) - psirr = 0")
+            widegap.add_equation("dr(psirr) - psirrr = 0")
+            widegap.add_equation("dr(u) - ur = 0")
+            widegap.add_equation("dr(A) - Ar = 0")
+            widegap.add_equation("dr(B) - Br = 0")
+        
+            widegap = self.set_boundary_conditions(widegap)
+        
+        solver1 = widegap1.build_solver()
+        solver2 = widegap2.build_solver()
+        
+        solver1.solve(solver1.pencils[0])
+        solver2.solve(solver2.pencils[0])
+        
+        # Discard spurious eigenvalues
+        ev1 = solver1.eigenvalues
+        ev2 = solver2.eigenvalues
+        goodeigs, goodeigs_indices = self.discard_spurious_eigenvalues(ev1, ev2)
+
+        goodeigs_index = np.where(goodeigs.real == np.nanmax(goodeigs.real))[0][0]
+        marginal_mode_index = int(goodeigs_indices[goodeigs_index])
+        
+        solver1.set_state(marginal_mode_index)
+        
+        # r grid for plotting
+        r = r1.grid()
+        
+        # All eigenfunctions must be scaled s.t. their max is 1
+        self.psi = self.solver1.state['psi']
+        self.u = self.solver1.state['u']
+        self.A = self.solver1.state['A']
+        self.B = self.solver1.state['B']
+    
         
