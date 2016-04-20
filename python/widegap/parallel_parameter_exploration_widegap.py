@@ -181,6 +181,13 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
             widegap.add_equation("sigma*(r**4*A) + iRm*r**4*Q**2*A - 1j*Q*r**4*psi - iRm*r**4*dr(Ar) + iRm*r**3*Ar = 0")
             widegap.add_equation("sigma*(r**4*B) + 1j*Q*q*r**(3 - q)*A - 2*1j*Q*r**(3 - q)*A + iRm*r**4*Q**2*B - 1j*Q*r**4*u - iRm*r**4*dr(Br) - iRm*r**3*Br + iRm*r**2*B = 0")
 
+            widegap.add_equation("dr(psi) - psir = 0")
+            widegap.add_equation("dr(psir) - psirr = 0")
+            widegap.add_equation("dr(psirr) - psirrr = 0")
+            widegap.add_equation("dr(u) - ur = 0")
+            widegap.add_equation("dr(A) - Ar = 0")
+            widegap.add_equation("dr(B) - Br = 0")
+
             widegap.add_bc('left(u) = 0')
             widegap.add_bc('right(u) = 0')
             widegap.add_bc('left(psi) = 0')
