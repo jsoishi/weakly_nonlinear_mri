@@ -170,11 +170,11 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
         
         # Add equations
         for widegap in [widegap1, widegap2]:
-            widegap.parameters['Q'] = self.Q
-            widegap.parameters['iR'] = self.iR
-            widegap.parameters['iRm'] = self.iRm
-            widegap.parameters['q'] = self.q
-            widegap.parameters['beta'] = self.beta
+            widegap.parameters['Q'] = Q
+            widegap.parameters['iR'] = iR
+            widegap.parameters['iRm'] = iRm
+            widegap.parameters['q'] = q
+            widegap.parameters['beta'] = beta
         
             widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - 3*1j*Q*r**(4 - q)*u - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + iR*2*Q**2*r**3*psirr - iR*2*Q**2*r**2*psir - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - iR*3*r*psirr + iR*3*psir = 0")
             widegap.add_equation("sigma*(r**4*u) - 1j*Q*q*r**(3 - q)*psi + 4*1j*Q*r**(3 - q)*psi + iR*r**4*Q**2*u - (2/beta)*1j*Q*r**4*B - iR*r**4*dr(ur) - iR*r**3*ur + iR*r**3*u = 0")
