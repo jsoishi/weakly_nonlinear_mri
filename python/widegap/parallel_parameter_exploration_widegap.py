@@ -3,10 +3,8 @@ import multiprocessing as mp
 import itertools
 import numpy as np
 import matplotlib.pyplot as plt
-from dedalus2.tools.config import config
 config['logging']['stdout_level'] = 'critical'
-from dedalus2.public import *
-from dedalus2.pde.solvers import LinearEigenvalue
+import dedalus.public as de
 import pylab
 import pickle
 import time
