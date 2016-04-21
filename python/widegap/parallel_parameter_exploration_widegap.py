@@ -9,11 +9,11 @@ import pylab
 import pickle
 import time
 
-nr1 = 64#256#512
+nr1 = 128 #64#256#512
 r1 = de.Chebyshev('r', nr1, interval=(80, 120))
 d1 = de.Domain([r1])
 
-nr2 = 128#512#768
+nr2 = 256 #128#512#768
 r2 = de.Chebyshev('r', nr2, interval=(80, 120))
 d2 = de.Domain([r2])
 
@@ -210,6 +210,7 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
         # Discard spurious eigenvalues
         ev1 = solver1.eigenvalues
         ev2 = solver2.eigenvalues
+        print(len(ev1), len(ev2))
         goodeigs, goodeigs_indices = discard_spurious_eigenvalues(ev1, ev2)
 
         #goodeigs_index = np.where(goodeigs.real == np.nanmax(goodeigs.real))[0][0]
