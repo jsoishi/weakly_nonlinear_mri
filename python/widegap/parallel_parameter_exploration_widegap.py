@@ -221,7 +221,7 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
         if all_mode:
             return goodeigs
         else:
-            return ((Rm, Q), critical_eval[0], (goodeigs))
+            return ((Rm, Q), critical_eval, (goodeigs))
         
     except np.linalg.LinAlgError:
         return ((Rm, Q), np.nan + np.nan*1j, ([np.nan + np.nan*1j]))
