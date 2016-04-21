@@ -214,7 +214,7 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
 
         #goodeigs_index = np.where(goodeigs.real == np.nanmax(goodeigs.real))[0][0]
         goodeigs_index = np.nanargmax(goodeigs.real)
-        print(goodeigs_index, int(goodeigs_indices[goodeigs_index])
+        print(goodeigs_index, int(goodeigs_indices[goodeigs_index]))
         marginal_mode_index = int(goodeigs_indices[goodeigs_index])
         
         # Largest real-part eigenvalue
