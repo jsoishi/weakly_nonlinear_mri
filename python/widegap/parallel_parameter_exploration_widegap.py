@@ -28,6 +28,8 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
     QRm = np.array(list(itertools.product(Qsearch, Rmsearch)))
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
+    
+    outfn = "multirun/widegap_gridnum_"+str(nr1)+"_grid2_"+str(nr2)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+"_allgoodeigs.p"
 
     start_time = time.time()
 
@@ -59,7 +61,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
     
     print(result_dict)
 
-    pickle.dump(result_dict, open("multirun/widegap_gridnum_"+str(gridnum)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+"_allgoodeigs.p", "wb"))
+    pickle.dump(result_dict, open(outfn, "wb"))
 
     print("process took %10.5e seconds" % (time.time() - start_time))
 
@@ -243,13 +245,15 @@ if __name__ == '__main__':
     beta = 25.0
     Co = 0.08
 
-    dQ = 0.001
-    dRm = 0.001
-    #dQ = 0.01
-    #dRm = 0.01
+    #dQ = 0.001
+    #dRm = 0.001
+    dQ = 0.1
+    dRm = 0.1
     
-    Qsearch = np.arange(0.74, 0.76, dQ)
+    Qsearch = np.arange(0.2, 1.4, dQ)
+    #Qsearch = np.arange(0.74, 0.76, dQ)
     #Rmsearch = np.arange(4.87, 4.91, dRm) # Great for <1E-2
-    Rmsearch = np.arange(4.91, 4.95, dRm)
+    #Rmsearch = np.arange(4.91, 4.95, dRm)
+    Rmsearch = np.arange(4.0, 6.0, dRm)
     Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
     

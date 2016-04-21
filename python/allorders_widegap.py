@@ -113,7 +113,7 @@ class MRI():
         return BVP
         
         
-    def discard_spurious_eigenvalues(lambda1, lambda2):
+    def discard_spurious_eigenvalues(self, lambda1, lambda2):
     
         """
         lambda1 :: eigenvalues from low res run
@@ -229,11 +229,8 @@ class OrderE(MRI):
         # Discard spurious eigenvalues
         ev1 = solver1.eigenvalues
         ev2 = solver2.eigenvalues
-        goodeigs, goodeigs_indices = discard_spurious_eigenvalues(ev1, ev2)
+        goodeigs, goodeigs_indices = self.discard_spurious_eigenvalues(ev1, ev2)
 
-        # Find the largest eigenvalue (fastest growing mode).
-        largest_eval_indx = self.get_largest_real_eigenvalue_index(self.LEV, goodevals = self.goodevals, goodevals_indx = self.goodevals_indx)
-        
         goodeigs_index = np.where(goodeigs.real == np.nanmax(goodeigs.real))[0][0]
         marginal_mode_index = int(goodeigs_indices[goodeigs_index])
         
@@ -241,6 +238,8 @@ class OrderE(MRI):
         
         # r grid for plotting
         r = r1.grid()
+        
+        self.solver1 = solver1
         
         # All eigenfunctions must be scaled s.t. their max is 1
         self.psi = self.solver1.state['psi']
