@@ -9,11 +9,11 @@ import pylab
 import pickle
 import time
 
-nr1 = 256#512
+nr1 = 64#256#512
 r1 = de.Chebyshev('r', nr1, interval=(80, 120))
 d1 = de.Domain([r1])
 
-nr2 = 512#768
+nr2 = 128#512#768
 r2 = de.Chebyshev('r', nr2, interval=(80, 120))
 d2 = de.Domain([r2])
 
@@ -42,7 +42,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
         results = []
         for result in result_pool:
             try:
-                results.append(result.get(100))
+                results.append(result.get(500))
                 print("Results appended.") 
             except mp.context.TimeoutError:
                 print("TimeoutError encountered. Continuing..") 

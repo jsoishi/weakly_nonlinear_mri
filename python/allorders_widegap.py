@@ -229,15 +229,12 @@ class OrderE(MRI):
         # Discard spurious eigenvalues
         ev1 = solver1.eigenvalues
         ev2 = solver2.eigenvalues
-        goodeigs, goodeigs_indices = self.discard_spurious_eigenvalues(ev1, ev2)
+        self.goodeigs, self.goodeigs_indices = self.discard_spurious_eigenvalues(ev1, ev2)
 
-        goodeigs_index = np.where(goodeigs.real == np.nanmax(goodeigs.real))[0][0]
-        marginal_mode_index = int(goodeigs_indices[goodeigs_index])
+        goodeigs_index = np.where(self.goodeigs.real == np.nanmax(self.goodeigs.real))[0][0]
+        self.marginal_mode_index = int(self.goodeigs_indices[goodeigs_index])
         
-        solver1.set_state(marginal_mode_index)
-        
-        # r grid for plotting
-        r = r1.grid()
+        solver1.set_state(self.marginal_mode_index)
         
         self.solver1 = solver1
         
