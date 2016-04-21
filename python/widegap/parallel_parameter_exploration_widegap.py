@@ -29,7 +29,8 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
     Qs = QRm[:, 0]
     Rms = QRm[:, 1]
     
-    outfn = "multirun/widegap_gridnum_"+str(nr1)+"_grid2_"+str(nr2)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+"_allgoodeigs.p"
+    root = "/home/sec2170/weakly_nonlinear_mri/weakly_nonlinear_mri/python/"
+    outfn = root + "multirun/widegap_gridnum_"+str(nr1)+"_grid2_"+str(nr2)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+"_allgoodeigs.p"
 
     start_time = time.time()
 
