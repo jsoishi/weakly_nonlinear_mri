@@ -214,13 +214,16 @@ def run_mri_solve(Q, Pm, Rm, q, beta, run_id, all_mode=False):
         print(len(ev1), len(ev2))
         goodeigs, goodeigs_indices = discard_spurious_eigenvalues(ev1, ev2)
 
-        #goodeigs_index = np.where(goodeigs.real == np.nanmax(goodeigs.real))[0][0]
-        goodeigs_index = np.nanargmax(goodeigs.real)
-        print(goodeigs_index, int(goodeigs_indices[goodeigs_index]))
-        marginal_mode_index = int(goodeigs_indices[goodeigs_index])
+        try:
+            goodeigs_index = np.nanargmax(goodeigs.real)
+            print(goodeigs_index, int(goodeigs_indices[goodeigs_index]))
+            marginal_mode_index = int(goodeigs_indices[goodeigs_index])
         
-        # Largest real-part eigenvalue
-        critical_eval = goodeigs[goodeigs_index]
+            # Largest real-part eigenvalue
+            critical_eval = goodeigs[goodeigs_index]
+        except ValueError:
+            critical_eval = np.nan + np.nan*1j
+            goodeigs = [np.nan + np.nan*1j]
 
         if all_mode:
             return goodeigs
