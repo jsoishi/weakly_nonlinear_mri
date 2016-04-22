@@ -47,6 +47,35 @@
 
 \title{Notes on Wide Gap}
 
+\section{Base Flow}
+In a viscous, Taylor-Couette device, there is only one base state that
+satisfies no-slip boundary conditions and the Navier-Stokes
+equations. This is called Couette flow, and can be written as
+\begin{equation}
+  \label{eq:couette_flow}
+  \Omega(r) = a + \frac{b}{r^2},
+\end{equation}
+where $a = (\Omega_2 r^2_2 - \Omega_1 r^2_1)/(r^2_2 - r^2_1)$ and
+$b = r^2_1 r^2_2 (\Omega_1 - \Omega_2)/(r^2_2 - r^2_1)$. Here,
+$\Omega_1$ is the rotation rate at the inner cylinder radius $r_1$,
+and likewise for the outer cylinder $r_2$. 
+
+Keplerian flow is $\Omega \propto r^{-3/2}$; these appear to be
+incompatible. However, in Couette flow, we can approximate Keplerian
+flow by creating what is called ``quasi-Keplerian'' flow. 
+
+Defining $q \equiv -d \ln \Omega/d \ln r$, we can see that for Couette flow,
+\begin{equation}
+  \label{eq:couette_q}
+  q \equiv -\frac{d \ln \Omega}{d \ln r} = \frac{2 b}{a r^2 + b}.
+\end{equation}
+Thus, assuming $r_1$ and $r_2$ are fixed by the experiment, through
+judicious choices of $\Omega_1$ and $\Omega_2$, we can make
+$q(r_0) = 3/2$, where $r_0$ is some reference radius. Goodman \& Ji do
+exactly this with $\bar{\zeta}$.
+
+So, we have to choose $\Omega(r) = a + b/r^2$; everywhere it appears in our equations.
+
 \section{Basic Equations}
 \label{sec:equations}
 The so-called Stokes stream function, used in axisymmetric situations, is given by 
