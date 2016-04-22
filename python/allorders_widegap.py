@@ -188,7 +188,7 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, inviscid = False):
         
         print("initializing wide gap Order epsilon")
         
@@ -201,10 +201,14 @@ class OrderE(MRI):
         # Add equations
         for widegap in [widegap1, widegap2]:
             widegap.parameters['Q'] = self.Q
-            widegap.parameters['iR'] = self.iR
             widegap.parameters['iRm'] = self.iRm
             widegap.parameters['q'] = self.q
             widegap.parameters['beta'] = self.beta
+            
+            if inviscid is True:
+                widegap.parameters['iR'] = 0
+            else:
+                widegap.parameters['iR'] = self.iR
         
             widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - 3*1j*Q*r**(4 - q)*u - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + iR*2*Q**2*r**3*psirr - iR*2*Q**2*r**2*psir - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - iR*3*r*psirr + iR*3*psir = 0")
             widegap.add_equation("sigma*(r**4*u) - 1j*Q*q*r**(3 - q)*psi + 4*1j*Q*r**(3 - q)*psi + iR*r**4*Q**2*u - (2/beta)*1j*Q*r**4*B - iR*r**4*dr(ur) - iR*r**3*ur + iR*r**3*u = 0")
@@ -262,51 +266,6 @@ class OrderE2(MRI):
         widegap1 = de.EVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
         widegap2 = de.EVP(d2,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
         
-        # Add equations
-        for widegap in [widegap1, widegap2]:
-            widegap.parameters['Q'] = self.Q
-            widegap.parameters['iR'] = self.iR
-            widegap.parameters['iRm'] = self.iRm
-            widegap.parameters['q'] = self.q
-            widegap.parameters['beta'] = self.beta
-        
-            widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - 3*1j*Q*r**(4 - q)*u - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + iR*2*Q**2*r**3*psirr - iR*2*Q**2*r**2*psir - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - iR*3*r*psirr + iR*3*psir = 0")
-            widegap.add_equation("sigma*(r**4*u) - 1j*Q*q*r**(3 - q)*psi + 4*1j*Q*r**(3 - q)*psi + iR*r**4*Q**2*u - (2/beta)*1j*Q*r**4*B - iR*r**4*dr(ur) - iR*r**3*ur + iR*r**3*u = 0")
-            widegap.add_equation("sigma*(r**4*A) + iRm*r**4*Q**2*A - 1j*Q*r**4*psi - iRm*r**4*dr(Ar) + iRm*r**3*Ar = 0")
-            widegap.add_equation("sigma*(r**4*B) + 1j*Q*q*r**(3 - q)*A - 2*1j*Q*r**(3 - q)*A + iRm*r**4*Q**2*B - 1j*Q*r**4*u - iRm*r**4*dr(Br) - iRm*r**3*Br + iRm*r**2*B = 0")
 
-            widegap.add_equation("dr(psi) - psir = 0")
-            widegap.add_equation("dr(psir) - psirr = 0")
-            widegap.add_equation("dr(psirr) - psirrr = 0")
-            widegap.add_equation("dr(u) - ur = 0")
-            widegap.add_equation("dr(A) - Ar = 0")
-            widegap.add_equation("dr(B) - Br = 0")
-        
-            widegap = self.set_boundary_conditions(widegap)
-        
-        solver1 = widegap1.build_solver()
-        solver2 = widegap2.build_solver()
-        
-        solver1.solve(solver1.pencils[0])
-        solver2.solve(solver2.pencils[0])
-        
-        # Discard spurious eigenvalues
-        ev1 = solver1.eigenvalues
-        ev2 = solver2.eigenvalues
-        goodeigs, goodeigs_indices = self.discard_spurious_eigenvalues(ev1, ev2)
-
-        goodeigs_index = np.where(goodeigs.real == np.nanmax(goodeigs.real))[0][0]
-        marginal_mode_index = int(goodeigs_indices[goodeigs_index])
-        
-        solver1.set_state(marginal_mode_index)
-        
-        # r grid for plotting
-        r = r1.grid()
-        
-        # All eigenfunctions must be scaled s.t. their max is 1
-        self.psi = self.solver1.state['psi']
-        self.u = self.solver1.state['u']
-        self.A = self.solver1.state['A']
-        self.B = self.solver1.state['B']
     
         

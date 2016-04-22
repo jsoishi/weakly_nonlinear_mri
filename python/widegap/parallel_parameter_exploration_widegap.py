@@ -10,17 +10,17 @@ import pickle
 import time
 
 nr1 = 128 #64#256#512
-r1 = de.Chebyshev('r', nr1, interval=(80, 120))
+r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
 nr2 = 256 #128#512#768
-r2 = de.Chebyshev('r', nr2, interval=(80, 120))
+r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
 
 print("grid number {}, spurious eigenvalue check at {}".format(nr1, nr2))
 
-def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):       
+def Pmrun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch):       
 
     print("Pm = %10.5e" % Pm)
   
@@ -34,7 +34,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
 
     start_time = time.time()
 
-    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
+    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(beta), np.arange(len(Qs))))
     print("Processing %10.5e parameter combinations" % len(Qs))
 
     with Pool(processes = 19) as pool:
@@ -56,7 +56,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
     result_dict["Rmsearch"] = Rmsearch
     result_dict["Pm"] = Pm
     result_dict["q"] = q
-    result_dict["beta"] = 2.0/Co
+    result_dict["beta"] = beta
     result_dict["dQ"] = dQ
     result_dict["dRm"] = dRm
     
@@ -146,7 +146,7 @@ def get_largest_real_eigenvalue_index(LEV, goodevals = None):
     
     return largest_eval_indx
 
-def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
+def run_mri_solve(Q, Pm, Rm, q, beta, run_id, all_mode=False):
     """Solve the numerical eigenvalue problem for a single value of parameters.
 
     inputs:
@@ -232,25 +232,18 @@ def run_mri_solve(Q, Pm, Rm, q, Co, run_id, all_mode=False):
         
 if __name__ == '__main__':
 
-    Pm = 1.0E-3
-    #Pm = 5.0E-3
-    #Pm = 1.0E-2
-    #Pm = 2.0E-4
-    #Pm = 3.0E-4
-    #Pm = 5.0E-4
-    #Pm = 9.0E-5
-    #Pm = 5.0E-5
-    #Pm = 2.0E-3
-    #Pm = 5.0E-6
-    #Pm = 7.0E-4
-    #Pm = 7.0E-3
-    
+    """
+    Pm = 1.0E-3    
     q = 1.5
     beta = 25.0
     Co = 0.08
+    """
+    
+    # Parameters approximating Goodman & Ji 2001
+    Pm = 1.6E-6 #Pm = 0.001
+    q = 1.9368 #q = 1.5
+    beta = 0.793373752134 #25.0
 
-    #dQ = 0.001
-    #dRm = 0.001
     dQ = 0.1
     dRm = 0.1
     
@@ -259,5 +252,5 @@ if __name__ == '__main__':
     #Rmsearch = np.arange(4.87, 4.91, dRm) # Great for <1E-2
     #Rmsearch = np.arange(4.91, 4.95, dRm)
     Rmsearch = np.arange(4.0, 6.0, dRm)
-    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    Pmrun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
     

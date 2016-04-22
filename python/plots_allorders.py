@@ -995,4 +995,4 @@ def plot_paramspace(path="/Users/susanclark/weakly_nonlinear_mri/python/multirun
     plt.tight_layout()
     plt.show()
     
-    
+    return Q, Rm, evals
