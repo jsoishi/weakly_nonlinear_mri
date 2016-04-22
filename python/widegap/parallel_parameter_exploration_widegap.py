@@ -245,15 +245,19 @@ if __name__ == '__main__':
     # Parameters approximating Goodman & Ji 2001
     Pm = 1.6E-6 #Pm = 0.001
     q = 1.9368 #q = 1.5
-    beta = 0.793373752134 #25.0
-
-    dQ = 0.1
-    dRm = 0.1
+    beta = 0.448 #25.0
     
-    Qsearch = np.arange(0.2, 1.4, dQ)
+    # critical parameters found in Goodman & Ji 2001 - search around these
+    #Rm = 4.1007 
+    #Q = np.pi/10 
+
+    dQ = 0.01
+    dRm = 0.05
+    
+    Qsearch = np.arange(0.2, 0.4, dQ)
     #Qsearch = np.arange(0.74, 0.76, dQ)
     #Rmsearch = np.arange(4.87, 4.91, dRm) # Great for <1E-2
     #Rmsearch = np.arange(4.91, 4.95, dRm)
-    Rmsearch = np.arange(4.0, 6.0, dRm)
+    Rmsearch = np.arange(3.0, 5.0, dRm)
     Pmrun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
     
