@@ -14,12 +14,12 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-nr1 = 256#512
-r1 = de.Chebyshev('r', nr1, interval=(80, 120))
+nr1 = 64#256#512
+r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 512#768
-r2 = de.Chebyshev('r', nr2, interval=(80, 120))
+nr2 = 128#512#768
+r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
 print("grid number {}, spurious eigenvalue check at {}".format(nr1, nr2))
@@ -32,7 +32,7 @@ class MRI():
     Defaults: For Pm of 0.001 critical Rm is 4.879  critical Q is 0.748
     """
 
-    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, Q = np.pi/10, Rm = 4.052031250000001, Pm = 1.6E-6, q = 1.9368, beta = 0.43783886002604167, norm = True):
     
         self.Q = Q
         self.Rm = Rm
@@ -51,6 +51,14 @@ class MRI():
         self.gridnum1 = nr1
         self.gridnum2 = nr2
         self.r = r1.grid()
+        
+        self.R1 = 5
+        self.R2 = 15
+        self.Omega1 = 314
+        self.Omega2 = 37.9
+
+        self.c1 = (self.Omega2*self.R2**2 - self.Omega1*self.R1**2)/(self.R2**2 - self.R1**2)
+        self.c2 = (self.R1**2*self.R2**2*(self.Omega1 - self.Omega2))/(self.R2**2 - self.R1**2)
     
         print("MRI parameters: ", self.Q, self.Rm, self.Pm, self.q, self.beta, 'norm = ', norm, "Reynolds number", self.R)
         
@@ -188,7 +196,7 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, inviscid = False):
+    def __init__(self, Q = np.pi/10, Rm = 4.052031250000001, Pm = 1.6E-6, q = 1.9368, beta = 0.43783886002604167, norm = True, inviscid = False):
         
         print("initializing wide gap Order epsilon")
         
@@ -202,8 +210,9 @@ class OrderE(MRI):
         for widegap in [widegap1, widegap2]:
             widegap.parameters['Q'] = self.Q
             widegap.parameters['iRm'] = self.iRm
-            widegap.parameters['q'] = self.q
             widegap.parameters['beta'] = self.beta
+            widegap.parameters['c1'] = self.c1
+            widegap.parameters['c2'] = self.c2
             
             if inviscid is True:
                 widegap.parameters['iR'] = 0

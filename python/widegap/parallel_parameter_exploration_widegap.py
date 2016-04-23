@@ -20,7 +20,7 @@ d2 = de.Domain([r2])
 
 print("grid number {}, spurious eigenvalue check at {}".format(nr1, nr2))
 
-def Pmrun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch):       
+def Pmrun(Pm, c1, c2, beta, dQ, dRm, Qsearch, Rmsearch):       
 
     print("Pm = %10.5e" % Pm)
   
@@ -34,7 +34,7 @@ def Pmrun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch):
 
     start_time = time.time()
 
-    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(beta), np.arange(len(Qs))))
+    params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(c1), itertools.repeat(c2), itertools.repeat(beta), np.arange(len(Qs))))
     print("Processing %10.5e parameter combinations" % len(Qs))
 
     with Pool(processes = 19) as pool:
@@ -55,7 +55,8 @@ def Pmrun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch):
     result_dict["Qsearch"] = Qsearch
     result_dict["Rmsearch"] = Rmsearch
     result_dict["Pm"] = Pm
-    result_dict["q"] = q
+    result_dict["c1"] = c1
+    result_dict["c2"] = c2
     result_dict["beta"] = beta
     result_dict["dQ"] = dQ
     result_dict["dRm"] = dRm
@@ -146,7 +147,7 @@ def get_largest_real_eigenvalue_index(LEV, goodevals = None):
     
     return largest_eval_indx
 
-def run_mri_solve(Q, Pm, Rm, q, beta, run_id, all_mode=False):
+def run_mri_solve(Q, Pm, Rm, c1, c2, beta, run_id, all_mode=False):
     """Solve the numerical eigenvalue problem for a single value of parameters.
 
     inputs:
@@ -161,7 +162,8 @@ def run_mri_solve(Q, Pm, Rm, q, beta, run_id, all_mode=False):
 
     """
     try:
-
+        print(Q, Pm, Rm, c2, c2, beta, run_id)
+        
         # Rm is an input parameter
         iRm = 1./Rm
         R = Rm/Pm
@@ -176,13 +178,14 @@ def run_mri_solve(Q, Pm, Rm, q, beta, run_id, all_mode=False):
             widegap.parameters['Q'] = Q
             widegap.parameters['iR'] = iR
             widegap.parameters['iRm'] = iRm
-            widegap.parameters['q'] = q
+            widegap.parameters['c1'] = c1
+            widegap.parameters['c2'] = c2
             widegap.parameters['beta'] = beta
         
-            widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - 3*1j*Q*r**(4 - q)*u - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + iR*2*Q**2*r**3*psirr - iR*2*Q**2*r**2*psir - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - iR*3*r*psirr + iR*3*psir = 0")
-            widegap.add_equation("sigma*(r**4*u) - 1j*Q*q*r**(3 - q)*psi + 4*1j*Q*r**(3 - q)*psi + iR*r**4*Q**2*u - (2/beta)*1j*Q*r**4*B - iR*r**4*dr(ur) - iR*r**3*ur + iR*r**3*u = 0")
+            widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + 2*iR*Q**2*r**3*psirr - 2*iR*Q**2*r**2*psir - 3*1j*Q*c1*r**4*u - 3*1j*Q*c2*r**2*u - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 3*iR*r*psirr + 3*iR*psir = 0")
+            widegap.add_equation("sigma*(r**4*u) + iR*r**4*Q**2*u + 4*1j*Q*c1*r**3*psi + 2*1j*Q*c2*r*psi - (2/beta)*1j*Q*r**4*B - iR*r**4*dr(ur) - iR*r**3*ur + iR*r**3*u = 0")
             widegap.add_equation("sigma*(r**4*A) + iRm*r**4*Q**2*A - 1j*Q*r**4*psi - iRm*r**4*dr(Ar) + iRm*r**3*Ar = 0")
-            widegap.add_equation("sigma*(r**4*B) + 1j*Q*q*r**(3 - q)*A - 2*1j*Q*r**(3 - q)*A + iRm*r**4*Q**2*B - 1j*Q*r**4*u - iRm*r**4*dr(Br) - iRm*r**3*Br + iRm*r**2*B = 0")
+            widegap.add_equation("sigma*(r**4*B) + iRm*r**4*Q**2*B - 2*1j*Q*c1*r**3*A - 1j*Q*r**4*u - iRm*r**4*dr(Br) - iRm*r**3*Br + iRm*r**2*B = 0")
 
             widegap.add_equation("dr(psi) - psir = 0")
             widegap.add_equation("dr(psir) - psirr = 0")
@@ -242,22 +245,28 @@ if __name__ == '__main__':
     Co = 0.08
     """
     
-    # Parameters approximating Goodman & Ji 2001
-    Pm = 1.6E-6 #Pm = 0.001
-    q = 1.9368 #q = 1.5
-    beta = 0.448 #25.0
+    # Parameters approximating Goodman & Ji 2001    
+    Pm = 1.6E-6
+    beta = 0.43783886002604167#25.0
+    R1 = 5
+    R2 = 15
+    Omega1 = 314
+    Omega2 = 37.9
+
+    c1 = (Omega2*R2**2 - Omega1*R1**2)/(R2**2 - R1**2)
+    c2 = (R1**2*R2**2*(Omega1 - Omega2))/(R2**2 - R1**2)
     
     # critical parameters found in Goodman & Ji 2001 - search around these
-    #Rm = 4.1007 
+    #Rm = 4.052031250000001
     #Q = np.pi/10 
 
-    dQ = 0.01
+    dQ = 0.05
     dRm = 0.05
     
     Qsearch = np.arange(0.2, 0.4, dQ)
     #Qsearch = np.arange(0.74, 0.76, dQ)
     #Rmsearch = np.arange(4.87, 4.91, dRm) # Great for <1E-2
     #Rmsearch = np.arange(4.91, 4.95, dRm)
-    Rmsearch = np.arange(3.0, 5.0, dRm)
-    Pmrun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
+    Rmsearch = np.arange(3.2, 4.8, dRm)
+    Pmrun(Pm, c1, c2, beta, dQ, dRm, Qsearch, Rmsearch)
     
