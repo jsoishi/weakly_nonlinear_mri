@@ -11,14 +11,14 @@ import streamplot_uneven as su
 import random
 
 import matplotlib
-matplotlib.rcParams['backend'] = "Qt4Agg"
-matplotlib.rcParams.update({'figure.autolayout': True})
+#matplotlib.rcParams['backend'] = "Qt4Agg"
+#matplotlib.rcParams.update({'figure.autolayout': True})
 
 from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-gridnum = 256
+gridnum = 128
 x_basis = Chebyshev(gridnum)
 domain = Domain([x_basis], grid_dtype=np.complex128)
 
@@ -32,18 +32,22 @@ class AdjointHomogenous():
     
     """
     
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0):
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         self.Q = Q
         self.Rm = Rm
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("adjoint params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("adjoint params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, 'norm = ', norm)
         
     
-    def solve(self, gridnum = gridnum, save = False, norm = True):
+    def solve(self, gridnum = gridnum, save = False):
+        
+        # norm keyword initiated in __init__
+        norm = self.norm
 
         self.gridnum = gridnum
 
@@ -56,6 +60,7 @@ class AdjointHomogenous():
 
         # rayleigh number defined from prandtl number
         R = self.Rm/self.Pm
+        print("Re: ", R)
         iR = 1./R
         
         beta = self.beta
@@ -63,10 +68,17 @@ class AdjointHomogenous():
         q = self.q
 
         # equations to solve
-        lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
-        lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
-        lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
-        lv1.add_equation("1j*dt(B) - iRm*Q**2*B + iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+        #lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
+        #lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
+        #lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
+        #lv1.add_equation("1j*dt(B) - iRm*Q**2*B + iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+
+        # switched signs of dt terms 1/30/15
+        lv1.add_equation("1j*Q**2*dt(psi) - 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
+        lv1.add_equation("-1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
+        lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
+        lv1.add_equation("-1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+
 
         lv1.add_equation("dx(psi) - psix = 0")
         lv1.add_equation("dx(psix) - psixx = 0")
@@ -103,12 +115,17 @@ class AdjointHomogenous():
         # the eigenvalue that is closest to zero is the adjoint homogenous solution.
         evals = LEV.eigenvalues
         indx = np.arange(len(evals))
-        e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+        #e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+        
+        # Actually, find eigenvalue that is closest to zero *from above*
+        e0 = find_nearest_above(evals, 0.0)
+        print("index", e0)
         print('eigenvalue', evals[e0])
        
         # set state
         self.x = domain.grid(0)
-        LEV.set_state(e0[0])
+        #LEV.set_state(e0[0])
+        LEV.set_state(e0)
         
         self.psi = LEV.state['psi']
         self.u = LEV.state['u']
@@ -120,6 +137,8 @@ class AdjointHomogenous():
             a = self.LEV.state['psi']['g'].real[13]/n
             b = self.LEV.state['psi']['g'].imag[13]/n
             scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
+            #scale*=-1 #HACK
+            # magic number
             #scale *= -664.4114817
             
             psinorm = LEV.state['psi']*scale
@@ -169,7 +188,9 @@ class AdjointHomogenous():
         ax4.plot(self.x, self.B['g'].imag*norm1, color="black")
         ax4.plot(self.x, self.B['g'].real*norm1, color="red")
         ax4.set_title("Im($B^\dagger$)")
-        fig.savefig("ah1.png")
+        #fig.savefig("ah1_"+str(self.Pm)+".png")
+        print("plotting adjoint solution")
+        pylab.savefig("ah1_"+str(self.Pm)+".png")
         
         
         
@@ -182,17 +203,21 @@ class OrderE():
     
     """
     
-    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0):
+    def __init__(self, Q = 0.75, Rm = 4.8775, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         self.Q = Q
         self.Rm = Rm
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("first order params", self.Q, self.Rm, self.Pm, self.q)
+        print("first order params", self.Q, self.Rm, self.Pm, self.q, "norm = ", self.norm)
     
-    def solve(self, gridnum = gridnum, save = False, norm = True):
+    def solve(self, gridnum = gridnum, save = False):
+
+        # norm keyword initiated in __init__
+        norm = self.norm
 
         self.gridnum = gridnum
 
@@ -221,10 +246,11 @@ class OrderE():
         #lv1.add_equation("-iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
         #lv1.add_equation("-iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
         
-        lv1.add_equation("1j*dt(psixx) - 1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A = 0")
-        lv1.add_equation("1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - (2/beta)*1j*Q*B = 0") 
-        lv1.add_equation("1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
-        lv1.add_equation("1j*dt(B) - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
+        # switched signs of dt terms 1/30/15
+        lv1.add_equation("-1j*dt(psixx) + 1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A = 0")
+        lv1.add_equation("-1j*dt(u) - iR*dx(ux) + iR*Q**2*u + (2-q)*1j*Q*psi - (2/beta)*1j*Q*B = 0") 
+        lv1.add_equation("-1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
+        lv1.add_equation("-1j*dt(B) - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
         
         lv1.add_equation("dx(psi) - psix = 0")
         lv1.add_equation("dx(psix) - psixx = 0")
@@ -255,20 +281,29 @@ class OrderE():
         lv1.expand(domain, order = gridnum)
         LEV = LinearEigenvalue(lv1, domain)
         LEV.solve(LEV.pencils[0])
+        
+        # BVP way
         #LEV = LinearBVP(lv1, domain)
         #LEV.solvedense()
+        #LEV.solve()
         
         self.LEV = LEV
 
         #Find the eigenvalue that is closest to zero.
         evals = LEV.eigenvalues
         indx = np.arange(len(evals))
-        e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+        #e0 = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
+        
+        # Actually, find eigenvalue that is closest to zero *from above*
+        e0 = find_nearest_above(evals, 0.0)
+        print("index", e0)
         print('eigenvalue', evals[e0])
-       
+
         # set state
+        
         self.x = domain.grid(0)
-        LEV.set_state(e0[0])
+        #LEV.set_state(e0[0])
+        LEV.set_state(e0)
         
         self.psi = LEV.state['psi']['g']
         self.u = LEV.state['u']['g']
@@ -280,7 +315,10 @@ class OrderE():
             a = self.LEV.state['psi']['g'].real[13]/n
             b = self.LEV.state['psi']['g'].imag[13]/n
             scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
-            scale *= -664.4114817
+            #scale*=-1 #HACK
+            
+            # magic number
+            #scale *= -664.4114817 
             
             self.psi = LEV.state['psi']['g']*scale
             self.u = LEV.state['u']['g']*scale
@@ -337,12 +375,13 @@ class N2():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("N2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("N2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, "norm = ", self.norm)
         
         # either run or load the data in from saved files (needs implementing)
         if run == True:
-            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             v1.solve(save=False)
             
             if norm == True:
@@ -366,7 +405,10 @@ class N2():
                 self.B_1 = v1.LEV.state['B']
         
     
-    def solve(self, gridnum = gridnum, save = True, norm = True):
+    def solve(self, gridnum = gridnum, save = True):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
 
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -399,29 +441,59 @@ class N2():
         self.psi_1_star.name = 'psi_1_star'
         self.psi_1_star['g'] = self.psi_1['g'].conj()
         
-        self.psi_1_star_x = self.psi_1_star.differentiate(0)
-        self.psi_1_star_xx = self.psi_1_star_x.differentiate(0)
-        self.psi_1_star_xxx = self.psi_1_star_xx.differentiate(0)
+        self.psi_1_star_x = domain.new_field()
+        self.psi_1_star_x.name = 'psi_1_star_x'
+        self.psi_1_star_x['g'] = self.psi_1_x['g'].conj()
+        
+        self.psi_1_star_xx = domain.new_field()
+        self.psi_1_star_xx.name = 'psi_1_star_xx'
+        self.psi_1_star_xx['g'] = self.psi_1_xx['g'].conj()
+        
+        self.psi_1_star_xxx = domain.new_field()
+        self.psi_1_star_xxx.name = 'psi_1_star_xxx'
+        self.psi_1_star_xxx['g'] = self.psi_1_xxx['g'].conj()
+        
+        #self.psi_1_star_x = self.psi_1_star.differentiate(0)
+        #self.psi_1_star_xx = self.psi_1_star_x.differentiate(0)
+        #self.psi_1_star_xxx = self.psi_1_star_xx.differentiate(0)
         
         self.u_1_star = domain.new_field()
         self.u_1_star.name = 'u_1_star'
         self.u_1_star['g'] = self.u_1['g'].conj()
         
-        self.u_1_star_x = self.u_1_star.differentiate(0)
+        self.u_1_star_x = domain.new_field()
+        self.u_1_star_x.name = 'u_1_star_x'
+        self.u_1_star_x['g'] = self.u_1_x['g'].conj()
+        #self.u_1_star_x = self.u_1_star.differentiate(0)
    
         self.A_1_star = domain.new_field()
         self.A_1_star.name = 'A_1_star'
         self.A_1_star['g'] = self.A_1['g'].conj()
         
-        self.A_1_star_x = self.A_1_star.differentiate(0)
-        self.A_1_star_xx = self.A_1_star_x.differentiate(0)
-        self.A_1_star_xxx = self.A_1_star_xx.differentiate(0)
+        self.A_1_star_x = domain.new_field()
+        self.A_1_star_x.name = 'A_1_star_x'
+        self.A_1_star_x['g'] = self.A_1_x['g'].conj()
+        
+        self.A_1_star_xx = domain.new_field()
+        self.A_1_star_xx.name = 'A_1_star_xx'
+        self.A_1_star_xx['g'] = self.A_1_xx['g'].conj()
+        
+        self.A_1_star_xxx = domain.new_field()
+        self.A_1_star_xxx.name = 'A_1_star_xxx'
+        self.A_1_star_xxx['g'] = self.A_1_xxx['g'].conj()
+        
+        #self.A_1_star_x = self.A_1_star.differentiate(0)
+        #self.A_1_star_xx = self.A_1_star_x.differentiate(0)
+        #self.A_1_star_xxx = self.A_1_star_xx.differentiate(0)
         
         self.B_1_star = domain.new_field()
         self.B_1_star.name = 'B_1_star'
         self.B_1_star['g'] = self.B_1['g'].conj()
         
-        self.B_1_star_x = self.B_1_star.differentiate(0)
+        #self.B_1_star_x = self.B_1_star.differentiate(0)
+        self.B_1_star_x = domain.new_field()
+        self.B_1_star_x.name = 'B_1_star_x'
+        self.B_1_star_x['g'] = self.B_1_x['g'].conj()
         
         # define nonlinear terms N22 and N20
         N22psi = 1j*Q*self.psi_1*(self.psi_1_xxx - Q**2*self.psi_1_x) - self.psi_1_x*(1j*Q*self.psi_1_xx - 1j*Q**3*self.psi_1) + (2/self.beta)*self.A_1_x*(1j*Q*self.A_1_xx - 1j*Q**3*self.A_1) - (2/self.beta)*1j*Q*self.A_1*(self.A_1_xxx - Q**2*self.A_1_x)
@@ -448,9 +520,10 @@ class N2():
         N20B = 1j*Q*self.psi_1*self.B_1_star_x + self.psi_1_x*1j*Q*self.B_1_star - 1j*Q*self.A_1*self.u_1_star_x - self.A_1_x*1j*Q*self.u_1_star
         self.N20_B = N20B.evaluate()
         
+        """
         if norm == True:
-        
-            self.n20scale = 0.2/0.087941764519131521
+            # magic number
+            #self.n20scale = 0.2/0.087941764519131521
             
             N20psi = self.N20_psi*self.n20scale
             self.N20_psi = N20psi.evaluate()
@@ -463,6 +536,7 @@ class N2():
             
             N20B = self.N20_B*self.n20scale
             self.N20_B = N20B.evaluate()
+        """
         
     def plot(self):
     
@@ -525,13 +599,14 @@ class OrderE2():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("order e 2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("order e 2 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, "norm = ", self.norm)
         
         
         if (run == True) and (speedy == False):
             
-            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             v1.solve(save=False)
             
             if norm == True:
@@ -576,19 +651,23 @@ class OrderE2():
                 self.A_1 = o1.LEV.state['A']
                 self.B_1 = o1.LEV.state['B']
                  
-        n2 = N2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
-        n2.solve()
-        self.n22_psi = n2.N22_psi
-        self.n22_u = n2.N22_u
-        self.n22_A = n2.N22_A
-        self.n22_B = n2.N22_B
+        self.n2 = N2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        self.n2.solve()
+        self.n22_psi = self.n2.N22_psi
+        self.n22_u = self.n2.N22_u
+        self.n22_A = self.n2.N22_A
+        self.n22_B = self.n2.N22_B
         
-        self.n20_psi = n2.N20_psi
-        self.n20_u = n2.N20_u
-        self.n20_A = n2.N20_A
-        self.n20_B = n2.N20_B
+        self.n20_psi = self.n2.N20_psi
+        self.n20_u = self.n2.N20_u
+        self.n20_A = self.n2.N20_A
+        self.n20_B = self.n2.N20_B
             
     def solve20(self, gridnum = gridnum, save = False):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
+    
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
 
@@ -669,6 +748,7 @@ class OrderE2():
         
         self.lv20psi = lv20psi
         self.LEV20psi = LEV20psi
+        self.LEV20psi.state['psi20']['g'] = np.zeros(gridnum) # An elegant hack! added 12/2
         
         self.lv20u = lv20u
         self.LEV20u = LEV20u
@@ -686,10 +766,13 @@ class OrderE2():
         self.psi20 = LEV20psi.state['psi20']['g']
         self.u20 = LEV20u.state['u20']['g'] #+ beta*R*(self.x**2 - 1) #+ LEV20utwiddle.state['u20twiddle']['g']
         self.A20 = LEV20A.state['A20']['g']
-        self.B20 = LEV20B.state['B20']['g'] # this is nan
+        self.B20 = LEV20B.state['B20']['g'] 
         #self.B20 = np.zeros(gridnum)
             
     def solve21(self, gridnum = gridnum, save = True, norm = True):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
     
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
@@ -723,10 +806,10 @@ class OrderE2():
         self.term2_B = term2_B.evaluate()
         
         # righthand side for the 21 terms (e^iQz)
-        rhs21_psi = self.term2_psi['g']
-        rhs21_u = self.term2_u['g']
-        rhs21_A = self.term2_A['g']
-        rhs21_B = self.term2_B['g']
+        rhs21_psi = -self.term2_psi['g']   # changed to correct sign 1/23/15
+        rhs21_u = -self.term2_u['g']
+        rhs21_A = -self.term2_A['g']
+        rhs21_B = -self.term2_B['g']
                 
         # define problem using righthand side as nonconstant coefficients
         
@@ -743,7 +826,7 @@ class OrderE2():
         lv21.add_equation("1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs21_psi")
         lv21.add_equation("-1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs21_u")
         lv21.add_equation("iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs21_A")
-        lv21.add_equation("1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")
+        lv21.add_equation("1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")    
 
         lv21.add_equation("dx(psi21) - psi21x = 0")
         lv21.add_equation("dx(psi21x) - psi21xx = 0")
@@ -812,8 +895,8 @@ class OrderE2():
             a = self.LEV21.state['psi21']['g'].real[13]/n
             b = self.LEV21.state['psi21']['g'].imag[13]/n
             scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
-            tt = 1j*132/29.097408658719342
-            scale *= tt
+            #tt = 1j*132/29.097408658719342
+            #scale *= tt 
             
             self.psi21 = LEV21.state['psi21']['g']*scale
             self.u21 = LEV21.state['u21']['g']*scale
@@ -823,6 +906,9 @@ class OrderE2():
             self.scale = scale
 
     def solve22(self, gridnum = gridnum, save = True):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
 
         # inverse magnetic reynolds number
         iRm = 1./self.Rm
@@ -1005,12 +1091,13 @@ class OrderE3():
         self.q = q
         self.beta = beta
         self.R = self.Rm/self.Pm
+        self.norm = norm
         
-        print("order 3 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, self.R)
+        print("order 3 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, self.R, "norm = ", self.norm)
         
         if (run == True) and (speedy == False):
             
-            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1071,6 +1158,9 @@ class OrderE3():
             
     def solve(self, gridnum = gridnum, save = False):
     
+        # norm keyword initiated in __init__
+        norm = self.norm
+    
         self.gridnum = gridnum
     
         # inverse magnetic reynolds number
@@ -1125,6 +1215,9 @@ class N3():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
+        
+        print("N3 params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, "norm = ", self.norm)
         
         if (run == True) and (speedy == False):
             v1 = OrderE()
@@ -1150,7 +1243,7 @@ class N3():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1239,6 +1332,8 @@ class N3():
             self.v22_B = o2.LEV22.state['B22']
             
     def solve31(self, gridnum = gridnum, save = False):
+        # norm keyword initiated in __init__
+        norm = self.norm
     
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -1261,29 +1356,59 @@ class N3():
         self.v11_psi_star.name = 'v11_psi_star'
         self.v11_psi_star['g'] = self.v11_psi['g'].conj()
         
-        self.v11_psi_star_x = self.v11_psi_star.differentiate(0)
-        self.v11_psi_star_xx = self.v11_psi_star_x.differentiate(0)
-        self.v11_psi_star_xxx = self.v11_psi_star_xx.differentiate(0)
+        #self.v11_psi_star_x = self.v11_psi_star.differentiate(0)
+        #self.v11_psi_star_xx = self.v11_psi_star_x.differentiate(0)
+        #self.v11_psi_star_xxx = self.v11_psi_star_xx.differentiate(0)
+        
+        self.v11_psi_star_x = domain.new_field()
+        self.v11_psi_star_x.name = 'v22_psi_star_x'
+        self.v11_psi_star_x['g'] = self.v11_psi_x['g'].conj()
+        
+        self.v11_psi_star_xx = domain.new_field()
+        self.v11_psi_star_xx.name = 'v22_psi_star_xx'
+        self.v11_psi_star_xx['g'] = self.v11_psi_xx['g'].conj()
+        
+        self.v11_psi_star_xxx = domain.new_field()
+        self.v11_psi_star_xxx.name = 'v22_psi_star_xxx'
+        self.v11_psi_star_xxx['g'] = self.v11_psi_xxx['g'].conj()
         
         self.v11_u_star = domain.new_field()
         self.v11_u_star.name = 'v11_u_star'
         self.v11_u_star['g'] = self.v11_u['g'].conj()
         
-        self.v11_u_star_x = self.v11_u_star.differentiate(0)
+        #self.v11_u_star_x = self.v11_u_star.differentiate(0)
+        self.v11_u_star_x = domain.new_field()
+        self.v11_u_star_x.name = 'v11_u_star_x'
+        self.v11_u_star_x['g'] = self.v11_u_x['g'].conj()
    
         self.v11_A_star = domain.new_field()
         self.v11_A_star.name = 'v11_A_star'
         self.v11_A_star['g'] = self.v11_A['g'].conj()
         
-        self.v11_A_star_x = self.v11_A_star.differentiate(0)
-        self.v11_A_star_xx = self.v11_A_star_x.differentiate(0)
-        self.v11_A_star_xxx = self.v11_A_star_xx.differentiate(0)
+        #self.v11_A_star_x = self.v11_A_star.differentiate(0)
+        #self.v11_A_star_xx = self.v11_A_star_x.differentiate(0)
+        #self.v11_A_star_xxx = self.v11_A_star_xx.differentiate(0)
+        
+        self.v11_A_star_x = domain.new_field()
+        self.v11_A_star_x.name = 'v11_A_star_x'
+        self.v11_A_star_x['g'] = self.v11_A_x['g'].conj()
+        
+        self.v11_A_star_xx = domain.new_field()
+        self.v11_A_star_xx.name = 'v11_A_star_xx'
+        self.v11_A_star_xx['g'] = self.v11_A_xx['g'].conj()
+        
+        self.v11_A_star_xxx = domain.new_field()
+        self.v11_A_star_xxx.name = 'v11_A_star_xxx'
+        self.v11_A_star_xxx['g'] = self.v11_A_xxx['g'].conj()
         
         self.v11_B_star = domain.new_field()
         self.v11_B_star.name = 'v11_B_star'
         self.v11_B_star['g'] = self.v11_B['g'].conj()
         
-        self.v11_B_star_x = self.v11_B_star.differentiate(0)
+        #self.v11_B_star_x = self.v11_B_star.differentiate(0)
+        self.v11_B_star_x = domain.new_field()
+        self.v11_B_star_x.name = 'v11_B_star_x'
+        self.v11_B_star_x['g'] = self.v11_B_x['g'].conj()
         
         # V22 derivatives
         self.v22_psi_x = self.v22_psi.differentiate(0)
@@ -1303,29 +1428,59 @@ class N3():
         self.v22_psi_star.name = 'v22_psi_star'
         self.v22_psi_star['g'] = self.v22_psi['g'].conj()
         
-        self.v22_psi_star_x = self.v22_psi_star.differentiate(0)
-        self.v22_psi_star_xx = self.v22_psi_star_x.differentiate(0)
-        self.v22_psi_star_xxx = self.v22_psi_star_xx.differentiate(0)
+        self.v22_psi_star_x = domain.new_field()
+        self.v22_psi_star_x.name = 'v22_psi_star_x'
+        self.v22_psi_star_x['g'] = self.v22_psi_x['g'].conj()
+        
+        self.v22_psi_star_xx = domain.new_field()
+        self.v22_psi_star_xx.name = 'v22_psi_star_xx'
+        self.v22_psi_star_xx['g'] = self.v22_psi_xx['g'].conj()
+        
+        self.v22_psi_star_xxx = domain.new_field()
+        self.v22_psi_star_xxx.name = 'v22_psi_star_xxx'
+        self.v22_psi_star_xxx['g'] = self.v22_psi_xxx['g'].conj()
+        
+        #self.v22_psi_star_x = self.v22_psi_star.differentiate(0)
+        #self.v22_psi_star_xx = self.v22_psi_star_x.differentiate(0)
+        #self.v22_psi_star_xxx = self.v22_psi_star_xx.differentiate(0)
         
         self.v22_u_star = domain.new_field()
         self.v22_u_star.name = 'v22_u_star'
         self.v22_u_star['g'] = self.v22_u['g'].conj()
         
-        self.v22_u_star_x = self.v22_u_star.differentiate(0)
+        self.v22_u_star_x = domain.new_field()
+        self.v22_u_star_x.name = 'v22_u_star_x'
+        self.v22_u_star_x['g'] = self.v22_u_x['g'].conj()
+        #self.v22_u_star_x = self.v22_u_star.differentiate(0)
    
         self.v22_A_star = domain.new_field()
         self.v22_A_star.name = 'v22_A_star'
         self.v22_A_star['g'] = self.v22_A['g'].conj()
         
-        self.v22_A_star_x = self.v22_A_star.differentiate(0)
-        self.v22_A_star_xx = self.v22_A_star_x.differentiate(0)
-        self.v22_A_star_xxx = self.v22_A_star_xx.differentiate(0)
+        self.v22_A_star_x = domain.new_field()
+        self.v22_A_star_x.name = 'v22_A_star_x'
+        self.v22_A_star_x['g'] = self.v22_A_x['g'].conj()
+        
+        self.v22_A_star_xx = domain.new_field()
+        self.v22_A_star_xx.name = 'v22_A_star_xx'
+        self.v22_A_star_xx['g'] = self.v22_A_xx['g'].conj()
+        
+        self.v22_A_star_xxx = domain.new_field()
+        self.v22_A_star_xxx.name = 'v22_A_star_xxx'
+        self.v22_A_star_xxx['g'] = self.v22_A_xxx['g'].conj()
+        
+        #self.v22_A_star_x = self.v22_A_star.differentiate(0)
+        #self.v22_A_star_xx = self.v22_A_star_x.differentiate(0)
+        #self.v22_A_star_xxx = self.v22_A_star_xx.differentiate(0)
         
         self.v22_B_star = domain.new_field()
         self.v22_B_star.name = 'v22_B_star'
         self.v22_B_star['g'] = self.v22_B['g'].conj()
         
-        self.v22_B_star_x = self.v22_B_star.differentiate(0)
+        #self.v22_B_star_x = self.v22_B_star.differentiate(0)
+        self.v22_B_star_x = domain.new_field()
+        self.v22_B_star_x.name = 'v22_B_star_x'
+        self.v22_B_star_x['g'] = self.v22_B_x['g'].conj()
         
         # V20 derivatives
         self.v20_psi_x = self.v20_psi.differentiate(0)
@@ -1345,29 +1500,59 @@ class N3():
         self.v20_psi_star.name = 'v20_psi_star'
         self.v20_psi_star['g'] = self.v20_psi['g'].conj()
         
-        self.v20_psi_star_x = self.v20_psi_star.differentiate(0)
-        self.v20_psi_star_xx = self.v20_psi_star_x.differentiate(0)
-        self.v20_psi_star_xxx = self.v20_psi_star_xx.differentiate(0)
+        self.v20_psi_star_x = domain.new_field()
+        self.v20_psi_star_x.name = 'v20_psi_star_x'
+        self.v20_psi_star_x['g'] = self.v20_psi_x['g'].conj()
+        
+        self.v20_psi_star_xx = domain.new_field()
+        self.v20_psi_star_xx.name = 'v20_psi_star_xx'
+        self.v20_psi_star_xx['g'] = self.v20_psi_xx['g'].conj()
+        
+        self.v20_psi_star_xxx = domain.new_field()
+        self.v20_psi_star_xxx.name = 'v20_psi_star_xxx'
+        self.v20_psi_star_xxx['g'] = self.v20_psi_xxx['g'].conj()
+        
+        #self.v20_psi_star_x = self.v20_psi_star.differentiate(0)
+        #self.v20_psi_star_xx = self.v20_psi_star_x.differentiate(0)
+        #self.v20_psi_star_xxx = self.v20_psi_star_xx.differentiate(0)
         
         self.v20_u_star = domain.new_field()
         self.v20_u_star.name = 'v20_u_star'
         self.v20_u_star['g'] = self.v20_u['g'].conj()
         
-        self.v20_u_star_x = self.v20_u_star.differentiate(0)
+        #self.v20_u_star_x = self.v20_u_star.differentiate(0)
+        self.v20_u_star_x = domain.new_field()
+        self.v20_u_star_x.name = 'v20_u_star_x'
+        self.v20_u_star_x['g'] = self.v20_u_x['g'].conj()
    
         self.v20_A_star = domain.new_field()
         self.v20_A_star.name = 'v20_A_star'
         self.v20_A_star['g'] = self.v20_A['g'].conj()
         
-        self.v20_A_star_x = self.v20_A_star.differentiate(0)
-        self.v20_A_star_xx = self.v20_A_star_x.differentiate(0)
-        self.v20_A_star_xxx = self.v20_A_star_xx.differentiate(0)
+        #self.v20_A_star_x = self.v20_A_star.differentiate(0)
+        #self.v20_A_star_xx = self.v20_A_star_x.differentiate(0)
+        #self.v20_A_star_xxx = self.v20_A_star_xx.differentiate(0)
+        
+        self.v20_A_star_x = domain.new_field()
+        self.v20_A_star_x.name = 'v20_A_star_x'
+        self.v20_A_star_x['g'] = self.v20_A_x['g'].conj()
+        
+        self.v20_A_star_xx = domain.new_field()
+        self.v20_A_star_xx.name = 'v20_A_star_xx'
+        self.v20_A_star_xx['g'] = self.v20_A_xx['g'].conj()
+        
+        self.v20_A_star_xxx = domain.new_field()
+        self.v20_A_star_xxx.name = 'v20_A_star_xxx'
+        self.v20_A_star_xxx['g'] = self.v20_A_xxx['g'].conj()
         
         self.v20_B_star = domain.new_field()
         self.v20_B_star.name = 'v20_B_star'
         self.v20_B_star['g'] = self.v20_B['g'].conj()
         
-        self.v20_B_star_x = self.v20_B_star.differentiate(0)
+        #self.v20_B_star_x = self.v20_B_star.differentiate(0)
+        self.v20_B_star_x = domain.new_field()
+        self.v20_B_star_x.name = 'v20_B_star_x'
+        self.v20_B_star_x['g'] = self.v20_B_x['g'].conj()
         
         # V21 derivatives
         self.v21_psi_x = self.v21_psi.differentiate(0)
@@ -1380,25 +1565,37 @@ class N3():
         self.v21_psi_star.name = 'v21_psi_star'
         self.v21_psi_star['g'] = self.v21_psi['g'].conj()
         
-        self.v21_psi_star_x = self.v21_psi_star.differentiate(0)
+        self.v21_psi_star_x = domain.new_field()
+        self.v21_psi_star_x.name = 'v21_psi_star_x'
+        self.v21_psi_star_x['g'] = self.v21_psi_x['g'].conj()
+        #self.v21_psi_star_x = self.v21_psi_star.differentiate(0)
         
         self.v21_u_star = domain.new_field()
         self.v21_u_star.name = 'v21_u_star'
         self.v21_u_star['g'] = self.v21_u['g'].conj()
         
-        self.v21_u_star_x = self.v21_u_star.differentiate(0)
+        self.v21_u_star_x = domain.new_field()
+        self.v21_u_star_x.name = 'v21_u_star_x'
+        self.v21_u_star_x['g'] = self.v21_u_x['g'].conj()
+        #self.v21_u_star_x = self.v21_u_star.differentiate(0)
         
         self.v21_A_star = domain.new_field()
         self.v21_A_star.name = 'v21_A_star'
         self.v21_A_star['g'] = self.v21_A['g'].conj()
         
-        self.v21_A_star_x = self.v21_A_star.differentiate(0)
+        self.v21_A_star_x = domain.new_field()
+        self.v21_A_star_x.name = 'v21_A_star_x'
+        self.v21_A_star_x['g'] = self.v21_A_x['g'].conj()
+        #self.v21_A_star_x = self.v21_A_star.differentiate(0)
         
         self.v21_B_star = domain.new_field()
         self.v21_B_star.name = 'v21_B_star'
         self.v21_B_star['g'] = self.v21_B['g'].conj()
         
-        self.v21_B_star_x = self.v21_B_star.differentiate(0)
+        self.v21_B_star_x = domain.new_field()
+        self.v21_B_star_x.name = 'v21_B_star_x'
+        self.v21_B_star_x['g'] = self.v21_B_x['g'].conj()
+        #self.v21_B_star_x = self.v21_B_star.differentiate(0)
     
         N31_psi_my1 = 1j*self.Q*(self.v11_psi*self.v20_psi_xxx) + 1j*self.Q*(self.v11_psi*self.v20_psi_star_xxx) - 1j*self.Q*(self.v11_psi_star*self.v22_psi_xxx) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_psi_xx) + 1j*8*self.Q**3*(self.v11_psi_star_x*self.v22_psi) + 1j*4*self.Q**3*(self.v11_psi_star*self.v22_psi_x)
         N31_psi_my2 = -1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_A_xxx) - 1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_A_star_xxx) + 1j*self.Q*(2/self.beta)*(self.v11_A_star*self.v22_A_xxx) + 1j*2*self.Q*(2/self.beta)*(self.v11_A_star_x*self.v22_A_xx) - 1j*8*self.Q**3*(2/self.beta)*(self.v11_A_star_x*self.v22_A) - 1j*4*self.Q**3*(2/self.beta)*(self.v11_A_star*self.v22_A_x)
@@ -1409,6 +1606,19 @@ class N3():
         
         self.N31_psi = N31_psi.evaluate()
         
+        
+        #version without 20*:
+        N31_psi_my1 = 1j*self.Q*(self.v11_psi*self.v20_psi_xxx) - 1j*self.Q*(self.v11_psi_star*self.v22_psi_xxx) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_psi_xx) + 1j*8*self.Q**3*(self.v11_psi_star_x*self.v22_psi) + 1j*4*self.Q**3*(self.v11_psi_star*self.v22_psi_x)
+        N31_psi_my2 = -1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_A_xxx) + 1j*self.Q*(2/self.beta)*(self.v11_A_star*self.v22_A_xxx) + 1j*2*self.Q*(2/self.beta)*(self.v11_A_star_x*self.v22_A_xx) - 1j*8*self.Q**3*(2/self.beta)*(self.v11_A_star_x*self.v22_A) - 1j*4*self.Q**3*(2/self.beta)*(self.v11_A_star*self.v22_A_x)
+        N31_psi_my3 = 1j*2*self.Q*(self.v22_psi*self.v11_psi_star_xxx) - 1j*2*self.Q**3*(self.v22_psi*self.v11_psi_star_x) - 1j*self.Q*(self.v20_psi_x*self.v11_psi_xx) + 1j*self.Q*(self.v22_psi_x*self.v11_psi_star_xx) + 1j*self.Q**3*(self.v20_psi_x*self.v11_psi) - 1j*self.Q**3*(self.v22_psi_x*self.v11_psi_star)
+        N31_psi_my4 = -1j*2*self.Q*(2/self.beta)*(self.v22_A*self.v11_A_star_xxx) + 1j*2*self.Q**3*(2/self.beta)*(self.v22_A*self.v11_A_star_x) + 1j*self.Q*(2/self.beta)*(self.v20_A_x*self.v11_A_xx) - 1j*self.Q*(2/self.beta)*(self.v22_A_x*self.v11_A_star_xx) - 1j*self.Q**3*(2/self.beta)*(self.v20_A_x*self.v11_A) + 1j*self.Q**3*(2/self.beta)*(self.v22_A_x*self.v11_A_star)
+        
+        N31_psi_no20star = N31_psi_my1 + N31_psi_my2 + N31_psi_my3 +  N31_psi_my4
+        
+        self.N31_psi_no20star = N31_psi_no20star.evaluate()
+        
+        
+        
         N31_u_my1 = 1j*self.Q*(self.v11_psi*self.v20_u_x) + 1j*self.Q*(self.v11_psi*self.v20_u_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_u_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_u)
         N31_u_my2 = -1j*self.Q*(self.v11_u*self.v20_psi_x) - 1j*self.Q*(self.v11_u*self.v20_psi_star_x) + 1j*self.Q*(self.v11_u_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_u_star_x*self.v22_psi)
         N31_u_my3 = -1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_B_x) - 1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_B_star_x) + 1j*self.Q*(2/self.beta)*(self.v11_A_star*self.v22_B_x) + 1j*2*self.Q*(2/self.beta)*(self.v11_A_star_x*self.v22_B)
@@ -1418,6 +1628,20 @@ class N3():
         
         self.N31_u = N31_u.evaluate()
         
+        
+        # version without 20* :
+        N31_u_my1 = 1j*self.Q*(self.v11_psi*self.v20_u_x) - 1j*self.Q*(self.v11_psi_star*self.v22_u_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_u)
+        N31_u_my2 = -1j*self.Q*(self.v11_u*self.v20_psi_x) + 1j*self.Q*(self.v11_u_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_u_star_x*self.v22_psi)
+        N31_u_my3 = -1j*self.Q*(2/self.beta)*(self.v11_A*self.v20_B_x) + 1j*self.Q*(2/self.beta)*(self.v11_A_star*self.v22_B_x) + 1j*2*self.Q*(2/self.beta)*(self.v11_A_star_x*self.v22_B)
+        N31_u_my4 = 1j*self.Q*(2/self.beta)*(self.v11_B*self.v20_A_x) - 1j*self.Q*(2/self.beta)*(self.v11_B_star*self.v20_A_x) - 1j*2*self.Q*(2/self.beta)*(self.v11_B_star_x*self.v22_A)
+        
+        N31_u_no20star = N31_u_my1 + N31_u_my2 + N31_u_my3 + N31_u_my4
+        
+        self.N31_u_no20star = N31_u_no20star.evaluate()
+        
+        
+        
+        # Correct: checked 1/12 
         N31_A_my1 = -1j*self.Q*(self.v11_A*self.v20_psi_x) - 1j*self.Q*(self.v11_A*self.v20_psi_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_psi)
         N31_A_my2 = 1j*self.Q*(self.v11_psi*self.v20_A_x) + 1j*self.Q*(self.v11_psi*self.v20_A_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_A_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_A)
         
@@ -1425,9 +1649,18 @@ class N3():
         
         self.N31_A = N31_A.evaluate()
         
-        # B_my1 is nan. Only first 2 terms. Cause is self.v20_B_x and self.v20_B_star_x
-        N31_B_my1 = 1j*self.Q*(self.v11_psi*self.v20_B_x) + 1j*self.Q*(self.v11_psi*self.v20_B_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_B_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_B)
         
+        # version without 20* :
+        N31_A_my1 = -1j*self.Q*(self.v11_A*self.v20_psi_x) + 1j*self.Q*(self.v11_A_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_psi)
+        N31_A_my2 = 1j*self.Q*(self.v11_psi*self.v20_A_x) - 1j*self.Q*(self.v11_psi_star*self.v22_A_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_A)
+        
+        N31_A_no20star = N31_A_my1 + N31_A_my2
+        
+        self.N31_A_no20star = N31_A_no20star.evaluate()
+        
+        
+        
+        N31_B_my1 = 1j*self.Q*(self.v11_psi*self.v20_B_x) + 1j*self.Q*(self.v11_psi*self.v20_B_star_x) - 1j*self.Q*(self.v11_psi_star*self.v22_B_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_B)
         N31_B_my2 = -1j*self.Q*(self.v11_B*self.v20_psi_x) - 1j*self.Q*(self.v11_B*self.v20_psi_star_x) + 1j*self.Q*(self.v11_B_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_B_star_x*self.v22_psi)
         N31_B_my3 = -1j*self.Q*(self.v11_A*self.v20_u_x) - 1j*self.Q*(self.v11_A*self.v20_u_star_x) + 1j*self.Q*(self.v11_A_star*self.v22_u_x) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_u)
         N31_B_my4 = 1j*self.Q*(self.v11_u*self.v20_A_x) + 1j*self.Q*(self.v11_u*self.v20_A_star_x) - 1j*self.Q*(self.v11_u_star*self.v22_A_x) - 1j*2*self.Q*(self.v11_u_star_x*self.v22_A)
@@ -1435,8 +1668,30 @@ class N3():
         N31_B = N31_B_my1 + N31_B_my2 + N31_B_my3 + N31_B_my4
         
         self.N31_B = N31_B.evaluate()
+        
+        
+        
+        # version without 20* :
+        N31_B_my1 = 1j*self.Q*(self.v11_psi*self.v20_B_x) - 1j*self.Q*(self.v11_psi_star*self.v22_B_x) - 1j*2*self.Q*(self.v11_psi_star_x*self.v22_B)
+        N31_B_my2 = -1j*self.Q*(self.v11_B*self.v20_psi_x) + 1j*self.Q*(self.v11_B_star*self.v22_psi_x) + 1j*2*self.Q*(self.v11_B_star_x*self.v22_psi)
+        N31_B_my3 = -1j*self.Q*(self.v11_A*self.v20_u_x) + 1j*self.Q*(self.v11_A_star*self.v22_u_x) + 1j*2*self.Q*(self.v11_A_star_x*self.v22_u)
+        N31_B_my4 = 1j*self.Q*(self.v11_u*self.v20_A_x) - 1j*self.Q*(self.v11_u_star*self.v22_A_x) - 1j*2*self.Q*(self.v11_u_star_x*self.v22_A)
+        
+        N31_B_no20star = N31_B_my1 + N31_B_my2 + N31_B_my3 + N31_B_my4
+        
+        self.N31_B_no20star = N31_B_no20star.evaluate()
+        
+        test20 = False
+        if test20 == True:
+            self.N31_psi = self.N31_psi_no20star
+            self.N31_u = self.N31_u_no20star
+            self.N31_A = self.N31_A_no20star
+            self.N31_B = self.N31_B_no20star
+        
     
     def solve30(self, gridnum = gridnum, save = False):
+        # norm keyword initiated in __init__
+        norm = self.norm
     
         N30_B_1 = -1j*self.Q*(self.v11_psi*self.v21_B_star_x) + 1j*self.Q*(self.v11_psi_star*self.v21_B_x) - 1j*self.Q*(self.v11_psi_x*self.v21_B_star) + 1j*self.Q*(self.v11_psi_star_x*self.v21_B)
         N30_B_2 = 1j*self.Q*(self.v11_B*self.v21_psi_star_x) - 1j*self.Q*(self.v11_B_star*self.v21_psi_x) + 1j*self.Q*(self.v11_B_x*self.v21_psi_star) - 1j*self.Q*(self.v11_B_star_x*self.v21_psi)
@@ -1490,8 +1745,9 @@ class AmplitudeAlpha():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("amplitude alpha params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("amplitude alpha params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, "norm = ", self.norm)
         
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
@@ -1502,18 +1758,21 @@ class AmplitudeAlpha():
         
         if run == True:
         
-            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
-            self.va.solve(save = False, norm = True)
-        
-            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
-            v1.solve(save=False)
+            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+            self.va.solve(save = False)
+            
+            # Plot adjoint soln
+            self.va.plot()
+            
+            self.v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+            self.v1.solve(save=False)
             
             if norm == True:
             
-                psi_1 = v1.LEV.state['psi']*v1.scale
-                u_1 = v1.LEV.state['u']*v1.scale
-                A_1 = v1.LEV.state['A']*v1.scale
-                B_1 = v1.LEV.state['B']*v1.scale
+                psi_1 = self.v1.LEV.state['psi']*self.v1.scale
+                u_1 = self.v1.LEV.state['u']*self.v1.scale
+                A_1 = self.v1.LEV.state['A']*self.v1.scale
+                B_1 = self.v1.LEV.state['B']*self.v1.scale
             
                 self.v11_psi = psi_1.evaluate()
                 self.v11_u = u_1.evaluate()
@@ -1523,12 +1782,12 @@ class AmplitudeAlpha():
                 
             else:
             
-                self.v11_psi = v1.LEV.state['psi']
-                self.v11_u = v1.LEV.state['u']
-                self.v11_A = v1.LEV.state['A']
-                self.v11_B = v1.LEV.state['B']
+                self.v11_psi = self.v1.LEV.state['psi']
+                self.v11_u = self.v1.LEV.state['u']
+                self.v11_A = self.v1.LEV.state['A']
+                self.v11_B = self.v1.LEV.state['B']
             
-            self.o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = v1)
+            self.o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = self.v1, norm = self.norm)
             self.o2.solve20()
             self.o2.solve21(norm = norm)
             self.o2.solve22()
@@ -1561,15 +1820,18 @@ class AmplitudeAlpha():
             self.v22_A = self.o2.LEV22.state['A22']
             self.v22_B = self.o2.LEV22.state['B22']
             
-            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o2 = self.o2)
+            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o2 = self.o2, norm = self.norm)
             self.o3.solve()
             
-            self.n3 = N3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = v1, o2 = self.o2)
+            self.n3 = N3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, speedy = True, o1 = self.v1, o2 = self.o2, norm = self.norm)
             self.n3.solve31()
             self.n3.solve30()
             
             
     def solve(self, gridnum = gridnum, save = False):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
     
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -1609,6 +1871,9 @@ class AmplitudeAlpha():
         self.v11_A_star.name = 'v11_A_star'
         self.v11_A_star['g'] = self.v11_A['g'].conj()
         
+        self.v11_A_x = self.v11_A.differentiate(0)
+        self.v11_A_xx = self.v11_A_x.differentiate(0) # new 1/23/15, needed for b_rhs
+        
         self.v11_A_star_x = self.v11_A_star.differentiate(0)
         self.v11_A_star_xx = self.v11_A_star_x.differentiate(0)
         
@@ -1641,17 +1906,50 @@ class AmplitudeAlpha():
         
         self.v20_utwiddle_x = self.v20_utwiddle.differentiate(0)
         
+        # va star
+        self.va_psi_star = domain.new_field()
+        self.va_psi_star.name = 'va_psi_star'
+        self.va_psi_star['g'] = self.va.psi['g'].conj()
+        
+        self.va_u_star = domain.new_field()
+        self.va_u_star.name = 'va_u_star'
+        self.va_u_star['g'] = self.va.u['g'].conj()
+        
+        self.va_A_star = domain.new_field()
+        self.va_A_star.name = 'va_A_star'
+        self.va_A_star['g'] = self.va.A['g'].conj()
+        
+        self.va_B_star = domain.new_field()
+        self.va_B_star.name = 'va_B_star'
+        self.va_B_star['g'] = self.va.B['g'].conj()
+        
         # a = <va . D V11*>
-        a_psi = self.va.psi*(self.v11_psi_star_xx - self.Q**2*self.v11_psi_star)
+        #a_psi = self.va.psi*(self.v11_psi_star_xx - self.Q**2*self.v11_psi_star)
+        a_psi_rhs = self.v11_psi_xx - self.Q**2*self.v11_psi
+        a_psi_rhs = a_psi_rhs.evaluate()
+        
+        a_psi_rhs_star = domain.new_field()
+        a_psi_rhs_star.name = 'a_psi_rhs_star'
+        a_psi_rhs_star['g'] = a_psi_rhs['g'].conj()
+        
+        #a_psi = self.va.psi*a_psi_rhs_star + self.va_psi_star*a_psi_rhs # test 6/10/15
+        #a_psi = self.va.psi*a_psi_rhs#_star
+        a_psi = self.va_psi_star*a_psi_rhs#_star
         a_psi = a_psi.evaluate()
         
-        a_u = self.va.u*self.v11_u_star#(self.v11_u_star_xx - self.Q**2*self.v11_u_star)
+        #a_u = self.va.u*self.v11_u_star + self.va_u_star*self.v11_u
+        #a_u = self.va.u*self.v11_u#_star
+        a_u = self.va_u_star*self.v11_u#_star
         a_u = a_u.evaluate()
         
-        a_A = self.va.A*self.v11_A_star#(self.v11_A_star_xx - self.Q**2*self.v11_A_star)
+        #a_A = self.va.A*self.v11_A_star + self.va_A_star*self.v11_A
+        #a_A = self.va.A*self.v11_A#_star
+        a_A = self.va_A_star*self.v11_A#_star
         a_A = a_A.evaluate()
         
-        a_B = self.va.B*self.v11_B_star#(self.v11_B_star_xx - self.Q**2*self.v11_B_star)
+        #a_B = self.va.B*self.v11_B_star + self.va_B_star*self.v11_B
+        #a_B = self.va.B*self.v11_B#_star
+        a_B = self.va_B_star*self.v11_B#_star
         a_B = a_B.evaluate()
         
         aall = a_psi + a_u + a_A + a_B
@@ -1661,29 +1959,42 @@ class AmplitudeAlpha():
         a.name = 'a'
         a['g'] = aall['g']
         aa = a.integrate(x_basis)
-        self.a = aa['g'][0]
+        self.a = aa['g'][0]/2.0
         
         # c = <va . N31*>
-        c_psi = self.va.psi*self.N31_psi_star
-        c_psi = c_psi.evaluate()
+        #c_psi = self.va.psi*self.N31_psi_star + self.va_psi_star*self.n3.N31_psi
+        #c_psi = self.va.psi*self.n3.N31_psi#self.N31_psi_star
+        c_psi = self.va_psi_star*self.n3.N31_psi#self.N31_psi_star
+        c_psi = c_psi.evaluate() #testing
+        self.c_psi = c_psi
         
-        c_u = self.va.u*self.N31_u_star
+        #c_u = self.va.u*self.N31_u_star + self.va_u_star*self.n3.N31_u
+        #c_u = self.va.u*self.n3.N31_u#self.N31_u_star
+        c_u = self.va_u_star*self.n3.N31_u#self.N31_u_star
         c_u = c_u.evaluate()
+        self.c_u = c_u
         
-        c_A = self.va.A*self.N31_A_star
+        #c_A = self.va.A*self.N31_A_star + self.va_A_star*self.n3.N31_A
+        #c_A = self.va.A*self.n3.N31_A#self.N31_A_star
+        c_A = self.va_A_star*self.n3.N31_A#self.N31_A_star
         c_A = c_A.evaluate()
+        self.c_A = c_A
         
-        c_B = self.va.B*self.N31_B_star # N31 B_star and u_star are nan
+        #c_B = self.va.B*self.N31_B_star + self.va_B_star*self.n3.N31_B
+        #c_B = self.va.B*self.n3.N31_B#self.N31_B_star # N31 B_star and u_star were nan, fixed (dedalus version problem)
+        c_B = self.va_B_star*self.n3.N31_B#self.N31_B_star
         c_B = c_B.evaluate()
+        self.c_B = c_B
         
         call = c_psi + c_u + c_A + c_B
         call = call.evaluate()
+        self.call = call
         
         c = domain.new_field()
         c.name = 'c'
         c['g'] = call['g']
         cc = c.integrate(x_basis)
-        self.c = cc['g'][0]
+        self.c = cc['g'][0]/2.0
         
         # ctwiddle = < va . N31_twiddle_star > 
         c_twiddle_psi = 0j
@@ -1715,17 +2026,32 @@ class AmplitudeAlpha():
         cctwiddle = c_twiddle.integrate(x_basis)
         self.c_twiddle = cctwiddle['g'][0]
         
-        # b = < va . X v11* >
-        b_psi = self.va.psi*(2/self.beta)*self.v11_A_star
+        # b = < va . (X v11)* >
+        b_psi_rhs = (2/self.beta)*self.v11_A_xx
+        b_psi_rhs = b_psi_rhs.evaluate()
+        
+        b_psi_rhs_star = domain.new_field()
+        b_psi_rhs_star.name = 'b_psi_rhs_star'
+        b_psi_rhs_star['g'] = b_psi_rhs['g'].conj()
+        
+        #b_psi = self.va.psi*b_psi_rhs_star + self.va_psi_star*b_psi_rhs
+        #b_psi = self.va.psi*b_psi_rhs#_star
+        b_psi = self.va_psi_star*b_psi_rhs#_star
         b_psi = b_psi.evaluate()
         
-        b_u = self.va.u*(2/self.beta)*self.v11_B_star
+        #b_u = self.va.u*(2/self.beta)*self.v11_B_star + self.va_u_star*(2/self.beta)*self.v11_B
+        #b_u = self.va.u*(2/self.beta)*self.v11_B#_star
+        b_u = self.va_u_star*(2/self.beta)*self.v11_B#_star
         b_u = b_u.evaluate()
         
-        b_A = self.va.A*self.v11_psi_star
+        #b_A = self.va.A*self.v11_psi_star + self.va_A_star*self.v11_psi
+        #b_A = self.va.A*self.v11_psi#_star
+        b_A = self.va_A_star*self.v11_psi#_star
         b_A = b_A.evaluate()
         
-        b_B = self.va.B*self.v11_u_star
+        #b_B = self.va.B*self.v11_u_star + self.va_B_star*self.v11_u
+        #b_B = self.va.B*self.v11_u#_star
+        b_B = self.va_B_star*self.v11_u#_star
         b_B = b_B.evaluate()
         
         ball = b_psi + b_u + b_A + b_B
@@ -1735,23 +2061,27 @@ class AmplitudeAlpha():
         b.name = 'b'
         b['g'] = ball['g']
         bb = b.integrate(x_basis)
-        self.b = bb['g'][0]
+        self.b = bb['g'][0]/2.0
         
         # h = < va . (L2twiddle v11 - L1twiddle v21)* >
+        
         l2twiddlel1twiddle_psi = 3*1j*(2/self.beta)*self.Q*self.v11_A + 3*(2/self.beta)*self.Q**2*self.v21_A - (2/self.beta)*self.v21_A_xx - 6*self.Q**2*self.iR*self.v11_psi + 2*self.iR*self.v11_psi_xx + 4*1j*self.iR*self.Q**3*self.v21_psi - 4*self.iR*1j*self.Q*self.v21_psi_xx - 2*self.v21_u
         l2l1t_psi = l2twiddlel1twiddle_psi.evaluate()
         l2l1t_psi_conj = domain.new_field()
         l2l1t_psi_conj.name = 'l2l1t_psi_conj'
         l2l1t_psi_conj['g'] = l2l1t_psi['g'].conj()
-        h_psi = self.va.psi*l2l1t_psi_conj
+        #h_psi = self.va.psi*l2l1t_psi#_conj
+        h_psi = self.va.psi*l2l1t_psi_conj + self.va_psi_star*l2l1t_psi
         h_psi = h_psi.evaluate()
         
-        l2twiddlel1twiddle_u = -(2/self.beta)*self.v21_B - 2*1j*self.iR*self.Q*self.v21_u - (self.q - 2)*self.v21_psi + self.iR*self.v11_u
+        #l2twiddlel1twiddle_u = -(2/self.beta)*self.v21_B - 2*1j*self.iR*self.Q*self.v21_u - (self.q - 2)*self.v21_psi + self.iR*self.v11_u
+        l2twiddlel1twiddle_u = (2/self.beta)*self.v11_B - 1j*self.Q*(2/self.beta)*self.v21_B - 1j*self.Q*(self.q - 2)*self.v21_psi + self.iR*self.v11_u
         l2l1t_u = l2twiddlel1twiddle_u.evaluate()
         l2l1t_u_conj = domain.new_field()
         l2l1t_u_conj.name = 'l2l1t_u_conj'
         l2l1t_u_conj['g'] = l2l1t_u['g'].conj()
-        h_u = self.va.u*l2l1t_u_conj
+        #h_u = self.va.u*l2l1t_u#_conj
+        h_u = self.va.psi*l2l1t_u_conj + self.va_u_star*l2l1t_u
         h_u = h_u.evaluate()
         
         l2twiddlel1twiddle_A = self.iRm*self.v11_A - 2*1j*self.iRm*self.Q*self.v21_A - self.v21_psi
@@ -1759,7 +2089,8 @@ class AmplitudeAlpha():
         l2l1t_A_conj = domain.new_field()
         l2l1t_A_conj.name = 'l2l1t_A_conj'
         l2l1t_A_conj['g'] = l2l1t_A['g'].conj()
-        h_A = self.va.A*l2l1t_A_conj
+        #h_A = self.va.A*l2l1t_A#_conj
+        h_A = self.va.A*l2l1t_A_conj + self.va_A_star*l2l1t_A
         h_A = h_A.evaluate()
         
         l2twiddlel1twiddle_B = self.q*self.v21_A + self.iRm*self.v11_B - 2*1j*self.iRm*self.Q*self.v21_B - self.v21_u
@@ -1767,7 +2098,8 @@ class AmplitudeAlpha():
         l2l1t_B_conj = domain.new_field()
         l2l1t_B_conj.name = 'l2l1t_B_conj'
         l2l1t_B_conj['g'] = l2l1t_B['g'].conj()
-        h_B = self.va.B*l2l1t_B_conj
+        #h_B = self.va.B*l2l1t_B#_conj
+        h_B = self.va.B*l2l1t_B_conj + self.va_B_star*l2l1t_B
         h_B = h_B.evaluate()
         
         hall = h_psi + h_u + h_A + h_B
@@ -1777,10 +2109,11 @@ class AmplitudeAlpha():
         h.name = 'h'
         h['g'] = hall['g']
         hh = h.integrate(x_basis)
-        self.h = hh['g'][0]
+        self.h = hh['g'][0]/2.0
         
-        # g = < va . L3 v11 >
-        g_psi = self.va.psi*(2/self.beta)*self.v11_A
+        # g = < va . (L3 v11) * >
+        g_psi = self.va.psi*(2/self.beta)*self.v11_A + self.va_psi_star*(2/self.beta)*self.v11_A['g'].conj()
+        #g_psi = self.va.psi*(2/self.beta)*self.v11_A['g']#.conj()
         g_psi = g_psi.evaluate()
         
         g_u = 0j
@@ -1794,21 +2127,21 @@ class AmplitudeAlpha():
         g.name = 'g'
         g['g'] = gall['g']
         gg = g.integrate(x_basis)
-        self.g = gg['g'][0]
+        self.g = gg['g'][0]/2.0
         
         
         # print all the coefficients
-        print("a :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.a))
+        print("a :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.a))
         
-        print("c :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.c))
+        print("c :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.c))
         
-        print("c~ :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.c_twiddle))
+        print("c~ :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.c_twiddle))
         
-        print("b :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.b))
+        print("b :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.b))
         
-        print("h :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.h))
+        print("h :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.h))
         
-        print("g :", "{num.real:+0.05f} {num.imag:+0.05f}j".format(num=self.g))
+        print("g :", "{num.real:+10.5e} {num.imag:+10.5e}j".format(num=self.g))
         
         
 class AmplitudeBeta():
@@ -1825,8 +2158,9 @@ class AmplitudeBeta():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("amplitude beta params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("amplitude beta params: ", self.Q, self.Rm, self.Pm, self.q, self.beta, "norm = ", self.norm)
         
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
@@ -1837,10 +2171,10 @@ class AmplitudeBeta():
         
         if run == True:
         
-            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            self.va = AdjointHomogenous(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.va.solve(save = False, norm = True)
         
-            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            v1 = OrderE(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             v1.solve(save=False)
             
             if norm == True:
@@ -1863,7 +2197,7 @@ class AmplitudeBeta():
                 self.v11_A = v1.LEV.state['A']
                 self.v11_B = v1.LEV.state['B']
             
-            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            o2 = OrderE2(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             o2.solve20()
             o2.solve21(norm = norm)
             o2.solve22()
@@ -1900,11 +2234,14 @@ class AmplitudeBeta():
             self.n3.solve31()
             self.n3.solve30()
             
-            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+            self.o3 = OrderE3(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
             self.o3.solve()
             
             
     def solve(self, gridnum = gridnum, save = False):
+    
+        # norm keyword initiated in __init__
+        norm = self.norm
     
         self.gridnum = gridnum
         self.x = domain.grid(0)
@@ -1976,8 +2313,9 @@ class SolveAmplitudeAlpha():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print("saa params: ", self.Q, self.Rm, self.Pm, self.q, self.beta)
+        print("saa params: ", self.Q, self.Rm, self.Pm, self.q, self.beta,"norm = ", self.norm)
         
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
@@ -1989,7 +2327,7 @@ class SolveAmplitudeAlpha():
         self.gridnum = gridnum
 
         # obtain amplitude coefficients
-        self.alpha_amp = AmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+        self.alpha_amp = AmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         self.alpha_amp.solve()
         
         #MagSq = operators.MagSquared
@@ -2004,7 +2342,14 @@ class SolveAmplitudeAlpha():
         #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSquared(alpha)")
         #problem.add_equation("a*dt(alpha) + b*alphaZ - h*dZ(alphaZ) - g*1j*Q**3*alpha = -c*alpha*MagSq(alpha)")
         #problem.add_equation("-(a/c)*dt(alpha) - (b/c)*alphaZ + (h/c)*dZ(alphaZ) + (g/c)*1j*Q**3*alpha = alpha*Absolute(alpha**2)")
+        
+        #print("changed sign of b")
         problem.add_equation("ac*dt(alpha) + bc*1j*Q*alpha - hc*dZ(alphaZ) - gc*1j*Q**3*alpha = alpha*Absolute(alpha**2)") #fixed to be gle
+        
+        #problem.add_equation("ac*dt(alpha) - bc*1j*Q*alpha - hc*dZ(alphaZ) = alpha*Absolute(alpha**2)") #fixed to be gle
+        
+        
+        #problem.add_equation("ac*dt(alpha) - bc*1j*Q*alpha - hc*dZ(alphaZ) = alpha*Absolute(alpha**2)") #fixed to be gle
         problem.add_equation("alphaZ - dZ(alpha) = 0")
         
         
@@ -2034,7 +2379,7 @@ class SolveAmplitudeAlpha():
         # stopping criteria
         solver.stop_sim_time = np.inf
         solver.stop_wall_time = np.inf
-        solver.stop_iteration = 5000
+        solver.stop_iteration = 50000#0
         
         # reference local grid and state fields
         Z = domain.grid(0)
@@ -2043,7 +2388,7 @@ class SolveAmplitudeAlpha():
 
         # initial conditions ... plus noise!
         #noise = np.array([random.uniform(-1E-15, 1E-15) for _ in range(len(Z))])
-        alpha['g'] = 1# + noise
+        alpha['g'] = 1.0E-5 + 1.0E-5j #+ noise
         alpha.differentiate(0, out=alphaZ)
         
         # Setup storage
@@ -2051,7 +2396,7 @@ class SolveAmplitudeAlpha():
         t_list = [solver.sim_time]
 
         # Main loop
-        dt = 2e-3
+        dt = 2e-2#2e-3
         while solver.ok:
             solver.step(dt)
             if solver.iteration % 20 == 0:
@@ -2092,8 +2437,9 @@ class PlotContours():
         self.Pm = Pm
         self.q = q
         self.beta = beta
+        self.norm = norm
         
-        print(Q, Rm, Pm, q)
+        print(Q, Rm, Pm, q, gridnum)
         
         # inverse magnetic reynolds number
         self.iRm = 1./self.Rm
@@ -2104,7 +2450,7 @@ class PlotContours():
         
         self.gridnum = gridnum
         
-        self.saa = SolveAmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta)
+        self.saa = SolveAmplitudeAlpha(Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         #alpha_amp = AmplitudeAlpha()
         #beta_amp = AmplitudeBeta()
         
@@ -2157,17 +2503,21 @@ class PlotContours():
         self.V2_B = self.alpha_s**2*self.ei2qz*self.saa.alpha_amp.v22_B['g'] + (self.alpha_s*self.alpha_s.conj())*self.saa.alpha_amp.v20_B['g']*self.ei0qz
         self.V_B = self.eps*self.V1_B + self.eps**2*self.V2_B
         
-        ax1.pcolormesh(self.saa.alpha_amp.x, z, self.V_psi, cmap="RdBu")
+        cbar = ax1.pcolormesh(self.saa.alpha_amp.x, z, self.V_psi, cmap="RdBu")
         ax1.set_ylim(0, Lz - dz)
+        plt.colorbar(cbar, ax=ax1)
         
-        ax2.pcolormesh(self.saa.alpha_amp.x, z, self.V_u, cmap="RdBu")
+        cbar = ax2.pcolormesh(self.saa.alpha_amp.x, z, self.V_u, cmap="RdBu")
         ax2.set_ylim(0, Lz - dz)
+        plt.colorbar(cbar, ax=ax2)
         
-        ax3.pcolormesh(self.saa.alpha_amp.x, z, self.V_A, cmap="RdBu")
+        cbar = ax3.pcolormesh(self.saa.alpha_amp.x, z, self.V_A, cmap="RdBu")
         ax3.set_ylim(0, Lz - dz)
+        plt.colorbar(cbar, ax=ax3)
         
-        ax4.pcolormesh(self.saa.alpha_amp.x, z, self.V_B, cmap="RdBu")
+        cbar = ax4.pcolormesh(self.saa.alpha_amp.x, z, self.V_B, cmap="RdBu")
         ax4.set_ylim(0, Lz - dz)
+        plt.colorbar(cbar, ax=ax4)
         
     def plot_streams(self):
     
@@ -2204,9 +2554,9 @@ class PlotContours():
         
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, color = speed/speed.max(), cmap = "Purples")
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color="#660033")
-        
-        su.streamplot(ax2, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color = uymag/np.max(uymag), cmap = "RdBu")
-        plt.show()
+        print(speed.max(), np.max(uymag), np.nanmax(uymag))
+        su.streamplot(ax2, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color = uymag/np.nanmax(uymag), cmap = "RdBu")
+        #plt.show()
         
         pylab.savefig("vel1.png")
         
@@ -2248,7 +2598,7 @@ class PlotContours():
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, color = speed/speed.max(), cmap = "Purples")
         #su.streamplot(ax, self.saa.alpha_amp.x, z, self.V_ux1.real, self.V_uz1.real, linewidth = 3*speed/speed.max(), color="#660033")
         su.streamplot(ax3, self.saa.alpha_amp.x, z, self.V_Bx1.real, self.V_Bz1.real, color="#660033")
-        plt.show()     
+        #plt.show()     
         
         pylab.savefig("Bfield1.png")
 
@@ -2290,6 +2640,7 @@ def plot_uy_firstorder(pc_obj, oplot = True, labels = False, outname=outname):
         
     if outname:
         pylab.savefig("uy_firstorder_"+outname+".png")
+        #pylab.savefig("uy_firstorder_"+outname+".pdf")
     else:    
         pylab.savefig("uy_firstorder_Q2p3_Rm45.png")
         
@@ -2320,7 +2671,7 @@ def plot_uy_secondorder(pc_obj, oplot = True, labels = False, outname=outname):
         ax.set_ylabel("z (vertical)", size = 20)
         cbar.set_label(r"$u_y$ Perturbation", size = 20)
     
-    # only the first order perturbations
+    # only the second order perturbations
     V2_uz1 = pc_obj.eps**2*pc_obj.V2_uz1
     V2_ux1 = pc_obj.eps**2*pc_obj.V2_ux1
     
@@ -2335,6 +2686,7 @@ def plot_uy_secondorder(pc_obj, oplot = True, labels = False, outname=outname):
        
     if outname:
         pylab.savefig("uy_secondorder_"+outname+".png")
+        #pylab.savefig("uy_secondorder_"+outname+".pdf")
     else: 
         pylab.savefig("uy_secondorder_Q2p3_Rm45.png")
 
@@ -2351,9 +2703,14 @@ def plot_uy(pc_obj, oplot = True, labels = False, outname=outname):
     ax = fig.add_subplot(111)
     
     # set colorbar min/max to the same as firstorder
-    info1 = pc_obj.eps*pc_obj.V1_u
-    cbarmax = np.max(info1)
-    cbarmin = np.min(info1)
+    #info1 = pc_obj.eps*pc_obj.V1_u
+    #cbarmax = np.max(info1)
+    #cbarmin = np.min(info1)
+    
+    # set colorbar min/max to the same as secondorder
+    info2 = pc_obj.eps**2*pc_obj.V2_u
+    cbarmax = np.max(info2)
+    cbarmin = np.min(info2)
     
     info = ax.pcolormesh(pc_obj.saa.alpha_amp.x, z, pc_obj.V_u, cmap="RdBu_r", vmin = cbarmin, vmax = cbarmax)
     cbar = plt.colorbar(info)
@@ -2375,6 +2732,7 @@ def plot_uy(pc_obj, oplot = True, labels = False, outname=outname):
         
     if outname:
         pylab.savefig("uy_bothorders_"+outname+".png")
+        #pylab.savefig("uy_bothorders_"+outname+".pdf")
     else:
         pylab.savefig("uy_bothorders_Q2p3_Rm45.png")
         
@@ -2417,6 +2775,7 @@ def plot_By_firstorder(pc_obj, oplot = True, labels = False, outname=outname):
         
     if outname:
         pylab.savefig("By_firstorder_"+outname+".png")
+        #pylab.savefig("By_firstorder_"+outname+".pdf")
     else:
         pylab.savefig("By_firstorder_Q2p3_Rm45.png")
         
@@ -2455,6 +2814,7 @@ def plot_By_secondorder(pc_obj, oplot = True, labels = False, outname=outname):
         
     if outname:
         pylab.savefig("By_secondorder_"+outname+".png")
+        #pylab.savefig("By_secondorder_"+outname+".pdf")
     else:
         pylab.savefig("By_secondorder_Q2p3_Rm45.png")
 
@@ -2507,10 +2867,11 @@ def plot_By(pc_obj, oplot = True, labels = False, outname=outname):
 
     if outname:
         pylab.savefig("By_bothorders_"+outname+".png")
+        #pylab.savefig("By_bothorders_"+outname+".pdf")
     else:
         pylab.savefig("By_bothorders_Q2p3_Rm45.png")
 
-def plotN2(n2_obj):
+def plotN2(n2_obj, outname = outname):
 
     #fig = plt.figure(figsize=(16,4))
     fig = plt.figure(figsize=(10,8))
@@ -2548,9 +2909,12 @@ def plotN2(n2_obj):
     ax4.set_xlim(-1, 1)
 
     plt.tick_params(labelsize = 20)
+    
+    if outname:
+        pylab.savefig("N2_"+outname+".png")
 
     
-def plotN3(n3_obj):
+def plotN3(n3_obj, outname = outname):
 
     #fig = plt.figure(figsize=(16,4))
     fig = plt.figure(figsize=(10,8))
@@ -2589,8 +2953,10 @@ def plotN3(n3_obj):
 
     plt.tick_params(labelsize = 20)
     
+    if outname:
+        pylab.savefig("N3_"+outname+".png")
     
-def plotOE(oe_obj):
+def plotOE(oe_obj, outname = outname):
 
     fig = plt.figure(figsize=(10,8))
     
@@ -2621,5 +2987,23 @@ def plotOE(oe_obj):
     #ax4.plot(oe_obj.x, oe_obj.B.real, color="red")
     #ax4.set_title("Im($B_{1}$)")
     plt.tick_params(labelsize = 20)
+    
+    if outname:
+        pylab.savefig("OrderE_"+outname+".png")
+
+def find_nearest_above(my_array, target):
+    diff = my_array - target
+    
+    # Mask all nans and infs 
+    diff_masked = np.ma.masked_invalid(diff)
+
+    # Anything greater than or equal to target value
+    gt_target = np.ma.less_equal(diff_masked, 0 + 0j)
+
+    if np.all(gt_target):
+        return None # returns None if target is greater than any value
+    
+    final_arr = np.ma.masked_array(np.absolute(diff_masked), gt_target)
+    return final_arr.argmin()
     
     

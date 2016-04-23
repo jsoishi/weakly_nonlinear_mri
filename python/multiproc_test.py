@@ -33,7 +33,9 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
     params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(q), itertools.repeat(Co), np.arange(len(Qs))))
     print("Processing %10.5e parameter combinations" % len(Qs))
 
+
     with Pool(processes=nprocs) as pool:
+
         result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
 
         results = []
@@ -50,6 +52,7 @@ def Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch):
     print(result_dict)
     print("test: ", result_dict[0])
 
+    result
 
     pickle.dump(result_dict, open("multirun/Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+".p", "wb"))
 
@@ -327,22 +330,56 @@ if __name__ == '__main__':
     xi = 20.0#1.0
     x0 = 4.5#1.0 #for the hMRI, x0 = 4.5
 
-    dQ = 0.05
-    dRm = 0.005
-    #dQ = 0.005
+    Pm = 1.0E-1
+    q = 1.5
+    beta = 25.0
+    Co = 0.08
+
+    #dQ = 0.05
+    #dRm = 0.05
+    dQ = 0.005
+    dRm = 0.001
     #dRm = 0.5
     
     #big hmri search...
-    Rmsearch = np.arange(0.005, 0.5, dRm)
+    #Rmsearch = np.arange(0.005, 0.5, dRm)
     #Qsearch = np.arange(0.0001, 0.4, dQ)
     
     #Rmsearch = np.arange(0.015, 0.016, dRm)
     #Rmsearch = np.arange(0.005, 0.1, dRm) 
+
     Qsearch = np.arange(0.0, 1.5, dQ)
     Rmsearch = np.array([5.3,])
+
     #Pmrun_hmri(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch, xi, x0)
+
     Pmrun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)
 
+
+    Qsearch = np.arange(0.5, 0.9, dQ)
+    Rmsearch = np.arange(4.7, 5.1, dRm)
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-2
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-3
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-4
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-5
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-6
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-7
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
+    
+    Pm = 5.0E-8
+    Pmrun(Pm, q, Co, dQ, dRm, Qsearch, Rmsearch)
     
     """
     Betarun(Pm, q, beta, dQ, dRm, Qsearch, Rmsearch)

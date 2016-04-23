@@ -41,7 +41,7 @@
 \title{The Weakly Nonlinear Saturation of the Magnetorotational Instability}
 \author{Clark, S.E.\altaffilmark{1}}
 \author{Oishi, J.S. \altaffilmark{2,}\altaffilmark{3}}
-\author{Mac Low, M.-M.\altaffilmark{1,}\altaffilmark{2}}
+%\author{Mac Low, M.-M.\altaffilmark{1,}\altaffilmark{2}}
 \altaffiltext{1}{Department of Astronomy, Columbia University, New York, NY} 
 \altaffiltext{2}{Department of Astrophysics, American Museum of Natural History, New York, NY}
 \altaffiltext{3}{Department of Physics, SUNY Farmingdale}
@@ -55,14 +55,16 @@ The magnetorotational instability (MRI) is a fundamental process of accretion di
 
 \section{Introduction}
 
-For matter to accrete from a disk onto a central object, angular momentum must be transported radially outward in the disk. The transport mechanism is likely turbulent (\citei{Shakura:1973wg}). Since its discovery by \citeauthor{Chandrasekhar:1960wh} (\citeyear{Chandrasekhar:1960wh}) and subsequent rediscovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}), the MRI remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field destabilizes the disk gas, driving turbulence and angular momentum transport.
+For matter to accrete from a disk onto a central object, angular momentum must be transported radially outward in the disk. The transport mechanism is likely turbulent (\citei{Shakura:1973wg}). Since its discovery by \citeauthor{Chandrasekhar:1960wh} (\citeyear{Chandrasekhar:1960wh}) and subsequent rediscovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}), the MRI remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability in its simplest geometry arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field destabilizes the disk gas, driving turbulence and angular momentum transport.
 
-The MRI evolves via a period of linear growth, followed by nonlinear saturation. The nonlinear evolution of the MRI is a complex process, and an understanding of the mechanism by which the MRI saturates remains elusive. Most previous works on MRI saturation have studied the problem in simulation. Indeed, only a few works have tackled MRI saturation analytically. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They find that this saturation proceeds via modification of the background shear. Another notable analytic work is that of \citeauthor{Pessah:2010ic} (\citeyear{Pessah:2010ic}), who presents an analysis of MRI saturation via secondary instabilities. This work suggests that MRI saturation can be caused by parasitic instabilities growing off of the primary MRI modes, in particular by Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime.
+The MRI evolves via a period of linear growth, followed by nonlinear saturation. The nonlinear evolution of the MRI is a complex process, and an understanding of the mechanism by which the MRI saturates remains elusive. Several possible saturation avenues are available to the MRI. The instability could saturate via a reduction in the background shear (e.g. \citei{Umurhan:2007hs}), cutting off the supply of free energy on which the instability feeds. Similarly, the instability could pour its free energy into the magnetic field, and saturate via field generation (e.g. \citei{Ebrahimi:2009ey}). Saturation may also occur via ``parasite" instabilities, which feed off and destroy primary MRI modes (\citei{Goodman:1994ul}).
+
+Most previous works on MRI saturation have studied the problem in simulation. Indeed, only a few works have tackled MRI saturation analytically. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They find that this saturation proceeds via modification of the background shear. Another notable analytic work is that of \citeauthor{Pessah:2010ic} (\citeyear{Pessah:2010ic}), who presents an analysis of MRI saturation via the above mentioned secondary instabilities. This work suggests that MRI saturation can be caused by parasitic Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime.
 
 %examples of simulations papers
 %more mention of other analytic works
 
-This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime. The present work adds to this foundation both in subject, with our additional analysis of the helical MRI, as well as in scope, with a detailed analysis of MRI saturation properties across parameter space. In particular, we attempt to elucidate the role of boundary layers in the saturation of the MRI, as this is of fundamental importance to laboratory MRI work.
+This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime. The present work adds to this foundation both in subject, with our additional analysis of the helical MRI, as well as in scope, with a detailed analysis of MRI saturation properties across parameter space and the comparison of weakly nonlinear analytic work to strongly nonlinear simulation. In particular, we attempt to elucidate the role of boundary layers in the saturation of the MRI, as this is of fundamental importance to laboratory MRI work.
 
 We develop this investigation with the goal of providing a rigorous analytical framework that will be used to make predictions for laboratory MRI experiments. Observing MRI in a laboratory setting would open a new avenue for studying MRI dynamics and saturation. In recent years much experimental progress has been made, although no experiment has yet yielded a confirmed detection. Of most immediate interest to this work is the Princeton Plasma Physics Laboratory (PPPL) MRI experiment, which has a design roughly analogous to the set-up investigated here (see \S\ref{sec:setup} for further details). The Madison plasma dynamo experiment is a multi-purpose plasma device which may be a vehicle for MRI studies in the near future (\citei{Cooper:2013to}). The helical MRI, an instability related to the standard MRI but easier to excite in the laboratory, is the focus of the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE) in Dresden. PROMISE has already detected helical MRI in the laboratory (e.g. \citei{Stefani:2006iv}), and we discuss possible applications of our framework to the helical MRI in \S\ref{discussion}. A spherical Couette experiment claimed to have detected MRI in 2004 (\citeauthor{Sisan:2004ig}), but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}; \citei{Gissinger:2011td}).
 
@@ -89,6 +91,7 @@ We analyze a magnetized Taylor Couette flow, representing a differentially rotat
 where $q$, the shear parameter, is $3/2$ for Keplerian rotation. The initial background magnetic field is
 
 \beq
+\label{backgroundfield1}
 \mathbf{B} = B_0 \hat{z},
 \eeq
 
@@ -124,7 +127,16 @@ and the induction equation,
 \partial_t \mathbf{B} = \nabla \times \left(\mathbf{u} \times \mathbf{B}\right) + \eta\nabla^2\mathbf{B}.
 \eeq
 
-In the above, $\nu$ is the kinematic viscosity, $\eta$ is the microscopic diffusivity, the current density $\mathbf{J} = \frac{2}{\beta}\Phi\times\mathbf{B}$, and $\nabla\Phi$ is the gravitational force per unit mass. Equations \ref{momentum} and \ref{induction} are subject to the magnetic solenoid and incompressibility constraints,
+In the above, $P$ is the gas pressure, $\nu$ is the kinematic viscosity, $\eta$ is the microscopic diffusivity, $\nabla\Phi$ is the gravitational force per unit mass, and the current density is
+
+\beq
+%\mathbf{J} = \frac{2}{\beta}\nabla\times\mathbf{B}.
+\mathbf{J} = \nabla\times\mathbf{B},.
+\eeq
+
+in units where the permittivity of free space is unity.
+
+Equations \ref{momentum} and \ref{induction} are subject to the magnetic solenoid and incompressibility constraints,
 
 \beq
 \nabla \cdot \mathbf{B} = 0
@@ -162,7 +174,7 @@ v_A^2 = \frac{B_0^2}{\rho_0}.
 
 The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the nondimensional, perturbed quantities.
 
-We define the flux function $A$ and streamfunction $\Psi$. $A$ is the familiar two-dimensional vector potential. $A$ and $\Psi$ are scalar fields defined as the curl of the magnetic field and velocity, respectively, and so automatically satisfy our constraints.
+We define the flux function $A$ and streamfunction $\Psi$. $A$ is the familiar two-dimensional vector potential. $A$ and $\Psi$ are scalar fields. The curl of $A$ and the curl of $\Psi$ are defined as the magnetic field and velocity, respectively, and so $A$ and $\Psi$ automatically satisfy our constraints.
 
 $A$ is thus related to the magnetic field as
 
@@ -290,12 +302,12 @@ J(\Psi, B_{y}) - J(A, u_{y}) \\
 
 We conduct a formal multiscale analysis. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on fast and slow scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for axisymmetric perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$ (Appendix \ref{app:dispersion}). The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are
 
-\begin{figure}[h!]
-\centering
-\includegraphics[trim=6cm 3cm 3cm 0cm, scale=0.35]{slowfast.eps}
-\caption{Cartoon illustrating fast and slow-moving variables (Equation \ref{scalings}).}\label{allorders_velocity}
-\label{figscalings}
-\end{figure}
+%\begin{figure}[h!]
+%\centering
+%\includegraphics[trim=6cm 3cm 3cm 0cm, scale=0.35]{slowfast.eps}
+%\caption{Cartoon illustrating fast and slow-moving variables (Equation \ref{scalings}).}\label{allorders_velocity}
+%\label{figscalings}
+%\end{figure}
 
 \begin{figure*}
 \centering
@@ -307,7 +319,8 @@ We conduct a formal multiscale analysis. Our perturbations are characterized in 
 X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t.
 \eeq
 
-See Figure \ref{figscalings}. Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. In analogy to these problems, we posit slow variation in both $Z$ and $T$. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
+%See Figure \ref{figscalings}. 
+Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. In analogy to these problems, we posit slow variation in both $Z$ and $T$. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
 
 The multiple scale dependencies of our solution are encoded into an ansatz for the linear MRI solution at marginality,
 
@@ -385,15 +398,15 @@ To $\mathcal{O}(\epsilon^3)$,
 \begin{multline}
 \label{ordere3}
 \mathcal{D}\partial_T \mathbf{V_1} \, + \, \mathbf{N_3} \, = \, \mathcal{L} \mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} \, \\
-- \partial_Z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1}.
+- \partial_z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1}.
 \end{multline}
 
 In the above, we find that $\mathbf{V_2}$ takes the form
 
 \beq
 \begin{split}
-\mathbf{V_2} \, & = \, \alpha^2 e^{i2Qz} \mathbb{V}_{22}(x) \, + \, \left|\alpha\right|^2 \mathbb{V}_{20}(x) \, \\
-&- \, \partial_Z \alpha \mathbb{V}_{21}(x) e^{iQz} \,- \, \partial_Z \beta \mathbb{U}_{20}(x) + c.c.
+\mathbf{V_2} \, & = \, \alpha^2 e^{i2 k_c z} \mathbb{V}_{22}(x) \, + \, \left|\alpha\right|^2 \mathbb{V}_{20}(x) \, \\
+&- \, \partial_Z \alpha \mathbb{V}_{21}(x) e^{i k_c z} \,- \, \partial_Z \beta \mathbb{U}_{20}(x) + c.c.
 \end{split}
 \eeq
 
@@ -431,9 +444,9 @@ where, again, $\mathbb{V}^\dagger$ contains the radial contribution. The elimina
 
 \beq
 \begin{split}
-& \mathcal{D} \mathbb{V}_{11} e^{iQz}\partial_T \alpha \, + \, \alpha \left| \alpha^2 \right| \mathbf{N}_{31} e^{iQz} \, + \, \alpha \partial_Z \beta \widetilde{\mathbf{N}}_{31} e^{iQz} \, =  \\
-& \, - \partial_Z^2 \alpha \widetilde{\mathcal{L}}_1 \mathbb{V}_{21} e^{iQz} \, + \, \partial_Z^2 \alpha \widetilde{\mathcal{L}}_2 \mathbb{V}_{11} e^{iQz} \, - \, \partial_Z \alpha \mathbb{V}_{11}\mathcal{X}e^{iQz} \, \\
-& + \, iQ^3 \alpha \mathcal{L}_3 \mathbb{V}_{11} e^{iQz}.
+& \mathcal{D} \mathbb{V}_{11} e^{i k_c z}\partial_T \alpha \, + \, \alpha \left| \alpha^2 \right| \mathbf{N}_{31} e^{i k_c z} \, + \, \alpha \partial_Z \beta \widetilde{\mathbf{N}}_{31} e^{i k_c z} \, =  \\
+& \, - \partial_Z^2 \alpha \widetilde{\mathcal{L}}_1 \mathbb{V}_{21} e^{i k_c z} \, + \, \partial_Z^2 \alpha \widetilde{\mathcal{L}}_2 \mathbb{V}_{11} e^{i k_c z} \, - \, \partial_Z \alpha \mathbb{V}_{11}\mathcal{X}e^{i k_c z} \, \\
+& + \, i k_c^3 \alpha \mathcal{L}_3 \mathbb{V}_{11} e^{i k_c z}.
 \end{split}
 \eeq
 
@@ -493,23 +506,147 @@ but both $k$ and $p$ are equal to zero. Thus this amplitude equation decouples f
 
 Equation \ref{ampeq1} is an amplitude equation -- a function of the slow variables $Z$ and $T$. We solve this initial value problem using Dedalus to obtain the asymptotic behavior of $\alpha$. This is the saturation amplitude. We use the saturation amplitude as $\alpha$ and the radial component of computed on the Chebyshev grid to plot $\mathbf{V}$. We show both first order ($\epsilon\mathbf{V}_1$), second order ($\epsilon^2\mathbf{V}_2$), and combined first and second order fluid perturbations ($\epsilon\mathbf{V}_1$ + ($\epsilon^2\mathbf{V}_2$). Figure \ref{allorders_velocity} shows the velocity perturbations, and Figure \ref{allorders_Bfield} shows the magnetic field perturbations.
 
-Our analytic formulation is advantageous because we can now analyze the contributions of each fluid quantity at each order. This allows us to directly identify the source of saturation. Equation \ref{ampeq1} asymptotically approaches a value, so the system is clearly saturating, and our approach now allows us to quantify the individual contribution of each term. In Figure \ref{allorders_velocity}, we see significant fluid action in the second-order velocity plot. By contrast, the second-order magnetic field perturbations are two orders of magnitude smaller than the first-order perturbations (Figure \ref{allorders_Bfield}). It appears that the second-order velocity perturbations are instrumental in the saturation of the MRI. The likely mechanism is a reduction in the background shear. 
+Our analytic formulation is advantageous because we can now analyze the contributions of each fluid quantity at each order. This allows us to directly identify the source of saturation. Equation \ref{ampeq1} asymptotically approaches a value, so the system is clearly saturating, and our approach now allows us to quantify the individual contribution of each term. In Figure \ref{allorders_velocity}, we see significant fluid action in the second-order velocity plot. By contrast, the second-order magnetic field perturbations are two orders of magnitude smaller than the first-order perturbations (Figure \ref{allorders_Bfield}). 
+
+The role of the boundary layers changes with Pm. As Pm decreases, the width of the boundary layer becomes increasingly narrow (Figure \ref{u_secondorder_by_Pm}). The geometry of the velocity in the $x-z$ plane begins as a series of MRI ``cells" whose structure is radially narrow in the bulk of the flow. As Pm is decreased, the saturation geometry of the central cells stretches radially, until at Pm $\sim 10^{-5}$ the bulk cells dominate the flow. The relative importance of the $u_y$ second order perturbation to the first order perturbation increases as well (CHECK, PLOT).
+
+\begin{figure*}[h]
+\centering
+\includegraphics[trim=2cm 0cm 6cm 0cm, scale=0.4]{u_secondorder_by_Pm_2.eps}
+\caption{(Placeholder) The evolution of the second-order velocity perturbations by Pm.}\label{allorders_velocity}
+\label{u_secondorder_by_Pm}
+\end{figure*}
+
+%It appears that the second-order velocity perturbations are instrumental in the saturation of the MRI. The likely mechanism is a reduction in the background shear. 
+
+We plot the total stress, or the sum of the Reynolds and Maxwell stresses, 
+
+\beq
+\mathbb{T}(x, z) = u_x u_y - \frac{2}{\beta} B_x B_y.
+\eeq
+
+See Figure \ref{stress_uy_cuts}.
+
+From the behavior of the second order velocity perturbations (Figure \ref{stress_uy_cuts}) in the bulk of the flow (i.e. apart from the boundary layers), we gather that the MRI is saturating via a background shear reduction. Recall that the linear shear profile means that the background shear is positive for negative values of $x$ and negative for positive values of $x$. Thus Figure \ref{stress_uy_cuts} shows the azimuthal velocity perturbations resisting the background shear in the bulk of the flow.
+
+\begin{figure*}
+\centering
+\includegraphics[trim=6cm 4cm 6cm 3cm, scale=0.5]{stress_uy_cuts.pdf}
+\caption{(Placeholder) The total stress (left) and vertical cuts of the azimuthal velocity perturbations (right). The $u_y$ perturbations shown are first order (purple), second order (orange), and total (black). The blue shaded area represents the region where the second order and total perturbations are opposing the background shear because they are negative, and the red shaded region indicates where the second order and total perturbations are opposing the background shear because they are positive.}\label{allorders_velocity}
+\label{stress_uy_cuts}
+\end{figure*}
 
 \section{Parameter Space}\label{sec:pspace}
 
-We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. This analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of [TBD!].
+We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. Because we solve spectrally in only one dimension, rather than in two or three, our analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of $10^{-6}$ or lower.
 
-\section{Discussion}\label{discussion}
-
-Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment (\citei{Ji:2001kd}). A challenge for all MRI experiments is to reduce all extraneous flows which may stabilize the MRI or obscure its detection. In particular, care must be taken to mitigate meridional flows introduced by the endcaps of the experimental apparatus. The PPPL MRI experiment employs a novel design using concentric, differentially rotating rings as endcaps (\citei{Schartman:2009df}). In this investigation, we use periodic vertical boundary conditions, so our set-up represents an idealized domain where endcap contamination does not exist. Future work will address specifically our predictions for the PPPL MRI experiment.
+\section{Simulations}
 
 We compute the solutions to our derived equations pseudospectrally, using Dedalus. One advantage to using Dedalus for these computations is that the code can compute the evolution of the fully nonlinear MRI system on the same Fourier/Chebyshev grid. This allows us to directly compare simulation and theory. 
 
 % Jeff's sims!!!!!
 
+\section{Helical MRI}
+
+The configuration investigated thus far, that of magnetized Taylor Couette flow with a purely axial magnetic field, constitutes the standard MRI. The helical MRI (HMRI) is a related, but separate, MHD instability, first identified by Hollerbach and R\"udiger (\citeyear{Hollerbach:2005tr}). It arises in the presence of combined axial and azimuthal fields. 
+
+We initialize the helical MRI by adding a constant background toroidal field to Equation \ref{backgroundfield1}, such that our initial magnetic field structure becomes
+
+\beq
+\mathbf{B} = B_0 \hat{z} + \xi B_0 \hat{y},
+\eeq 
+
+where $\xi$ is a dimensionless parameter representing the relative strength of the axial field and the vertical field.
+
+This addition leaves Equations \ref{eqset2} - \ref{eqset4} unchanged, but Equation \ref{eqset1} gains a term to become
+
+\begin{multline}
+\label{eqset1_hmri}
+\partial_t \nabla^2 \Psi \, = \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, + \, 2 \partial_z u_{y} \, - \xi B_0 \partial_x \partial_z B_{y}\\
+- \, J\left(\Psi, \nabla^2 \Psi\right) \, + \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi,
+\end{multline}
+
+in other words, the $\Psi$ equation picks up a linear $B_y$ term.
+
+Following the same prescription for weakly nonlinear tuning, multiscale expansion, and perturbation expansion, we find the equations for the HMRI up to order $\epsilon^3$.
+
+To $\mathcal{O}(\epsilon)$, we find 
+
+\beq
+\mathcal{L} \mathbf{V_1} + \xi B_0 \mathcal{H} \partial_z \mathbf{V_1} = 0
+\eeq
+
+To $\mathcal{O}(\epsilon^2)$,
+
+\beq
+\mathcal{L}\mathbf{V_2} = \mathbf{N_2} - \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1} + \xi \mathcal{H} \partial_z \mathbf{V_2} - \xi \mathcal{H}\partial_Z \mathbf{V_1}
+\eeq
+
+To $\mathcal{O}(\epsilon^3)$,
+
+\begin{multline}
+\mathcal{D}\partial_T \mathbf{V_1} \, + \, \mathbf{N_3} \, = \, \mathcal{L} \mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} \, \\
+- \partial_z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1} + \xi \mathcal{H} \partial_z \mathbf{V_3} - \xi \mathcal{H} \partial_Z \mathbf{V_2} + \xi \mathcal{H} \partial_z \mathbf{V_1}.
+\end{multline}
+
+In the above,
+
+\beq
+\mathcal{H} = \left[\begin{matrix}
+0 & 0 & 0 & \partial_x \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\ \end{matrix} \right].
+\eeq
+
+The first amplitude equation (\ref{ampeq1}) therefore becomes
+
+\begin{multline}
+\label{ampeq1_hmri}
+a \partial_T \alpha \, = - \, c \alpha \left|\alpha^2\right| \, - \, \widetilde{c} \alpha \partial_Z \beta \,  - b i k_c \alpha \, + \, h \partial_Z^2 \alpha \, \\
++ \, g i k_c^3 \alpha \, + \, q \xi \partial_Z^2 \alpha \, + \, w i k_c \xi \alpha,
+\end{multline}
+
+where
+
+\beq
+q = \left< \mathbb{V}^\dagger \cdot \left(\mathcal{H} \mathbb{V}_{21}\right)^* \right>,
+\eeq
+
+and
+
+\beq
+w = \left< \mathbb{V}^\dagger \cdot \left(\mathcal{H} \mathbb{V}_{11}\right)^*\right>.
+\eeq
+
+The second amplitude equation (\ref{ampeq2}) becomes
+
+\beq\label{ampeq2_hmri}
+\partial_T \beta = - m \partial_Z^2 \beta + \frac{1}{\reym} \partial_Z^2 \beta \, - \, s \xi 2 \left|\alpha\right|\partial_Z \alpha \, - \, f\xi\partial_Z^2 \beta,
+\eeq
+
+where
+
+\beq
+s = \left<\mathbb{U}_{11} \cdot \left(\mathcal{H}\mathbb{V}_{20}\right)^*\right>
+\eeq
+
+and
+
+\beq
+f = \left< \mathbb{U}_{11} \cdot \left(\mathcal{H}\mathbb{U}_{20}\right)^*\right>.
+\eeq
+
+If $s = 0$, as it is for the standard MRI, the two amplitude equations will again decouple.
+
+
+\section{Discussion}\label{discussion}
+
+Our domain is designed to be relevant to the design of the Princeton Plasma Physics Laboratory (PPPL) MRI experiment (\citei{Ji:2001kd}). A challenge for all MRI experiments is to reduce all extraneous flows which may stabilize the MRI or obscure its detection. In particular, care must be taken to mitigate meridional flows introduced by the endcaps of the experimental apparatus. The PPPL MRI experiment employs a novel design using concentric, differentially rotating rings as endcaps (\citei{Schartman:2009df}). In this investigation, we use periodic vertical boundary conditions, so our set-up represents an idealized domain where endcap contamination does not exist. Future work will address specifically our predictions for the PPPL MRI experiment.
+
 This work analyzes Taylor Couette flow in the thin-gap limit, where the channel width is radially narrow compared to its distance from the center of rotation. This simplifies the math by allowing curvature terms to drop out at lowest order. The relaxation of the thin-gap approximation is an obvious next step for this work. The term expansion in the weakly nonlinear analysis will be more formidable in the wide-gap regime, but could prove informative for comparison to experiments.
 
-The present configuration, that of magnetized Taylor Couette flow with a purely axial magnetic field, represents the initial conditions for the standard MRI. The helical MRI is a related, but separate, MHD instability, and was first discovered by Hollerbach and R\"udiger (\citeyear{Hollerbach:2005tr}). It arises in the presence of combined axial and azimuthal fields. To seed helical MRI in our current set-up, we need only add an azimuthal component to our initial background magnetic field. This will be an avenue of future study, and will yield an analytic theory relevant to the above-mentioned PROMISE experiment. 
+%The present configuration, that of magnetized Taylor Couette flow with a purely axial magnetic field, represents the initial conditions for the standard MRI. The helical MRI is a related, but separate, MHD instability, and was first discovered by Hollerbach and R\"udiger (\citeyear{Hollerbach:2005tr}). It arises in the presence of combined axial and azimuthal fields. To seed helical MRI in our current set-up, we need only add an azimuthal component to our initial background magnetic field. This will be an avenue of future study, and will yield an analytic theory relevant to the above-mentioned PROMISE experiment. 
 
 Our results suggest that the primary driver of saturation is reduction of the background shear. We note that while shear modification is relevant in the experimental regime, the gravitational pull of the central body will tend to enforce a Keplerian rotation profile in any astrophysical disk. Thus a modification of the rotation profile is of little relevance as a saturation mechanism to the astrophysical regime. Nevertheless, understanding laboratory MRI experiments is crucial for allowing experimental results to inform our astrophysical understanding of the MRI. %^this sentence sucks
 
@@ -619,13 +756,13 @@ N_{22}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11} - \partial_x \Psi_{11} \c
 
 \beq
 \begin{split}
-N_{20}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - k_c^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11}^* - i k_c^3 \Psi_{11}^*\right) \\
-& \frac{2}{\beta} \partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11}^* - i k_c^3 A_{11}^*\right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11}^* - k_c^2 \partial_x A_{11}^*\right)
+N_{20}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - k_c^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i k_c^3 \Psi_{11}^* - i k_c \partial_x^2 \Psi_{11}^*\right) \\
+& +\frac{2}{\beta} \partial_x A_{11} \cdot \left(i k_c^3 A_{11}^* - i k_c \partial_x^2 A_{11}^* \right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11}^* - k_c^2 \partial_x A_{11}^*\right)
 \end{split}
 \eeq
 
 \beq
-N_{20}^{(u)} = i k_c \Psi_{11} \cdot \partial_x u_{11}^* - \partial_x \Psi_{11} \cdot i k_c u_{11}^* - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11}^* + \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}^*
+N_{20}^{(u)} = i k_c \Psi_{11} \cdot \partial_x u_{11}^* + \partial_x \Psi_{11} \cdot i k_c u_{11}^* - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11}^* - \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}^*
 \eeq
 
 \beq
@@ -633,7 +770,7 @@ N_{20}^{(A)} = - i k_c A_{11} \cdot \partial_x \Psi_{11}^* - \partial_x A_{11} \
 \eeq
 
 \beq
-N_{20}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11}^* - \partial_x \Psi_{11} \cdot i k_c B_{11}^* - i k_c A_{11} \cdot \partial_x u_{11}^* + \partial_x A_{11} \cdot i k_c u_{11}^*
+N_{20}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11}^* + \partial_x \Psi_{11} \cdot i k_c B_{11}^* - i k_c A_{11} \cdot \partial_x u_{11}^* - \partial_x A_{11} \cdot i k_c u_{11}^*
 \eeq \\
 
 and the third order nonlinear terms become \\
@@ -659,6 +796,7 @@ N_{31}^{(u)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x u_{20}\right) + i k_c
 \end{split}
 \eeq
 
+%Correct -- checked 11/14/15
 \beq
 \begin{split}
 N_{31}^{(A)} =\, & -i k_c \left(A_{11}\cdot\partial_x \Psi_{20}\right) - i k_c \left(A_{11} \cdot \partial_x \Psi_{20}^*\right)
@@ -695,6 +833,9 @@ Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the U
 
 \bibitem[{Cooper et al.(2014)}]{Cooper:2013to}
 Cooper, C M, Wallace, J, Brookhart, M, Clark, M, Collins, C, Ding, W X, Flanagan, K, Khalzov, I, Li, Y, Milhone, J, Nornberg, M, Nonn, P, Weisberg, D, Whyte, D G, Zweibel, E, Forest, C B, Physics of Plasmas, 2013, 21, 013505
+
+\bibitem[{Ebrahimi et al.(2009)}]{Ebrahimi:2009ey}
+Ebrahimi, F., Prager, S.C., Schnack, D.D
 
 \bibitem[{Gissinger et al.(2011)}]{Gissinger:2011td}
 Gissinger, C, Ji, H, Goodman, J, Phys. Rev. E, 2011, 84, 026308

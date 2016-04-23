@@ -1,0 +1,883 @@
+\documentclass{paper}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\hyd}    {{\rm H}}
+\newcommand{\vobs}{v_{\rm obs}}
+\newcommand{\hi}{H{\sc i}~}
+\newcommand{\hii}{H{\sc ii}~}
+\newcommand{\hia}{H{\sc i}}
+\newcommand{\hiia}{H{\sc ii}}
+
+\usepackage[colorlinks,urlcolor=blue,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{gensymb}
+\usepackage{amsmath}
+\usepackage{color}
+%\usepackage{appendix}
+\usepackage[titletoc,title]{appendix}
+\usepackage{cleveref}
+\usepackage{mathtools}
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt}
+\setlength{\@fpsep}{0pt}
+\makeatother
+
+\newcommand{\citei}[1]{\citeauthor{#1} \citeyear{#1}}
+\newcommand{\unit}[1]{\textrm{ #1}}
+\newcommand{\kms}{km ${\rm s^{-1}}$}
+\newcommand{\kmsa}{km ${\rm s^{-1}}$}
+\newcommand{\citeia}[2]{\citeauthor{#1}~(\citeyear{#1};~#2)}
+
+\newcommand{\uphi}{\ensuremath{u_\phi}}
+\newcommand{\rhat}{\ensuremath{\mathbf{\hat{r}}}}
+\newcommand{\phihat}{\ensuremath{\mathbf{\hat{\phi}}}}
+\newcommand{\zhat}{\ensuremath{\mathbf{\hat{z}}}}
+\newcommand{\xhat}{\ensuremath{\mathbf{\hat{x}}}}
+\newcommand{\yhat}{\ensuremath{\mathbf{\hat{y}}}}
+
+\newcommand\reye{\mathrm{Re}}
+\newcommand\reym{\mathrm{Rm}}
+
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+
+\begin{document}
+
+\title{Notes on Wide Gap}
+
+\section{Base Flow}
+In a viscous, Taylor-Couette device, there is only one base state that
+satisfies no-slip boundary conditions and the Navier-Stokes
+equations. This is called Couette flow, and can be written as
+\begin{equation}
+  \label{eq:couette_flow}
+  \Omega(r) = a + \frac{b}{r^2},
+\end{equation}
+where $a = (\Omega_2 r^2_2 - \Omega_1 r^2_1)/(r^2_2 - r^2_1)$ and
+$b = r^2_1 r^2_2 (\Omega_1 - \Omega_2)/(r^2_2 - r^2_1)$. Here,
+$\Omega_1$ is the rotation rate at the inner cylinder radius $r_1$,
+and likewise for the outer cylinder $r_2$. 
+
+Keplerian flow is $\Omega \propto r^{-3/2}$; these appear to be
+incompatible. However, in Couette flow, we can approximate Keplerian
+flow by creating what is called ``quasi-Keplerian'' flow. 
+
+Defining $q \equiv -d \ln \Omega/d \ln r$, we can see that for Couette flow,
+\begin{equation}
+  \label{eq:couette_q}
+  q \equiv -\frac{d \ln \Omega}{d \ln r} = \frac{2 b}{a r^2 + b}.
+\end{equation}
+Thus, assuming $r_1$ and $r_2$ are fixed by the experiment, through
+judicious choices of $\Omega_1$ and $\Omega_2$, we can make
+$q(r_0) = 3/2$, where $r_0$ is some reference radius. Goodman \& Ji do
+exactly this with $\bar{\zeta}$.
+
+So, we have to choose $\Omega(r) = a + b/r^2$; everywhere it appears in our equations.
+
+\section{Basic Equations}
+\label{sec:equations}
+The so-called Stokes stream function, used in axisymmetric situations, is given by 
+\begin{equation}
+  \label{eq:stokes}
+  \mathbf{u} \, = \, \left[\begin{matrix}
+\frac{1}{r} \partial_z \psi\ \rhat\\
+\uphi \ \phihat\\
+-\frac{1}{r} \partial_r \psi\ \zhat\\
+\end{matrix}\right];
+\end{equation}
+here we define $A$ in the same way. \\
+
+Using the definitions in 
+
+\begin{multline}
+  \label{eq:psi}
+\partial_t \left[ \frac{1}{r} \left(\nabla^2 \psi - \frac{2 \partial_r \psi}{r} \right) \right] + \frac{1}{r^2} J(\psi, \nabla^2 A - \frac{2 \partial_r \psi}{r}) = \frac{\partial_z A}{r^3} \left( \nabla^2 A - \frac{2 \partial_r A}{r}\right) \\
++ \frac{1}{r} J\left(A,\frac{1}{r}\left( \nabla^2 A - \frac{2 \partial_r A}{r}\right)\right) - \frac{2 B_\phi \partial_z B_\phi}{r}\\
++ \nu \left\{ \nabla^2 \left[ \frac{1}{r} \left(\nabla^2 \psi - \frac{2 \partial_r \psi}{r}\right) \right]  -\frac{1}{r^2} \left(\nabla^2 \psi - \frac{2 \partial_r \psi}{r}\right) \right\}
+\end{multline}
+
+For the expanded form of the $\Psi$ equation, Susan gets:
+
+
+\begin{equation}
+  \label{eq:uy}
+\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} = \frac{J(A, B_\phi)}{r} + \frac{B_\phi \partial_z A}{r^2} + \nu \left( \nabla^2 \uphi - \frac{\uphi}{r}\right)
+\end{equation}
+
+%\begin{equation}
+ % \label{eq:A}
+%\partial_t A = \frac{1}{r} J(A, \psi) + \eta \left( \nabla^2 A - \frac{2 \partial_r A}{r} \right)
+%\end{equation}
+
+%Susan confirms correct (just switched eta -> 1/Rm)
+\beq
+ \label{eq:A}
+\partial_t A = \frac{1}{r} J(A, \psi) + \frac{1}{\reym} \left( \nabla^2 A - \frac{2 \partial_r A}{r} \right)
+%\partial_t A = \frac{1}{r} J(A, \Psi) + \frac{1}{Rm} \left[ -\frac{1}{r} \partial_r A + \partial_r^2 A + \partial_z^2 A\right]
+\eeq
+%Susan got:
+%beq
+%\partial_t A = \frac{2}{r} J(A, \Psi) + \frac{1}{Rm} \left[ \nabla^2 A - \frac{2}{r} \partial_r A \right]
+%\eeq
+%....will check.
+
+\begin{multline}
+  \label{eq:By} % Susan confirms correct 1/14/16
+\partial_t B_\phi = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)\\
++ \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A + \eta \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right)
+\end{multline}
+
+\section{Detailed Derivation of $\Psi$ Equation}
+The $\Psi$ equation, governing the x- and z-components of the velocity, is particularly tricky to derive so I will write out the steps here.
+
+1. Find $\rhat$ and $\zhat$ components of the momentum equation, i.e.:
+
+\beq
+\partial_t u_z + \left[u \cdot \nabla u \right]_z = \left[ \left( \nabla \times B \right) \times B \right]_z + \frac{1}{\reye}\left[ \nabla^2 u \right] _z
+\eeq
+
+We sub in our stream/flux function notation and expand the operators in cylindrical coordinates. Then take $\partial_r$ of the resulting equation to obtain:
+
+\begin{multline}
+\frac{1}{r^2} \partial_t \partial_r \Psi - \frac{1}{r} \partial_t \partial_r^2 \Psi - \frac{3}{r^4}\partial_z \Psi \partial_r \Psi + \frac{1}{r^3} \partial_r \left( \partial_z \Psi \partial_r \Psi \right) + \frac{2}{r^3} \partial_z \Psi \partial_r^2 \Psi - \frac{1}{r^2} \partial_r \left(\partial_z \Psi \partial_r^2 \Psi \right)\\
+- \frac{2}{r^3} \partial_r \Psi \partial_r\partial_z \Psi + \frac{1}{r^2} \partial_r \left(\partial_r \Psi \partial_r \partial_z \Psi\right) = \\
+\partial_r\left(B_\phi \partial_z B_\phi\right) + \frac{2}{r^3} \partial_z^2 A \partial_z A - \frac{1}{r^2} \partial_r \left(\partial_z^2 A \partial_z A\right) + \frac{3}{r^4} \partial_z A \partial_r A - \frac{1}{r^3} \partial_r \left(\partial_z A \partial_r A \right) - \frac{2}{r^3} \partial_z A \partial_r^2 A \\
++ \frac{1}{r^2} \partial_r \left(\partial_z A \partial_r^2 A \right) 
++ \frac{1}{\reye} \left[\frac{3}{r^4} \partial_r \Psi - \frac{3}{r^3} \partial_r^2 \Psi + \frac{2}{r^2} \partial_r^3 \Psi - \frac{1}{r} \partial_r^4 \Psi\right]
+\end{multline}
+
+Repeat this process for the $\rhat$ component of the momentum equation,
+
+\beq
+\partial_t u_r + \left[u \cdot \nabla u \right]_r = \left[ \left( \nabla \times B \right) \times B \right]_r + \frac{1}{\reye}\left[ \nabla^2 u \right] _r
+\eeq
+
+and take $\partial_z$ of the expanded equation to obtain
+
+\begin{multline}
+\frac{1}{r} \partial_t \partial_z^2 \Psi - \frac{1}{r^3} \partial_z \left(\partial_z \Psi \partial_z \Psi\right) + \frac{1}{r^2} \partial_z\left(\partial_z\Psi \partial_z\partial_r \Psi\right) - \frac{1}{r^2} \partial_z \left(\partial_r \Psi \partial_z^2 \Psi\right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi \\
+= - \frac{1}{r^2} \partial_z^3 A \partial_r A - \frac{1}{r^2} \partial_z^2 A \partial_r \partial_z A + \frac{2}{r^3} \partial_r\partial_z A \partial_r A - \frac{1}{r^2} \partial_r^2 \partial_z A \partial_rA - \frac{1}{r^2} \partial_r^2 A \partial_r \partial_z A \\
++ \frac{1}{\reye} \left[ -\frac{1}{r^2} \partial_z^2 \partial_r \Psi + \frac{1}{r} \partial_z^2 \partial_r^2 \Psi + \frac{1}{r} \partial_z^4\Psi \right]
+\end{multline}
+
+It is clear from the $\partial_t$ terms that we must combine these equations by subtracting the $\zhat$ equation from the $\rhat$ equation.
+
+When we do, we can simplify the LHS of the equation to:
+
+\beq
+\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi
+\eeq
+
+Note that the relevant quantity appears to be $\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi$, and that the $\frac{1}{r^2}$ in the second term cannot come out of the Jacobian (a point of disagreement with Jeff's equation above). Also I'm confused why Jeff's has no $u_\phi$ term. The RHS of this equation is significantly more complicated.
+
+RHS viscous term:
+
+\beq
+\frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right]
+\eeq
+
+Full $\Psi$ equation according to Susan:
+
+\begin{multline}
+\label{eq:Psi_unperturbed}
+\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi \\
+= J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\phi \partial_z B_\phi \\
++ \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right]
+\end{multline}
+
+Note that this is actually beautifully symmetric. Except the viscous term which still seems clunky.....
+
+The derivation of the non-viscous term on the righthand side of the momentum equation ($\mathbf{J} \times \mathbf{B}$) is as follows. 
+
+\beq
+\partial_z\left(\left[\left(\nabla \times B \right) \times B \right]_r\right) - \partial_r \left(\left[\left(\nabla \times B\right) \times B \right]_z\right)
+\eeq
+
+\beq
+= \partial_z\left(\left[\left(\partial_z B_r - \partial_r B_z \right) B_z - \left(\frac{1}{r}\partial_r\left(r B_\phi\right)\right) B_\phi \right] \right) - \partial_r \left(\left[\left(-\partial_z B_\phi\right)B_\phi - \left(\partial_z B_r - \partial_r B_z \right) B_r\right]\right)
+\eeq
+
+\begin{multline}
+= -\frac{1}{r^2} \partial_z^3 A \partial_r A + \frac{1}{r^3} \partial_r \partial_z A \partial_r A - \frac{1}{r^2} \partial_r^2 \partial_z A \partial_r A - \frac{2}{r^3} \partial_z^2 A \partial_z A \\
++ \frac{1}{r^2} \partial_z^2 \partial_r A \partial_z A + \frac{3}{r^4} \partial_r A \partial_z A - \frac{3}{r^3} \partial_r^2 A \partial_z A + \frac{1}{r^2} \partial_r^3 A \partial_z A - \frac{2}{r} B_\phi \partial_z B_\phi
+\end{multline}
+
+This simplifies to 
+
+\beq
+J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{r}B_\phi \partial_z B_\phi
+\eeq
+
+Full derivation of viscous term:
+
+\beq
+\partial_z \left(\frac{1}{\reye}\left[\nabla^2 u\right]_r\right) - \partial_r \left(\frac{1}{\reye}\left[\nabla^2 u\right]_z\right)
+\eeq
+
+\beq
+= \frac{1}{\reye}\left[\partial_z \left(\nabla^2 u_r - \frac{1}{r^2} u_r\right) - \partial_r \left(\nabla^2 u_z\right)\right]
+\eeq
+
+\begin{multline}
+= \frac{1}{\reye} \left[ - \frac{2}{r^2} \partial_z^2 \partial_r \Psi + \frac{2}{r} \partial_z^2 \partial_r^2 \Psi + \frac{1}{r} \partial_z^4 \Psi - \frac{3}{r^4} \partial_r \Psi + \frac{3}{r^3} \partial_r^2 \Psi - \frac{2}{r^2} \partial_r^3 \Psi + \frac{1}{r} \partial_r^4 \Psi \right]
+\end{multline}
+
+
+\section{Recovery of Narrow Gap Equations}
+\label{sec:narrow_gap_recovery}
+
+In order to recover the narrow gap, we take the transformation from dimensional, cylindrical coordinates $(\widetilde{r},\widetilde{z})$ to dimensioneless quantities $(x,z)$. In order to do so, we use $\widetilde{r} = r_0 (1 + \delta x)$, where $\delta = (r_{out} - r_{in})/r_0 \to 0$. Then, we recall that we must change all derivatives $\partial_{\widetilde{r}} \psi = \partial_x \psi \partial_{\widetilde{r}} x$ and likewise for $\partial_{\widetilde{z}}$. In order that the $x$ and $z$ parts of the equations come in at the same order, we must choose $\widetilde{z} = r_0 \delta z$. Then, $\partial_{\widetilde{r}} x = \delta^{-1}$ and $\partial_{\widetilde{z}} z = \delta^{-1}$. When you finally expand out all terms, you should see that everything that is not $\partial^2_x$ and $\partial^2_z$ will be at higher order in $\delta$, and thus will go to zero. For example, just taking the scalar Laplacian of $B_\phi$, 
+
+\begin{equation}
+  \nabla^2 B_\phi = \frac{1}{r} \frac{\partial}{\partial r}\left(r \frac{\partial \psi}{\partial r} \right) + \frac{\partial^2 \psi}{\partial z^2}
+\end{equation}
+
+gives
+
+\begin{equation}
+  \frac{1}{(1 + \delta x)} \delta^{-2} \partial_x \left[(1 + \delta x) \partial_x B_\psi \right] + \delta^{-2} \partial_z^2 B_\phi,
+\end{equation}
+and using the binomial expansion, 
+
+\begin{equation}
+  (1 - \delta x) \delta^{-2} \left(\partial_x^2 B_\psi + \delta \partial_x B_\psi + \delta x \partial_x^2 B_\psi \right) + \delta^{-2} \partial_z^2 B_\phi.
+\end{equation}
+
+When $\delta \to 0$, this leaves
+
+\begin{equation}
+  \partial_x^2 B_\phi + \partial_z^2 B_\phi,
+\end{equation}
+as expected. Of course, we'd also do $B_\phi \to B_y$ at the same time.
+
+Another operator we need is the curl $\nabla \times \mathbf{A}$,
+
+\beq
+\nabla \times \mathbf{A} = -\partial_{\widetilde{z}} A_\phi \rhat + \left(\partial_{\widetilde{z}} A_r - \partial_{\widetilde{r}} A_z \right) \phihat + \frac{1}{\widetilde{r}} \partial_{\widetilde{r}} \left( \widetilde{r} A_\phi\right) \zhat
+\eeq
+
+\beq
+= - \frac{1}{\delta} \partial_z A_\phi \rhat + \left(\frac{1}{\delta} \partial_z A_r - \frac{1}{\delta} \partial_x A_z\right) \phihat + \left(1 - \delta x\right) \frac{1}{\delta} \left(\partial_x A_\phi + \delta A_\phi + \delta x \partial_x A_\phi \right) \zhat
+\eeq
+
+Taking $\lim\limits_{\delta \to 0}$ of the above and changing variables $\phi \to y$, etc., we get
+
+\beq
+\nabla \times \mathbf{A} = -\partial_z A_y \xhat + \left(\partial_z A_x - \partial_x A_z\right) \yhat + \partial_x A_y \zhat
+\eeq
+
+The $u_\phi$ equation (Equation \ref{eq:uy}) reduces as follows:
+\begin{equation}
+\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} = \frac{J(A, B_\phi)}{r} + \frac{B_\phi \partial_z A}{r^2} + \nu \left( \nabla^2 \uphi - \frac{\uphi}{r}\right)
+\end{equation}
+
+\beq
+\begin{split}
+& \delta^{-2} \partial_t u_\phi + (1 - \delta r)\delta^{-2} J(\Psi, u_\phi) + (1 - 2\delta r)\delta^{-1} u_\phi \partial_z \Psi  = \\
+& (1 - \delta r)\delta^{-2} J(A, B_\phi) + (1 - 2\delta r)\delta^{-1} B_\phi \partial_z A + \\
+& \nu \left[(1 - \delta x) \delta^{-2} \left(\partial_x^2 u_\phi + \delta \partial_x u_\phi + \delta x \partial_x^2 u_\phi \right) + \delta^{-2} \partial_z^2 u_\phi \right] - \nu(1 - \delta r) u_\phi
+\end{split}
+\eeq
+
+\beq
+\partial_t u_\phi + J(\Psi, u_\phi) = J(A, B_\phi) + \nu(\partial_x^2 u_\phi + \partial_z^2 u_\phi)
+\eeq
+
+
+The $A$ equation reduces as follows. We also choose $\widetilde{t} = \delta^2 \Omega_0 t$ so that time comes in at the same order as the other dimensions...
+
+\beq
+\partial_t A = \frac{1}{r} J (A, \Psi) + \frac{1}{\reym} \left(\nabla^2 A - \frac{2}{r}\partial_r A \right)
+\eeq
+
+\beq
+\delta^{-2} \partial_t A = (1 - \delta x)\delta^{-2} J(A, \Psi) + \frac{1}{\reym} \left[(1 - \delta x) \delta^{-2} \left(\partial_x^2 A + \delta\partial_x A + \delta x \partial_x^2 A \right) + \delta^{-2} \partial_z^2 A - \frac{2}{\delta}(1 - \delta x) \partial_x A \right]
+\eeq
+
+This reduces to 
+
+\beq
+\partial_t A = J(A, \Psi) + \frac{1}{\reym} \nabla^2 A,
+\eeq
+
+which is the (unperturbed) thin-gap equation, when we drop all terms that are higher order than $\delta^{-2}$. Note that this means we have to drop terms of $\mathcal{O}(\delta^{-1})$, which means that this formalism cannot be applied to the perturbed equations (see Equation \ref{eq:A_perturbed}), because the term $B_0\partial_zA$ would drop out, but shouldn't. (??)
+
+The $B_\phi$ equation
+\begin{multline}
+\partial_t B_\phi = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)\\
++ \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A + \eta \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right)
+\end{multline}
+
+\beq
+\begin{split}
+\delta^{-2} \partial_t B_\phi  & = (1 - \delta r) \delta^{-2} J(A, u_\phi) + (1 - \delta r) \delta^{-2} J(B_\phi, \Psi) \\
+& + (1 - 2 \delta r) \delta^{-1} B_\phi \partial_z \Psi - (1 - 2 \delta r) \delta^{-1} u_\phi \partial_z A + \\
+& \eta\left[(1 - \delta x) \delta^{-2} \left(\partial_x^2 B_\phi + \delta \partial_x B_\phi + \delta x \partial_x^2 B_\phi \right) + \delta^{-2} \partial_z^2 B_\phi\right] - \eta (1 - 2\delta r) B_\phi
+\end{split}
+\eeq
+
+\beq
+\partial_t B_\phi = J(A, u_\phi) + J(B_\phi, \Psi) + \eta(\partial_x^2 B_\phi + \partial_z^2 B_\phi)
+\eeq
+
+The $\Psi$ equation (Equation \ref{eq:Psi_unperturbed}) reduces as follows
+
+\beq
+\begin{split}
+& (1 - \delta x) \delta^{-2} \left[(1 - \delta x) \delta^{-2} \left(\partial_x^2 \Psi + \delta \partial_x \Psi + \delta x \partial_x^2 \Psi \right) + \delta^{-2} \partial_z^2 \Psi - 2(1 - \delta x)\delta^{-1}\partial_x \Psi \right] \\
+& + \delta^{-2} J(\Psi, (1-2\delta x)\left((1 - \delta x) \delta^{-2} \left(\partial_x^2 \Psi + \delta \partial_x \Psi + \delta x \partial_x^2 \Psi \right) + \delta^{-2} \partial_z^2 \Psi - 2(1 - \delta x)\delta^{-1}\partial_x \Psi \right)) \\
+& - (1 - \delta x)2\delta^{-1} u_\phi \partial_z u_\phi \\
+& = \delta^{-2} J(A, (1 - 2 \delta)\left((1 - \delta x) \delta^{-2} \left(\partial_x^2 \Psi + \delta \partial_x \Psi + \delta x \partial_x^2 \Psi \right) + \delta^{-2} \partial_z^2 \Psi - 2(1 - \delta x) \delta^{-1} A \right)) \\
+& - 2(1 - \delta x)\delta^{-1} B_\phi \partial_z B_\phi + \frac{1}{\reye} \left[\delta^{-2}(\partial_x^2 + \delta \partial_x + \delta x \partial_x^2 + \partial_z^2)((1 - \delta x)(\partial_x^2\Psi + \delta \partial_x\Psi + \delta x \partial_x^2\Psi + \partial_z^2\Psi))\right] \\
+& + \frac{1}{\reye}\left[(1 - 3\delta x)\delta^{-2} \partial_x^2 \Psi - (1 - 4 \delta x)\delta^{-1}\partial_x \Psi \right]
+\end{split}
+\eeq
+
+The viscous term is
+
+\beq
+\frac{1}{\reye} (1 - 
+\eeq
+
+
+\section{Nondimensionalization}
+
+\subsection{Controlled gap width nondimensionalization}
+
+The idea is to parameterize the gap width rather than simply nondimensionalizing lengths by a point in the center of the channel $r_0$, as we did below.
+
+There are many ways to do this but one option is to define 
+
+\beq
+\widetilde{r} = r_0 + \widetilde{x}
+\eeq 
+
+Where tildes indicate dimensional quantities. Then for $\widetilde{x}$ to stay Cartesian, we need
+
+\beq
+\widetilde{r} - r_0 \ll r_2 - r_1 = d
+\eeq
+
+where $r_2 = r_1 = d$ is the gap width. Also define $\widetilde{x} \ll d$ and $d/r_0 << 1$ for the small gap approximation. Thus when we nondimensionalize,
+
+\beq
+r = \frac{\widetilde{r}}{r_0} = 1 + \frac{\widetilde{x}}{r_0}
+\eeq
+
+Note that we could control the gap width in terms of a small parameter $\epsilon x$ instead of a fraction $\frac{x}{r_0}$, but I believe both should work the same way.
+
+In the example Jeff worked out before, we looked at the base velocity profile in the thin gap limit. The rotation profile is given by $\Omega(r) = \Omega_0 r^{-q}$ in dimensionless quantities, and the background flow $u = r\Omega(r)$, so in our new notation:
+
+\beq
+u = \left(1 + \frac{\widetilde{x}}{r_0}\right) \Omega_0 \left(1 + \frac{\widetilde{x}}{r_0}\right)^{-q} = \Omega_0 \left(1 + \frac{\widetilde{x}}{r_0}\right)^{1-q}  
+\eeq
+
+Taylor expanding the exp(1-q) quantity, we arrive at
+
+\beq
+u = \Omega_0 \left(1 + \frac{\widetilde{x}}{r_0}\right) - \Omega_0 q \frac{\widetilde{x}}{r_0}
+\eeq
+
+Then if we define this with respect to a rest frame $\Omega_0 \left(1 + \frac{\widetilde{x}}{r_0}\right)$ and define a dimensionless $x = \widetilde{x}/r_0$, we get the Umurhan+ base flow $u = - \Omega_0 q x$. 
+
+This makes sense to me but I'm having trouble extending it to the actual equations. This implies, for example, that the term $\frac{1}{\eta} \nabla^2 B$, which in the $\hat{\phi}$ equation is
+
+\beq
+\left[\nabla^2 B\right]_\phi = \nabla^2 B_\phi - \frac{B_\phi}{r^2},
+\eeq
+
+should become 
+
+\beq
+\nabla^2 B_\phi - B_\phi \left(1 - \frac{2 \widetilde{x}}{r_0}\right)
+\eeq
+
+after substitution and Taylor expansion of the $r^{-2}$. But clearly there's no $- B_\phi \left(1 - \frac{2 \widetilde{x}}{r_0}\right)$ in the thin gap equation. What am I missing?? Is this not the right place to be substituting in the new definition of r??
+
+\subsection{Typical nondimensionalization}
+The momentum equation must be nondimensionalized. Here are the definitions of all of the dimensional components: 
+
+\begin{equation}
+\begin{multlined}
+\widetilde{u} = \Omega_0 r_0 \delta u \\
+\widetilde{x} = \delta r_0 x \\
+\widetilde{\nabla} = \frac{\nabla}{\delta r_0}\\
+\widetilde{t} = \frac{t}{\Omega_0}\\ 
+\widetilde{B} = B_0 B \\
+\widetilde{P} = P_0 P \\
+\widetilde{\rho} = \rho_0 \rho 
+\end{multlined}
+\end{equation}
+
+If we define the velocity scale $v_0$ as the local sound speed scale $\left(c_{s0} \equiv \sqrt{\frac{P_0}{\rho_0}}\right)$, then $\Omega_0 r_0 \delta = \sqrt{\frac{P_0}{\rho_0}}$.
+
+Nondimensionalizing the momentum equation and dividing by a factor of $\Omega_0^2 r_0 \delta$ yields
+
+\beq
+\partial_t \mathbf{u} + \mathbf{u}\cdot \mathbf{\nabla} \mathbf{u} = \frac{1}{4 \pi \rho} \frac{B_0^2}{\rho_0 \Omega_0^2 r_0^2 \delta^2} (\mathbf{\nabla}\times\mathbf{B})\times\mathbf{B} + \frac{1}{\reye}\nabla^2 \mathbf{u} - 2 \mathbf{\Omega} \times \mathbf{u} - \mathbf{\Omega} \times (\mathbf{\Omega} \times \mathbf{r})
+\eeq
+
+If we define
+
+\beq
+\beta \equiv \frac{P}{P_{mag}} = \frac{\rho_0 \Omega_0^2 r_0^2 8 \pi}{B_0^2}
+\eeq
+
+where $P_{mag} = \frac{B_0^2}{8 \pi}$, then the factor in front of $(\mathbf{\nabla}\times\mathbf{B})\times\mathbf{B} $ should be $\frac{2}{\beta}$. Agreed?
+
+\section{Perturbed Equations}
+
+We perturb the wide gap equations according to 
+
+\beq
+\mathbf{B} = B_0 \hat{z} + \mathbf{B_1},
+\eeq
+
+which is the same perturbation we used in the thin-gap construction. But wait! We perturbed the thin-gap equations according to 
+
+\beq
+\mathbf{u} = -q \Omega_0 r \hat{\phi} + \mathbf{u_1}
+\eeq
+
+but I don't think this is valid in the wide-gap case. To be sure, I'm going to perturb instead by 
+
+\beq
+\mathbf{u} = r\Omega(r)\hat{\phi}+ \mathbf{u_1}
+\eeq
+
+where $\Omega(r) = \Omega_0 \left(\frac{r}{r_0}\right)^{-q} = \Omega_0 \left(r\right)^{-q}$ in dimensionless coordinates (but keeping $\Omega_0$ to flag a rotational term...) Agreed?
+
+We also add the Coriolis and centrifugal terms $-2 \mathbf{\Omega} \times \mathbf{u} - \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r}\right)$ which expand as follows:
+
+\beq
+-2\Omega(r)\zhat \times \left( \mathbf{u_1} + r\Omega(r)\phihat\right) = -2\Omega(r)u_{r}\phihat + 2\Omega(r)u_\phi\rhat + 2r\Omega(r)^2\rhat
+\eeq
+
+\beq
+-\Omega(r)\zhat \times \left(\Omega(r)\zhat \times r\rhat\right) = +\Omega(r)^2 r \rhat
+\eeq
+
+The $\rhat$ terms will have $\partial_z$ applied to them, which will destroy the $3\Omega(r)^2 r \rhat$ term and so the righthand side of the $\Psi$ equation will ultimately gain only the term $2 \Omega(r) \partial_z u_\phi \rhat$. The $\phihat$ equation gains the term $-\frac{2}{r} \Omega(r) \partial_z \Psi$ on the righthand side. 
+
+The $\Psi$ equation becomes
+
+\begin{multline}
+\label{eq:Psi_perturbed}
+\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) + J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) - \frac{1}{r} 2 u_\phi \partial_z u_\phi - \partial_z\left(u_\phi \Omega(r) \right)\\
+= \frac{2}{\beta} J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{\beta} \frac{2}{r}B_\phi \partial_z B_\phi + 2 \Omega(r) \partial_z u_\phi \\
++ \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] + \frac{2}{\beta} \frac{1}{r}B_0 \partial_z \left(\nabla^2 A - \frac{2}{r} \partial_r A\right) 
+\end{multline}
+
+Note that one of the terms gained from the base state in the $(\mathbf{u}\cdot \nabla)\mathbf{u}$ term can be combined with the term gained from the Coriolis term, but here I write them separately so we can check the equation.
+Equation \ref{eq:uy} becomes
+
+\begin{multline}
+  \label{eq:uy_perturbed}
+\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} + \partial_z\Psi\left( \frac{2}{r}\Omega(r) + \partial_r \Omega(r) \right) = \\
+\frac{2}{\beta} \frac{J(A, B_\phi)}{r} + \frac{2}{\beta} \frac{B_\phi \partial_z A}{r^2} + \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{\uphi}{r}\right) + \frac{2}{\beta} B_0 \partial_z B_\phi -\frac{2}{r} \Omega(r) \partial_z \Psi
+\end{multline}
+
+%$\frac{2}{r} \partial_z \Psi \Omega(r) + \partial_z\Psi \partial_r \Omega(r)
+%=\partial_z\Psi\left( \frac{2}{r}\Omega(r) + \partial_r \Omega(r) \right)$
+
+%\begin{equation}
+ % \label{eq:uy_perturbed}
+%\partial_t \uphi + \frac{J(\psi, \uphi)}{r} + \frac{\uphi \partial_z \psi}{r^2} - \frac{2}{r}q \Omega_0 \partial_z \Psi= \frac{2}{\beta} \frac{J(A, B_\phi)}{r} + \frac{2}{\beta} \frac{B_\phi \partial_z A}{r^2} + \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{\uphi}{r}\right) + \frac{2}{\beta} B_0 \partial_z B_\phi
+%\end{equation}
+
+%The only term gained in the $(\hat{r}, \hat{z})$ component of the induction equation is $(B_0 \hat{z} \cdot \nabla) \mathbf{u_1}$, and 
+
+Equation \ref{eq:A} picks up $+\Omega(r) B_\phi$ from the term $- ({u_0}\hat{\phi} \cdot \nabla)\mathbf{B_1}$ and $-\Omega(r) B_\phi$ from the term $+(\mathbf{B_1} \cdot \nabla) \hat{\phi}$ and, so those cancel and the equation becomes
+
+\beq
+ \label{eq:A_perturbed}
+\partial_t A = \frac{1}{r} J(A, \psi) + \frac{1}{\reym} \left( \nabla^2 A - \frac{2 \partial_r A}{r} \right) + B_0 \partial_z \Psi
+\eeq
+
+Note that this is perfectly analogous to the thin-gap version of this equation.
+
+The $\hat{\phi}$ component of the induction equation, Equation \ref{eq:By}, becomes
+
+\begin{multline}
+  \label{eq:By_perturbed}
+\partial_t B_\phi = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)\\
++ \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A + \frac{1}{\reym} \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right) + B_0 \partial_z u_\phi + \partial_z A \left( \frac{2}{r}\Omega(r) + \partial_r \Omega(r) \right) %- \frac{1}{r} q \Omega_0 \partial_z A
+\end{multline}
+
+
+\section{Matrix Formulation}
+
+This is all pending a rigorous check of Equations \ref{eq:Psi_perturbed} - \ref{eq:By_perturbed}, which Jeff is working on, but I'll start putting this into a matrix construction.
+
+First, the nonlinear vector, on the lefthand side of the equation, is
+
+\beq\label{eq:nonlinearvector}
+\mathbf{N} = \left[\begin{matrix}
+J\left(\Psi, \frac{1}{r^2} \left(\nabla^2 \Psi - \frac{2}{r}\partial_r \Psi \right) \right) - \frac{2}{\beta} J \left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_r A\right)\right) - \frac{2}{r} u_\phi \partial_z u_\phi + \frac{2}{\beta} \frac{2}{r} B_\phi \partial_z B_\phi \\
+\frac{1}{r} J \left(\Psi, u_\phi\right) - \frac{1}{r} \frac{2}{\beta} J \left(A, B_\phi\right) + \frac{1}{r^2} u_\phi \partial_z \Psi - \frac{2}{\beta} \frac{1}{r^2} B_\phi \partial_z A \\
+-\frac{1}{r} J \left(A, \Psi\right)\\
+-\frac{1}{r} J \left(A, u_\phi\right) - \frac{1}{r} J \left(B_\phi, \Psi\right) - \frac{1}{r^2} B_\phi \partial_z \Psi + \frac{1}{r^2} u_\phi \partial_z A
+\end{matrix}\right] 
+\eeq
+
+Note that these differ from the thin-gap nonlinear terms not only because of the curvature terms in the Jacobians, but also because of the additional advective terms in all but the $\mathbf{A}$ equation.
+
+The $\partial_t$ terms are grouped together into 
+
+\beq
+\partial_t D = \partial_t \left[\begin{matrix}
+\frac{1}{r}\nabla^2 - \frac{2}{r^2} \partial_r & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{matrix}\right]
+\eeq
+
+For the righthand side of the equation, I'll follow the same process that I did with the thin-gap. That is I'll first separate the matrices by physical meaning, and then regroup terms based on $z$-dependence. The RHS can be described by three matrices: one representing the rotational terms, one representing the background field terms, and one representing the viscous/resistive terms.
+
+\begin{multline}
+RHS = \left[\begin{matrix}
+3 \Omega(r) \partial_z u_\phi \\
+-\frac{4}{r} \Omega(r)\partial_z \Psi - \partial_r \Omega(r) \partial_z \Psi \\
+0 \\
+\frac{2}{r} \Omega(r) \partial_z A + \partial_r \Omega(r) \partial_z A
+\end{matrix}\right]
++ 
+\left[\begin{matrix}
+\frac{2}{\beta} \frac{1}{r} B_0 \partial_z \left(\nabla^2 A - \frac{2}{r} \partial_r A\right)\\
+\frac{2}{\beta} B_0 \partial_z B_\phi \\
+B_0 \partial_z \Psi\\
+B_0 \partial_z u_\phi
+\end{matrix}\right]
++
+\left[\begin{matrix}
+\frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4} \partial_r \Psi\right]\\
+\frac{1}{\reye} \left(\nabla^2 u_\phi - \frac{1}{r} u_\phi\right)\\
+\frac{1}{\reym} \left(\nabla^2 A - \frac{2}{r} \partial_r A\right)\\
+\frac{1}{\reym} \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi\right)
+\end{matrix}\right] \\
+=
+\left[\begin{matrix}
+0 & 3\Omega(r) \partial_z & 0 & 0 \\
+-\frac{4}{r} \Omega(r) \partial_z - \partial_r \Omega(r) \partial_z & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & \frac{2}{r} \Omega(r) \partial_z + \partial_r \Omega(r) \partial_z & 0
+\end{matrix}\right]
++\\
+\left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} \frac{1}{r} B_0 \partial_z \left(\nabla^2 - \frac{2}{r} \partial_r\right) & 0\\
+0 & 0 & 0 & \frac{2}{\beta} B_0 \partial_z\\
+B_0 \partial_z & 0 & 0 & 0 \\
+0 & B_0 \partial_z & 0 & 0
+\end{matrix}\right]
++ 
+\left[\begin{matrix}
+\frac{1}{\reye} \left(\nabla^2\left(\frac{1}{r}\nabla^2\right) - \frac{1}{r^3}\partial_r^2 - \frac{1}{r^4}\partial_r\right)\\
+\frac{1}{\reye} \left(\nabla^2  - \frac{1}{r} \right)\\
+\frac{1}{\reym} \left(\nabla^2 - \frac{2}{r} \partial_r \right)\\
+\frac{1}{\reym} \left(\nabla^2 - \frac{1}{r^2} \right)
+\end{matrix}\right]
+\end{multline}
+
+We separate the viscous/resistive matrix out in terms of $\partial_z$ dependence.
+
+\begin{multline}
+\mathrm{viscous}\, \,\mathrm{terms}  = \\
+ \left[\begin{matrix}
+\frac{1}{\reye} \left(-\frac{3}{r^4} \partial_r + \frac{3}{r^3} \partial_r^2 - \frac{2}{r^2} \partial_r^3 + \frac{1}{r} \partial_r^4\right) & 0 & 0 & 0\\
+0 & \frac{1}{\reye} \left(\partial_r^2 + \frac{1}{r} \partial_r - \frac{1}{r} \right) & 0 & 0 \\
+0 & 0 & \frac{1}{\reym} \left(\partial_r^2 - \frac{1}{r} \partial_r\right) & 0 \\
+0 & 0 & 0 & \frac{1}{\reym} \left(\partial_r^2 + \frac{1}{r}\partial_r - \frac{1}{r^2}\right)
+\end{matrix}\right] \\
++
+\partial_z^2 \left[\begin{matrix}
+\frac{1}{\reye}\left(-\frac{2}{r^2}\partial_r + \frac{2}{r}\partial_r^2\right) & 0 & 0 & 0 \\
+0 & \frac{1}{\reye} & 0 & 0 \\
+0 & 0 & \frac{1}{\reym} & 0 \\
+0 & 0 & 0 & \frac{1}{\reym}
+\end{matrix}\right] \\
++
+\partial_z^4\left[\begin{matrix}
+\frac{1}{\reye}\frac{1}{r} & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{matrix}\right]
+\end{multline}
+
+Note that the form of each of the terms is different in the first matrix.
+
+We also separate the terms in the $B0$ matrix by $\partial_z$ dependence:
+
+\beq
+B_0 \, \mathrm{terms} = 
+\partial_z \left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} \frac{1}{r} B_0 \left(\partial_r^2 - \frac{1}{r}\partial_r\right) & 0 \\
+0 & 0 & 0 & \frac{2}{\beta}B_0\\
+B_0 & 0 & 0 & 0\\
+0 & B_0 & 0 & 0
+\end{matrix}\right] 
++
+\partial_z^3 \left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} \frac{1}{r} B_0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{matrix}\right]
+\eeq
+
+We replace $B_0$ with our lower magnetic field strength $(1 - \epsilon^2)$:
+
+\beq
+B_0 \, \mathrm{terms} = 
+(1 - \epsilon^2) \partial_z \left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} \frac{1}{r} \left(\partial_r^2 - \frac{1}{r}\partial_r\right) & 0 \\
+0 & 0 & 0 & \frac{2}{\beta}\\
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0
+\end{matrix}\right] 
++
+(1 - \epsilon^2) \partial_z^3 \left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} \frac{1}{r} & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{matrix}\right]
+\eeq
+
+We now define, in analogy to the thin-gap matrices, the following:
+
+\beq
+\mathcal{L}_0 = \left[\begin{matrix}
+\frac{1}{\reye} \left(-\frac{3}{r^4} \partial_r + \frac{3}{r^3} \partial_r^2 - \frac{2}{r^2} \partial_r^3 + \frac{1}{r} \partial_r^4\right) & 0 & 0 & 0\\
+0 & \frac{1}{\reye} \left(\partial_r^2 + \frac{1}{r} \partial_r - \frac{1}{r} \right) & 0 & 0 \\
+0 & 0 & \frac{1}{\reym} \left(\partial_r^2 - \frac{1}{r} \partial_r\right) & 0 \\
+0 & 0 & 0 & \frac{1}{\reym} \left(\partial_r^2 + \frac{1}{r}\partial_r - \frac{1}{r^2}\right)
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_1 = \left[\begin{matrix}
+0 & 3\Omega(r) & \frac{2}{\beta} \frac{1}{r} \left(\partial_r^2 - \frac{1}{r}\partial_r\right) & 0 \\
+-\frac{4}{r} \Omega(r) - \partial_r \Omega(r) & 0 & 0 & \frac{2}{\beta} \\
+1 & 0 & 0 & 0 \\
+0 & 1 & \frac{2}{r} \Omega(r)  + \partial_r \Omega(r) & 0
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_2 = \left[\begin{matrix}
+\frac{1}{\reye}\left(-\frac{2}{r^2}\partial_r + \frac{2}{r}\partial_r^2\right) & 0 & 0 & 0 \\
+0 & \frac{1}{\reye} & 0 & 0 \\
+0 & 0 & \frac{1}{\reym} & 0 \\
+0 & 0 & 0 & \frac{1}{\reym}
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_3 = \left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} \frac{1}{r} & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_4 = \left[\begin{matrix}
+\frac{1}{\reye}\frac{1}{r} & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{G} = \left[\begin{matrix}
+0 & 0 & \frac{2}{\beta} \frac{1}{r} \left(\partial_r^2 - \frac{1}{r}\partial_r\right) & 0 \\
+0 & 0 & 0 & \frac{2}{\beta}\\
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0
+\end{matrix}\right] 
+\eeq
+
+Defining 
+
+\beq
+\mathcal{L}  = \mathcal{L}_0 + \mathcal{L}_1\partial_z + \mathcal{L}_2\partial_z^2 + \mathcal{L}_3\partial_z^3 + \mathcal{L}_4\partial_z^4
+\eeq
+
+and
+
+\beq
+\mathcal{\widetilde{G}} = - \mathcal{G} \partial_z - \mathcal{L}_3 \partial_z^3, 
+\eeq
+
+we have 
+
+\beq
+\mathcal{D} \partial_t \mathbf{V} + \mathbf{N} = \mathcal{L}\mathbf{V} + \epsilon^2 \mathcal{\widetilde{G}} \mathbf{V}
+\eeq
+
+which we then expand:
+
+\beq
+\begin{split}
+ \partial_t & \rightarrow \epsilon^2 \partial_T \\
+ \partial_z & \rightarrow \partial_z + \epsilon \partial_Z
+\end{split}
+\eeq
+
+and perturb:
+
+\beq
+\mathbf{V} = \epsilon\mathbf{V}_1 + \epsilon^2 \mathbf{V}_2 + \epsilon^3 \mathbf{V}_3
+\eeq
+
+Note that as we have defined these matrices, the matrices are of course different than in the thin-gap case, and the nonlinear terms are different, but the equations for behavior at each order in $\epsilon$ are identical, that is
+
+\beq
+\mathcal{L} \mathbf{V}_1 = 0
+\eeq
+
+\beq
+\mathcal{L} \mathbf{V}_2 = \mathbf{N}_2 - \mathcal{\widetilde{L}}_1 \partial_Z \mathbf{V}_1
+\eeq
+
+\beq
+\mathcal{D}\partial_T\mathbf{V}_1 + \mathbf{N}_3 = \mathcal{L}\mathbf{V}_3 + \mathcal{\widetilde{L}}_1 \partial_Z \mathbf{V}_2 + \mathcal{\widetilde{L}}_2\partial_Z^2 \mathbf{V}_1 + \mathcal{\widetilde{G}}\mathbf{V}_1
+\eeq
+
+are still the correct equations to orders $\epsilon$, $\epsilon^2$, and $\epsilon^3$, respectively.
+
+
+\section{Expansion of Nonlinear Terms}
+
+Expanding the terms in Equation \ref{eq:nonlinearvector}, we find.
+
+\beq
+\mathbf{N} = \epsilon^2 \mathbf{N}_2 + \epsilon^3 \mathbf{N}_3
+\eeq
+
+\beq
+\begin{split}
+N_2^{\Psi} & = J\left(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1\right) + J\left(\Psi_1, -\frac{2}{r^3}\partial_r\Psi_1\right) \\
+&- \frac{2}{\beta} J \left(A_1, \frac{1}{r^2} \nabla^2 A_1\right) - \frac{2}{\beta} J\left(A_1, -\frac{2}{r^3} \partial_r A_1\right) - \frac{2}{r} u_1 \partial_z u_1 + \frac{2}{\beta} \frac{2}{r} B_1 \partial_z B_1
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_3^{\Psi} & = J\left(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_2\right) + J\left(\Psi_2, \frac{1}{r^2} \nabla^2\Psi_1\right) + 2 J \left(\Psi_1, \frac{1}{r^2}\partial_Z\partial_z \Psi_1\right) \\
+&+ J\left(\Psi_1, -\frac{2}{r^3}\partial_r \Psi_2\right) + J\left(\Psi_2, -\frac{2}{r^3}\partial_r \Psi_1\right) + \widetilde{J}\left(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1\right) + \widetilde{J} \left(\Psi_1, -\frac{2}{r^3}\partial_r \Psi_1\right)\\
+& - \frac{2}{\beta} J\left(A_1, \frac{1}{r^2}\nabla^2 A_2\right) - \frac{2}{\beta} J\left(A_2, \frac{1}{r^2}\nabla^2 A_1\right) - \frac{4}{\beta} J\left(A_1, \frac{1}{r^2}\partial_Z\partial_z A_1\right) - \frac{2}{\beta} J\left(A_1, -\frac{2}{r^3} \partial_r A_2 \right) \\
+& - \frac{2}{\beta} J\left(A_2, -\frac{2}{r^3} \partial_r A_1\right) - \frac{2}{\beta} \widetilde{J} \left(A_1, \frac{1}{r^2} \nabla^2 A_1\right) - \frac{2}{\beta} \widetilde{J} \left(A_1, -\frac{2}{r^3} \partial_r A_1\right) \\
+& - \frac{2}{r} u_1 \partial_z u_2 - \frac{2}{r} u_2 \partial_z u_1 - \frac{2}{r} u_1 \partial_Z u_1 + \frac{2}{\beta}\frac{2}{r} B_1\partial_z B_2 + \frac{2}{\beta}\frac{2}{r} B_2 \partial_z B_1 + \frac{2}{\beta} \frac{2}{r} B_1 \partial_Z B_1
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_2^{u} = \frac{1}{r} J\left(\Psi_1, u_1\right) - \frac{1}{r} \frac{2}{\beta} J\left(A_1, B_1\right) + \frac{1}{r^2} u_1 \partial_z \Psi_1 - \frac{2}{\beta}\frac{1}{r^2} B_1 \partial_z A_1
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_3^u & = \frac{1}{r}J\left(\Psi_1, u_2\right) + \frac{1}{r}J\left(\Psi_2, u_1\right) + \frac{1}{r}\widetilde{J} \left(\Psi_1, u_1\right) \\
+& - \frac{1}{r}\frac{2}{\beta} J\left(A_1, B_2\right) - \frac{1}{r} \frac{2}{\beta} J\left(A_2, B_1\right) - \frac{1}{r}\frac{2}{\beta}\widetilde{J}\left(A_1, B_1\right) \\
+& + \frac{1}{r^2} u_1\partial_z \Psi_2 + \frac{1}{r^2} u_2 \partial_z \Psi_1 + \frac{1}{r^2} u_1 \partial_Z \Psi_1 \\
+& - \frac{2}{\beta} \frac{1}{r^2} B_1 \partial_z A_2 - \frac{2}{\beta} \frac{1}{r^2} B_2 \partial_z A_1 - \frac{2}{\beta} \frac{1}{r^2} B_1 \partial_Z A_1
+\end{split}
+\eeq
+
+\beq
+N_2^A = -\frac{1}{r} J\left(A_1, \Psi_1\right)
+\eeq
+
+\beq
+N_3^A = -\frac{1}{r} J\left(A_1, \Psi_2\right) - \frac{1}{r}J\left(A_2, \Psi_1\right) - \frac{1}{r} \widetilde{J}\left(A_1, \Psi_1\right)
+\eeq
+
+\beq
+N_2^B = -\frac{1}{r} J\left(A_1, u_1\right) - \frac{1}{r} J\left(B_1, \Psi_1\right) - \frac{1}{r^2} B_1 \partial_z \Psi_1 + \frac{1}{r^2} u_1 \partial_z A_1
+\eeq
+
+\beq
+\begin{split}
+N_3^B & = - \frac{1}{r} J\left(A_1, u_2\right) - \frac{1}{r} J\left(A_2, u_1\right) - \frac{1}{r}\widetilde{J}\left(A_1, u_1\right) \\
+& - \frac{1}{r} J\left(B_1, \Psi_2\right) - \frac{1}{r} J\left(B_2, \Psi_1\right) - \frac{1}{r} \widetilde{J} \left(B_1, u_1\right) \\
+& - \frac{1}{r^2} B_1\partial_z \Psi_2 - \frac{1}{r^2} B_2 \partial_z \Psi_1 - \frac{1}{r^2} B_1 \partial_Z \Psi_1 \\
+& + \frac{1}{r^2} u_1 \partial_z A_2 + \frac{1}{r^2} u_2 \partial_z A_1 + \frac{1}{r^2} u_1 \partial_Z A_1
+\end{split}
+\eeq
+
+\section{Notes for paper}
+
+-- Comment on channel mode formation w.r.t. parasitic modes?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                              APPENDIX                                                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+
+\section{Cylindrical derivatives}
+\label{sec:cylindrical_deriv}
+
+Everything here follows \url{http://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node257.html}.
+
+For a scalar field $\psi$, 
+
+\begin{equation}
+  \label{eq:del_scalar}
+  \nabla \psi = \frac{\partial \psi}{\partial r} \rhat + \frac{1}{r} \frac{\partial \psi}{\partial \phi} \phihat + \frac{\partial \psi}{\partial z} \zhat,
+\end{equation}
+
+and
+
+\begin{equation}
+  \label{eq:del2_scalar}
+  \nabla^2 \psi = \frac{1}{r} \frac{\partial}{\partial r}\left(r \frac{\partial \psi}{\partial r} \right) + \frac{1}{r^2} \frac{\partial^2 \psi}{\partial \phi^2} + \frac{\partial^2 \psi}{\partial z^2},
+\end{equation}
+
+However, for a \emph{vector} field $\mathbf{u}$,
+\begin{equation}
+  \label{eq:div}
+  \mathbf{\nabla \cdot u} = \frac{1}{r} \frac{\partial (r u_r)}{\partial r} + \frac{1}{r} \frac{\partial \uphi}{\partial \phi}  + \frac{\partial u_z}{\partial z}
+\end{equation}
+
+and 
+
+\begin{equation}
+  \label{eq:curl}
+  \mathbf{\nabla \times u} = \left( \frac{1}{r} \frac{\partial u_z}{\partial \phi} - \frac{\partial u_\phi}{\partial z}\right)\ \rhat + \left(\frac{\partial u_r}{\partial z} - \frac{\partial u_z}{\partial r}\right)\ \phihat  + \left( \frac{1}{r} \frac{\partial (r \uphi)}{\partial r} - \frac{1}{r}\frac{\partial u_r}{\partial \phi}\right)\ \zhat.
+\end{equation}
+
+We also need the $\phi$ component of the convective derivative $\mathbf{u \cdot \nabla u}$,
+\begin{equation}
+  \label{eq:convective_deriv_phi}
+  \left[\mathbf{u \cdot \nabla u} \right]_\phi = \mathbf{u \cdot \nabla} \uphi + \frac{ u_r \uphi}{r},
+\end{equation}
+and finally, the vector Laplacian,
+\begin{equation}
+  \label{eq:vec_lap_r}
+  (\nabla^2 \mathbf{u})_r = \nabla^2 u_r - \frac{u_r}{r^2} - \frac{2}{r^2} \frac{\partial \uphi}{\partial \phi}
+\end{equation}
+
+\begin{equation}
+  \label{eq:vec_lap_phi}
+  (\nabla^2 \mathbf{u})_\phi = \nabla^2 u_\phi + \frac{2}{r^2} \frac{\partial u_r}{\partial \phi} - \frac{u_\phi}{r^2} 
+\end{equation}
+
+\begin{equation}
+  \label{eq:vec_lap_z}
+  (\nabla^2 \mathbf{u})_z = \nabla^2 u_z,
+\end{equation}
+where $\nabla$ on the vector components is given by equation~(\ref{eq:del_scalar}).
+
+Note that, expanding the definition of the vector Laplacian, where the cylindrical scalar Laplacian is substituted in for $\nabla^2 u_r$ and $\nabla^2 u_z$  
+
+
+\end{document}
