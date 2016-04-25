@@ -9,16 +9,23 @@ import pickle
 import streamplot_uneven as su
 import random
 
+import logging 
+root = logging.root 
+for h in root.handlers: 
+    h.setLevel("DEBUG") 
+
+logger = logging.getLogger(__name__)
+
 import matplotlib
 from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-nr1 = 256#512
+nr1 = 128#512
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 512#768
+nr2 = 256#768
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
@@ -228,10 +235,10 @@ class OrderE(MRI):
             #widegap.add_equation("sigma*(r**4*B) + 1j*Q*q*r**(3 - q)*A - 2*1j*Q*r**(3 - q)*A + iRm*r**4*Q**2*B - 1j*Q*r**4*u - iRm*r**4*dr(Br) - iRm*r**3*Br + iRm*r**2*B = 0")
 
             # Corrected definition of omega, and therefore of base velocity
-            widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + 2*iR*Q**2*r**3*psirr - 2*iR*Q**2*r**2*psir - 3*1j*Q*c1*r**4*u - 3*1j*Q*c2*r**2*u - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 3*iR*r*psirr + 3*iR*psir = 0")
-            widegap.add_equation("sigma*(r**4*u) + iR*r**4*Q**2*u + 4*1j*Q*c1*r**3*psi + 2*1j*Q*c2*r*psi - (2/beta)*1j*Q*r**4*B - iR*r**4*dr(ur) - iR*r**3*ur + iR*r**3*u = 0")
-            widegap.add_equation("sigma*(r**4*A) + iRm*r**4*Q**2*A - 1j*Q*r**4*psi - iRm*r**4*dr(Ar) + iRm*r**3*Ar = 0")
-            widegap.add_equation("sigma*(r**4*B) + iRm*r**4*Q**2*B - 2*1j*Q*c1*r**3*A - 1j*Q*r**4*u - iRm*r**4*dr(Br) - iRm*r**3*Br + iRm*r**2*B = 0")
+            widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + 2*iR*Q**2*r**3*psirr - 2*iR*Q**2*r**2*psir - 3*1j*Q*c1*r**4*u - 3*1j*Q*c2*r**2*u - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 3*iR*r*psirr + 3*iR*psir = 0") # multiplied by r**4
+            widegap.add_equation("sigma*(r**3*u) + iR*r**3*Q**2*u + 4*1j*Q*c1*r**2*psi + 2*1j*Q*c2*psi - (2/beta)*1j*Q*r**3*B - iR*r**3*dr(ur) - iR*r**2*ur + iR*r**2*u = 0") # multiplied by r**3
+            widegap.add_equation("sigma*(r*A) + iRm*r*Q**2*A - 1j*Q*r*psi - iRm*r*dr(Ar) + iRm*Ar = 0") # multiplied by r
+            widegap.add_equation("sigma*(r**2*B) + iRm*r**2*Q**2*B - 2*1j*Q*c1*r*A - 1j*Q*r**2*u - iRm*r**2*dr(Br) - iRm*r*Br + iRm*B = 0") # multiplied by r**2
 
 
             widegap.add_equation("dr(psi) - psir = 0")
@@ -254,17 +261,23 @@ class OrderE(MRI):
         ev2 = solver2.eigenvalues
         self.goodeigs, self.goodeigs_indices = self.discard_spurious_eigenvalues(ev1, ev2)
 
-        goodeigs_index = np.where(self.goodeigs.real == np.nanmax(self.goodeigs.real))[0][0]
-        self.marginal_mode_index = int(self.goodeigs_indices[goodeigs_index])
+        #goodeigs_index = np.where(self.goodeigs.real == np.nanmax(self.goodeigs.real))[0][0]
+        print(self.goodeigs)
+        try:
+            goodeigs_index = np.nanargmax(self.goodeigs.real)
+            self.marginal_mode_index = int(self.goodeigs_indices[goodeigs_index])
         
-        solver1.set_state(self.marginal_mode_index)
+            solver1.set_state(self.marginal_mode_index)
         
-        self.solver1 = solver1
+            self.solver1 = solver1
         
-        self.psi = self.solver1.state['psi']
-        self.u = self.solver1.state['u']
-        self.A = self.solver1.state['A']
-        self.B = self.solver1.state['B']
+            self.psi = self.solver1.state['psi']
+            self.u = self.solver1.state['u']
+            self.A = self.solver1.state['A']
+            self.B = self.solver1.state['B']
+        except ValueError:
+            print("No good eigenvalues found!!!")
+            self.solver1 = solver1
     
 class OrderE2(MRI):
 
