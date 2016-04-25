@@ -14,11 +14,11 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-nr1 = 64#512
+nr1 = 256#512
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 128#768
+nr2 = 512#768
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
@@ -78,9 +78,9 @@ class MRI():
         #problem.add_bc('left(psi + r*psir) = 0')
         #problem.add_bc('right(psi + r*psir) = 0')
         problem.add_bc('left(psir) = 0')
-        problem.add_bc('right(psir) = 0') # axial component of current = 0
+        problem.add_bc('right(psir) = 0')
         problem.add_bc('left(B + r*Br) = 0')
-        problem.add_bc('right(B + r*Br) = 0')
+        problem.add_bc('right(B + r*Br) = 0') # axial component of current = 0
         
         return problem
     

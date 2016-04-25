@@ -814,6 +814,18 @@ N_3^B & = - \frac{1}{r} J\left(A_1, u_2\right) - \frac{1}{r} J\left(A_2, u_1\rig
 \end{split}
 \eeq
 
+\section{Boundary Conditions}
+
+We use boundary conditions that are no-slip and perfectly conducting. No-slip means that all components of velocity are zero at the boundary, and perfectly conducting means that the radial component of the magnetic field and the axial component of the current are both zero at the boundary. 
+
+No-slip means $u_r = u_\phi = u_z = 0$ and therefore $u_z = - \frac{1}{r}\partial_r \Psi = 0$ and $u_r = \frac{1}{r}\partial_z \Psi = 0$. 
+
+Perfectly conducting means $J_z = (\nabla \times \mathbf{B})_z = B_\phi + r\partial_r B_\phi = 0$
+
+and also that $B_r = \frac{1}{r}\partial_z A = 0$.
+
+Thus our final boundary conditions are $\Psi = u = A = \partial_r \Psi = \partial_r(r B_\phi) = 0$, for a total of ten boundary conditions.
+
 \section{Notes for paper}
 
 -- Comment on channel mode formation w.r.t. parasitic modes?
