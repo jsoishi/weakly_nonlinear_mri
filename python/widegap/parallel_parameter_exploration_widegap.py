@@ -194,16 +194,16 @@ def run_mri_solve(Q, Pm, Rm, c1, c2, beta, run_id, all_mode=False):
             widegap.add_equation("dr(A) - Ar = 0")
             widegap.add_equation("dr(B) - Br = 0")
 
-            problem.add_bc('left(u) = 0')
-            problem.add_bc('right(u) = 0')
-            problem.add_bc('left(psi) = 0')
-            problem.add_bc('right(psi) = 0')
-            problem.add_bc('left(A) = 0')
-            problem.add_bc('right(A) = 0')
-            problem.add_bc('left(psir) = 0')
-            problem.add_bc('right(psir) = 0')
-            problem.add_bc('left(B + r*Br) = 0')
-            problem.add_bc('right(B + r*Br) = 0') # axial component of current = 0
+            widegap.add_bc('left(u) = 0')
+            widegap.add_bc('right(u) = 0')
+            widegap.add_bc('left(psi) = 0')
+            widegap.add_bc('right(psi) = 0')
+            widegap.add_bc('left(A) = 0')
+            widegap.add_bc('right(A) = 0')
+            widegap.add_bc('left(psir) = 0')
+            widegap.add_bc('right(psir) = 0')
+            widegap.add_bc('left(B + r*Br) = 0')
+            widegap.add_bc('right(B + r*Br) = 0') # axial component of current = 0
         
         solver1 = widegap1.build_solver()
         solver2 = widegap2.build_solver()
