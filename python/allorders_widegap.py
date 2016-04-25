@@ -14,11 +14,11 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-nr1 = 128#256#512
+nr1 = 64#512
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 256#512#768
+nr2 = 128#768
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
@@ -75,8 +75,10 @@ class MRI():
         problem.add_bc('right(psi) = 0')
         problem.add_bc('left(A) = 0')
         problem.add_bc('right(A) = 0')
-        problem.add_bc('left(psi + r*psir) = 0')
-        problem.add_bc('right(psi + r*psir) = 0')
+        #problem.add_bc('left(psi + r*psir) = 0')
+        #problem.add_bc('right(psi + r*psir) = 0')
+        problem.add_bc('left(psir) = 0')
+        problem.add_bc('right(psir) = 0') # axial component of current = 0
         problem.add_bc('left(B + r*Br) = 0')
         problem.add_bc('right(B + r*Br) = 0')
         
@@ -259,7 +261,6 @@ class OrderE(MRI):
         
         self.solver1 = solver1
         
-        # All eigenfunctions must be scaled s.t. their max is 1
         self.psi = self.solver1.state['psi']
         self.u = self.solver1.state['u']
         self.A = self.solver1.state['A']
