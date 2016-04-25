@@ -162,7 +162,7 @@ def run_mri_solve(Q, Pm, Rm, c1, c2, beta, run_id, all_mode=False):
 
     """
     try:
-        print(Q, Pm, Rm, c2, c2, beta, run_id)
+        print(Q, Pm, Rm, c1, c2, beta, run_id)
         
         # Rm is an input parameter
         iRm = 1./Rm

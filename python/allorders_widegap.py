@@ -14,11 +14,11 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-nr1 = 64#256#512
+nr1 = 128#256#512
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 128#512#768
+nr2 = 256#512#768
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
