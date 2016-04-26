@@ -21,11 +21,11 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-nr1 = 128#512
+nr1 = 1024#512
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 256#768
+nr2 = 1524#768
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
@@ -298,5 +298,12 @@ class OrderE2(MRI):
         widegap2 = de.EVP(d2,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
         
 
-    
+if __name__ == '__main__':
+
+    oe = OrderE()
+
+    root = "/home/sec2170/weakly_nonlinear_mri/weakly_nonlinear_mri/python/"
+    outfn = root + "multirun/widegap_orderEobj_"+str(nr1)+"_grid2_"+str(nr2)+"_Pm_"+str(oe.Pm)+"_Q_"+str(oe.Q)+"_Rm_"+str(oe.Rm)+"_beta"+str(oe.beta)+"_allgoodeigs.p"
+
+    pickle.dump(result_dict, open(outfn, "wb"))
         
