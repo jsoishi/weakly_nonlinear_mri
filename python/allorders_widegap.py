@@ -21,12 +21,12 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-nr1 = 1024#512
-r1 = de.Chebyshev('r', nr1, interval=(5, 15))
+nr1 = 64
+r1 = de.Chebyshev('r', nr1, interval=(9.5, 10.5))
 d1 = de.Domain([r1])
 
-nr2 = 1524#768
-r2 = de.Chebyshev('r', nr2, interval=(5, 15))
+nr2 = 128
+r2 = de.Chebyshev('r', nr2, interval=(9.5, 10.5))
 d2 = de.Domain([r2])
 
 print("grid number {}, spurious eigenvalue check at {}".format(nr1, nr2))
@@ -39,12 +39,11 @@ class MRI():
     Defaults: For Pm of 0.001 critical Rm is 4.879  critical Q is 0.748
     """
 
-    def __init__(self, Q = np.pi/10, Rm = 4.052031250000001, Pm = 1.6E-6, q = 1.9368, beta = 0.43783886002604167, norm = True):
+    def __init__(self, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True):
     
         self.Q = Q
         self.Rm = Rm
         self.Pm = Pm
-        self.q = q
         self.beta = beta
         self.norm = norm
         
@@ -59,15 +58,19 @@ class MRI():
         self.gridnum2 = nr2
         self.r = r1.grid()
         
-        self.R1 = 5
-        self.R2 = 15
-        self.Omega1 = 314
-        self.Omega2 = 37.9
+        self.R1 = R1
+        self.R2 = R2
+        self.Omega1 = Omega1
+        self.Omega2 = Omega2
+        
+        self.R0 = (self.R1 + self.R2)/2.0 # center of channel
 
         self.c1 = (self.Omega2*self.R2**2 - self.Omega1*self.R1**2)/(self.R2**2 - self.R1**2)
         self.c2 = (self.R1**2*self.R2**2*(self.Omega1 - self.Omega2))/(self.R2**2 - self.R1**2)
+        
+        self.zeta_mean = 2*(self.R2**2*self.Omega2 - self.R1**2*self.Omega1)/((self.R2**2 - self.R1**2)*np.sqrt(self.Omega1*self.Omega2))
     
-        print("MRI parameters: ", self.Q, self.Rm, self.Pm, self.q, self.beta, 'norm = ', norm, "Reynolds number", self.R)
+        print("MRI parameters: ", self.Q, self.Rm, self.Pm, self.beta, "R1 = ", self.R1, "R2 = ", self.R2, 'norm = ', norm, "Reynolds number", self.R)
         
         
     def set_boundary_conditions(self, problem):
@@ -205,11 +208,11 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, Q = np.pi/10, Rm = 4.052031250000001, Pm = 1.6E-6, q = 1.9368, beta = 0.43783886002604167, norm = True, inviscid = False):
+    def __init__(self, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True, inviscid = False):
         
         print("initializing wide gap Order epsilon")
         
-        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, beta = beta, norm = norm)
     
         # widegap order epsilon
         widegap1 = de.EVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
@@ -287,9 +290,9 @@ class OrderE2(MRI):
     Returns V_1
     """
 
-    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True):
         
-        print("initializing wide gap Order epsilon")
+        print("initializing wide gap Order epsilon^2")
         
         MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
     
@@ -300,10 +303,50 @@ class OrderE2(MRI):
 
 if __name__ == '__main__':
 
-    oe = OrderE()
+    #oe = OrderE()
 
-    root = "/home/sec2170/weakly_nonlinear_mri/weakly_nonlinear_mri/python/"
-    outfn = root + "multirun/widegap_orderEobj_"+str(nr1)+"_grid2_"+str(nr2)+"_Pm_"+str(oe.Pm)+"_Q_"+str(oe.Q)+"_Rm_"+str(oe.Rm)+"_beta"+str(oe.beta)+"_allgoodeigs.p"
+    #root = "/home/sec2170/weakly_nonlinear_mri/weakly_nonlinear_mri/python/"
+    #outfn = root + "multirun/widegap_orderEobj_"+str(nr1)+"_grid2_"+str(nr2)+"_Pm_"+str(oe.Pm)+"_Q_"+str(oe.Q)+"_Rm_"+str(oe.Rm)+"_beta"+str(oe.beta)+"_allgoodeigs.p"
 
-    pickle.dump(result_dict, open(outfn, "wb"))
+    #pickle.dump(result_dict, open(outfn, "wb"))
+    
+    # Parameters approximating Umurhan+ 2007
+    """
+    Pm = 1.0E-3
+    beta = 25.0
+    R1 = 5
+    R2 = 15
+    Omega1 = 314
+    Omega2 = 67.15933620640001
+    Q = 0.748
+    Rm = 4.879
+    """
+    
+    # Parameters approximating Umurhan+ 2007 "thin gap"
+    Pm = 1.0E-3
+    beta = 25.0
+    R1 = 9.5
+    R2 = 10.5
+    Omega1 = 314
+    Omega2 = 270.25
+    Q = 0.748
+    Rm = 4.879
+    
+    # Parameters approximating Goodman & Ji 2001    
+    #Pm = 1.6E-6
+    #beta = 0.43783886002604167#25.0
+    #R1 = 5
+    #R2 = 15
+    #Omega1 = 314
+    #Omega2 = 37.9
+
+    c1 = (Omega2*R2**2 - Omega1*R1**2)/(R2**2 - R1**2)
+    c2 = (R1**2*R2**2*(Omega1 - Omega2))/(R2**2 - R1**2)
+    
+    zeta_mean = 2*(R2**2*Omega2 - R1**2*Omega1)/((R2**2 - R1**2)*np.sqrt(Omega1*Omega2))
+    
+    print("mean zeta is {}, meaning q = 2 - zeta = {}".format(zeta_mean, 2 - zeta_mean))
+    
+    oethin = OrderE(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2)
+    
         

@@ -37,7 +37,7 @@ def Pmrun(Pm, c1, c2, beta, dQ, dRm, Qsearch, Rmsearch):
     params = (zip(Qs, itertools.repeat(Pm), Rms, itertools.repeat(c1), itertools.repeat(c2), itertools.repeat(beta), np.arange(len(Qs))))
     print("Processing %10.5e parameter combinations" % len(Qs))
 
-    with Pool(processes = 19) as pool:
+    with Pool(processes = 18) as pool:
         result_pool = [pool.apply_async(run_mri_solve, args) for args in params]
 
         results = []
@@ -245,16 +245,34 @@ if __name__ == '__main__':
     Co = 0.08
     """
     
-    # Parameters approximating Goodman & Ji 2001    
-    Pm = 1.6E-6
-    beta = 0.43783886002604167#25.0
+    # Parameters approximating Umurhan+ 2007
+    Pm = 1.0E-3
+    beta = 25.0
     R1 = 5
     R2 = 15
     Omega1 = 314
-    Omega2 = 37.9
+    Omega2 = 67.15933620640001
+    
+    # Umurhan+ "thin gap"
+    #R1 = 9.5
+    #R2 = 10.5
+    #Omega2 = 270.25
+    
+    # Parameters approximating Goodman & Ji 2001    
+    #Pm = 1.6E-6
+    #beta = 0.43783886002604167#25.0
+    #R1 = 5
+    #R2 = 15
+    #Omega1 = 314
+    #Omega2 = 37.9
 
     c1 = (Omega2*R2**2 - Omega1*R1**2)/(R2**2 - R1**2)
     c2 = (R1**2*R2**2*(Omega1 - Omega2))/(R2**2 - R1**2)
+    
+    zeta_mean = 2*(R2**2*Omega2 - R1**2*Omega1)/((R2**2 - R1**2)*np.sqrt(Omega1*Omega2))
+    
+    
+    print("mean zeta is {}, meaning q = 2 - zeta = {}".format(zeta_mean, 2 - zeta_mean))
     
     # critical parameters found in Goodman & Ji 2001 - search around these
     #Rm = 4.052031250000001
@@ -263,10 +281,13 @@ if __name__ == '__main__':
     dQ = 0.05
     dRm = 0.05
     
-    Qsearch = np.arange(0.2, 0.4, dQ)
+    Qsearch = np.arange(0.6, 0.9, dQ)
+    Rmsearch = np.arange(4.6, 5.1, dRm)
+    
+    #Qsearch = np.arange(0.2, 0.4, dQ)
     #Qsearch = np.arange(0.74, 0.76, dQ)
     #Rmsearch = np.arange(4.87, 4.91, dRm) # Great for <1E-2
     #Rmsearch = np.arange(4.91, 4.95, dRm)
-    Rmsearch = np.arange(3.2, 4.8, dRm)
+    #Rmsearch = np.arange(3.2, 4.8, dRm)
     Pmrun(Pm, c1, c2, beta, dQ, dRm, Qsearch, Rmsearch)
     
