@@ -22,11 +22,11 @@ rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
 nr1 = 64
-r1 = de.Chebyshev('r', nr1, interval=(9.5, 10.5))
+r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
 nr2 = 128
-r2 = de.Chebyshev('r', nr2, interval=(9.5, 10.5))
+r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
 print("grid number {}, spurious eigenvalue check at {}".format(nr1, nr2))
@@ -311,7 +311,7 @@ if __name__ == '__main__':
     #pickle.dump(result_dict, open(outfn, "wb"))
     
     # Parameters approximating Umurhan+ 2007
-    """
+    
     Pm = 1.0E-3
     beta = 25.0
     R1 = 5
@@ -320,9 +320,10 @@ if __name__ == '__main__':
     Omega2 = 67.15933620640001
     Q = 0.748
     Rm = 4.879
-    """
+    
     
     # Parameters approximating Umurhan+ 2007 "thin gap"
+    """
     Pm = 1.0E-3
     beta = 25.0
     R1 = 9.5
@@ -331,6 +332,7 @@ if __name__ == '__main__':
     Omega2 = 270.25
     Q = 0.748
     Rm = 4.879
+    """
     
     # Parameters approximating Goodman & Ji 2001    
     #Pm = 1.6E-6
