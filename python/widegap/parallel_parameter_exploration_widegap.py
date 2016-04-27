@@ -281,7 +281,8 @@ if __name__ == '__main__':
     dQ = 0.05
     dRm = 0.05
     
-    Qsearch = np.arange(0.6, 0.9, dQ)
+    #Qsearch = np.arange(0.6, 0.9, dQ)
+    Qsearch = np.arange(0.2, 0.6, dQ)
     Rmsearch = np.arange(4.6, 5.1, dRm)
     
     #Qsearch = np.arange(0.2, 0.4, dQ)
