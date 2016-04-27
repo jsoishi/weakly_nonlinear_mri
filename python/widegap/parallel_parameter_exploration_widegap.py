@@ -9,11 +9,11 @@ import pylab
 import pickle
 import time
 
-nr1 = 64 #64#256#512
+nr1 = 128 #64#256#512
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 128 #128#512#768
+nr2 = 256 #128#512#768
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
@@ -30,7 +30,7 @@ def Pmrun(Pm, c1, c2, beta, dQ, dRm, Qsearch, Rmsearch):
     Rms = QRm[:, 1]
     
     root = "/home/sec2170/weakly_nonlinear_mri/weakly_nonlinear_mri/python/"
-    outfn = root + "multirun/widegap_gridnum_"+str(nr1)+"_grid2_"+str(nr2)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+"_allgoodeigs.p"
+    outfn = root + "multirun/widegap_gridnum_"+str(nr1)+"_grid2_"+str(nr2)+"_Pm_"+str(Pm)+"_Q_"+str(Qsearch[0])+"_dQ_"+str(dQ)+"_Rm_"+str(Rmsearch[0])+"_dRm_"+str(dRm)+"_fixr_allgoodeigs.p"
 
     start_time = time.time()
 
