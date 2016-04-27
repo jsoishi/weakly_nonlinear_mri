@@ -21,11 +21,11 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-nr1 = 64
+nr1 = 128#64
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 128
+nr2 = 256#128
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
@@ -212,7 +212,7 @@ class OrderE(MRI):
         
         print("initializing wide gap Order epsilon")
         
-        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, beta = beta, norm = norm)
+        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, norm = norm)
     
         # widegap order epsilon
         widegap1 = de.EVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
@@ -349,6 +349,6 @@ if __name__ == '__main__':
     
     print("mean zeta is {}, meaning q = 2 - zeta = {}".format(zeta_mean, 2 - zeta_mean))
     
-    oethin = OrderE(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2)
+    oe = OrderE(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2)
     
         
