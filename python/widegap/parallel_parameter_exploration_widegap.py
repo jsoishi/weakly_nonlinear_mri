@@ -9,11 +9,11 @@ import pylab
 import pickle
 import time
 
-nr1 = 128 #64#256#512
+nr1 = 64 #64#256#512
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 256 #128#512#768
+nr2 = 128 #128#512#768
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
@@ -283,7 +283,8 @@ if __name__ == '__main__':
     
     #Qsearch = np.arange(0.6, 0.9, dQ)
     Qsearch = np.arange(0.2, 0.6, dQ)
-    Rmsearch = np.arange(4.6, 5.1, dRm)
+    #Rmsearch = np.arange(4.6, 5.1, dRm)
+    Rmsearch = np.arange(5.1, 6.0, dRm)
     
     #Qsearch = np.arange(0.2, 0.4, dQ)
     #Qsearch = np.arange(0.74, 0.76, dQ)
