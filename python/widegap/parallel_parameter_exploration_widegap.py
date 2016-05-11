@@ -13,7 +13,7 @@ nr1 = 128 #64#256#512
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 256 #128#512#768
+nr2 = 192 #128#512#768
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
@@ -175,24 +175,26 @@ def run_mri_solve(Q, Pm, Rm, c1, c2, beta, run_id, all_mode=False):
         
         # Add equations
         for widegap in [widegap1, widegap2]:
-            widegap.parameters['Q'] = Q
+            widegap.parameters['k'] = Q
             widegap.parameters['iR'] = iR
             widegap.parameters['iRm'] = iRm
             widegap.parameters['c1'] = c1
             widegap.parameters['c2'] = c2
             widegap.parameters['beta'] = beta
-        
-            #widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + 2*iR*Q**2*r**3*psirr - 2*iR*Q**2*r**2*psir - 3*1j*Q*c1*r**4*u - 3*1j*Q*c2*r**2*u - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 3*iR*r*psirr + 3*iR*psir = 0")
-            #widegap.add_equation("sigma*(r**4*u) + iR*r**4*Q**2*u + 4*1j*Q*c1*r**3*psi + 2*1j*Q*c2*r*psi - (2/beta)*1j*Q*r**4*B - iR*r**4*dr(ur) - iR*r**3*ur + iR*r**3*u = 0")
-            #widegap.add_equation("sigma*(r**4*A) + iRm*r**4*Q**2*A - 1j*Q*r**4*psi - iRm*r**4*dr(Ar) + iRm*r**3*Ar = 0")
-            #widegap.add_equation("sigma*(r**4*B) + iRm*r**4*Q**2*B - 2*1j*Q*c1*r**3*A - 1j*Q*r**4*u - iRm*r**4*dr(Br) - iRm*r**3*Br + iRm*r**2*B = 0")
 
-            # Only multiply by necessary number of r's
-            widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + 2*iR*Q**2*r**3*psirr - 2*iR*Q**2*r**2*psir - 3*1j*Q*c1*r**4*u - 3*1j*Q*c2*r**2*u - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 3*iR*r*psirr + 3*iR*psir = 0") # multiplied by r**4
-            widegap.add_equation("sigma*(r**3*u) + iR*r**3*Q**2*u + 4*1j*Q*c1*r**2*psi + 2*1j*Q*c2*psi - (2/beta)*1j*Q*r**3*B - iR*r**3*dr(ur) - iR*r**2*ur + iR*r**2*u = 0") # multiplied by r**3
-            widegap.add_equation("sigma*(r*A) + iRm*r*Q**2*A - 1j*Q*r*psi - iRm*r*dr(Ar) + iRm*Ar = 0") # multiplied by r
-            widegap.add_equation("sigma*(r**2*B) + iRm*r**2*Q**2*B - 2*1j*Q*c1*r*A - 1j*Q*r**2*u - iRm*r**2*dr(Br) - iRm*r*Br + iRm*B = 0") # multiplied by r**2
-
+            widegap.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
+            widegap.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
+            widegap.substitutions['twooverbeta'] = '(2.0/beta)'
+            widegap.substitutions['psivisc'] = '(2*r**2*k**2*psir - 2*r**3*k**2*psirr + r**3*k**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr)'
+            widegap.substitutions['uvisc'] = '(-r**3*k**2*u + r**3*dr(ur) + r**2*ur - r*u)'
+            widegap.substitutions['Avisc'] = '(r*dr(Ar) - r*k**2*A - Ar)' # checked on whiteboard 5/6
+            widegap.substitutions['Bvisc'] = '(-r**3*k**2*B + r**3*dr(Br) + r**2*Br - r*B)'
+            
+            widegap.add_equation("sigma*(-r**3*k**2*psi + r**3*psirr - r**2*psir) - r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - iR*psivisc = 0") #corrected on whiteboard 5/6
+            widegap.add_equation("sigma*r**3*u + 1j*k*ru0*psi + 1j*k*rrdu0*psi - 1j*k*r**3*twooverbeta*B0*B - iR*uvisc = 0") # correct 5/5
+            widegap.add_equation("sigma*r*A - r*B0*1j*k*psi - iRm*Avisc = 0")
+            widegap.add_equation("sigma*r**3*B + ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - iRm*Bvisc = 0") # correct 5/5
+    
             widegap.add_equation("dr(psi) - psir = 0")
             widegap.add_equation("dr(psir) - psirr = 0")
             widegap.add_equation("dr(psirr) - psirrr = 0")
@@ -256,8 +258,8 @@ if __name__ == '__main__':
     beta = 25.0
     R1 = 5
     R2 = 15
-    Omega1 = 314
-    Omega2 = 67.15933620640001
+    Omega1 = 313.55
+    Omega2 = 67.0631
     
     # Umurhan+ "thin gap"
     #R1 = 9.5
