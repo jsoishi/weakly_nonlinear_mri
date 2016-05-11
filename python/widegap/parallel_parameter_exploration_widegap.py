@@ -181,6 +181,7 @@ def run_mri_solve(Q, Pm, Rm, c1, c2, beta, run_id, all_mode=False):
             widegap.parameters['c1'] = c1
             widegap.parameters['c2'] = c2
             widegap.parameters['beta'] = beta
+            widegap.parameters['B0'] = 1
 
             widegap.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
             widegap.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
