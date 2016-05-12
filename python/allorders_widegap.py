@@ -10,9 +10,9 @@ import streamplot_uneven as su
 import random
 
 import logging 
-root = logging.root 
-for h in root.handlers: 
-    h.setLevel("DEBUG") 
+#root = logging.root 
+#for h in root.handlers: 
+#    h.setLevel("DEBUG") 
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ nr1 = 128#64
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 256#128
+nr2 = 192#128
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
