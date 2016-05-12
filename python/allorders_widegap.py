@@ -21,11 +21,11 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-nr1 = 128#64
+nr1 = 16#128#64
 r1 = de.Chebyshev('r', nr1, interval=(5, 15))
 d1 = de.Domain([r1])
 
-nr2 = 192#128
+nr2 = 24#192#128
 r2 = de.Chebyshev('r', nr2, interval=(5, 15))
 d2 = de.Domain([r2])
 
@@ -415,21 +415,26 @@ class OrderE2(MRI):
         print("initializing Order E2")
         
         if o1 == None:
-            o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
+            #o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
             MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
             n2 = N2(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
+            o1 = n2.o1
         else:
             MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, R1 = o1.R1, R2 = o1.R2, Omega1 = o1.Omega1, Omega2 = o1.Omega2, norm = o1.norm)
-            n2 = N2(Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, R1 = o1.R1, R2 = o1.R2, Omega1 = o1.Omega1, Omega2 = o1.Omega2, norm = o1.norm)
+            n2 = N2(o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, R1 = o1.R1, R2 = o1.R2, Omega1 = o1.Omega1, Omega2 = o1.Omega2, norm = o1.norm)
     
         V21 = de.LBVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
+        V20 = de.LBVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
+        V22 = de.LBVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
     
-        V21.parameters['Q'] = self.Q
-        V21.parameters['iRm'] = self.iRm
-        V21.parameters['beta'] = self.beta
-        V21.parameters['c1'] = self.c1
-        V21.parameters['c2'] = self.c2
-        V21.parameters['iR'] = self.iR
+        for V in [V21, V20, V22]:
+            V.parameters['k'] = self.Q
+            V.parameters['iRm'] = self.iRm
+            V.parameters['beta'] = self.beta
+            V.parameters['c1'] = self.c1
+            V.parameters['c2'] = self.c2
+            V.parameters['iR'] = self.iR
+            V.parameters['B0'] = 1
         
         # RHS of V21 = -L1twiddle V11
         rfield = d1.new_field()
@@ -441,24 +446,24 @@ class OrderE2(MRI):
         du0field = d1.new_field()
         du0field['g'] = self.c1 - self.c2*(1/rfield['g']**2)
         
-        rhs_psi = ((rfield**4)*((2/rfield)*u0field*o1.u + (2/self.beta)*(1/rfield)*o1.A_rr - (2/self.beta)*(1/rfield**2)*o1.A_r 
+        rhs_psi21 = ((rfield**4)*((2/rfield)*u0field*o1.u + (2/self.beta)*(1/rfield)*o1.A_rr - (2/self.beta)*(1/rfield**2)*o1.A_r 
                     - (2/self.beta)*(3/rfield)*self.Q**2*o1.A + self.iR*4*1j*self.Q*(1/rfield)*o1.psi_rr - self.iR*(1/rfield**2)*4*1j*self.Q*o1.psi_r
                     - self.iR*(1/rfield)*4*1j*self.Q**3*o1.psi))
-        self.rhs_psi = rhs_psi.evaluate()
+        self.rhs_psi21 = rhs_psi21.evaluate()
         
-        rhs_u = ((rfield**3)*(-(1/rfield)*du0field*o1.psi - (1/rfield**2)*u0field*o1.psi + (2/self.beta)*o1.B + self.iR*2*1j*self.Q*o1.u))
-        self.rhs_u = rhs_u.evaluate()
+        rhs_u21 = ((rfield**3)*(-(1/rfield)*du0field*o1.psi - (1/rfield**2)*u0field*o1.psi + (2/self.beta)*o1.B + self.iR*2*1j*self.Q*o1.u))
+        self.rhs_u21 = rhs_u21.evaluate()
         
-        rhs_A = (rfield)*(o1.psi + self.iRm*2*1j*self.Q*o1.A)
-        self.rhs_A = rhs_A.evaluate()
+        rhs_A21 = (rfield)*(o1.psi + self.iRm*2*1j*self.Q*o1.A)
+        self.rhs_A21 = rhs_A21.evaluate()
         
-        rhs_B = (rfield**3)*((1/rfield)*du0field*o1.A + o1.u - (1/rfield**2)*u0field*o1.A + iRm*2*1j*self.Q*o1.B)
-        self.rhs_B = rhs_B.evaluate()
+        rhs_B21 = (rfield**3)*((1/rfield)*du0field*o1.A + o1.u - (1/rfield**2)*u0field*o1.A + self.iRm*2*1j*self.Q*o1.B)
+        self.rhs_B21 = rhs_B21.evaluate()
         
-        V21.parameters['rhs_psi'] = self.rhs_psi
-        V21.parameters['rhs_u'] = self.rhs_u
-        V21.parameters['rhs_A'] = self.rhs_A
-        V21.parameters['rhs_B'] = self.rhs_B
+        V21.parameters['rhs_psi21'] = self.rhs_psi21
+        V21.parameters['rhs_u21'] = self.rhs_u21
+        V21.parameters['rhs_A21'] = self.rhs_A21
+        V21.parameters['rhs_B21'] = self.rhs_B21
         
         # LHS of V21 is the same as LHS of order (epsilon)
         V21.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
@@ -469,10 +474,10 @@ class OrderE2(MRI):
         V21.substitutions['Avisc'] = '(r*dr(Ar) - r*k**2*A - Ar)' 
         V21.substitutions['Bvisc'] = '(-r**3*k**2*B + r**3*dr(Br) + r**2*Br - r*B)'
     
-        V21.add_equation("sigma*(-r**3*k**2*psi + r**3*psirr - r**2*psir) - r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - iR*psivisc = rhs_psi") #corrected on whiteboard 5/6
-        V21.add_equation("sigma*r**3*u + 1j*k*ru0*psi + 1j*k*rrdu0*psi - 1j*k*r**3*twooverbeta*B0*B - iR*uvisc = rhs_u") 
-        V21.add_equation("sigma*r*A - r*B0*1j*k*psi - iRm*Avisc = rhs_A")
-        V21.add_equation("sigma*r**3*B + ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - iRm*Bvisc = rhs_B") 
+        V21.add_equation("-r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - iR*psivisc = rhs_psi21") #corrected on whiteboard 5/6
+        V21.add_equation("1j*k*ru0*psi + 1j*k*rrdu0*psi - 1j*k*r**3*twooverbeta*B0*B - iR*uvisc = rhs_u21") 
+        V21.add_equation("r*B0*1j*k*psi - iRm*Avisc = rhs_A21")
+        V21.add_equation("ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - iRm*Bvisc = rhs_B21") 
 
         V21.add_equation("dr(psi) - psir = 0")
         V21.add_equation("dr(psir) - psirr = 0")
@@ -481,11 +486,49 @@ class OrderE2(MRI):
         V21.add_equation("dr(A) - Ar = 0")
         V21.add_equation("dr(B) - Br = 0")
         
-        V21.solve()
-        self.psi = V21.state['psi']
-        self.u = V21.state['u']
-        self.A = V21.state['A']
-        self.B = V21.state['B']
+        V21 = self.set_boundary_conditions(V21)
+        V21solver = V21.build_solver()
+        V21solver.solve()
+        
+        self.psi21 = V21solver.state['psi']
+        self.u21 = V21solver.state['u']
+        self.A21 = V21solver.state['A']
+        self.B21 = V21solver.state['B']
+        
+        # LV20 = -N20
+        
+        self.rhs_psi20 = -n2.N20_psi
+        self.rhs_u20 = -n2.N20_u
+        self.rhs_A20 = -n2.N20_A
+        self.rhs_B20 = -n2.N20_B
+        
+        V20.parameters['rhs_psi20'] = self.rhs_psi20
+        V20.parameters['rhs_u20'] = self.rhs_u20
+        V20.parameters['rhs_A20'] = self.rhs_A20
+        V20.parameters['rhs_B20'] = self.rhs_B20
+        
+        V20.add_equation("-iR*(r**3*dr(psirrr) - r**2*2*psirrr + r*3*psirr - 3*psir) = rhs_psi20")
+        V20.add_equation("-iR*(r**2*dr(ur) + r*ur - u) = rhs_u20")
+        V20.add_equation("-iRm*(r*dr(Ar) - Ar) = rhs_A20")
+        V20.add_equation("-iRm*(r**2*dr(Br) + r*Br - B) = rhs_B20")
+        
+        V20.add_equation("dr(psi) - psir = 0")
+        V20.add_equation("dr(psir) - psirr = 0")
+        V20.add_equation("dr(psirr) - psirrr = 0")
+        V20.add_equation("dr(u) - ur = 0")
+        V20.add_equation("dr(A) - Ar = 0")
+        V20.add_equation("dr(B) - Br = 0")
+        
+        V20 = self.set_boundary_conditions(V20)
+        V20solver = V20.build_solver()
+        V20solver.solve()
+        
+        self.psi20 = V20solver.state['psi']
+        self.u20 = V20solver.state['u']
+        self.A20 = V20solver.state['A']
+        self.B20 = V20solver.state['B']
+        
+        
         
         
 """
