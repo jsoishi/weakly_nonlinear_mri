@@ -289,11 +289,12 @@ if __name__ == '__main__':
 
     dQ = 0.05
     #dQ = 0.1
-    #dRm = 0.05
-    dRm = 0.1
+    dRm = 0.05
+    #dRm = 0.1
     
     #Qsearch = np.arange(0.6, 0.9, dQ)
-    Qsearch = np.arange(0.2, 0.6, dQ)
+    #Qsearch = np.arange(0.2, 0.6, dQ)
+    Qsearch = np.arange(0.0, 0.2, dQ)
     #Qsearch = np.arange(-0.2, 0.2, dQ)
     #Rmsearch = np.arange(
     #Rmsearch = np.arange(4.6, 5.1, dRm)
@@ -301,7 +302,8 @@ if __name__ == '__main__':
     #Rmsearch = np.arange(5.1, 6.0, dRm)
     
     #coarser Rm search
-    Rmsearch = np.arange(2.0, 4.1, dRm)
+    #Rmsearch = np.arange(2.0, 4.1, dRm)
+    Rmsearch = np.arange(0.0, 2.05, dRm)
     
     #Qsearch = np.arange(0.2, 0.4, dQ)
     #Qsearch = np.arange(0.74, 0.76, dQ)
