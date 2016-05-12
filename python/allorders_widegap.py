@@ -200,6 +200,33 @@ class MRI():
         
         return largest_eval_indx
         
+    def get_derivative(self, field):
+    
+        """
+        Take derivative of a single field.
+        """
+        
+        field_x = field.differentiate(0)
+        
+        #if field.name.endswith("x"):
+        #    field_x.name = field.name + "x"
+        #else:
+        #    field_x.name = field.name + "_x"
+            
+        return field_x
+        
+    def get_complex_conjugate(self, field):
+        
+        """
+        Take complex conjugate of a single field.
+        """
+        
+        field_star = d1.new_field()
+        #field_star.name = field.name + "_star"
+        field_star['g'] = field['g'].conj()
+        
+        return field_star
+        
 class OrderE(MRI):
 
     """
@@ -212,37 +239,40 @@ class OrderE(MRI):
         
         print("initializing wide gap Order epsilon")
         
-        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, norm = norm)
+        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
     
         # widegap order epsilon
         widegap1 = de.EVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
         widegap2 = de.EVP(d2,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
         
+        # Rm and Pm are input parameters
+        iRm = 1./Rm
+        R = Rm/Pm
+        iR = 1./R
+        
         # Add equations
         for widegap in [widegap1, widegap2]:
-            widegap.parameters['Q'] = self.Q
-            widegap.parameters['iRm'] = self.iRm
-            widegap.parameters['beta'] = self.beta
+            
+            widegap.parameters['k'] = Q
+            widegap.parameters['iR'] = iR
+            widegap.parameters['iRm'] = iRm
             widegap.parameters['c1'] = self.c1
             widegap.parameters['c2'] = self.c2
-            
-            if inviscid is True:
-                widegap.parameters['iR'] = 0
-            else:
-                widegap.parameters['iR'] = self.iR
+            widegap.parameters['beta'] = beta
+            widegap.parameters['B0'] = 1
+
+            widegap.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
+            widegap.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
+            widegap.substitutions['twooverbeta'] = '(2.0/beta)'
+            widegap.substitutions['psivisc'] = '(2*r**2*k**2*psir - 2*r**3*k**2*psirr + r**3*k**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr)'
+            widegap.substitutions['uvisc'] = '(-r**3*k**2*u + r**3*dr(ur) + r**2*ur - r*u)'
+            widegap.substitutions['Avisc'] = '(r*dr(Ar) - r*k**2*A - Ar)' 
+            widegap.substitutions['Bvisc'] = '(-r**3*k**2*B + r**3*dr(Br) + r**2*Br - r*B)'
         
-            # wrong def of omega:
-            #widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - 3*1j*Q*r**(4 - q)*u - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + iR*2*Q**2*r**3*psirr - iR*2*Q**2*r**2*psir - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - iR*3*r*psirr + iR*3*psir = 0")
-            #widegap.add_equation("sigma*(r**4*u) - 1j*Q*q*r**(3 - q)*psi + 4*1j*Q*r**(3 - q)*psi + iR*r**4*Q**2*u - (2/beta)*1j*Q*r**4*B - iR*r**4*dr(ur) - iR*r**3*ur + iR*r**3*u = 0")
-            #widegap.add_equation("sigma*(r**4*A) + iRm*r**4*Q**2*A - 1j*Q*r**4*psi - iRm*r**4*dr(Ar) + iRm*r**3*Ar = 0")
-            #widegap.add_equation("sigma*(r**4*B) + 1j*Q*q*r**(3 - q)*A - 2*1j*Q*r**(3 - q)*A + iRm*r**4*Q**2*B - 1j*Q*r**4*u - iRm*r**4*dr(Br) - iRm*r**3*Br + iRm*r**2*B = 0")
-
-            # Corrected definition of omega, and therefore of base velocity
-            widegap.add_equation("sigma*(-1*Q**2*r**3*psi + r**3*psirr - r**2*psir) - iR*r**3*Q**4*psi + (2/beta)*1j*Q**3*r**3*A + 2*iR*Q**2*r**3*psirr - 2*iR*Q**2*r**2*psir - 3*1j*Q*c1*r**4*u - 3*1j*Q*c2*r**2*u - (2/beta)*1j*Q*r**3*dr(Ar) + (2/beta)*1j*Q*r**2*Ar - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 3*iR*r*psirr + 3*iR*psir = 0") # multiplied by r**4
-            widegap.add_equation("sigma*(r**3*u) + iR*r**3*Q**2*u + 4*1j*Q*c1*r**2*psi + 2*1j*Q*c2*psi - (2/beta)*1j*Q*r**3*B - iR*r**3*dr(ur) - iR*r**2*ur + iR*r**2*u = 0") # multiplied by r**3
-            widegap.add_equation("sigma*(r*A) + iRm*r*Q**2*A - 1j*Q*r*psi - iRm*r*dr(Ar) + iRm*Ar = 0") # multiplied by r
-            widegap.add_equation("sigma*(r**2*B) + iRm*r**2*Q**2*B - 2*1j*Q*c1*r*A - 1j*Q*r**2*u - iRm*r**2*dr(Br) - iRm*r*Br + iRm*B = 0") # multiplied by r**2
-
+            widegap.add_equation("sigma*(-r**3*k**2*psi + r**3*psirr - r**2*psir) - r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - iR*psivisc = 0") #corrected on whiteboard 5/6
+            widegap.add_equation("sigma*r**3*u + 1j*k*ru0*psi + 1j*k*rrdu0*psi - 1j*k*r**3*twooverbeta*B0*B - iR*uvisc = 0") 
+            widegap.add_equation("sigma*r*A - r*B0*1j*k*psi - iRm*Avisc = 0")
+            widegap.add_equation("sigma*r**3*B + ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - iRm*Bvisc = 0") 
 
             widegap.add_equation("dr(psi) - psir = 0")
             widegap.add_equation("dr(psir) - psirr = 0")
@@ -278,29 +308,187 @@ class OrderE(MRI):
             self.u = self.solver1.state['u']
             self.A = self.solver1.state['A']
             self.B = self.solver1.state['B']
+            
+            # Take all relevant derivates for use with higher order terms
+            self.psi_r = self.solver1.state['psir']
+            self.psi_rr = self.solver1.state['psirr']
+            self.psi_rrr = self.solver1.state['psirrr']
+            #self.psi_rrrr = self.get_derivative(self.psi_rrr)
+      
+            self.u_r = self.solver1.state['ur']
+        
+            self.A_r = self.solver1.state['Ar']
+            self.A_rr = self.get_derivative(self.A_r)
+            self.A_rrr = self.get_derivative(self.A_rr)
+        
+            self.B_r = self.solver1.state['Br']
+            
+            self.psi_star = self.get_complex_conjugate(self.psi)
+            self.psi_star_r = self.get_derivative(self.psi_star)
+            self.psi_star_rr = self.get_derivative(self.psi_star_r)
+            self.psi_star_rrr = self.get_derivative(self.psi_star_rr)
+        
+            self.u_star = self.get_complex_conjugate(self.u)
+            self.u_star_r = self.get_derivative(self.u_star)
+        
+            self.A_star = self.get_complex_conjugate(self.A)
+            self.A_star_r = self.get_derivative(self.A_star)
+            self.A_star_rr = self.get_derivative(self.A_star_r)
+            self.A_star_rrr = self.get_derivative(self.A_star_rr)
+        
+            self.B_star = self.get_complex_conjugate(self.B)
+            self.B_star_r = self.get_derivative(self.B_star)
+            
         except ValueError:
             print("No good eigenvalues found!!!")
             self.solver1 = solver1
     
+class N2(MRI):
+
+    """
+    Solves the nonlinear term N2
+    Returns N2
+    
+    """
+    
+    def __init__(self, o1 = None, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True):
+    
+        print("initializing N2")
+    
+        if o1 == None:
+            o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
+            self.o1 = o1
+            MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
+        else:
+            MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, R1 = o1.R1, R2 = o1.R2, Omega1 = o1.Omega1, Omega2 = o1.Omega2, norm = o1.norm)
+    
+        rfield = d1.new_field()
+        rfield['g'] = o1.r
+    
+        N22_psi = ((1j*Q*o1.psi)*((1/rfield**2)*(-Q**2)*o1.psi_r - (3/rfield**3)*o1.psi_rr + (1/rfield**2)*o1.psi_rrr - (2/rfield**3)*(-Q**2)*o1.psi + (3/rfield**4)*o1.psi_r)
+                - (o1.psi_r)*((1/rfield**2)*(1j*Q)*o1.psi_rr - (1/rfield**3)*(1j*Q)*o1.psi_r + (1/rfield**2)*(1j*Q)**3*o1.psi)
+                - (2/beta)*((1j*Q*o1.A)*((1/rfield**2)*(-Q**2)*o1.A_r - (3/rfield**3)*o1.A_rr + (1/rfield**2)*o1.A_rrr - (2/rfield**3)*(-Q**2)*o1.A + (3/rfield**4)*o1.A_r)
+                - (o1.A_r)*((1/rfield**2)*(1j*Q)*o1.A_rr - (1/rfield**3)*(1j*Q)*o1.A_r + (1/rfield**2)*(1j*Q)**3*o1.A))
+                -(2/rfield)*o1.u*(1j*Q)*o1.u + (2/beta)*(2/rfield)*o1.B*(1j*Q)*o1.B)
+        self.N22_psi = N22_psi.evaluate()
+        
+        N20_psi = ((1j*Q*o1.psi)*((1/rfield**2)*((-1j*Q)**2)*o1.psi_star_r - (3/rfield**3)*o1.psi_star_rr + (1/rfield**2)*o1.psi_star_rrr - (2/rfield**3)*((-1j*Q)**2)*o1.psi_star + (3/rfield**4)*o1.psi_star_r)
+                - (o1.psi_r)*((1/rfield**2)*(-1j*Q)*o1.psi_star_rr - (1/rfield**3)*(-1j*Q)*o1.psi_star_r + (1/rfield**2)*(-1j*Q)**3*o1.psi_star)
+                - (2/beta)*((1j*Q*o1.A)*((1/rfield**2)*((-1j*Q)**2)*o1.A_star_r - (3/rfield**3)*o1.A_star_rr + (1/rfield**2)*o1.A_star_rrr - (2/rfield**3)*((-1j*Q)**2)*o1.A_star + (3/rfield**4)*o1.A_star_r)
+                - (o1.A_r)*((1/rfield**2)*(-1j*Q)*o1.A_star_rr - (1/rfield**3)*(-1j*Q)*o1.A_star_r + (1/rfield**2)*(-1j*Q)**3*o1.A_star))
+                -(2/rfield)*o1.u*(-1j*Q)*o1.u_star + (2/beta)*(2/rfield)*o1.B*(-1j*Q)*o1.B_star)
+        self.N20_psi = N20_psi.evaluate()
+                
+        N22_u = ((1/rfield)*((1j*Q*o1.psi)*o1.u_r - (1j*Q*o1.u)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_r - (1j*Q*o1.B)*o1.A_r))
+                + (1/rfield**2)*o1.u*1j*Q*o1.psi - (2/beta)*(1/rfield**2)*o1.B*1j*Q*o1.A)
+        self.N22_u = N22_u.evaluate()
+        
+        N20_u = ((1/rfield)*((1j*Q*o1.psi)*o1.u_star_r - (-1j*Q*o1.u_star)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_star_r - (-1j*Q*o1.B_star)*o1.A_r))
+                + (1/rfield**2)*o1.u*(-1j*Q)*o1.psi_star - (2/beta)*(1/rfield**2)*o1.B*(-1j*Q)*o1.A_star)
+        self.N20_u = N20_u.evaluate()
+                
+        N22_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_r - (1j*Q*o1.A)*o1.psi_r)
+        self.N22_A = N22_A.evaluate()
+        
+        N20_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_star_r - (-1j*Q*o1.A_star)*o1.psi_r)
+        self.N20_A = N20_A.evaluate()
+        
+        N22_B = ((1/rfield)*((1j*Q*o1.u)*o1.A_r - (1j*Q*o1.A)*o1.u_r) + (1/rfield)*((1j*Q*o1.psi)*o1.B_r - (1j*Q*o1.B)*o1.psi_r)
+                - (1/rfield**2)*o1.B*(1j*Q)*o1.psi + (1/rfield**2)*o1.u*(1j*Q)*o1.A)
+        self.N22_B = N22_B.evaluate()
+        
+        N20_B = ((1/rfield)*((1j*Q*o1.u)*o1.A_star_r - (-1j*Q*o1.A_star)*o1.u_r) + (1/rfield)*((1j*Q*o1.psi)*o1.B_star_r - (-1j*Q*o1.B_star)*o1.psi_r)
+                - (1/rfield**2)*o1.B*(-1j*Q)*o1.psi_star + (1/rfield**2)*o1.u*(-1j*Q)*o1.A_star)
+        self.N20_B = N20_B.evaluate()
+        
+        
 class OrderE2(MRI):
 
     """
-    Solves the order(epsilon) equation L V_1 = 0
-    This is simply the linearized wide-gap MRI.
-    Returns V_1
-    """
-
-    def __init__(self, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True):
-        
-        print("initializing wide gap Order epsilon^2")
-        
-        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+    Solves the second order equation L V2 = -N2 - Ltwiddle V1 (note matrices are defined for LHS of eqn).
+    Returns V2
     
-        # widegap order epsilon
-        widegap1 = de.EVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
-        widegap2 = de.EVP(d2,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
+    """
+    
+    def __init__(self, o1 = None, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True):
+    
+        print("initializing Order E2")
         
+        if o1 == None:
+            o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
+            MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
+            n2 = N2(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
+        else:
+            MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, R1 = o1.R1, R2 = o1.R2, Omega1 = o1.Omega1, Omega2 = o1.Omega2, norm = o1.norm)
+            n2 = N2(Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, R1 = o1.R1, R2 = o1.R2, Omega1 = o1.Omega1, Omega2 = o1.Omega2, norm = o1.norm)
+    
+        V21 = de.LBVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
+    
+        V21.parameters['Q'] = self.Q
+        V21.parameters['iRm'] = self.iRm
+        V21.parameters['beta'] = self.beta
+        V21.parameters['c1'] = self.c1
+        V21.parameters['c2'] = self.c2
+        V21.parameters['iR'] = self.iR
+        
+        # RHS of V21 = -L1twiddle V11
+        rfield = d1.new_field()
+        rfield['g'] = o1.r
+        
+        u0field = d1.new_field()
+        u0field['g'] = self.c1*rfield['g'] + self.c2*(1/rfield['g'])
+        
+        du0field = d1.new_field()
+        du0field['g'] = self.c1 - self.c2*(1/rfield['g']**2)
+        
+        rhs_psi = ((rfield**4)*((2/rfield)*u0field*o1.u + (2/self.beta)*(1/rfield)*o1.A_rr - (2/self.beta)*(1/rfield**2)*o1.A_r 
+                    - (2/self.beta)*(3/rfield)*self.Q**2*o1.A + self.iR*4*1j*self.Q*(1/rfield)*o1.psi_rr - self.iR*(1/rfield**2)*4*1j*self.Q*o1.psi_r
+                    - self.iR*(1/rfield)*4*1j*self.Q**3*o1.psi))
+        self.rhs_psi = rhs_psi.evaluate()
+        
+        rhs_u = ((rfield**3)*(-(1/rfield)*du0field*o1.psi - (1/rfield**2)*u0field*o1.psi + (2/self.beta)*o1.B + self.iR*2*1j*self.Q*o1.u))
+        self.rhs_u = rhs_u.evaluate()
+        
+        rhs_A = (rfield)*(o1.psi + self.iRm*2*1j*self.Q*o1.A)
+        self.rhs_A = rhs_A.evaluate()
+        
+        rhs_B = (rfield**3)*((1/rfield)*du0field*o1.A + o1.u - (1/rfield**2)*u0field*o1.A + iRm*2*1j*self.Q*o1.B)
+        self.rhs_B = rhs_B.evaluate()
+        
+        V21.parameters['rhs_psi'] = self.rhs_psi
+        V21.parameters['rhs_u'] = self.rhs_u
+        V21.parameters['rhs_A'] = self.rhs_A
+        V21.parameters['rhs_B'] = self.rhs_B
+        
+        # LHS of V21 is the same as LHS of order (epsilon)
+        V21.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
+        V21.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
+        V21.substitutions['twooverbeta'] = '(2.0/beta)'
+        V21.substitutions['psivisc'] = '(2*r**2*k**2*psir - 2*r**3*k**2*psirr + r**3*k**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr)'
+        V21.substitutions['uvisc'] = '(-r**3*k**2*u + r**3*dr(ur) + r**2*ur - r*u)'
+        V21.substitutions['Avisc'] = '(r*dr(Ar) - r*k**2*A - Ar)' 
+        V21.substitutions['Bvisc'] = '(-r**3*k**2*B + r**3*dr(Br) + r**2*Br - r*B)'
+    
+        V21.add_equation("sigma*(-r**3*k**2*psi + r**3*psirr - r**2*psir) - r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - iR*psivisc = rhs_psi") #corrected on whiteboard 5/6
+        V21.add_equation("sigma*r**3*u + 1j*k*ru0*psi + 1j*k*rrdu0*psi - 1j*k*r**3*twooverbeta*B0*B - iR*uvisc = rhs_u") 
+        V21.add_equation("sigma*r*A - r*B0*1j*k*psi - iRm*Avisc = rhs_A")
+        V21.add_equation("sigma*r**3*B + ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - iRm*Bvisc = rhs_B") 
 
+        V21.add_equation("dr(psi) - psir = 0")
+        V21.add_equation("dr(psir) - psirr = 0")
+        V21.add_equation("dr(psirr) - psirrr = 0")
+        V21.add_equation("dr(u) - ur = 0")
+        V21.add_equation("dr(A) - Ar = 0")
+        V21.add_equation("dr(B) - Br = 0")
+        
+        V21.solve()
+        self.psi = V21.state['psi']
+        self.u = V21.state['u']
+        self.A = V21.state['A']
+        self.B = V21.state['B']
+        
+        
+"""
 if __name__ == '__main__':
 
     #oe = OrderE()
@@ -323,16 +511,16 @@ if __name__ == '__main__':
     
     
     # Parameters approximating Umurhan+ 2007 "thin gap"
-    """
-    Pm = 1.0E-3
-    beta = 25.0
-    R1 = 9.5
-    R2 = 10.5
-    Omega1 = 314
-    Omega2 = 270.25
-    Q = 0.748
-    Rm = 4.879
-    """
+    
+    #Pm = 1.0E-3
+    #beta = 25.0
+    #R1 = 9.5
+    #R2 = 10.5
+    #Omega1 = 314
+    #Omega2 = 270.25
+    #Q = 0.748
+    #Rm = 4.879
+    
     
     # Parameters approximating Goodman & Ji 2001    
     #Pm = 1.6E-6
@@ -350,5 +538,5 @@ if __name__ == '__main__':
     print("mean zeta is {}, meaning q = 2 - zeta = {}".format(zeta_mean, 2 - zeta_mean))
     
     oe = OrderE(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2)
-    
+"""
         
