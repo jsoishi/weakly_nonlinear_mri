@@ -837,15 +837,6 @@ and also that $B_r = \frac{1}{r}\partial_z A = 0$.
 
 Thus our final boundary conditions are $\Psi = u = A = \partial_r \Psi = \partial_r(r B_\phi) = 0$, for a total of ten boundary condition equations.
 
-\section{Figures}
-
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth]{../../weakly_nonlinear_mri/python/widegap/figures/u_near_threshold_test}
-\caption{Wide-gap first-order velocity perturbations near threshold. Unnormalized. This is with Q = 0.05, Rm = 0.85, but we now know that critical parameters are closer to Rm = 0.845, Q = 0.006 (finer grid running now).
-\label{fig:firstorder_u}}
-\end{figure}
-
 \section{Notes for paper}
 
 -- Comment on channel mode formation w.r.t. parasitic modes?
@@ -855,7 +846,6 @@ Discussion:
 -- We locate threshold in the $\reym$ - $k_z$ plane. In the wide-gap case, the growth rate depends much more sensitively on $k_z$ than on $\reym$, while in the thin-gap case the opposite is true. We attribute this to the decreased influence of the boundary layers in the wide-gap geometry. (maybe?)
 
 The complex nature of the MRI means its properties are best parsed in idealized regimes or in simplified geometries. Many studies take 
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                              APPENDIX                                                             %
@@ -918,5 +908,21 @@ where $\nabla$ on the vector components is given by equation~(\ref{eq:del_scalar
 
 Note that, expanding the definition of the vector Laplacian, where the cylindrical scalar Laplacian is substituted in for $\nabla^2 u_r$ and $\nabla^2 u_z$  
 
+
+\section{Figures}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{../../weakly_nonlinear_mri/python/widegap/figures/u_near_threshold_test}
+\caption{Wide-gap first-order velocity perturbations near threshold. Unnormalized. This is with Q = 0.05, Rm = 0.85, but we now know that critical parameters are closer to Rm = 0.845, Q = 0.006 (finer grid running now).
+\label{fig:firstorder_u}}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{../../weakly_nonlinear_mri/python/widegap/figures/B_near_threshold_test}
+\caption{Wide-gap first-order B-field perturbations near threshold. Unnormalized. This is with Q = 0.05, Rm = 0.85, but we now know that critical parameters are closer to Rm = 0.845, Q = 0.006 (finer grid running now).
+\label{fig:firstorder_B}}
+\end{figure}
 
 \end{document}
