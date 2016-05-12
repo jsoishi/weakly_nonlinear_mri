@@ -287,14 +287,18 @@ if __name__ == '__main__':
     #Rm = 4.052031250000001
     #Q = np.pi/10 
 
-    dQ = 0.05
+    dQ = 0.01
     #dQ = 0.1
-    dRm = 0.05
+    dRm = 0.01
     #dRm = 0.1
+    
+    #search around Rm = 0.8, Q = 0.05
+    Qsearch = np.arange(0.01, 0.07, dQ)
+    Rmsearch = np.arange(0.7, 0.9, dRm)
     
     #Qsearch = np.arange(0.6, 0.9, dQ)
     #Qsearch = np.arange(0.2, 0.6, dQ)
-    Qsearch = np.arange(0.0, 0.25, dQ)
+    #Qsearch = np.arange(0.0, 0.25, dQ)
     #Qsearch = np.arange(-0.2, 0.2, dQ)
     #Rmsearch = np.arange(
     #Rmsearch = np.arange(4.6, 5.1, dRm)
@@ -303,7 +307,7 @@ if __name__ == '__main__':
     
     #coarser Rm search
     #Rmsearch = np.arange(2.0, 4.1, dRm)
-    Rmsearch = np.arange(0.05, 2.05, dRm)
+    #Rmsearch = np.arange(0.05, 2.05, dRm)
     
     #Qsearch = np.arange(0.2, 0.4, dQ)
     #Qsearch = np.arange(0.74, 0.76, dQ)
