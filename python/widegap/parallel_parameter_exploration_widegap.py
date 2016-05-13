@@ -255,7 +255,8 @@ if __name__ == '__main__':
     """
     
     # Parameters approximating Umurhan+ 2007
-    Pm = 1.0E-3
+    #Pm = 1.0E-3
+    Pm = 1.0E-2
     beta = 25.0
     R1 = 5
     R2 = 15
@@ -287,15 +288,19 @@ if __name__ == '__main__':
     #Rm = 4.052031250000001
     #Q = np.pi/10 
 
-    dQ = 0.00001
-    #dQ = 0.1
+    #dQ = 0.00001
+    dQ = 0.001
     #dRm = 0.01
-    #dRm = 0.1
-    dRm = 0.001
+    dRm = 0.02
+    #dRm = 0.001
+    
+    # coarse search around Rm = 0.85, Q = 0.006
+    Rmsearch = np.arange(0.8, 1.0, dRm)
+    Qsearch = np.arange(0.002, 0.010, dQ)
     
     # search around Rm = 0.845, Q = 0.006
-    Rmsearch = np.arange(0.840, 0.851, dRm)
-    Qsearch = np.arange(0.005, 0.007, dQ)
+    #Rmsearch = np.arange(0.840, 0.851, dRm)
+    #Qsearch = np.arange(0.005, 0.007, dQ)
     
     # search around Rm = 0.85, Q = 0.01
     #Rmsearch = np.arange(0.84, 0.86, dRm)
