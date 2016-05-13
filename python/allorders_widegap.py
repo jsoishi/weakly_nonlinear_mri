@@ -422,7 +422,10 @@ class OrderE2(MRI):
         else:
             MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, R1 = o1.R1, R2 = o1.R2, Omega1 = o1.Omega1, Omega2 = o1.Omega2, norm = o1.norm)
             n2 = N2(o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, R1 = o1.R1, R2 = o1.R2, Omega1 = o1.Omega1, Omega2 = o1.Omega2, norm = o1.norm)
-    
+        
+        self.o1 = o1
+        self.n2 = n2
+        
         V21 = de.LBVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
         V20 = de.LBVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
         V22 = de.LBVP(d1,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
