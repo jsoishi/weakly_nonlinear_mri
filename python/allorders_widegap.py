@@ -496,11 +496,10 @@ class OrderE2(MRI):
         self.B21 = V21solver.state['B']
         
         # LV20 = -N20
-        
-        self.rhs_psi20 = -n2.N20_psi
-        self.rhs_u20 = -n2.N20_u
-        self.rhs_A20 = -n2.N20_A
-        self.rhs_B20 = -n2.N20_B
+        self.rhs_psi20 = (-n2.N20_psi*rfield**4).evaluate()
+        self.rhs_u20 = (-n2.N20_u*rfield**2).evaluate()
+        self.rhs_A20 = (-n2.N20_A*rfield).evaluate()
+        self.rhs_B20 = (-n2.N20_B*rfield**2).evaluate()
         
         V20.parameters['rhs_psi20'] = self.rhs_psi20
         V20.parameters['rhs_u20'] = self.rhs_u20
@@ -528,7 +527,42 @@ class OrderE2(MRI):
         self.A20 = V20solver.state['A']
         self.B20 = V20solver.state['B']
         
+        # LV22 = -N22
+        self.rhs_psi22 = -n2.N22_psi
+        self.rhs_u22 = -n2.N22_u
+        self.rhs_A22 = -n2.N22_A
+        self.rhs_B22 = -n2.N22_B
         
+        V22.parameters['rhs_psi22'] = (self.rhs_psi22*rfield**4).evaluate()
+        V22.parameters['rhs_u22'] = (self.rhs_u22*rfield**3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
+        V22.parameters['rhs_A22'] = (self.rhs_A22*rfield).evaluate()
+        V22.parameters['rhs_B22'] = (self.rhs_B22*rfield**3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
+        
+        V22.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
+        V22.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
+        V22.substitutions['twooverbeta'] = '(2.0/beta)'
+        V22.substitutions['dz'] = '(1j*2*k)'
+        
+        V22.add_equation("-r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi = rhs_psi22")
+        V22.add_equation("rrdu0*dz*psi + ru0*dz*psi - r**3*twooverbeta*dz*B - r**3*iR*dr(ur) - r**2*iR*ur - r**3*iR*dz**2*u + r*iR*u = rhs_u22")
+        V22.add_equation("-dz*psi*r - r*iRm*dr(Ar) + iRm*Ar - r*iRm*dz**2*A = rhs_A22")
+        V22.add_equation("-dz*rrdu0*A - dz*r**3*u + ru0*dz*A - iRm*r**3*dr(Br) - r**2*iRm*Br - iRm*r**3*dz**2*B + r*iRm*B = rhs_B22")
+        
+        V22.add_equation("dr(psi) - psir = 0")
+        V22.add_equation("dr(psir) - psirr = 0")
+        V22.add_equation("dr(psirr) - psirrr = 0")
+        V22.add_equation("dr(u) - ur = 0")
+        V22.add_equation("dr(A) - Ar = 0")
+        V22.add_equation("dr(B) - Br = 0")
+        
+        V22 = self.set_boundary_conditions(V22)
+        V22solver = V22.build_solver()
+        V22solver.solve()
+        
+        self.psi22 = V22solver.state['psi']
+        self.u22 = V22solver.state['u']
+        self.A22 = V22solver.state['A']
+        self.B22 = V22solver.state['B']
         
         
 """
