@@ -567,7 +567,7 @@ class OrderE2(MRI):
         self.A22 = V22solver.state['A']
         self.B22 = V22solver.state['B']
   
-                self.psi20.name = "psi20"
+        self.psi20.name = "psi20"
         self.u20.name = "u20"
         self.A20.name = "A20"
         self.B20.name = "B20"
@@ -667,7 +667,7 @@ class N3(MRI):
         
         Jacobian1_part1 = ((1j*k*o1.psi)*(-2*invr**3*o2.psi20_rr + invr**2*o2.psi20_rrr - 3*invr**4*o2.psi20_r + invr**3*o2.psi20_rr)
                         + (1j*k*o1.psi)*(-2*invr**3*o2.psi20_star_rr + invr**2*o2.psi20_star_rrr - 3*invr**4*o2.psi20_star_r + invr**3*o2.psi20_star_rr)
-                        + (-1j*k*o1.psi_star)*(-2*invr**3*o2.psi22_star_rr + invr**2*o2.psi22_star_rrr - 3*invr**4*o2.psi22_star_r + invr**3*o2.psi22_star_rr + (2*1j*k)**2*(-2*invr**3*o2.psi22 + invr**2*o2.psi22_r))
+                        + (-1j*k*o1.psi_star)*(-2*invr**3*o2.psi22_rr + invr**2*o2.psi22_rrr - 3*invr**4*o2.psi22_r + invr**3*o2.psi22_rr + (2*1j*k)**2*(-2*invr**3*o2.psi22 + invr**2*o2.psi22_r))
                         + (-2*1j*k*o1.psi_star_r)*(invr**2*o2.psi22_rr + invr**3*o2.psi22_r + (2*1j*k)**2*invr**2*o2.psi22))
         
         Jacobian1_part2 = ((1j*k*o1.psi)*(6*invr**4*o2.psi20_r - 2*invr**3*o2.psi20_rr) + (1j*k*o1.psi)*(6*invr**4*o2.psi20_star_r - 2*invr**3*o2.psi20_star_rr)
@@ -675,7 +675,7 @@ class N3(MRI):
         
         Jacobian2_part1 = (-2/self.beta)*((1j*k*o1.A)*(-2*invr**3*o2.A20_rr + invr**2*o2.A20_rrr - 3*invr**4*o2.A20_r + invr**3*o2.A20_rr)
                         + (1j*k*o1.A)*(-2*invr**3*o2.A20_star_rr + invr**2*o2.A20_star_rrr - 3*invr**4*o2.A20_star_r + invr**3*o2.A20_star_rr)
-                        + (-1j*k*o1.A_star)*(-2*invr**3*o2.A22_star_rr + invr**2*o2.A22_star_rrr - 3*invr**4*o2.A22_star_r + invr**3*o2.A22_star_rr + (2*1j*k)**2*(-2*invr**3*o2.A22 + invr**2*o2.A22_r))
+                        + (-1j*k*o1.A_star)*(-2*invr**3*o2.A22_rr + invr**2*o2.A22_rrr - 3*invr**4*o2.A22_r + invr**3*o2.A22_rr + (2*1j*k)**2*(-2*invr**3*o2.A22 + invr**2*o2.A22_r))
                         + (-2*1j*k*o1.A_star_r)*(invr**2*o2.A22_rr + invr**3*o2.A22_r + (2*1j*k)**2*invr**2*o2.A22))
         
         Jacobian2_part2 = (-2/self.beta)*((1j*k*o1.A)*(6*invr**4*o2.A20_r - 2*invr**3*o2.A20_rr) + (1j*k*o1.A)*(6*invr**4*o2.A20_star_r - 2*invr**3*o2.A20_star_rr)
