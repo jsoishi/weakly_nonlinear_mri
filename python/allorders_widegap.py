@@ -734,7 +734,33 @@ class N3(MRI):
         
         self.N31_A = (Jacobian1 + Jacobian2).evaluate()
         
-                
+        # -(1/r) J(A1, u2)
+        Jacobian1 = -invr*(1j*k*o1.A*(o2.u20_r + o2.u20_star_r) + (-1j*k)*o1.A_star*o2.u22_r - o1.A_star_r*(2*1j*k)*o2.u22)
+        
+        # -(1/r) J(B1, psi2)
+        Jacobian2 = -invr*(1j*k*o1.B*(o2.psi20_r + o2.psi20_star_r) + (-1j*k)*o1.B_star*o2.psi22_r - o1.B_star_r*(2*1j*k)*o2.psi22)
+        
+        # -(1/r) J(A2, u1)
+        Jacobian3 = -invr*(-o2.A20_r*1j*k*o1.u - o2.A20_star_r*1j*k*o1.u + 2*1j*k*o2.A22*o1.u_star_r - o2.A22_r*(-1j*k)*o1.u_star)
+        
+        # -(1/r) J(B2, psi1)
+        Jacobian4 = -invr*(-o2.B20_r*1j*k*o1.psi - o2.B20_star_r*1j*k*o1.psi + 2*1j*k*o2.B22*o1.psi_star_r - o2.B22_r*(-1j*k)*o1.psi_star)
+        
+        # -(1/r^2) B1 partial_z psi2
+        advective1 = -invr**2*(o1.B_star*2*1j*k*o2.psi22)
+        
+        # +(1/r^2) u1 partial_z A2
+        advective2 = -invr**2*(o1.u_star*2*1j*k*o2.A22)
+        
+        # -(1/r^2) B2 partial_z psi1
+        advective3 = -invr**2*(o2.B20*1j*k*o1.psi + o2.B20_star*1j*k*o1.psi + o2.B22*(-1j*k)*o1.psi_star)
+        
+        # +(1/r^2) u2 partial_z A1
+        advective4 = -invr**2*(o2.u20*1j*k*o1.A + o2.u20_star*1j*k*o1.A + o2.u22*(-1j*k)*o1.A_star)
+        
+        self.N31_B = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4 + advective1 + advective2 + advective3 + advective4).evaluate()
+        
+        
 """
 if __name__ == '__main__':
 
