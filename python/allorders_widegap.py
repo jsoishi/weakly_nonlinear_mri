@@ -566,7 +566,146 @@ class OrderE2(MRI):
         self.u22 = V22solver.state['u']
         self.A22 = V22solver.state['A']
         self.B22 = V22solver.state['B']
+  
+                self.psi20.name = "psi20"
+        self.u20.name = "u20"
+        self.A20.name = "A20"
+        self.B20.name = "B20"
+            
+        self.psi21.name = "psi21"
+        self.u21.name = "u21"
+        self.A21.name = "A21"
+        self.B21.name = "B21"
+                
+        self.psi22.name = "psi22"
+        self.u22.name = "u22"
+        self.A22.name = "A22"
+        self.B22.name = "B22"  
         
+        # Take relevant derivatives and complex conjugates
+        self.psi20_r = self.get_derivative(self.psi20)
+        self.psi20_rr = self.get_derivative(self.psi20_r)
+        self.psi20_rrr = self.get_derivative(self.psi20_rr)
+        
+        self.psi20_star = self.get_complex_conjugate(self.psi20)
+        
+        self.psi20_star_r = self.get_derivative(self.psi20_star)
+        self.psi20_star_rr = self.get_derivative(self.psi20_star_r)
+        self.psi20_star_rrr = self.get_derivative(self.psi20_star_rr)
+        
+        self.psi21_r = self.get_derivative(self.psi21)
+        self.psi21_rr = self.get_derivative(self.psi21_r)
+        
+        self.psi22_r = self.get_derivative(self.psi22)
+        self.psi22_rr = self.get_derivative(self.psi22_r)
+        self.psi22_rrr = self.get_derivative(self.psi22_rr)
+        
+        # u
+        self.u20_r = self.get_derivative(self.u20)
+        self.u20_star = self.get_complex_conjugate(self.u20)
+        self.u20_star_r = self.get_derivative(self.u20_star)
+        
+        self.u22_r = self.get_derivative(self.u22)
+        self.u22_star = self.get_complex_conjugate(self.u22)
+        self.u22_star_r = self.get_derivative(self.u22_star)
+        
+        # B 
+        self.B20_r = self.get_derivative(self.B20)
+        self.B20_star = self.get_complex_conjugate(self.B20)
+        self.B20_star_r = self.get_derivative(self.B20_star)
+        
+        self.B22_r = self.get_derivative(self.B22)
+        self.B22_star = self.get_complex_conjugate(self.B22)
+        self.B22_star_r = self.get_derivative(self.B22_star)
+        
+        # A 
+        self.A20_r = self.get_derivative(self.A20)
+        self.A20_rr = self.get_derivative(self.A20_r)
+        self.A20_rrr = self.get_derivative(self.A20_rr)
+        
+        self.A20_star = self.get_complex_conjugate(self.A20)
+        
+        self.A20_star_r = self.get_derivative(self.A20_star)
+        self.A20_star_rr = self.get_derivative(self.A20_star_r)
+        self.A20_star_rrr = self.get_derivative(self.A20_star_rr)
+        
+        self.A21_r = self.get_derivative(self.A21)
+        self.A21_rr = self.get_derivative(self.A21_r)
+        
+        self.A22_r = self.get_derivative(self.A22)
+        self.A22_rr = self.get_derivative(self.A22_r)
+        self.A22_rrr = self.get_derivative(self.A22_rr)
+  
+class N3(MRI):
+
+    """
+    Solves the nonlinear vector N3
+    Returns N3
+    
+    """
+    
+    def __init__(self, o2 = None, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True):
+        
+        print("initializing N3")
+        
+        if o2 == None:
+            o2 = OrderE2(Q = Q, Rm = Rm, Pm = Pm, beta = beta, R1 = R1, R2 = R2, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
+        
+        o1 = o2.o1
+        MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, R1 = o1.R1, R2 = o1.R2, Omega1 = o1.Omega1, Omega2 = o1.Omega2, norm = o1.norm)
+            
+        self.o1 = o1
+        self.o2 = o2
+        
+        k = self.Q
+        
+        rfield = d1.new_field()
+        rfield['g'] = o1.r
+        
+        invr = d1.new_field()
+        invr['g'] = (1/o1.r)
+        
+        Jacobian1_part1 = ((1j*k*o1.psi)*(-2*invr**3*o2.psi20_rr + invr**2*o2.psi20_rrr - 3*invr**4*o2.psi20_r + invr**3*o2.psi20_rr)
+                        + (1j*k*o1.psi)*(-2*invr**3*o2.psi20_star_rr + invr**2*o2.psi20_star_rrr - 3*invr**4*o2.psi20_star_r + invr**3*o2.psi20_star_rr)
+                        + (-1j*k*o1.psi_star)*(-2*invr**3*o2.psi22_star_rr + invr**2*o2.psi22_star_rrr - 3*invr**4*o2.psi22_star_r + invr**3*o2.psi22_star_rr + (2*1j*k)**2*(-2*invr**3*o2.psi22 + invr**2*o2.psi22_r))
+                        + (-2*1j*k*o1.psi_star_r)*(invr**2*o2.psi22_rr + invr**3*o2.psi22_r + (2*1j*k)**2*invr**2*o2.psi22))
+        
+        Jacobian1_part2 = ((1j*k*o1.psi)*(6*invr**4*o2.psi20_r - 2*invr**3*o2.psi20_rr) + (1j*k*o1.psi)*(6*invr**4*o2.psi20_star_r - 2*invr**3*o2.psi20_star_rr)
+                        + (-1j*k*o1.psi_star)*(6*invr**4*o2.psi22_r - 2*invr**3*o2.psi22_rr) - (o1.psi_star_r)*(2*1j*k*(-2)*invr**2*o2.psi22_r))
+        
+        Jacobian2_part1 = (-2/self.beta)*((1j*k*o1.A)*(-2*invr**3*o2.A20_rr + invr**2*o2.A20_rrr - 3*invr**4*o2.A20_r + invr**3*o2.A20_rr)
+                        + (1j*k*o1.A)*(-2*invr**3*o2.A20_star_rr + invr**2*o2.A20_star_rrr - 3*invr**4*o2.A20_star_r + invr**3*o2.A20_star_rr)
+                        + (-1j*k*o1.A_star)*(-2*invr**3*o2.A22_star_rr + invr**2*o2.A22_star_rrr - 3*invr**4*o2.A22_star_r + invr**3*o2.A22_star_rr + (2*1j*k)**2*(-2*invr**3*o2.A22 + invr**2*o2.A22_r))
+                        + (-2*1j*k*o1.A_star_r)*(invr**2*o2.A22_rr + invr**3*o2.A22_r + (2*1j*k)**2*invr**2*o2.A22))
+        
+        Jacobian2_part2 = (-2/self.beta)*((1j*k*o1.A)*(6*invr**4*o2.A20_r - 2*invr**3*o2.A20_rr) + (1j*k*o1.A)*(6*invr**4*o2.A20_star_r - 2*invr**3*o2.A20_star_rr)
+                        + (-1j*k*o1.A_star)*(6*invr**4*o2.A22_r - 2*invr**3*o2.A22_rr) - (o1.A_star_r)*(2*1j*k*(-2)*invr**2*o2.A22_r))
+        
+        Jacobian3_part1 = (-o2.psi20_r*(1j*k)*(invr**2*o1.psi_rr + invr**2*(1j*k)**2*o1.psi + invr**3*o1.psi_r)
+                          -o2.psi20_star_r*(1j*k)*(invr**2*o1.psi_rr + invr**2*(1j*k)**2*o1.psi + invr**3*o1.psi_r)
+                          + (1j*2*k)*o2.psi22*(-2*invr**3*o1.psi_star_rr + invr**2*o1.psi_star_rrr + (-1j*k)**2*(-2*invr**3*o1.psi_star + invr**2*o1.psi_star) - 3*invr**4*o1.psi_star_r + invr**3*o1.psi_star_rr)
+                          - o2.psi22_r*(-1j*k)*(invr**2*o1.psi_star_rr + invr**2*(-1j*k)**2*o1.psi_star + invr**3*o1.psi_star_r))
+        
+        Jacobian3_part2 = (-o2.psi20_r*(1j*k)*(-2*invr**3*o1.psi_r) - o2.psi20_star_r*(1j*k)*(-2*invr**3*o1.psi_r)
+                          + (1j*2*k)*o2.psi22*(6*invr**4*o1.psi_star_r - 2*invr**3*o1.psi_star_rr)
+                          - o2.psi22_r*(1j*k)*(-2*invr**3*o1.psi_star_r))
+                          
+        Jacobian4_part1 = (-2/self.beta)*(-o2.A20_r*(1j*k)*(invr**2*o1.A_rr + invr**2*(1j*k)**2*o1.A + invr**3*o1.A_r)
+                          -o2.A20_star_r*(1j*k)*(invr**2*o1.A_rr + invr**2*(1j*k)**2*o1.A + invr**3*o1.A_r)
+                          + (1j*2*k)*o2.A22*(-2*invr**3*o1.A_star_rr + invr**2*o1.A_star_rrr + (-1j*k)**2*(-2*invr**3*o1.A_star + invr**2*o1.A_star) - 3*invr**4*o1.A_star_r + invr**3*o1.A_star_rr)
+                          - o2.A22_r*(-1j*k)*(invr**2*o1.A_star_rr + invr**2*(-1j*k)**2*o1.A_star + invr**3*o1.A_star_r))
+        
+        Jacobian4_part2 = (-2/self.beta)*(-o2.A20_r*(1j*k)*(-2*invr**3*o1.A_r) - o2.A20_star_r*(1j*k)*(-2*invr**3*o1.A_r)
+                          + (1j*2*k)*o2.A22*(6*invr**4*o1.A_star_r - 2*invr**3*o1.A_star_rr)
+                          - o2.A22_r*(1j*k)*(-2*invr**3*o1.A_star_r))
+        
+        advective1 = -2*invr*o1.psi_star*2*1j*k*o2.psi22
+        
+        advective2 = -2*invr*(o2.psi20*1j*k*o1.psi + o2.psi20_star*1j*k*o1.psi + o2.psi22*(-1j*k)*o1.psi_star)
+        
+        self.N31_psi = (Jacobian1_part1 + Jacobian1_part2 + Jacobian2_part1 + Jacobian2_part2 + Jacobian3_part1 + Jacobian3_part2 
+                       + Jacobian4_part1 + Jacobian4_part2 + advective1 + advective2).evaluate()
+                       
         
 """
 if __name__ == '__main__':
