@@ -699,13 +699,26 @@ class N3(MRI):
                           + (1j*2*k)*o2.A22*(6*invr**4*o1.A_star_r - 2*invr**3*o1.A_star_rr)
                           - o2.A22_r*(1j*k)*(-2*invr**3*o1.A_star_r))
         
-        advective1 = -2*invr*o1.psi_star*2*1j*k*o2.psi22
+        advective1 = -2*invr*o1.u_star*2*1j*k*o2.u22
         
-        advective2 = -2*invr*(o2.psi20*1j*k*o1.psi + o2.psi20_star*1j*k*o1.psi + o2.psi22*(-1j*k)*o1.psi_star)
+        advective2 = -2*invr*(o2.u20*1j*k*o1.u + o2.u20_star*1j*k*o1.u + o2.u22*(-1j*k)*o1.u_star)
+        
+        advective3 = 2*invr*(2/self.beta)*o1.B_star*2*1j*k*o2.B22
+        
+        advective4 = 2*invr*(2/self.beta)*(o2.B20*1j*k*o1.B + o2.B20_star*1j*k*o1.B + o2.B22*(-1j*k)*o1.B_star)
         
         self.N31_psi = (Jacobian1_part1 + Jacobian1_part2 + Jacobian2_part1 + Jacobian2_part2 + Jacobian3_part1 + Jacobian3_part2 
-                       + Jacobian4_part1 + Jacobian4_part2 + advective1 + advective2).evaluate()
+                       + Jacobian4_part1 + Jacobian4_part2 + advective1 + advective2 + advective3 + advective4).evaluate()
                        
+        Jacobian1 = invr*(1j*k*o1.psi*(o2.u20_r + o2.u20_star_r) + (-1j*k)*o1.psi_star*o2.u22_r - o1.psi_star_r*(2*1j*k)*o2.u22)
+        
+        Jacobian2 = -invr*(2/self.beta)*(1j*k*o1.A*(o2.B20_r + o2.B20_star_r) + (-1j*k)*o1.A_star*o2.B22_r - o1.A_star_r*(2*1j*k)*o2.B22)
+        
+        Jacobian3 = invr*(-o2.psi20_r*1j*k*o1.u - o2.psi20_star_r*1j*k*o1.u + 2*1j*k*o2.psi22*o1.u_star_r - o2.psi22_r*(-1j*k)*o1.u_star)
+        
+        Jacobian4 = -invr*(2/self.beta)*(-o2.A20_r*1j*k*o1.B - o2.A20_star_r*1j*k*o1.B + 2*1j*k*o2.A22*o1.B_star_r - o2.A22_r*(-1j*k)*o1.B_star)
+        
+        advective1 = 
         
 """
 if __name__ == '__main__':
