@@ -365,27 +365,31 @@ class N2(MRI):
         rfield = d1.new_field()
         rfield['g'] = o1.r
     
-        N22_psi = ((1j*Q*o1.psi)*((1/rfield**2)*(-Q**2)*o1.psi_r - (3/rfield**3)*o1.psi_rr + (1/rfield**2)*o1.psi_rrr - (2/rfield**3)*(-Q**2)*o1.psi + (3/rfield**4)*o1.psi_r)
+        N22_psi_jacobians = ((1j*Q*o1.psi)*((1/rfield**2)*(-Q**2)*o1.psi_r - (3/rfield**3)*o1.psi_rr + (1/rfield**2)*o1.psi_rrr - (2/rfield**3)*(-Q**2)*o1.psi + (3/rfield**4)*o1.psi_r)
                 - (o1.psi_r)*((1/rfield**2)*(1j*Q)*o1.psi_rr - (1/rfield**3)*(1j*Q)*o1.psi_r + (1/rfield**2)*(1j*Q)**3*o1.psi)
                 - (2/beta)*((1j*Q*o1.A)*((1/rfield**2)*(-Q**2)*o1.A_r - (3/rfield**3)*o1.A_rr + (1/rfield**2)*o1.A_rrr - (2/rfield**3)*(-Q**2)*o1.A + (3/rfield**4)*o1.A_r)
-                - (o1.A_r)*((1/rfield**2)*(1j*Q)*o1.A_rr - (1/rfield**3)*(1j*Q)*o1.A_r + (1/rfield**2)*(1j*Q)**3*o1.A))
-                -(2/rfield)*o1.u*(1j*Q)*o1.u + (2/beta)*(2/rfield)*o1.B*(1j*Q)*o1.B)
-        self.N22_psi = N22_psi.evaluate()
+                - (o1.A_r)*((1/rfield**2)*(1j*Q)*o1.A_rr - (1/rfield**3)*(1j*Q)*o1.A_r + (1/rfield**2)*(1j*Q)**3*o1.A)))
+        N22_psi_advectives = (-(2/rfield)*o1.u*(1j*Q)*o1.u + (2/beta)*(2/rfield)*o1.B*(1j*Q)*o1.B)
+        self.N22_psi = (N22_psi_jacobians + N22_psi_advectives).evaluate()
+        self.N22_psi_noadvective = N22_psi_jacobians.evaluate() 
         
-        N20_psi = ((1j*Q*o1.psi)*((1/rfield**2)*((-1j*Q)**2)*o1.psi_star_r - (3/rfield**3)*o1.psi_star_rr + (1/rfield**2)*o1.psi_star_rrr - (2/rfield**3)*((-1j*Q)**2)*o1.psi_star + (3/rfield**4)*o1.psi_star_r)
+        N20_psi_jacobians = ((1j*Q*o1.psi)*((1/rfield**2)*((-1j*Q)**2)*o1.psi_star_r - (3/rfield**3)*o1.psi_star_rr + (1/rfield**2)*o1.psi_star_rrr - (2/rfield**3)*((-1j*Q)**2)*o1.psi_star + (3/rfield**4)*o1.psi_star_r)
                 - (o1.psi_r)*((1/rfield**2)*(-1j*Q)*o1.psi_star_rr - (1/rfield**3)*(-1j*Q)*o1.psi_star_r + (1/rfield**2)*(-1j*Q)**3*o1.psi_star)
                 - (2/beta)*((1j*Q*o1.A)*((1/rfield**2)*((-1j*Q)**2)*o1.A_star_r - (3/rfield**3)*o1.A_star_rr + (1/rfield**2)*o1.A_star_rrr - (2/rfield**3)*((-1j*Q)**2)*o1.A_star + (3/rfield**4)*o1.A_star_r)
-                - (o1.A_r)*((1/rfield**2)*(-1j*Q)*o1.A_star_rr - (1/rfield**3)*(-1j*Q)*o1.A_star_r + (1/rfield**2)*(-1j*Q)**3*o1.A_star))
-                -(2/rfield)*o1.u*(-1j*Q)*o1.u_star + (2/beta)*(2/rfield)*o1.B*(-1j*Q)*o1.B_star)
-        self.N20_psi = N20_psi.evaluate()
-                
-        N22_u = ((1/rfield)*((1j*Q*o1.psi)*o1.u_r - (1j*Q*o1.u)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_r - (1j*Q*o1.B)*o1.A_r))
-                + (1/rfield**2)*o1.u*1j*Q*o1.psi - (2/beta)*(1/rfield**2)*o1.B*1j*Q*o1.A)
-        self.N22_u = N22_u.evaluate()
+                - (o1.A_r)*((1/rfield**2)*(-1j*Q)*o1.A_star_rr - (1/rfield**3)*(-1j*Q)*o1.A_star_r + (1/rfield**2)*(-1j*Q)**3*o1.A_star)))
+        N20_psi_advectives = (-(2/rfield)*o1.u*(-1j*Q)*o1.u_star + (2/beta)*(2/rfield)*o1.B*(-1j*Q)*o1.B_star)
+        self.N20_psi = (N20_psi_jacobians + N20_psi_advectives).evaluate()
+        self.N20_psi_noadvective = N20_psi_jacobians.evaluate()
         
-        N20_u = ((1/rfield)*((1j*Q*o1.psi)*o1.u_star_r - (-1j*Q*o1.u_star)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_star_r - (-1j*Q*o1.B_star)*o1.A_r))
-                + (1/rfield**2)*o1.u*(-1j*Q)*o1.psi_star - (2/beta)*(1/rfield**2)*o1.B*(-1j*Q)*o1.A_star)
-        self.N20_u = N20_u.evaluate()
+        N22_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_r - (1j*Q*o1.u)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_r - (1j*Q*o1.B)*o1.A_r)))
+        N22_u_advectives = ((1/rfield**2)*o1.u*1j*Q*o1.psi - (2/beta)*(1/rfield**2)*o1.B*1j*Q*o1.A)
+        self.N22_u = (N22_u_jacobians + N22_u_advectives).evaluate()
+        self.N22_u_noadvective = N22_u_jacobians.evaluate()
+        
+        N20_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_star_r - (-1j*Q*o1.u_star)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_star_r - (-1j*Q*o1.B_star)*o1.A_r)))
+        N20_u_advectives = ((1/rfield**2)*o1.u*(-1j*Q)*o1.psi_star - (2/beta)*(1/rfield**2)*o1.B*(-1j*Q)*o1.A_star)
+        self.N20_u = (N20_u_jacobians + N20_u_advectives).evaluate()
+        self.N20_u_noadvective = N20_u_jacobians.evaluate()
                 
         N22_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_r - (1j*Q*o1.A)*o1.psi_r)
         self.N22_A = N22_A.evaluate()
@@ -393,13 +397,15 @@ class N2(MRI):
         N20_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_star_r - (-1j*Q*o1.A_star)*o1.psi_r)
         self.N20_A = N20_A.evaluate()
         
-        N22_B = ((1/rfield)*((1j*Q*o1.u)*o1.A_r - (1j*Q*o1.A)*o1.u_r) + (1/rfield)*((1j*Q*o1.psi)*o1.B_r - (1j*Q*o1.B)*o1.psi_r)
-                - (1/rfield**2)*o1.B*(1j*Q)*o1.psi + (1/rfield**2)*o1.u*(1j*Q)*o1.A)
-        self.N22_B = N22_B.evaluate()
+        N22_B_jacobians = ((1/rfield)*((1j*Q*o1.u)*o1.A_r - (1j*Q*o1.A)*o1.u_r) + (1/rfield)*((1j*Q*o1.psi)*o1.B_r - (1j*Q*o1.B)*o1.psi_r))
+        N22_B_advectives = (-(1/rfield**2)*o1.B*(1j*Q)*o1.psi + (1/rfield**2)*o1.u*(1j*Q)*o1.A)
+        self.N22_B = (N22_B_jacobians + N22_B_advectives).evaluate()
+        self.N22_B_noadvective = N22_B_jacobians.evaluate()
         
-        N20_B = ((1/rfield)*((1j*Q*o1.u)*o1.A_star_r - (-1j*Q*o1.A_star)*o1.u_r) + (1/rfield)*((1j*Q*o1.psi)*o1.B_star_r - (-1j*Q*o1.B_star)*o1.psi_r)
-                - (1/rfield**2)*o1.B*(-1j*Q)*o1.psi_star + (1/rfield**2)*o1.u*(-1j*Q)*o1.A_star)
-        self.N20_B = N20_B.evaluate()
+        N20_B_jacobians = ((1/rfield)*((1j*Q*o1.u)*o1.A_star_r - (-1j*Q*o1.A_star)*o1.u_r) + (1/rfield)*((1j*Q*o1.psi)*o1.B_star_r - (-1j*Q*o1.B_star)*o1.psi_r))
+        N20_B_advectives = (-(1/rfield**2)*o1.B*(-1j*Q)*o1.psi_star + (1/rfield**2)*o1.u*(-1j*Q)*o1.A_star)
+        self.N20_B = (N20_B_jacobians + N20_B_advectives).evaluate()
+        self.N20_B_noadvective = N20_B_jacobians.evaluate()
         
         
 class OrderE2(MRI):
@@ -710,6 +716,9 @@ class N3(MRI):
         self.N31_psi = (Jacobian1_part1 + Jacobian1_part2 + Jacobian2_part1 + Jacobian2_part2 + Jacobian3_part1 + Jacobian3_part2 
                        + Jacobian4_part1 + Jacobian4_part2 + advective1 + advective2 + advective3 + advective4).evaluate()
                        
+        self.N31_psi_noadvective = (Jacobian1_part1 + Jacobian1_part2 + Jacobian2_part1 + Jacobian2_part2 + Jacobian3_part1 + Jacobian3_part2 
+                       + Jacobian4_part1 + Jacobian4_part2).evaluate()
+                       
         Jacobian1 = invr*(1j*k*o1.psi*(o2.u20_r + o2.u20_star_r) + (-1j*k)*o1.psi_star*o2.u22_r - o1.psi_star_r*(2*1j*k)*o2.u22)
         
         Jacobian2 = -invr*(2/self.beta)*(1j*k*o1.A*(o2.B20_r + o2.B20_star_r) + (-1j*k)*o1.A_star*o2.B22_r - o1.A_star_r*(2*1j*k)*o2.B22)
@@ -727,6 +736,8 @@ class N3(MRI):
         advective4 = -(2/self.beta)*invr**2*(o2.B20*1j*k*o1.A + o2.B20_star*1j*k*o1.A + o2.B22*(-1j*k)*o1.A_star)
         
         self.N31_u = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4 + advective1 + advective2 + advective3 + advective4).evaluate()
+        
+        self.N31_u_noadvective = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4).evaluate()
         
         Jacobian1 = -invr*(1j*k*o1.A*(o2.psi20_r + o2.psi20_star_r) + (-1j*k)*o1.A_star*o2.psi22_r - o1.A_star_r*(2*1j*k)*o2.psi22)
         
@@ -760,6 +771,7 @@ class N3(MRI):
         
         self.N31_B = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4 + advective1 + advective2 + advective3 + advective4).evaluate()
         
+        self.N31_B_noadvective = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4).evaluate()
         
 """
 if __name__ == '__main__':
