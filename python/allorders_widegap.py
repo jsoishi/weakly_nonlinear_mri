@@ -227,6 +227,55 @@ class MRI():
         
         return field_star
         
+class OrderEIdeal():
+
+    def __init__(self, Q = 10, Omega = 1, beta = 25):
+        
+        print("initializing wide gap Order epsilon")
+
+        # widegap order epsilon
+        widegap1 = de.EVP(d1,['psi','u', 'A', 'B', 'psir', 'Ar'],'sigma')
+        #widegap2 = de.EVP(d2,['psi','u', 'A', 'B', 'psir', 'Ar'],'sigma')
+        
+        # Add equations
+        for widegap in [widegap1]:#, widegap2]:
+            
+            widegap.parameters['k'] = Q
+            widegap.parameters['Omega'] = Omega
+            widegap.parameters['beta'] = beta
+            widegap.parameters['q'] = 1.5
+            
+            widegap.add_equation("sigma*(r*dr(psir) + r*(1j*k)**2*psi - psir) - r**2*2*Omega*1j*k*u - (2/beta)*(r*(1j*k)**3*A + r*1j*k*dr(Ar) - 1j*k*Ar) = 0")
+            widegap.add_equation("sigma*u*r + (2-q)*Omega*1j*k*psi - r*(2/beta)*1j*k*B = 0")
+            widegap.add_equation("sigma*A - 1j*k*psi = 0")
+            widegap.add_equation("sigma*B*r - 1j*k*r*u + q*Omega*1j*k*A = 0")    
+        
+            widegap.add_equation("dr(psi) - psir = 0")
+            widegap.add_equation("dr(A) - Ar = 0")
+
+            widegap.add_bc('left(u) = 0')
+            #widegap.add_bc('right(u) = 0')
+            widegap.add_bc('left(psi) = 0')
+            widegap.add_bc('right(psi) = 0')
+            #widegap.add_bc('left(A) = 0')
+            #widegap.add_bc('right(A) = 0')
+            #widegap.add_bc('left(psir) = 0')
+            #widegap.add_bc('right(psir) = 0')
+            #widegap.add_bc('left(dr(r*B)) = 0')
+            #widegap.add_bc('right(dr(r*B)) = 0') # axial component of current = 0
+
+            solver1 = widegap1.build_solver()
+            #solver2 = widegap2.build_solver()
+        
+            solver1.solve(solver1.pencils[0])
+            #solver2.solve(solver2.pencils[0])
+        
+            # Discard spurious eigenvalues
+            ev1 = solver1.eigenvalues
+            #ev2 = solver2.eigenvalues
+            
+            self.solver1 = solver1
+
 class OrderE(MRI):
 
     """
@@ -235,7 +284,7 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True, inviscid = False):
+    def __init__(self, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True, inviscid = False, ideal = False):
         
         print("initializing wide gap Order epsilon")
         

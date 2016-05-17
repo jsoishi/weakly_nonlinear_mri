@@ -303,8 +303,9 @@ if __name__ == '__main__':
     #Qsearch = np.arange(0.004, 0.006, dQ)
     #Rmsearch = np.arange(0.82, 0.85, dRm)
     
-    Qsearch = np.arange(0.006, 0.008, dQ)
+    #Qsearch = np.arange(0.006, 0.008, dQ)
     Rmsearch = np.arange(0.84, 0.85, dRm)
+    Qsearch = np.arange(0.008, 0.012, dQ)
     
     # coarse search around Rm = 0.85, Q = 0.006
     #Rmsearch = np.arange(0.8, 1.0, dRm)
