@@ -298,7 +298,7 @@ if __name__ == '__main__':
     #Rmsearch = np.arange(0.85, 0.87, dRm)
     #Qsearch = np.arange(0.001, 0.003, dQ)
     # actually search higher in Q....
-    Q#search = np.arange(0.003, 0.006, dQ)
+    #Qsearch = np.arange(0.003, 0.006, dQ)
     # and lower Rm...
     Qsearch = np.arange(0.004, 0.006, dQ)
     Rmsearch = np.arange(0.82, 0.85, dRm)
