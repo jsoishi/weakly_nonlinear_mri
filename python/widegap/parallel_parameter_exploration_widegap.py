@@ -295,10 +295,13 @@ if __name__ == '__main__':
     #dRm = 0.001
     
     # For Pm = 1E-2, search around Rm = 0.86, Q = 0.002
-    Rmsearch = np.arange(0.85, 0.87, dRm)
+    #Rmsearch = np.arange(0.85, 0.87, dRm)
     #Qsearch = np.arange(0.001, 0.003, dQ)
     # actually search higher in Q....
-    Qsearch = np.arange(0.003, 0.006, dQ)
+    Q#search = np.arange(0.003, 0.006, dQ)
+    # and lower Rm...
+    Qsearch = np.arange(0.004, 0.006, dQ)
+    Rmsearch = np.arange(0.82, 0.85, dRm)
     
     # coarse search around Rm = 0.85, Q = 0.006
     #Rmsearch = np.arange(0.8, 1.0, dRm)
