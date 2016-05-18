@@ -140,8 +140,8 @@ def min_evalue(kz):
     ev2 = solver2.eigenvalues
     goodeigs, goodeigs_indices = discard_spurious_eigenvalues(ev1, ev2)
 
-    # Return smallest real part
-    goodeigs_index = np.nanargmin(goodeigs.real)
+    # Return smallest positive real part
+    goodeigs_index = np.nanargmin(np.abs(goodeigs.real))
     marginal_mode_index = int(goodeigs_indices[goodeigs_index])
 
     # Largest real-part eigenvalue
