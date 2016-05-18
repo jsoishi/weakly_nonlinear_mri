@@ -289,7 +289,7 @@ if __name__ == '__main__':
     #Q = np.pi/10 
 
     #dQ = 0.00001
-    dQ = 0.0001
+    dQ = 0.001
     #dRm = 0.01
     dRm = 0.001
     #dRm = 0.001
@@ -304,8 +304,11 @@ if __name__ == '__main__':
     #Rmsearch = np.arange(0.82, 0.85, dRm)
     
     #Qsearch = np.arange(0.006, 0.008, dQ)
-    Rmsearch = np.arange(0.84, 0.85, dRm)
-    Qsearch = np.arange(0.008, 0.012, dQ)
+    #Rmsearch = np.arange(0.84, 0.85, dRm)
+    #Qsearch = np.arange(0.008, 0.012, dQ)
+    
+    Rmsearch = np.arange(0.84, 0.842, dRm)
+    Qsearch = np.arange(0.012, 0.022, dQ)
     
     # coarse search around Rm = 0.85, Q = 0.006
     #Rmsearch = np.arange(0.8, 1.0, dRm)
