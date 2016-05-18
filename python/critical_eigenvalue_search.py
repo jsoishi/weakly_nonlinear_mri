@@ -32,7 +32,7 @@ def min_evalue(kz):
     c2 = (R1**2*R2**2*(Omega1 - Omega2))/(R2**2 - R1**2)
 
     # Widegap MRI equations
-    widegap = de.EVP(domain, variables = ['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'], eigenvalue = 'Rm', tolerance = 1E-10)
+    widegap = de.EVP(domain, variables = ['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'], eigenvalue = 'iRm', tolerance = 1E-10)
     widegap.parameters['k'] = kz
     widegap.parameters['c1'] = c1
     widegap.parameters['c2'] = c2
@@ -49,10 +49,10 @@ def min_evalue(kz):
     widegap.substitutions['Bvisc'] = '(-r**3*k**2*B + r**3*dr(Br) + r**2*Br - r*B)'
     
     # widegap MRI equations with sigma (growth rate) set to zero. Note iR = (Pm/Rm)
-    widegap.add_equation("-r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - (Pm/Rm)*psivisc = 0") #corrected on whiteboard 5/6
-    widegap.add_equation("1j*k*ru0*psi + 1j*k*rrdu0*psi - 1j*k*r**3*twooverbeta*B0*B - (Pm/Rm)*uvisc = 0") # correct 5/5
-    widegap.add_equation("-r*B0*1j*k*psi - Rm**-1*Avisc = 0")
-    widegap.add_equation("ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - Rm**-1*Bvisc = 0") # correct 5/5
+    widegap.add_equation("-r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - Pm*iRm*psivisc = 0") #corrected on whiteboard 5/6
+    widegap.add_equation("1j*k*ru0*psi + 1j*k*rrdu0*psi - 1j*k*r**3*twooverbeta*B0*B - Pm*iRm*uvisc = 0") # correct 5/5
+    widegap.add_equation("-r*B0*1j*k*psi - iRm*Avisc = 0")
+    widegap.add_equation("ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - iRm*Bvisc = 0") # correct 5/5
 
     widegap.add_equation("dr(psi) - psir = 0")
     widegap.add_equation("dr(psir) - psirr = 0")
@@ -83,5 +83,5 @@ def min_evalue(kz):
     print(repr(ev.real[i_min]))
     return np.min(ev.real[i_min])
 
-sol = opt.minimize_scalar(min_evalue,bracket=[0.01, 0.04])
+sol = opt.minimize_scalar(min_evalue, bracket=[0.01, 0.04])
 print(repr(sol.x))
