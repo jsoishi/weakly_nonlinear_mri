@@ -289,9 +289,9 @@ if __name__ == '__main__':
     #Q = np.pi/10 
 
     #dQ = 0.00001
-    dQ = 0.002
+    dQ = 0.0005
     #dRm = 0.01
-    dRm = 0.0005
+    dRm = 0.0001
     #dRm = 0.001
     
     # For Pm = 1E-2, search around Rm = 0.86, Q = 0.002
@@ -307,8 +307,12 @@ if __name__ == '__main__':
     #Rmsearch = np.arange(0.84, 0.85, dRm)
     #Qsearch = np.arange(0.008, 0.012, dQ)
     
-    Rmsearch = np.arange(0.84, 0.841, dRm)
-    Qsearch = np.arange(0.012, 0.042, dQ)
+    #Rmsearch = np.arange(0.84, 0.841, dRm)
+    #Qsearch = np.arange(0.012, 0.042, dQ)
+    
+    # Found the edge for Pm = 1E-2!
+    Qsearch = np.arange(0.012, 0.028, dQ)
+    Rmsearch = np.arange(0.8405, 0.841, dRm)
     
     # coarse search around Rm = 0.85, Q = 0.006
     #Rmsearch = np.arange(0.8, 1.0, dRm)
