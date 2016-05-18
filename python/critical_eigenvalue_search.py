@@ -161,6 +161,6 @@ print(repr(sol.x))
 
 kz_critical = sol.x
 
-sol2 = opt.minimize_scalar(min_evalue2(kz = kz_critical), bracket=[0.83, 0.85])
+sol2 = opt.minimize_scalar(min_evalue2(args = (kz_critical,)), bracket=[0.83, 0.85])
 print(repr(sol2.x))
 
