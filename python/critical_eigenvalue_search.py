@@ -37,6 +37,7 @@ def min_evalue(kz):
     widegap.parameters['c1'] = c1
     widegap.parameters['c2'] = c2
     widegap.parameters['beta'] = beta
+    widegap.parameters['Pm'] = Pm
     widegap.parameters['B0'] = 1
 
     widegap.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
