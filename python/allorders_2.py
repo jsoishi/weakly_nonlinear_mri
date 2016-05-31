@@ -1,30 +1,30 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from dedalus2.public import *
-from dedalus2.pde.solvers import LinearEigenvalue, LinearBVP
+import dedalus.public as de
+from eigentools import Eigenproblem
 from scipy.linalg import eig, norm
 import pylab
 import copy
 import pickle
-import plot_tools
+
 import streamplot_uneven as su
 import random
 
 import matplotlib
 from matplotlib import rc
-rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-rc('text', usetex=True)
+#rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+#rc('text', usetex=True)
 
 gridnum = 50#128
 print("running at gridnum", gridnum)
-x_basis = Chebyshev(gridnum)
-domain = Domain([x_basis], grid_dtype=np.complex128)
+x_basis = de.Chebyshev('x',gridnum)
+domain = de.Domain([x_basis], np.complex128)
 
 # Second basis for checking eigenvalues
-x_basis192 = Chebyshev(64)
+x_basis192 = de.Chebyshev('x',64)
 #x_basis192 = Chebyshev(64)
 #x_basis192 = Chebyshev(192)
-domain192 = Domain([x_basis192], grid_dtype = np.complex128)
+domain192 = de.Domain([x_basis192], np.complex128)
 
 
 class MRI():
@@ -33,6 +33,10 @@ class MRI():
     Base class for MRI equations.
     
     Defaults: For Pm of 0.001 critical Rm is 4.879  critical Q is 0.748
+    
+    CriticalFinder gives:
+    critical wavenumber alpha =    0.74514
+    critical Re =    4.87903
     """
 
     def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
@@ -64,35 +68,40 @@ class MRI():
         Adds MRI problem boundary conditions to a ParsedProblem object.
         """
         
-        problem.add_left_bc("u = 0")
-        problem.add_right_bc("u = 0")
-        problem.add_left_bc("psi = 0")
-        problem.add_right_bc("psi = 0")
-        problem.add_left_bc("A = 0")
-        problem.add_right_bc("A = 0")
-        problem.add_left_bc("psix = 0")
-        problem.add_right_bc("psix = 0")
-        problem.add_left_bc("Bx = 0")
-        problem.add_right_bc("Bx = 0")
+        problem.add_bc("left(u) = 0")
+        problem.add_bc("right(u) = 0")
+        problem.add_bc("left(psi) = 0")
+        problem.add_bc("right(psi) = 0")
+        problem.add_bc("left(A) = 0")
+        problem.add_bc("right(A) = 0")
+        problem.add_bc("left(psix) = 0")
+        problem.add_bc("right(psix) = 0")
+        problem.add_bc("left(Bx) = 0")
+        problem.add_bc("right(Bx) = 0")
         
         return problem
+
+    def fastest_growing(self, problem):
+        self.EP = Eigenproblem(problem)
+        gr, largest_eval_indx  = self.EP.growth_rate({})
+        self.largest_eval_indx = largest_eval_indx
+        self.EP.solver.set_state(largest_eval_indx)
     
-    def solve_LEV(self, problem):
+    def solve_LEV(self, LEV):
     
         """
-        Solves the linear eigenvalue problem for a ParsedProblem object.
+        Solves the linear eigenvalue problem for a LEV object.
         """
         
-        problem.expand(domain)
-        LEV = LinearEigenvalue(problem, domain)
-        LEV.solve(LEV.pencils[0])
+        solver = LEV.build_solver()
+        solver.solve(LEV.pencils[0])
         
-        return LEV
+        return solver
         
     def solve_LEV_secondgrid(self, problem):
     
         """
-        Solves the linear eigenvalue problem for a ParsedProblem object.
+        Solves the linear eigenvalue problem for a LEV object.
         Uses gridnum = 192 domain. For use in discarding spurious eigenvalues.
         """
         
@@ -392,9 +401,9 @@ class MRI():
         Normalize state vectors such that they are purely real or purely imaginary.
         """
         
-        n = np.abs(self.LEV.state['psi']['g'])[13]
-        a = self.LEV.state['psi']['g'].real[13]/n
-        b = self.LEV.state['psi']['g'].imag[13]/n
+        n = np.abs(LEV.state['psi']['g'])[13]
+        a = LEV.state['psi']['g'].real[13]/n
+        b = LEV.state['psi']['g'].imag[13]/n
         scale = 1j*a/(b*(a**2/b+b)) + 1./(a**2/b +b)
         
         
@@ -676,33 +685,27 @@ class AdjointHomogenous(MRI):
         print("initializing Adjoint Homogenous")
         
         if o1 == None:
-            o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            self.o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
             MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         else:
             MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
       
         # Set up problem object
-        lv1 = ParsedProblem(['x'],
-                field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
-                param_names=['Q', 'iR', 'iRm', 'q', 'beta'])
+        lv1 = de.EVP(domain,
+                     ['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'], 'sigma')
 
-        #switched q-2 to 2-q
-        #lv1.add_equation("1j*Q**2*dt(psi) - 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
-        #lv1.add_equation("-1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
-        #lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
-        #lv1.add_equation("-1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
-        
-        #psi and A are upside down
-        #lv1.add_equation("1j*Q**2*dt(psi) - 1j*dt(psixx) - 1j*Q*A - 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
-        #lv1.add_equation("-1j*dt(u) - 1j*Q*B - 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
-        #lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) + 1j*Q*q*B + 1j*(2/beta)*Q**3*psi - 1j*(2/beta)*Q*psixx = 0")
-        #lv1.add_equation("-1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) - 1j*(2/beta)*Q*u = 0")
-        
+        lv1.parameters['Q'] = self.Q
+        lv1.parameters['iR'] = self.iR
+        lv1.parameters['iRm'] = self.iRm
+        lv1.parameters['q'] = self.q
+        lv1.parameters['beta'] = self.beta
+
+        # JSO: these are correct with my rederivation.
         #wait - adjoint should be taken as (L.subs(dz, 1j*Q)).adjoint() -- the following are correct.
-        lv1.add_equation("1j*Q**2*dt(psi) - 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
-        lv1.add_equation("-1j*dt(u) + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
-        lv1.add_equation("-1j*dt(A) + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
-        lv1.add_equation("-1j*dt(B) + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+        lv1.add_equation("-sigma*Q**2*psi + sigma*psixx + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
+        lv1.add_equation("sigma*u + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
+        lv1.add_equation("sigma*A + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
+        lv1.add_equation("sigma*B + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
         
         lv1.add_equation("dx(psi) - psix = 0")
         lv1.add_equation("dx(psix) - psixx = 0")
@@ -711,27 +714,15 @@ class AdjointHomogenous(MRI):
         lv1.add_equation("dx(A) - Ax = 0")
         lv1.add_equation("dx(B) - Bx = 0")
 
-        lv1.parameters['Q'] = self.Q
-        lv1.parameters['iR'] = self.iR
-        lv1.parameters['iRm'] = self.iRm
-        lv1.parameters['q'] = self.q
-        lv1.parameters['beta'] = self.beta
-    
         # Set boundary conditions for MRI problem
         lv1 = self.set_boundary_conditions(lv1)
-        
-        # Discard spurious eigenvalues
-        self.goodevals, self.goodevals_indx, self.LEV = self.discard_spurious_eigenvalues(lv1)
-       
-        # Find the largest eigenvalue (fastest growing mode).
-        largest_eval_indx = self.get_largest_real_eigenvalue_index(self.LEV, goodevals = self.goodevals, goodevals_indx = self.goodevals_indx)
-        
-        self.LEV.set_state(largest_eval_indx)
-        
-        self.psi = self.LEV.state['psi']
-        self.u = self.LEV.state['u']
-        self.A = self.LEV.state['A']
-        self.B = self.LEV.state['B']
+
+        self.fastest_growing(lv1)
+                
+        self.psi = self.EP.solver.state['psi']
+        self.u = self.EP.solver.state['u']
+        self.A = self.EP.solver.state['A']
+        self.B = self.EP.solver.state['B']
                
         #self.psi['g'] = self.normalize_vector(self.psi['g'])
         #self.u['g'] = self.normalize_vector(self.u['g'])
@@ -739,7 +730,7 @@ class AdjointHomogenous(MRI):
         #self.B['g'] = self.normalize_vector(self.B['g'])
         
         if self.norm == True:
-            scale = self.normalize_all_real_or_imag(self.LEV)
+            scale = self.normalize_all_real_or_imag(self.EP.solver)
             
             self.psi = (self.psi*scale).evaluate()
             self.u = (self.u*scale).evaluate()
@@ -805,15 +796,20 @@ class OrderE(MRI):
         print("initializing Order E")
         
         MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-
-        lv1 = ParsedProblem(['x'],
-                field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
-                param_names=['Q', 'iR', 'iRm', 'q', 'beta'])
-
-        lv1.add_equation("-1j*dt(psixx) + 1j*Q**2*dt(psi) - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A = 0")
-        lv1.add_equation("-1j*dt(u) - iR*dx(ux) + iR*Q**2*u - (q - 2)*1j*Q*psi - (2/beta)*1j*Q*B = 0") 
-        lv1.add_equation("-1j*dt(A) - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
-        lv1.add_equation("-1j*dt(B) - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
+        
+        lv1 = de.EVP(domain,
+                     ['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],'sigma')
+        
+        lv1.parameters['Q'] = self.Q
+        lv1.parameters['iR'] = self.iR
+        lv1.parameters['iRm'] = self.iRm
+        lv1.parameters['q'] = self.q
+        lv1.parameters['beta'] = self.beta
+        
+        lv1.add_equation("sigma*psixx - sigma*Q**2*psi - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A = 0")
+        lv1.add_equation("sigma*u - iR*dx(ux) + iR*Q**2*u - (q - 2)*1j*Q*psi - (2/beta)*1j*Q*B = 0") 
+        lv1.add_equation("sigma*A - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
+        lv1.add_equation("sigma*B - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
         
         lv1.add_equation("dx(psi) - psix = 0")
         lv1.add_equation("dx(psix) - psixx = 0")
@@ -821,43 +817,29 @@ class OrderE(MRI):
         lv1.add_equation("dx(u) - ux = 0")
         lv1.add_equation("dx(A) - Ax = 0")
         lv1.add_equation("dx(B) - Bx = 0")
-
-        lv1.parameters['Q'] = self.Q
-        lv1.parameters['iR'] = self.iR
-        lv1.parameters['iRm'] = self.iRm
-        lv1.parameters['q'] = self.q
-        lv1.parameters['beta'] = self.beta
-    
-        lv1 = self.set_boundary_conditions(lv1)
-       
-        # Discard spurious eigenvalues
-        self.goodevals, self.goodevals_indx, self.LEV = self.discard_spurious_eigenvalues(lv1)
-       
-        # Find the largest eigenvalue (fastest growing mode).
-        largest_eval_indx = self.get_largest_real_eigenvalue_index(self.LEV, goodevals = self.goodevals, goodevals_indx = self.goodevals_indx)
         
-        #print(largest_eval_indx)
-        #print(largest_eval_indx.shape)
-        self.LEV.set_state(largest_eval_indx)
+        lv1 = self.set_boundary_conditions(lv1)
+        
+        self.fastest_growing(lv1)        
         
         # All eigenfunctions must be scaled s.t. their max is 1
-        self.psi = self.LEV.state['psi']
-        self.u = self.LEV.state['u']
-        self.A = self.LEV.state['A']
-        self.B = self.LEV.state['B']
+        self.psi = self.EP.solver.state['psi']
+        self.u = self.EP.solver.state['u']
+        self.A = self.EP.solver.state['A']
+        self.B = self.EP.solver.state['B']
         
         #self.psi['g'] = self.normalize_vector(self.psi['g'])
         #self.u['g'] = self.normalize_vector(self.u['g'])
         #self.A['g'] = self.normalize_vector(self.A['g'])
         #self.B['g'] = self.normalize_vector(self.B['g'])
-        print("pre norm", self.psi['g'])
+        #print("pre norm", self.psi['g'])
         self.prenormpsi = self.psi
         
         if self.norm == True:
-            scale = self.normalize_all_real_or_imag(self.LEV)
+            scale = self.normalize_all_real_or_imag(self.EP.solver)
             
             self.psi = (self.psi*scale).evaluate()
-            print(self.psi['g'])
+            #print(self.psi['g'])
             self.u = (self.u*scale).evaluate()
             self.A = (self.A*scale).evaluate()
             self.B = (self.B*scale).evaluate()
