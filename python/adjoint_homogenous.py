@@ -1,20 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from dedalus2.public import *
-from dedalus2.pde.solvers import LinearEigenvalue
+import dedalus.public as de
 from scipy.linalg import eig, norm
 import pylab
 import copy
 
 
 def setup():
-
-    lv1 = ParsedProblem(['x'],
-                          field_names=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
-                          param_names=['Q', 'iR', 'iRm', 'q', 'Co'])
-                  
-    x_basis = Chebyshev(64)
-    domain = Domain([x_basis], grid_dtype=np.complex128)#,grid_dtype=np.float64)
+    x_basis = de.Chebyshev('x', 64)
+    domain = de.Domain([x_basis], np.complex128)#,grid_dtype=np.float64)
+    lv1 = de.EVP(domain,
+                 variables=['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],
+                 eigenvalue='sigma')
 
     #Solve equations for fixed z eigenvalue: V+ = V+ e^(iQz)
     #Parameter values from Umurhan+:
@@ -35,12 +32,17 @@ def setup():
 
     R = Rm/Pm
     iR = 1./R
+    lv1.parameters['Q'] = Q
+    lv1.parameters['iR'] = iR
+    lv1.parameters['iRm'] = iRm
+    lv1.parameters['q'] = q
+    lv1.parameters['Co'] = Co
 
     #Correct equations
-    lv1.add_equation("-1j*Q**2*dt(psi) + 1j*dt(psixx) + 1j*Q*A + 1j*(q - 2)*Q*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
-    lv1.add_equation("1j*dt(u) + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
-    lv1.add_equation("1j*dt(A) - iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*Co*Q**3*psi + 1j*Co*Q*psixx = 0")
-    lv1.add_equation("1j*dt(B) - iRm*Q**2*B + iRm*dx(Bx) + 1j*Co*Q*u = 0")
+    lv1.add_equation("-sigma*Q**2*psi + sigma*psixx + 1j*Q*A + 1j*(q - 2)*Q*u + iR*Q**4*psi - 2*iR*Q**2*psixx + iR*dx(psixxx) = 0")
+    lv1.add_equation("sigma*u + 1j*Q*B + 2*1j*Q*psi - iR*Q**2*u + iR*dx(ux) = 0")
+    lv1.add_equation("sigma*A - iRm*Q**2*A + iRm*dx(Ax) - 1j*Q*q*B - 1j*Co*Q**3*psi + 1j*Co*Q*psixx = 0")
+    lv1.add_equation("sigma*B - iRm*Q**2*B + iRm*dx(Bx) + 1j*Co*Q*u = 0")
     
     #without iQ's
     #lv1.add_equation("1j*dt(psixx) + A + iR*dx(psixxx) + iR*2*psixx + iR*psi + (q-2)*u = 0")
@@ -56,16 +58,16 @@ def setup():
     lv1.add_equation("dx(B) - Bx = 0")
 
     #Boundary conditions
-    lv1.add_left_bc("u = 0")
-    lv1.add_right_bc("u = 0")
-    lv1.add_left_bc("psi = 0")
-    lv1.add_right_bc("psi = 0")
-    lv1.add_left_bc("A = 0")
-    lv1.add_right_bc("A = 0")
-    lv1.add_left_bc("psix = 0")
-    lv1.add_right_bc("psix = 0")
-    lv1.add_left_bc("Bx = 0")
-    lv1.add_right_bc("Bx = 0")
+    lv1.add_bc("left(u) = 0")
+    lv1.add_bc("right(u) = 0")
+    lv1.add_bc("left(psi) = 0")
+    lv1.add_bc("right(psi) = 0")
+    lv1.add_bc("left(A) = 0")
+    lv1.add_bc("right(A) = 0")
+    lv1.add_bc("left(psix) = 0")
+    lv1.add_bc("right(psix) = 0")
+    lv1.add_bc("left(Bx) = 0")
+    lv1.add_bc("right(Bx) = 0")
 
     #Parameters
     lv1.parameters['Q'] = Q
@@ -74,8 +76,7 @@ def setup():
     lv1.parameters['q'] = q
     lv1.parameters['Co'] = Co
 
-    lv1.expand(domain)
-    LEV = LinearEigenvalue(lv1,domain)
+    LEV = lv1.build_solver()
     LEV.solve(LEV.pencils[0])
 
     #Find the eigenvalue that is closest to zero. This should be the adjoint homogenous solution.
