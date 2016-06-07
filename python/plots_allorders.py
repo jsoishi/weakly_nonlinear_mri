@@ -1,14 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from dedalus2.public import *
-from dedalus2.pde.solvers import LinearEigenvalue, LinearBVP
-from scipy.linalg import eig, norm
 import pylab
-import copy
 import pickle
-import plot_tools
-import streamplot_uneven as su
-import random
 import itertools
 import decimal
 from scipy import polyfit
