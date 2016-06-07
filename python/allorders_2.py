@@ -111,17 +111,16 @@ class MRI():
         
         return LEV
         
-    def solve_BVP(self, problem):
+    def solve_BVP(self, BVP):
     
         """
         Solves the boundary value problem for a ParsedProblem object.
         """
     
-        problem.expand(domain, order = gridnum)
-        BVP = LinearBVP(problem, domain)
-        BVP.solve()
+        solver = BVP.build_solver()
+        solver.solve()
         
-        return BVP
+        return solver
         
     def discard_spurious_eigenvalues(self, problem):
     
@@ -1019,59 +1018,55 @@ class OrderE2(MRI):
             n2 = N2(Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
     
         # righthand side for the 20 terms (e^0)
-        rhs20_psi = n2.N20_psi['g']
-        rhs20_u = n2.N20_u['g'] 
-        rhs20_A = n2.N20_A['g'] 
-        rhs20_B = n2.N20_B['g']
+        rhs20_psi = n2.N20_psi
+        rhs20_u = n2.N20_u 
+        rhs20_A = n2.N20_A 
+        rhs20_B = n2.N20_B
         #rhs20_psi = n2.N20_psi['g']
         #rhs20_u = n2.N20_u['g'] - (2.0/beta)
         #rhs20_A = n2.N20_A['g'] 
         #rhs20_B = n2.N20_B['g'] - 2*1j*Q*self.iRm
         
         # V20 equations are separable because dz terms -> 0
-        bv20psi = ParsedProblem(['x'],
-                      field_names=['psi20', 'psi20x', 'psi20xx', 'psi20xxx'],
-                      param_names=['iR', 'rhs20_psi'])
+        bv20psi = de.LBVP(domain, ['psi20', 'psi20x', 'psi20xx', 'psi20xxx'])
+        
+        bv20psi.parameters['iR'] = self.iR
+        bv20psi.parameters['rhs20_psi'] = rhs20_psi
         bv20psi.add_equation("iR*dx(psi20xxx) = rhs20_psi")
         bv20psi.add_equation("dx(psi20) - psi20x = 0")
         bv20psi.add_equation("dx(psi20x) - psi20xx = 0")
         bv20psi.add_equation("dx(psi20xx) - psi20xxx = 0")
-        bv20psi.parameters['iR'] = self.iR
-        bv20psi.parameters['rhs20_psi'] = rhs20_psi
-        bv20psi.add_left_bc("psi20 = 0")
-        bv20psi.add_right_bc("psi20 = 0")
-        bv20psi.add_left_bc("psi20x = 0")
-        bv20psi.add_right_bc("psi20x = 0")
+        bv20psi.add_bc("left(psi20) = 0")
+        bv20psi.add_bc("right(psi20) = 0")
+        bv20psi.add_bc("left(psi20x) = 0")
+        bv20psi.add_bc("right(psi20x) = 0")
         
-        bv20u = ParsedProblem(['x'],
-                      field_names=['u20', 'u20x'],
-                      param_names=['iR', 'rhs20_u'])
-        bv20u.add_equation("iR*dx(u20x) = rhs20_u")
-        bv20u.add_equation("dx(u20) - u20x = 0")
+        bv20u = de.LBVP(domain, ['u20', 'u20x'])
         bv20u.parameters['iR'] = self.iR
         bv20u.parameters['rhs20_u'] = rhs20_u
-        bv20u.add_left_bc("u20 = 0")
-        bv20u.add_right_bc("u20 = 0")
         
-        bv20A = ParsedProblem(['x'],
-                              field_names=['A20', 'A20x'],
-                              param_names=['iRm', 'rhs20_A'])
-        bv20A.add_equation("iRm*dx(A20x) = rhs20_A")
-        bv20A.add_equation("dx(A20) - A20x = 0")
+        bv20u.add_equation("iR*dx(u20x) = rhs20_u")
+        bv20u.add_equation("dx(u20) - u20x = 0")
+        bv20u.add_bc("left(u20) = 0")
+        bv20u.add_bc("right(u20) = 0")
+        
+        bv20A = de.LBVP(domain, ['A20', 'A20x'])
         bv20A.parameters['iRm'] = self.iRm
         bv20A.parameters['rhs20_A'] = rhs20_A
-        bv20A.add_left_bc("A20 = 0")
-        bv20A.add_right_bc("A20 = 0")
         
-        bv20B = ParsedProblem(['x'],
-                              field_names=['B20', 'B20x'],
-                              param_names=['iRm', 'rhs20_B'])
-        bv20B.add_equation("iRm*dx(B20x) = rhs20_B")
-        bv20B.add_equation("dx(B20) - B20x = 0")
+        bv20A.add_equation("iRm*dx(A20x) = rhs20_A")
+        bv20A.add_equation("dx(A20) - A20x = 0")
+        bv20A.add_bc("left(A20) = 0")
+        bv20A.add_bc("right(A20) = 0")
+        
+        bv20B = de.LBVP(domain,['B20', 'B20x'])
         bv20B.parameters['iRm'] = self.iRm
         bv20B.parameters['rhs20_B'] = rhs20_B
-        bv20B.add_left_bc("B20x = 0")
-        bv20B.add_right_bc("B20x = 0")
+        
+        bv20B.add_equation("iRm*dx(B20x) = rhs20_B")
+        bv20B.add_equation("dx(B20) - B20x = 0")
+        bv20B.add_bc("left(B20x) = 0")
+        bv20B.add_bc("right(B20x) = 0")
       
         self.BVPpsi = self.solve_BVP(bv20psi)
         self.psi20 = self.BVPpsi.state['psi20']
@@ -1106,10 +1101,10 @@ class OrderE2(MRI):
         
         # righthand side for the 21 terms (e^iQz dependence)
         print("without selfs on V21")
-        rhs21_psi = term2_psi['g']
-        rhs21_u = term2_u['g']
-        rhs21_A = term2_A['g']
-        rhs21_B = term2_B['g']
+        rhs21_psi = term2_psi
+        rhs21_u = term2_u
+        rhs21_A = term2_A
+        rhs21_B = term2_B
         
         # These RHS terms must satisfy the solvability condition <V^dagger | RHS> = 0. Test that:
         ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
@@ -1120,10 +1115,20 @@ class OrderE2(MRI):
                 
         # define problem using righthand side as nonconstant coefficients
         
-        bv21 = ParsedProblem(['x'],
-              field_names=['psi21', 'psi21x', 'psi21xx', 'psi21xxx', 'u21', 'u21x', 'A21', 'A21x', 'B21', 'B21x'],
-              param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rhs21_psi', 'rhs21_u', 'rhs21_A', 'rhs21_B'])
-          
+        bv21 = de.LBVP(domain,
+              ['psi21', 'psi21x', 'psi21xx', 'psi21xxx', 'u21', 'u21x', 'A21', 'A21x', 'B21', 'B21x'])
+        # parameters
+        bv21.parameters['Q'] = self.Q
+        bv21.parameters['iR'] = self.iR
+        bv21.parameters['iRm'] = self.iRm
+        bv21.parameters['q'] = self.q
+        bv21.parameters['beta'] = self.beta
+        bv21.parameters['rhs21_psi'] = rhs21_psi
+        bv21.parameters['rhs21_u'] = rhs21_u
+        bv21.parameters['rhs21_A'] = rhs21_A
+        bv21.parameters['rhs21_B'] = rhs21_B
+        
+
         #bv21.add_equation("1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs21_psi")
         #bv21.add_equation("-1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs21_u")
         #bv21.add_equation("iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs21_A")
@@ -1142,28 +1147,17 @@ class OrderE2(MRI):
         bv21.add_equation("dx(B21) - B21x = 0")
 
         # boundary conditions
-        bv21.add_left_bc("psi21 = 0")
-        bv21.add_right_bc("psi21 = 0")
-        bv21.add_left_bc("u21 = 0")
-        bv21.add_right_bc("u21 = 0")
-        bv21.add_left_bc("A21 = 0")
-        bv21.add_right_bc("A21 = 0")
-        bv21.add_left_bc("psi21x = 0")
-        bv21.add_right_bc("psi21x = 0")
-        bv21.add_left_bc("B21x = 0")
-        bv21.add_right_bc("B21x = 0")
+        bv21.add_bc("left(psi21) = 0")
+        bv21.add_bc("right(psi21) = 0")
+        bv21.add_bc("left(u21) = 0")
+        bv21.add_bc("right(u21) = 0")
+        bv21.add_bc("left(A21) = 0")
+        bv21.add_bc("right(A21) = 0")
+        bv21.add_bc("left(psi21x) = 0")
+        bv21.add_bc("right(psi21x) = 0")
+        bv21.add_bc("left(B21x) = 0")
+        bv21.add_bc("right(B21x) = 0")
 
-        # parameters
-        bv21.parameters['Q'] = self.Q
-        bv21.parameters['iR'] = self.iR
-        bv21.parameters['iRm'] = self.iRm
-        bv21.parameters['q'] = self.q
-        bv21.parameters['beta'] = self.beta
-        bv21.parameters['rhs21_psi'] = rhs21_psi
-        bv21.parameters['rhs21_u'] = rhs21_u
-        bv21.parameters['rhs21_A'] = rhs21_A
-        bv21.parameters['rhs21_B'] = rhs21_B
-        
         self.BVP21 = self.solve_BVP(bv21)
         self.psi21 = self.BVP21.state['psi21']
         self.u21 = self.BVP21.state['u21']
@@ -1177,20 +1171,30 @@ class OrderE2(MRI):
         #self.B21['g'] = o1.B['g']
         
         #V22 equations are coupled
-        rhs22_psi = n2.N22_psi['g'] 
-        rhs22_u = n2.N22_u['g'] 
-        rhs22_A = n2.N22_A['g'] 
-        rhs22_B = n2.N22_B['g'] 
+        rhs22_psi = n2.N22_psi
+        rhs22_u = n2.N22_u
+        rhs22_A = n2.N22_A
+        rhs22_B = n2.N22_B
         
         self.rhs22_psi = rhs22_psi
         self.rhs22_u = rhs22_u
         self.rhs22_A = rhs22_A
         self.rhs22_B = rhs22_B
-                
+        
         # define problem using righthand side as nonconstant coefficients
-        bv22 = ParsedProblem(['x'],
-              field_names=['psi22', 'psi22x', 'psi22xx', 'psi22xxx', 'u22', 'u22x', 'A22', 'A22x', 'B22', 'B22x'],
-              param_names=['Q', 'iR', 'iRm', 'q', 'beta', 'rhs22_psi', 'rhs22_u', 'rhs22_A', 'rhs22_B'])
+        bv22 = de.LBVP(domain,
+              ['psi22', 'psi22x', 'psi22xx', 'psi22xxx', 'u22', 'u22x', 'A22', 'A22x', 'B22', 'B22x'])
+        
+        # parameters
+        bv22.parameters['Q'] = self.Q
+        bv22.parameters['iR'] = self.iR
+        bv22.parameters['iRm'] = self.iRm
+        bv22.parameters['q'] = self.q
+        bv22.parameters['beta'] = self.beta
+        bv22.parameters['rhs22_psi'] = rhs22_psi
+        bv22.parameters['rhs22_u'] = rhs22_u
+        bv22.parameters['rhs22_A'] = rhs22_A
+        bv22.parameters['rhs22_B'] = rhs22_B
         
         bv22.add_equation("-8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) + 4*1j*Q*u22 + 16*iR*Q**4*psi22 - 8*iR*Q**2*psi22xx + iR*dx(psi22xxx) = rhs22_psi")
         bv22.add_equation("2*1j*(2/beta)*Q*B22 + 2*1j*Q*(q-2)*psi22 - 4*iR*Q**2*u22 + iR*dx(u22x) = rhs22_u")
@@ -1205,27 +1209,16 @@ class OrderE2(MRI):
         bv22.add_equation("dx(B22) - B22x = 0")
 
         # boundary conditions
-        bv22.add_left_bc("psi22 = 0")
-        bv22.add_right_bc("psi22 = 0")
-        bv22.add_left_bc("u22 = 0")
-        bv22.add_right_bc("u22 = 0")
-        bv22.add_left_bc("A22 = 0")
-        bv22.add_right_bc("A22 = 0")
-        bv22.add_left_bc("psi22x = 0")
-        bv22.add_right_bc("psi22x = 0")
-        bv22.add_left_bc("B22x = 0")
-        bv22.add_right_bc("B22x = 0")
-
-        # parameters
-        bv22.parameters['Q'] = self.Q
-        bv22.parameters['iR'] = self.iR
-        bv22.parameters['iRm'] = self.iRm
-        bv22.parameters['q'] = self.q
-        bv22.parameters['beta'] = self.beta
-        bv22.parameters['rhs22_psi'] = rhs22_psi
-        bv22.parameters['rhs22_u'] = rhs22_u
-        bv22.parameters['rhs22_A'] = rhs22_A
-        bv22.parameters['rhs22_B'] = rhs22_B
+        bv22.add_bc("left(psi22) = 0")
+        bv22.add_bc("right(psi22) = 0")
+        bv22.add_bc("left(u22) = 0")
+        bv22.add_bc("right(u22) = 0")
+        bv22.add_bc("left(A22) = 0")
+        bv22.add_bc("right(A22) = 0")
+        bv22.add_bc("left(psi22x) = 0")
+        bv22.add_bc("right(psi22x) = 0")
+        bv22.add_bc("left(B22x) = 0")
+        bv22.add_bc("right(B22x) = 0")
         
         self.BVP22 = self.solve_BVP(bv22)
         self.psi22 = self.BVP22.state['psi22']
