@@ -1,0 +1,205 @@
+\documentclass[onecolumn]{emulateapj}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\hyd}    {{\rm H}}
+\newcommand{\vobs}{v_{\rm obs}}
+\newcommand{\hi}{H{\sc i}~}
+\newcommand{\hii}{H{\sc ii}~}
+\newcommand{\hia}{H{\sc i}}
+\newcommand{\hiia}{H{\sc ii}}
+
+\usepackage[colorlinks,urlcolor=blue,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{gensymb}
+\usepackage{amsmath}
+\usepackage{color}
+%\usepackage{appendix}
+\usepackage[titletoc,title]{appendix}
+\usepackage{cleveref}
+
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt}
+\setlength{\@fpsep}{0pt}
+\makeatother
+
+\newcommand{\citei}[1]{\citeauthor{#1} \citeyear{#1}}
+\newcommand{\unit}[1]{\textrm{ #1}}
+\newcommand{\kms}{km ${\rm s^{-1}}$}
+\newcommand{\kmsa}{km ${\rm s^{-1}}$}
+\newcommand{\citeia}[2]{\citeauthor{#1}~(\citeyear{#1};~#2)}
+
+\newcommand\reye{\mathrm{Re}}
+\newcommand\reym{\mathrm{Rm}}
+
+\newcommand{\uphi}{\ensuremath{u_\phi}}
+\newcommand{\rhat}{\ensuremath{\mathbf{\hat{r}}}}
+\newcommand{\phihat}{\ensuremath{\mathbf{\hat{\phi}}}}
+\newcommand{\zhat}{\ensuremath{\mathbf{\hat{z}}}}
+\newcommand{\xhat}{\ensuremath{\mathbf{\hat{x}}}}
+\newcommand{\yhat}{\ensuremath{\mathbf{\hat{y}}}}
+
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+
+\begin{document}
+
+\title{The Weakly Nonlinear Magnetorotational Instability in a Wide-Gap Channel Flow}
+\author{Clark, S.E.\altaffilmark{1}}
+\author{Oishi, J.S. \altaffilmark{2,}\altaffilmark{3}}
+%\author{Mac Low, M.-M.\altaffilmark{1,}\altaffilmark{2}}
+\altaffiltext{1}{Department of Astronomy, Columbia University, New York, NY} 
+\altaffiltext{2}{Department of Astrophysics, American Museum of Natural History, New York, NY}
+\altaffiltext{3}{Department of Physics, SUNY Farmingdale}
+
+
+\begin{abstract}
+Wide gap formulation and preliminary results
+\end{abstract}
+
+\section{Introduction}
+
+\section{Wide Gap Equations}
+
+Many investigations of the MRI use the ``thin gap" approximation, in which the radial extent of the fluid channel is taken to be much smaller than the radius of curvature. That is, for a channel center $r_0$ bounded by inner and outer radii $r_1$ and $r_2$, respectively, the thin gap approximation applies when $r_0 \gg (r_2 - r_1)$. The thin gap approximation simplifies the MRI equations by excluding curvature terms, because the flow through a thin gap can be taken to be approximately linear in $\phi$, i.e. Cartesian. In this work we undertake the first (to our knowledge) weakly nonlinear analysis of the MRI in the wide gap regime, where the channel width may be comparable to or larger than its distance from the center of rotation.
+
+The basic equations solved are the momentum and induction equations,
+
+\beq\label{momentum}
+%\begin{split}
+\partial_t \mathbf{u} + \mathbf{u} \cdot \nabla \mathbf{u} = -\frac{1}{\rho}\nabla P - \nabla\Phi + \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) + \nu\nabla^2 \mathbf{u} 
+%\end{split}
+\eeq
+
+and
+
+\beq\label{induction}
+\partial_t \mathbf{B} = \nabla \times \left(\mathbf{u} \times \mathbf{B}\right) + \eta\nabla^2\mathbf{B},
+\eeq
+
+where $P$ is the gas pressure, $\nu$ is the kinematic viscosity, $\eta$ is the microscopic diffusivity, $\nabla\Phi$ is the gravitational force per unit mass, and the current density is $\mathbf{J} = \nabla\times\mathbf{B}$. We solve these equations subject to the incompressible fluid and solenoidal magnetic field constraints,
+
+\beq
+\label{eq:incompressibility}
+\nabla \cdot \mathbf{u} = 0
+\eeq
+
+and 
+
+\beq
+\label{eq:solenoid}
+\nabla \cdot \mathbf{B} = 0.
+\eeq
+
+We perturb these equations axisymmetrically in a cylindrical $(r, \phi, z)$ geometry, i.e. $\mathbf{u} = \mathbf{u_0} + \mathbf{u_1}$ and $\mathbf{B} = \mathbf{B_0} + \mathbf{B_1}$, where $\mathbf{u_0}$ and $\mathbf{B_0}$ are defined below. We define a Stokes stream function $\Psi$ such that 
+
+\beq
+  \label{eq:stokes}
+  \mathbf{u_1} \, = \, \left[\begin{matrix}
+\frac{1}{r} \partial_z \Psi\ \rhat\\
+\uphi \ \phihat\\
+-\frac{1}{r} \partial_r \Psi\ \zhat\\
+\end{matrix}\right],
+\eeq
+
+and define the magnetic vector potential $A$ analogously. These definitions automatically satisfy Equations \ref{eq:incompressibility} and \ref{eq:solenoid} for axisymmetric disturbances. 
+
+The astrophysical magnetorotational instability operates in accretion disks and in stellar interiors, environments where fluid rotation is strongly regulated by gravity. In accretion disks, differential rotation is imposed gravitationally by a central body, so the rotation profile is forced to be Keplerian. Clearly a gravitationally enforced Keplerian flow is inaccessible to laboratory study, so differential rotation is created by rotating an inner cylinder faster than an outer cylinder (a Taylor-Couette setup). For a nonideal fluid subject to no-slip boundary conditions, the base flow is
+
+\begin{equation}
+  \label{eq:couette_flow}
+  \Omega(r) = a + \frac{b}{r^2},
+\end{equation}
+where $a = (\Omega_2 r^2_2 - \Omega_1 r^2_1)/(r^2_2 - r^2_1)$, $b = r^2_1 r^2_2 (\Omega_1 - \Omega_2)/(r^2_2 - r^2_1)$, and $\Omega_1$ and $\Omega_2$ are the rotation rates at the inner and outer cylinder radii, respectively. In the laboratory, $r_1$ and $r_2$ are typically fixed by experimental design. However $\Omega_1$ and $\Omega_2$ may be chosen such that the flow in the center of the channel is approximately Keplerian. Defining a shear parameter $q$, we see that for Couette flow,
+\begin{equation}
+  \label{eq:couette_q}
+  q(r) \equiv -\frac{d \ln \Omega}{d \ln r} = \frac{2 b}{a r^2 + b}.
+\end{equation}
+
+Thus through judicious choice of cylinder rotation rates, we can set $q(r_0) = 3/2$, for quasi-Keplerian flow. Note that in the thin gap approximation we have the freedom to choose any rotation profile, as the narrow gap width imposes a linear shear (constant $q$). Our base velocity is $\mathbf{u_0} = r\Omega(r) \phihat$. We initialize an axial magnetic field $\mathbf{B_0} = B_0 \zhat$. 
+
+Our perturbed system is 
+
+\beq
+\begin{split}
+\label{eq:Psi_perturbed}
+\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) - \frac{2}{\beta} \frac{1}{r}B_0 \partial_z \left(\nabla^2 A - \frac{2}{r} \partial_r A\right) - \frac{2}{r}u_0 \partial_z u_\phi - \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] \\
+= - J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) + \frac{2}{\beta} J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{\beta} \frac{2}{r}B_\phi \partial_z B_\phi  + \frac{2}{r} u_\phi \partial_z u_\phi \\
+\end{split}
+\eeq
+
+\begin{align}
+& \partial_t \uphi + \frac{1}{r^2} u_0 \partial_z \Psi + \frac{1}{r} \partial_r u_0 \partial_z \Psi - \frac{2}{\beta} B_0 \partial_z B_\phi - \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{1}{r^2} \uphi \right) = \frac{2}{\beta} \frac{1}{r} J(A, B_\phi) - \frac{1}{r} J(\Psi, \uphi) + \frac{2}{\beta}\frac{1}{r^2} B_\phi \partial_z A - \frac{1}{r^2} \uphi \partial_z \Psi \label{eq:uphi_perturbed} \\
+& \partial_t A - B_0 \partial_z \Psi - \frac{1}{\reym} \left( \nabla^2 A - \frac{2}{r} \partial_r A \right)= \frac{1}{r} J(A, \psi)  \label{eq:A_perturbed}\\
+  \label{eq:Bphi_perturbed}
+& \partial_t B_\phi + \frac{1}{r^2} u_0 \partial_z A - B_0 \partial_z u_\phi - \frac{1}{r} \partial_r u_0 \partial_z A - \frac{1}{\reym} \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right) = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)
++ \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A 
+\end{align}
+
+where J is the Jacobian $J(x, y) \equiv \partial_z x \partial_r y - \partial_r x \partial_z y$. Note that in the above, $\nabla^2 x \equiv \partial_r^2 x + \partial_z^2 x + \frac{1}{r} \partial_r x$. Equations \ref{eq:Psi_perturbed} - \ref{eq:Bphi_perturbed} are nondimensionalized, where lengths have been scaled by $r_0$, velocities by $r_0 \Omega_0$, densities by $\rho_0$, and magnetic fields by $B_0$; where $B_0$ appears in the above it is formally unity. $\Omega_0 = \Omega(r_0)$ is the rotation rate at the center of the channel. We introduce the Reynolds number $\reye = \Omega_0 r_0^2/\nu$, the magnetic Reynolds number $\reym = \Omega_0 r_0^2 / \eta$, and a plasma beta parameter $\beta = \Omega_0^2 r_0^2 \rho_0/B_0^2$. If we define the dimensional cylindrical coordinate $r = r_0(1 + \delta x)$, the thin gap equations are recovered in the limit $\delta \rightarrow 0$.
+
+We solve the system subject to periodic vertical boundary conditions and no-slip, perfectly conducting radial boundary conditions. 
+
+\section{Weakly Nonlinear Perturbation Analysis}
+
+Just as in the weakly nonlinear analyses of \citei{Umurhan:2007hs} and \citei{Clark:2016}, we tune the system away from marginality by taking $B_0 \rightarrow B_0\left(1 - \epsilon^2\right)$, where $\epsilon \ll 1$. We parameterize scale separation as $Z = \epsilon z$ and $T = \epsilon^2 t$, where $Z$ and $T$ are slowly varying spatial and temporal scales, respectively. We group the fluid variables into a state vector $\mathbf{V} = \left[\Psi, u, A, B\right]^{\mathrm{T}}$ and expand the variables in a perturbation series $\mathbf{V} = \epsilon \mathbf{V}_1 + \epsilon^2 \mathbf{V}_2 + \epsilon^2 \mathbf{V}_3 + h.o.t.$ The perturbed system can then be expressed at each order by the equations
+
+\begin{align}
+\mathcal{O}(\epsilon)&: \mathcal{L} \mathbf{V}_1 + \mathcal{D} \partial_t \mathbf{V}_1 = 0 \label{eq:ordere}\\
+\mathcal{O}(\epsilon^2)&: \mathcal{L}_1 \mathbf{V}_2 + \widetilde{\mathcal{L}} \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \label{eq:ordere2}\\
+\mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3. \label{eq:ordere3}
+\end{align}
+
+Here, $\mathcal{L}$, $\mathcal{D}$, etc. are matrices defined in Appendix \ref{app:basic_equations}, and $\mathbf{N}_2$ and $\mathbf{N}_3$ are vectors of nonlinear terms. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the thin gap case, although the matrices are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution $\mathbf{V}_1 = \alpha(Z, T) \mathbb{V}_{11}(r) e^{i k_z z} + c.c.$, where the radial variation is contained in $\mathbb{V}_{11}$. We defer full expressions and derivations thereof to the Appendix, and focus here on features of the wide gap system which distinguish it from the thin gap limit.
+
+First, the result of the weakly nonlinear analysis is a single amplitude equation for $\alpha$. We find
+
+\beq
+ \label{eq:gle}
+\partial_T \alpha = b \alpha + d \nabla^2 \alpha - c \alpha \left|\alpha^2\right|,
+\eeq
+
+a Ginzburg-Landau equation (e.g. \cite{Aranson:2002}). Here we note a departure from the behavior of the thin-gap system. The purely conducting boundary condition states that the axial component of the current ($\mathbf{J}_z = [\nabla \times \mathbf{B}]_z)$ must be zero at the walls. In the thin gap geometry, the purely conducting boundary condition on the azimuthal magnetic field is $\partial_x(B_y) = 0$ for axisymmetric perturbations. A spatially constant azimuthal field satisfies both the thin-gap MRI equations and this boundary condition. This neutral mode is formally included in the analysis of \citei{Umurhan:2007hs} and yields a second amplitude equation in the form of a simple diffusion equation. This amplitude equation decouples from the GLE because of the translational symmetry of the thin-gap geometry. Because that symmetry is not preserved in the wide-gap case, \citeauthor{Umurhan:2007hs} postulate that slow variation in the wide-gap geometry will be governed by two coupled amplitude equations. However, the wide-gap conducting boundary condition $J_z = \frac{1}{r} \partial_r (r B_\phi) = 0$, together with the purely geometric term in Equation \ref{eq:Bphi_perturbed}, conspire to prevent the wide-gap geometry from sustaining a neutral mode. We note that a neutral mode of the form $B_\phi(r) \propto \frac{1}{r}$ would exist in a resistance-free approximation.
+
+The preservation of symmetries in the thin-gap geometry is worth a closer look, as its absence in the wide gap case is the source of many differences in the systems. \citei{Latter:2015} point out that in the ideal limit ($\nu, \eta \rightarrow 0$), the system described by Equations \ref{eq:Psi_perturbed} - \ref{eq:Bphi_perturbed} can be expressed as a Shr{\"o}dinger equation for the radial velocity. We can do the same thing for $\Psi$, and in the thin-gap limit this becomes
+
+\beq
+\partial_x^2 \Psi + k_z^2 \mathrm{U}(x) \Psi = 0
+\eeq 
+
+where $\mathrm{U}(x) = {3}/{v_A^2 k_z^2} + 1$ at marginality. When no-slip radial boundary conditions are applied, the thin-gap MRI system resembles a particle in a box with a radially constant potential well. Thus thin-gap MRI modes must be eigenstates of parity. In the wide gap case, the ``potential" $\mathrm{U}(r)$ is a function of $r$, so symmetric and antisymmetric modes are no longer required.
+
+\section{Channel Modes}
+Channel modes are radially independent linear MRI modes which are, under certain conditions, exact nonlinear solutions to the MRI equations. 
+
+\clearpage
+\appendix
+
+\section{A. Detailed Equations}\label{app:basic_equations}
+
+\bibliographystyle{plain}
+
+\begin{thebibliography}{53}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Aranson \& Kramer(2002)}]{Aranson:2002}
+Aranson, I.S. \& Kramer, L., 2002, Rev. Mod. Phys. 74, 99
+
+\bibitem[{Clark \& Oishi(2016a)}]{Clark:2016}
+Clark, S.E. and Oishi, J.S., 2016, in prep
+
+\bibitem[{Latter et al.(2015)}]{Latter:2015}
+Latter, H.N., Fromang, S., \& Faure, J., 2015, MNRAS 453, 3257
+
+\bibitem[{Umurhan et al.(2007a)}]{Umurhan:2007dz}
+Umurhan, O.M., Regev, O., Menou, K., 2007, Phys. Rev. Letters, 98, 034501
+
+\bibitem[{Umurhan et al.(2007b)}]{Umurhan:2007hs}
+Umurhan, O.M., Regev, O., Menou, K., 2007, Phys. Rev. E, 76, 036310
+
+
+\end{thebibliography}
+
+\end{document}
+
