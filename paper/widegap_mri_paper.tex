@@ -124,16 +124,16 @@ Our perturbed system is
 \beq
 \begin{split}
 \label{eq:Psi_perturbed}
-\frac{1}{r}\partial_t \left(\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi \right) - \frac{2}{\beta} \frac{1}{r}B_0 \partial_z \left(\nabla^2 A - \frac{2}{r} \partial_r A\right) - \frac{2}{r}u_0 \partial_z u_\phi - \frac{1}{\reye} \left[ \nabla^2 \left(\frac{1}{r} \nabla^2 \Psi\right) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] \\
-= - J\left(\Psi, \frac{1}{r^2} \left( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi\right) \right) + \frac{2}{\beta} J\left(A, \frac{1}{r^2} \left( \nabla^2 A - \frac{2}{r} \partial_rA\right) \right) - \frac{2}{\beta} \frac{2}{r}B_\phi \partial_z B_\phi  + \frac{2}{r} u_\phi \partial_z u_\phi \\
+\frac{1}{r}\partial_t (\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi) - \frac{2}{\beta} \frac{1}{r}B_0 \partial_z (\nabla^2 A - \frac{2}{r} \partial_r A) - \frac{2}{r}u_0 \partial_z u_\phi - \frac{1}{\reye} \left[ \nabla^2 (\frac{1}{r} \nabla^2 \Psi) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] \\
+= - J(\Psi, \frac{1}{r^2} ( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi) ) + \frac{2}{\beta} J(A, \frac{1}{r^2} ( \nabla^2 A - \frac{2}{r} \partial_rA) ) - \frac{2}{\beta} \frac{2}{r}B_\phi \partial_z B_\phi  + \frac{2}{r} u_\phi \partial_z u_\phi \\
 \end{split}
 \eeq
 
 \begin{align}
-& \partial_t \uphi + \frac{1}{r^2} u_0 \partial_z \Psi + \frac{1}{r} \partial_r u_0 \partial_z \Psi - \frac{2}{\beta} B_0 \partial_z B_\phi - \frac{1}{\reye} \left( \nabla^2 \uphi - \frac{1}{r^2} \uphi \right) = \frac{2}{\beta} \frac{1}{r} J(A, B_\phi) - \frac{1}{r} J(\Psi, \uphi) + \frac{2}{\beta}\frac{1}{r^2} B_\phi \partial_z A - \frac{1}{r^2} \uphi \partial_z \Psi \label{eq:uphi_perturbed} \\
-& \partial_t A - B_0 \partial_z \Psi - \frac{1}{\reym} \left( \nabla^2 A - \frac{2}{r} \partial_r A \right)= \frac{1}{r} J(A, \psi)  \label{eq:A_perturbed}\\
+& \partial_t \uphi + \frac{1}{r^2} u_0 \partial_z \Psi + \frac{1}{r} \partial_r u_0 \partial_z \Psi - \frac{2}{\beta} B_0 \partial_z B_\phi - \frac{1}{\reye} ( \nabla^2 \uphi - \frac{1}{r^2} \uphi ) = \frac{2}{\beta} \frac{1}{r} J(A, B_\phi) - \frac{1}{r} J(\Psi, \uphi) + \frac{2}{\beta}\frac{1}{r^2} B_\phi \partial_z A - \frac{1}{r^2} \uphi \partial_z \Psi \label{eq:uphi_perturbed} \\
+& \partial_t A - B_0 \partial_z \Psi - \frac{1}{\reym} ( \nabla^2 A - \frac{2}{r} \partial_r A )= \frac{1}{r} J(A, \psi)  \label{eq:A_perturbed}\\
   \label{eq:Bphi_perturbed}
-& \partial_t B_\phi + \frac{1}{r^2} u_0 \partial_z A - B_0 \partial_z u_\phi - \frac{1}{r} \partial_r u_0 \partial_z A - \frac{1}{\reym} \left(\nabla^2 B_\phi - \frac{1}{r^2} B_\phi \right) = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)
+& \partial_t B_\phi + \frac{1}{r^2} u_0 \partial_z A - B_0 \partial_z u_\phi - \frac{1}{r} \partial_r u_0 \partial_z A - \frac{1}{\reym} (\nabla^2 B_\phi - \frac{1}{r^2} B_\phi ) = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)
 + \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A 
 \end{align}
 
@@ -143,15 +143,21 @@ We solve the system subject to periodic vertical boundary conditions and no-slip
 
 \section{Weakly Nonlinear Perturbation Analysis}
 
-Just as in the weakly nonlinear analyses of \citei{Umurhan:2007hs} and \citei{Clark:2016}, we tune the system away from marginality by taking $B_0 \rightarrow B_0\left(1 - \epsilon^2\right)$, where $\epsilon \ll 1$. We parameterize scale separation as $Z = \epsilon z$ and $T = \epsilon^2 t$, where $Z$ and $T$ are slowly varying spatial and temporal scales, respectively. We group the fluid variables into a state vector $\mathbf{V} = \left[\Psi, u, A, B\right]^{\mathrm{T}}$ and expand the variables in a perturbation series $\mathbf{V} = \epsilon \mathbf{V}_1 + \epsilon^2 \mathbf{V}_2 + \epsilon^2 \mathbf{V}_3 + h.o.t.$ The perturbed system can then be expressed at each order by the equations
+Just as in the weakly nonlinear analyses of \citei{Umurhan:2007hs} and \citei{Clark:2016}, we tune the system away from marginality by taking $B_0 \rightarrow B_0\left(1 - \epsilon^2\right)$, where $\epsilon \ll 1$. We parameterize scale separation as $Z = \epsilon z$ and $T = \epsilon^2 t$, where $Z$ and $T$ are slowly varying spatial and temporal scales, respectively. We group the fluid variables into a state vector $\mathbf{V} = \left[\Psi, u, A, B\right]^{\mathrm{T}}$, such that the full nonlinear system can be expressed as
+
+\beq\label{eq:unperturbed_matrix_eqns}
+\mathcal{D}\partial_t\mathbf{V} + \mathcal{L}\mathbf{V} + \epsilon^2 \widetilde{\mathcal{G}} \mathbf{V} + \mathbf{N} = 0,
+\eeq
+
+where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices defined in Appendix \ref{app:basic_equations}, and $\mathbf{N}$ is a vector containing all nonlinear terms. We then expand the variables in a perturbation series $\mathbf{V} = \epsilon \mathbf{V}_1 + \epsilon^2 \mathbf{V}_2 + \epsilon^2 \mathbf{V}_3 + h.o.t.$ The perturbed system can then be expressed at each order by the equations
 
 \begin{align}
 \mathcal{O}(\epsilon)&: \mathcal{L} \mathbf{V}_1 + \mathcal{D} \partial_t \mathbf{V}_1 = 0 \label{eq:ordere}\\
-\mathcal{O}(\epsilon^2)&: \mathcal{L}_1 \mathbf{V}_2 + \widetilde{\mathcal{L}} \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \label{eq:ordere2}\\
+\mathcal{O}(\epsilon^2)&: \mathcal{L} \mathbf{V}_2 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \label{eq:ordere2}\\
 \mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3. \label{eq:ordere3}
 \end{align}
 
-Here, $\mathcal{L}$, $\mathcal{D}$, etc. are matrices defined in Appendix \ref{app:basic_equations}, and $\mathbf{N}_2$ and $\mathbf{N}_3$ are vectors of nonlinear terms. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the thin gap case, although the matrices are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution $\mathbf{V}_1 = \alpha(Z, T) \mathbb{V}_{11}(r) e^{i k_z z} + c.c.$, where the radial variation is contained in $\mathbb{V}_{11}$. We defer full expressions and derivations thereof to the Appendix, and focus here on features of the wide gap system which distinguish it from the thin gap limit.
+See Appendix \ref{app:basic_equations} for the definition of matrices and nonlinear vectors, and a thorough derivation. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the thin gap case, although the matrices (which contain all radial derivatives) are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution $\mathbf{V}_1 = \alpha(Z, T) \mathbb{V}_{11}(r) e^{i k_z z} + c.c.$, where the radial variation is contained in $\mathbb{V}_{11}$. We defer full expressions and derivations thereof to the Appendix, and focus here on features of the wide gap system which distinguish it from the thin gap limit.
 
 First, the result of the weakly nonlinear analysis is a single amplitude equation for $\alpha$. We find
 
@@ -170,7 +176,7 @@ The preservation of symmetries in the thin-gap geometry is worth a closer look, 
 
 where $\mathrm{U}(x) = {3}/{v_A^2 k_z^2} + 1$ at marginality. When no-slip radial boundary conditions are applied, the thin-gap MRI system resembles a particle in a box with a radially constant potential well. Thus thin-gap linear MRI modes must be eigenstates of parity. These symmetries are preserved in the nonlinear MRI terms because they are nonlinear combinations of lower-order eigenfunctions. In the wide gap case, the ``potential" $\mathrm{U}(r)$ is a function of $r$, so symmetric and antisymmetric modes are no longer required.
 
-
+The nonlinear terms, detailed in Appendix \ref{app:nonlinear_terms}, represent an interesting departure from the thin-gap theory. The thin-gap nonlinear terms at both second and third orders are linear combinations of Jacobians. The nonlinear terms in the wide-gap case differ from their thin-gap analogues with in the addition of vertical advective terms. These terms derive from the advective derivatives in the momentum and induction equations, but are filtered out in the thin-gap approximation. These advective terms allow the nonlinear contributions at both second and third order (i.e. N$_2$ and N$_3$) not to individually satisfy the boundary conditions on $\Psi$ and $u$. (I'm just guessing but this may lead to higher torque on inner cylinder -- should calculate) 
 
 \section{Channel Modes}
 Channel modes are radially independent linear MRI modes which are, under certain conditions, exact nonlinear solutions to the MRI equations. 
@@ -179,6 +185,60 @@ Channel modes are radially independent linear MRI modes which are, under certain
 \appendix
 
 \section{A. Detailed Equations}\label{app:basic_equations}
+
+\section{B. Nonlinear Terms}\label{app:nonlinear_terms}
+
+Here we detail the perturbative expansion of the nonlinear vector $\mathbf{N}$ in Equation \ref{eq:unperturbed_matrix_eqns}. 
+
+\beq
+\mathbf{N} = \epsilon^2 \mathbf{N}_2 + \epsilon^3 \mathbf{N}_3
+\eeq
+
+\beq
+N_2^{\Psi}  = J(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1) + J(\Psi_1, -\frac{2}{r^3}\partial_r\Psi_1)
+- \frac{2}{\beta} J (A_1, \frac{1}{r^2} \nabla^2 A_1) - \frac{2}{\beta} J(A_1, -\frac{2}{r^3} \partial_r A_1) - \frac{2}{r} u_1 \partial_z u_1 + \frac{2}{\beta} \frac{2}{r} B_1 \partial_z B_1
+\eeq
+
+\beq
+\begin{split}
+N_2^{u} = \frac{1}{r} J\left(\Psi_1, u_1\right) - \frac{1}{r} \frac{2}{\beta} J\left(A_1, B_1\right) + \frac{1}{r^2} u_1 \partial_z \Psi_1 - \frac{2}{\beta}\frac{1}{r^2} B_1 \partial_z A_1
+\end{split}
+\eeq
+
+\beq
+N_2^A = -\frac{1}{r} J\left(A_1, \Psi_1\right)
+\eeq
+
+\beq
+N_2^B = -\frac{1}{r} J\left(A_1, u_1\right) - \frac{1}{r} J\left(B_1, \Psi_1\right) - \frac{1}{r^2} B_1 \partial_z \Psi_1 + \frac{1}{r^2} u_1 \partial_z A_1
+\eeq
+
+\beq
+\begin{split}
+N_3^{\Psi} & = J(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_2) + J(\Psi_2, \frac{1}{r^2} \nabla^2\Psi_1) + 2 J (\Psi_1, \frac{1}{r^2}\partial_Z\partial_z \Psi_1) + J(\Psi_1, -\frac{2}{r^3}\partial_r \Psi_2) + J(\Psi_2, -\frac{2}{r^3}\partial_r \Psi_1) \\
+& + \widetilde{J}(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1) + \widetilde{J} (\Psi_1, -\frac{2}{r^3}\partial_r \Psi_1) - \frac{2}{\beta} J(A_1, \frac{1}{r^2}\nabla^2 A_2) - \frac{2}{\beta} J(A_2, \frac{1}{r^2}\nabla^2 A_1) - \frac{4}{\beta} J(A_1, \frac{1}{r^2}\partial_Z\partial_z A_1) \\ & - \frac{2}{\beta} J(A_1, -\frac{2}{r^3} \partial_r A_2 ) 
+ - \frac{2}{\beta} J(A_2, -\frac{2}{r^3} \partial_r A_1) - \frac{2}{\beta} \widetilde{J} (A_1, \frac{1}{r^2} \nabla^2 A_1) - \frac{2}{\beta} \widetilde{J} (A_1, -\frac{2}{r^3} \partial_r A_1) \\
+& - \frac{2}{r} u_1 \partial_z u_2 - \frac{2}{r} u_2 \partial_z u_1 - \frac{2}{r} u_1 \partial_Z u_1 + \frac{2}{\beta}\frac{2}{r} B_1\partial_z B_2 + \frac{2}{\beta}\frac{2}{r} B_2 \partial_z B_1 + \frac{2}{\beta} \frac{2}{r} B_1 \partial_Z B_1
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_3^u & = \frac{1}{r}J\left(\Psi_1, u_2\right) + \frac{1}{r}J\left(\Psi_2, u_1\right) + \frac{1}{r}\widetilde{J} \left(\Psi_1, u_1\right) - \frac{1}{r}\frac{2}{\beta} J\left(A_1, B_2\right) - \frac{1}{r} \frac{2}{\beta} J\left(A_2, B_1\right) - \frac{1}{r}\frac{2}{\beta}\widetilde{J}\left(A_1, B_1\right) \\
+& + \frac{1}{r^2} u_1\partial_z \Psi_2 + \frac{1}{r^2} u_2 \partial_z \Psi_1 + \frac{1}{r^2} u_1 \partial_Z \Psi_1 - \frac{2}{\beta} \frac{1}{r^2} B_1 \partial_z A_2 - \frac{2}{\beta} \frac{1}{r^2} B_2 \partial_z A_1 - \frac{2}{\beta} \frac{1}{r^2} B_1 \partial_Z A_1
+\end{split}
+\eeq
+
+\beq
+N_3^A = -\frac{1}{r} J\left(A_1, \Psi_2\right) - \frac{1}{r}J\left(A_2, \Psi_1\right) - \frac{1}{r} \widetilde{J}\left(A_1, \Psi_1\right)
+\eeq
+
+\beq
+\begin{split}
+N_3^B & = - \frac{1}{r} J\left(A_1, u_2\right) - \frac{1}{r} J\left(A_2, u_1\right) - \frac{1}{r}\widetilde{J}\left(A_1, u_1\right) - \frac{1}{r} J\left(B_1, \Psi_2\right) - \frac{1}{r} J\left(B_2, \Psi_1\right) - \frac{1}{r} \widetilde{J} \left(B_1, u_1\right) \\ & - \frac{1}{r^2} B_1\partial_z \Psi_2 - \frac{1}{r^2} B_2 \partial_z \Psi_1 - \frac{1}{r^2} B_1 \partial_Z \Psi_1 + \frac{1}{r^2} u_1 \partial_z A_2 + \frac{1}{r^2} u_2 \partial_z A_1 + \frac{1}{r^2} u_1 \partial_Z A_1
+\end{split}
+\eeq
+
 
 \bibliographystyle{plain}
 
