@@ -167,15 +167,18 @@ class MRI_equations(Equations):
         self.set_u()
         self.set_b()
 
-    def set_parameters(self, Rm, Pm, eps, Omega0, qsh, beta, Q):
+    def set_parameters(self, Rm, Pm, eps, Omega0, qsh, beta, Q, Lz):
+        """
+        Lz is in units of 2*np.pi/Q
+        """
         self.Rm = Rm
         self.Pm = Pm
         self.B0 = 1. - eps**2
         self.Omega0 = Omega0
         self.q = qsh
         self.beta = beta
-        self.Lz = 2.*np.pi/Q
-
+        self.Lz = Lz * 2.*np.pi/Q 
+            
         self._eqn_params = {}
         self._eqn_params['Re'] = self.Rm / self.Pm
         self._eqn_params['Rm'] = self.Rm

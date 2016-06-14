@@ -3,7 +3,7 @@ Dedalus script for 2D MRI simulations
 
 
 Usage:
-    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz>] 
+    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz> --nx=<nx> --Lz=<Lz> --stop=<stop>]
 
 Options:
     --Rm=<Rm>                  magnetic Reynolds number [default: 4.8775]
@@ -16,6 +16,9 @@ Options:
     --restart=<restart_file>   restart from checkpoint
     --linear                   turn off non-linear terms
     --nz=<nz>                  vertical z (Fourier) resolution [default: 32]
+    --nx=<nz>                  horizontal x (Chebyshev) resolution [default: 32]
+    --Lz=<Lz>                  vertical length scale in units of 2 pi/Q, Q = critical wavenumber [default: 1]
+    --stop=<stop>              stopping time in units of inner cylinder orbits [default: 200]
 """
 import logging
 import os
@@ -38,16 +41,17 @@ beta  = float(args['--beta'])
 Q = float(args['--Q'])
 qsh = float(args['--qsh'])
 Omega0 = float(args['--Omega0'])
+nx = int(args['--nx'])
 nz = int(args['--nz'])
-
-nx = nz
+Lz = int(args['--Lz'])
+stop = float(args['--stop'])
 
 restart = args['--restart']
 linear = args['--linear']
 
 # save data in directory named after script
 data_dir = "scratch/" + sys.argv[0].split('.py')[0]
-data_dir += "_Rm{0:5.02e}_eps{1:5.02e}_Pm{2:5.02e}_beta{3:5.02e}_Q{4:5.02e}_qsh{5:5.02e}_Omega{6:5.02e}_nz{7:d}".format(Rm, eps, Pm, beta, Q, qsh, Omega0, nz)
+data_dir += "_Rm{0:5.02e}_eps{1:5.02e}_Pm{2:5.02e}_beta{3:5.02e}_Q{4:5.02e}_qsh{5:5.02e}_Omega{6:5.02e}_nx{7:d}_nz{8:d}_Lz{9:d}".format(Rm, eps, Pm, beta, Q, qsh, Omega0, nx, nz, Lz)
 
 if linear:
     data_dir += "_linear"
@@ -74,7 +78,7 @@ from equations import MRI_equations
 from filter_field import filter_field
 # configure MRI equations
 MRI = MRI_equations(nx=nx, nz=nz, linear=linear)
-MRI.set_parameters(Rm, Pm, eps, Omega0, qsh, beta, Q)
+MRI.set_parameters(Rm, Pm, eps, Omega0, qsh, beta, Q, Lz)
 MRI.set_IVP_problem()
 MRI.set_BC()
 problem = MRI.problem
@@ -132,7 +136,7 @@ else:
 
 period = 2*np.pi/Omega0
 
-solver.stop_sim_time = 200*period
+solver.stop_sim_time = stop*period
 solver.stop_wall_time = np.inf
 solver.stop_iteration = np.inf
 
