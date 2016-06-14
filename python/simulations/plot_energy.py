@@ -57,26 +57,25 @@ if __name__ == "__main__":
     params = parse_params(str(base.stem), "MRI_run")
 
     t_orb = 2*np.pi
-    start = 40
-    stop = 60
+    start = 125
+    stop = 190
     with h5py.File(str(f),'r') as ts:
         t=  ts['/scales/sim_time'][:]
         u_rms = ts['/tasks/u_rms'][:,0,0]
         gamma, f0 = compute_growth(u_rms, t, t_orb, start, stop)
-        plt.subplot(121)
+        plt.subplot(211)
         plt.semilogy(t/t_orb,ts['/tasks/KE'][:,0,0],linestyle='-')
         plt.ylabel("Kinetic Energy")
-        plt.xlabel("time (orbits)")
+        #plt.xlabel("time (orbits)")
         plt.title("Rm = {:5.2e}".format(float(params["Rm"])))
 
-        plt.subplot(122)
+        plt.subplot(212)
         plt.semilogy(t/t_orb,u_rms,linestyle='-')
         plt.semilogy(t/t_orb,f0*np.exp(gamma*t),linestyle='--',label=r'$\gamma = {:5.3e}$'.format(gamma))
         plt.legend(loc='upper left')
 
         plt.ylabel("u_rms")
         plt.xlabel("time (orbits)")
-        plt.title("Rm = {:5.2e}".format(float(params["Rm"])))
 
     outfile = base.joinpath("kinetic_energy.png")
     plt.savefig(str(outfile))
