@@ -837,6 +837,42 @@ and also that $B_r = \frac{1}{r}\partial_z A = 0$.
 
 Thus our final boundary conditions are $\Psi = u = A = \partial_r \Psi = \partial_r(r B_\phi) = 0$, for a total of ten boundary condition equations.
 
+
+\section{Equations in more succinct form}
+
+Defining the stream functions instead as 
+
+\begin{equation}
+  \label{eq:stokes}
+  \mathbf{u} \, = \, \left[\begin{matrix}
+\partial_z \psi\ \rhat\\
+\uphi \ \phihat\\
+- \partial_r^* \psi\ \zhat\\
+\end{matrix}\right]
+\end{equation}
+
+where $\partial_r^* = \partial_r + \frac{1}{r}$
+
+And defining the function $D^2 = \nabla^2 - \frac{1}{r^2}$
+
+We obtain a very compact form for the equations. The following include helical MRI terms, and reduce to the SMRI when $\xi \rightarrow 0$.
+
+\beq
+\partial_t D^2 \Psi - \frac{2}{r}u_0\partial_z u_\phi - \frac{2}{\beta} B_0 \partial_z D^2 A + \frac{2}{\beta} \frac{2}{r^2} \xi B_0 \partial_z B_\phi - \frac{1}{\reye} D^4 \Psi = 0
+\eeq
+
+\beq
+\partial_t u_\phi + \frac{1}{r} u_0 \partial_z \Psi + \partial_r u_0 \partial_z \Psi - \frac{2}{\beta} B_0 \partial_z B_\phi - \frac{1}{\reye} D^2 u_{\phi} = 0
+\eeq
+
+\beq
+\partial_t A - B_0 \partial_z \Psi - \frac{1}{\reym} D^2 A = 0
+\eeq
+
+\beq
+\partial_t B_\phi + \frac{1}{r}u_0 \partial_z A - B_0 \partial_z u_\phi - \partial_r u_0 \partial_z A - \frac{2}{r^2} \xi B_0 \partial_z \Psi - \frac{1}{\reym} D^2 B_\phi = 0
+\eeq
+
 \section{Notes for paper}
 
 -- Comment on channel mode formation w.r.t. parasitic modes?
