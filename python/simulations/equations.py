@@ -59,24 +59,25 @@ class Equations():
         analysis_profile = solver.evaluator.add_file_handler(os.path.join(data_dir,"profiles"), max_writes=20, parallel=False, **kwargs)
         analysis_profile.add_task("plane_avg(KE)", name="KE")
 
-        analysis_profile.add_task("plane_avg(u_rms)", name="u_rms")
-        analysis_profile.add_task("plane_avg(v_rms)", name="v_rms")
-        analysis_profile.add_task("plane_avg(w_rms)", name="w_rms")
+        analysis_profile.add_task("plane_avg(vx_rms)", name="vx_rms")
+        analysis_profile.add_task("plane_avg(vy_rms)", name="vy_rms")
+        analysis_profile.add_task("plane_avg(vz_rms)", name="vz_rms")
         
         self.analysis_tasks.append(analysis_profile)
 
         analysis_scalar = solver.evaluator.add_file_handler(os.path.join(data_dir,"scalar"), max_writes=np.inf, parallel=False, **kwargs)
         analysis_scalar.add_task("vol_avg(KE)", name="KE")
-        analysis_scalar.add_task("vol_avg(u_rms)", name="u_rms")
-        analysis_scalar.add_task("vol_avg(v_rms)", name="v_rms")
-        analysis_scalar.add_task("vol_avg(w_rms)", name="w_rms")
+        analysis_scalar.add_task("vol_avg(BE)", name="BE")
+        analysis_scalar.add_task("vol_avg(vx_rms)", name="vx_rms")
+        analysis_scalar.add_task("vol_avg(vy_rms)", name="vy_rms")
+        analysis_scalar.add_task("vol_avg(vz_rms)", name="vz_rms")
 
         self.analysis_tasks.append(analysis_scalar)
 
         # workaround for issue #29
-        self.problem.namespace['u_rms'].store_last = True
-        self.problem.namespace['v_rms'].store_last = True
-        self.problem.namespace['w_rms'].store_last = True
+        self.problem.namespace['vx_rms'].store_last = True
+        self.problem.namespace['vy_rms'].store_last = True
+        self.problem.namespace['vz_rms'].store_last = True
         self.problem.namespace['KE'].store_last = True
 
         return self.analysis_tasks
@@ -94,27 +95,13 @@ class Equations():
         self.problem.add_bc("right(b_x) = 0")
 
     def _set_subs(self):
-        """
-        this implements the cylindrical del operators. 
-        NB: ASSUMES THE EQUATION SET IS PREMULTIPLIED BY A POWER OF r (SEE BELOW)!!!
-
-        Lap_s --> scalar laplacian
-        Lap_r --> r component of vector laplacian
-        Lap_t --> theta component of vector laplacian
-        Lap_z --> z component of vector laplacian
-
-        """
-        #self.problem.substitutions['vel_sum_sq'] = 'u**2 + v**2 + w**2'
-
-        # NB: this problem assumes delta = R2 - R1 = 1 
         self.problem.substitutions['plane_avg(A)'] = 'integ(A, "z")/Lz'
         self.problem.substitutions['vol_avg(A)']   = 'integ(A)/Lz'
-        self.problem.substitutions['KE'] = '(psi_x**2 + dz(psi)**2)/2'
-        self.problem.substitutions['u_rms'] = 'sqrt((dz(psi))**2)'
-        self.problem.substitutions['v_rms'] = 'sqrt(u*u)'
-        self.problem.substitutions['w_rms'] = 'sqrt(psi_x**2)'
-        # self.problem.substitutions['Re_rms'] = 'sqrt(vel_sum_sq)*Lz/nu'
-        # self.problem.substitutions['epicyclic_freq_sq']  = 'dr(r*r*v*v)/(r*r*r)'
+        self.problem.substitutions['KE'] = '(psi_x**2 + dz(psi)**2 + u**2)/2'
+        self.problem.substitutions['BE'] = '(A_x**2 + dz(A)**2 + b**2)/2)'
+        self.problem.substitutions['vx_rms'] = 'sqrt((dz(psi))**2)'
+        self.problem.substitutions['vy_rms'] = 'sqrt(u*u)'
+        self.problem.substitutions['vz_rms'] = 'sqrt(psi_x**2)'
 
 class MRI_equations(Equations):
     """

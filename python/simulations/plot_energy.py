@@ -61,11 +61,13 @@ if __name__ == "__main__":
     stop = 190
     with h5py.File(str(f),'r') as ts:
         t=  ts['/scales/sim_time'][:]
-        u_rms = ts['/tasks/u_rms'][:,0,0]
+        u_rms = ts['/tasks/vx_rms'][:,0,0]
         gamma, f0 = compute_growth(u_rms, t, t_orb, start, stop)
         plt.subplot(211)
-        plt.semilogy(t/t_orb,ts['/tasks/KE'][:,0,0],linestyle='-')
-        plt.ylabel("Kinetic Energy")
+        plt.semilogy(t/t_orb,ts['/tasks/KE'][:,0,0],linestyle='-', label='kinetic')
+        plt.semilogy(t/t_orb,ts['/tasks/BE'][:,0,0],linestyle='--', label='magnetic')
+        plt.legend(loc='lower right')
+        plt.ylabel("Energy")
         #plt.xlabel("time (orbits)")
         plt.title("Rm = {:5.2e}".format(float(params["Rm"])))
 
@@ -73,8 +75,7 @@ if __name__ == "__main__":
         plt.semilogy(t/t_orb,u_rms,linestyle='-')
         plt.semilogy(t/t_orb,f0*np.exp(gamma*t),linestyle='--',label=r'$\gamma = {:5.3e}$'.format(gamma))
         plt.legend(loc='upper left')
-
-        plt.ylabel("u_rms")
+        plt.ylabel("r$<v_x>_{rms}$")
         plt.xlabel("time (orbits)")
 
     outfile = base.joinpath("kinetic_energy.png")
