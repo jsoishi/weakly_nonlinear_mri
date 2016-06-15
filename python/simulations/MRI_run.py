@@ -3,7 +3,7 @@ Dedalus script for 2D MRI simulations
 
 
 Usage:
-    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz> --nx=<nx> --Lz=<Lz> --stop=<stop>]
+    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz> --nx=<nx> --Lz=<Lz> --stop=<stop> --use-CFL]
 
 Options:
     --Rm=<Rm>                  magnetic Reynolds number [default: 4.8775]
@@ -19,6 +19,7 @@ Options:
     --nx=<nz>                  horizontal x (Chebyshev) resolution [default: 32]
     --Lz=<Lz>                  vertical length scale in units of 2 pi/Q, Q = critical wavenumber [default: 1]
     --stop=<stop>              stopping time in units of inner cylinder orbits [default: 200]
+    --use-CFL              use CFL condition
 """
 import logging
 import os
@@ -48,6 +49,7 @@ stop = float(args['--stop'])
 
 restart = args['--restart']
 linear = args['--linear']
+CFL = args['--use-CFL']
 
 # save data in directory named after script
 data_dir = "scratch/" + sys.argv[0].split('.py')[0]
@@ -55,7 +57,8 @@ data_dir += "_Rm{0:5.02e}_eps{1:5.02e}_Pm{2:5.02e}_beta{3:5.02e}_Q{4:5.02e}_qsh{
 
 if linear:
     data_dir += "_linear"
-
+if CFL:
+    data_dir += "_CFL"
 from dedalus.tools.config import config
 
 config['logging']['filename'] = os.path.join(data_dir,'dedalus_log')
@@ -146,12 +149,14 @@ analysis_tasks = MRI.initialize_output(solver, data_dir, iter=30)#sim_dt=output_
 flow = flow_tools.GlobalFlowProperty(solver, cadence=10)
 flow.add_property("psi_x**2 + (dz(psi))**2 + u**2", name='Ekin')
 
-#CFL = flow_tools.CFL(solver, initial_dt=1e-3, cadence=5, safety=0.3,
-#                     max_change=1.5, min_change=0.5)
-#CFL.add_velocities(('dz(psi)', '-psi_x'))
-
-#dt = CFL.compute_dt()
-dt = 1e-1
+if CFL:
+    CFL = flow_tools.CFL(solver, initial_dt=1e-3, cadence=5, safety=0.3,
+                         max_change=1.5, min_change=0.5)
+    CFL.add_velocities(('dz(psi)', '-psi_x'))
+    CFL.add_velocities(('dz(A)', '-A_x'))
+    dt = CFL.compute_dt()
+else:
+    dt = 1e-1
 
 # Main loop
 start_time = time.time()
@@ -161,7 +166,8 @@ while solver.ok:
     if (solver.iteration-1) % 10 == 0:
         logger.info('Iteration: %i, Time (in orbits): %e, dt: %e' %(solver.iteration, solver.sim_time/period, dt))
         logger.info('Max E_kin = %5.3e' %flow.max('Ekin'))
-    #dt = CFL.compute_dt()
+    if CFL:
+        dt = CFL.compute_dt()
 
 
 end_time = time.time()
