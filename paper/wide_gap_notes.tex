@@ -873,6 +873,74 @@ We obtain a very compact form for the equations. The following include helical M
 \partial_t B_\phi + \frac{1}{r}u_0 \partial_z A - B_0 \partial_z u_\phi - \partial_r u_0 \partial_z A - \frac{2}{r^2} \xi B_0 \partial_z \Psi - \frac{1}{\reym} D^2 B_\phi = 0
 \eeq
 
+With our new stream/flux functions, the matrices (all defined for LHS) become
+
+$L_0 = $
+\beq
+\left[\begin{matrix}
+-\frac{1}{\reye} (\partial_r^4 + \frac{3}{r^3}\partial_r - \frac{3}{r^2}\partial_r^2 + \frac{2}{r}\partial_r^3 - \frac{3}{r^4}) & 0 & 0 & 0 \\
+0 & -\frac{1}{\reye} (\partial_r^2 + \frac{1}{r}\partial_r - \frac{1}{r^2}) & 0 & 0 \\
+0 & 0 & -\frac{1}{\reym} (\partial_r^2 + \frac{1}{r}\partial_r - \frac{1}{r^2}) & 0 \\
+0 & 0 & 0 & -\frac{1}{\reym} (\partial_r^2 + \frac{1}{r}\partial_r - \frac{1}{r^2}) \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_1 = \left[\begin{matrix}
+0 & -\frac{2}{r}u_0 & -\frac{2}{\beta}(\partial_r^2 + \frac{1}{r} \partial_r - \frac{1}{r^2}) & 0 \\
+\partial_r^* u_0 & 0 & 0 & -\frac{2}{\beta} \\
+-1 & 0 & 0 & 0 \\
+0 & -1 & \frac{1}{r}u_0 - \partial_r u_0 & 0 \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_2 = \left[\begin{matrix}
+-\frac{1}{\reye}(2\partial_r^2 + \frac{2}{r}\partial_r - \frac{2}{r^2}) & 0 & 0 & 0 \\
+0 & -\frac{1}{\reye} & 0 & 0 \\
+0 & 0 & -\frac{1}{\reym} & 0 \\
+0 & 0 & 0 & -\frac{1}{\reym} \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_3 = \left[\begin{matrix}
+0 & 0 & -\frac{2}{\beta} & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_4 = \left[\begin{matrix}
+-\frac{1}{\reye} & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{G} = \left[\begin{matrix}
+0 & 0 & -\frac{2}{\beta} (\partial_r^2 + \frac{1}{r}\partial_r - \frac{1}{r^2}) & 0 \\
+0 & 0 & 0 & -\frac{2}{\beta} \\
+-1 & 0 & 0 & 0 \\
+0 & -1 & 0 & 0 \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{H} = \left[\begin{matrix}
+0 & 0 & 0 & \frac{2}{\beta} \frac{2}{r^2} \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+-\frac{2}{r^2} & 0 & 0 & 0 \\
+\end{matrix}\right]
+\eeq
+
+
+
 \section{Notes for paper}
 
 -- Comment on channel mode formation w.r.t. parasitic modes?
