@@ -452,31 +452,18 @@ class MRI():
         """
         Normalize total state vector.
         """
-        
-        print("begin norm")
-        veclen = len(psi['g'])
-        evector = np.zeros(veclen*4, np.complex_)
-        evector[0:veclen] = psi['g'] #+ psi['g'].conj()
-        evector[veclen:veclen*2] = u['g'] #+ u['g'].conj()
-        evector[veclen*2:veclen*3] = A['g'] #+ A['g'].conj()
-        evector[veclen*3:] = B['g'] #+ B['g'].conj()
-        
-        #norm = np.linalg.norm(evector)
-        print("norm hack: max(abs(A)) = 1")
-        norm = np.max(np.abs(A['g']))
-        #print("norm hack: u(x = 0) = 1")
-        #norm = u['g'][len(u['g'])/2]
-        #normmult = (1.0)/norm
-        print("end norm")
+        print("norm hack: Using max(A) from URM07")
+
+        # this value read from A(x = 0) figure 2c of Umurhan, Regev, &
+        # Menou (2007) using WebPlotDigitizer. I estimate the error to
+        # be +0.03/-0.04.
+        Amax = 0.535
+        norm = A.interpolate(x = 0)['g'][0]/Amax
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
         A['g'] = A['g']/norm
         B['g'] = B['g']/norm
-        #psi['g'] = psi['g']*normmult
-        #u['g'] = u['g']*normmult
-        #A['g'] = A['g']*normmult
-        #B['g'] = B['g']*normmult
         
         return psi, u, A, B
 
@@ -641,36 +628,25 @@ class MRI():
         Take inner product < vector2 | vector1 > 
         Defined as integral of (vector2.conj * vector1)
         """
-        print(vector1)
         
         inner_product = vector1[0]['g']*vector2[0]['g'].conj() + vector1[1]['g']*vector2[1]['g'].conj() + vector1[2]['g']*vector2[2]['g'].conj() + vector1[3]['g']*vector2[3]['g'].conj()
-        print(inner_product)
         
         ip = domain.new_field()
         ip.name = "inner product"
         ip['g'] = inner_product
         ip = ip.integrate(x_basis)
-        ip = ip['g'][0]/2.0
+        ip = ip['g'][0] 
         
         return ip
         
-    def take_inner_product2(self, vector1, vector2):
+    def take_inner_product_real(self, vector1, vector2):
         
         """
-        Take inner product < vector2 | vector1 > 
-        Defined as integral of (vector2.conj * vector1)
+        Take the real inner product < vector2 | vector1 > 
+        Defined as integral of (vector2.conj * vector1) + c.c.
         """
-
-        inner_product = vector1[0]['g']*vector2[0]['g'] + vector1[1]['g']*vector2[1]['g'] + vector1[2]['g']*vector2[2]['g'] + vector1[3]['g']*vector2[3]['g']
-        
-        
-        ip = domain.new_field()
-        ip.name = "inner product"
-        ip['g'] = inner_product
-        ip = ip.integrate(x_basis)
-        ip = ip['g'][0]/2.0
-        
-        return ip
+        ip = self.take_inner_product(vector1, vector2)
+        return ip + ip.conj()
     
 class AdjointHomogenous(MRI):
 
@@ -1016,12 +992,24 @@ class OrderE2(MRI):
         else:
             MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
             n2 = N2(Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
-    
+        
+        self.o1 = o1
+        self.n2 = n2
         # righthand side for the 20 terms (e^0)
-        rhs20_psi = n2.N20_psi
-        rhs20_u = n2.N20_u 
-        rhs20_A = n2.N20_A 
-        rhs20_B = n2.N20_B
+        # need N20 + N20* on RHS
+        N20_psi_cc = domain.new_field()
+        N20_psi_cc['g'] = n2.N20_psi['g'].conj()
+        N20_u_cc = domain.new_field()
+        N20_u_cc['g'] = n2.N20_u['g'].conj()
+        N20_A_cc = domain.new_field()
+        N20_A_cc['g'] = n2.N20_A['g'].conj()
+        N20_B_cc = domain.new_field()
+        N20_B_cc['g'] = n2.N20_B['g'].conj()
+
+        rhs20_psi = n2.N20_psi + N20_psi_cc
+        rhs20_u = n2.N20_u + N20_u_cc
+        rhs20_A = n2.N20_A + N20_A_cc
+        rhs20_B = n2.N20_B + N20_B_cc
         #rhs20_psi = n2.N20_psi['g']
         #rhs20_u = n2.N20_u['g'] - (2.0/beta)
         #rhs20_A = n2.N20_A['g'] 
@@ -1031,7 +1019,7 @@ class OrderE2(MRI):
         bv20psi = de.LBVP(domain, ['psi20', 'psi20x', 'psi20xx', 'psi20xxx'])
         
         bv20psi.parameters['iR'] = self.iR
-        bv20psi.parameters['rhs20_psi'] = rhs20_psi
+        bv20psi.parameters['rhs20_psi'] = rhs20_psi 
         bv20psi.add_equation("iR*dx(psi20xxx) = rhs20_psi")
         bv20psi.add_equation("dx(psi20) - psi20x = 0")
         bv20psi.add_equation("dx(psi20x) - psi20xx = 0")
@@ -1067,18 +1055,23 @@ class OrderE2(MRI):
         bv20B.add_equation("dx(B20) - B20x = 0")
         bv20B.add_bc("left(B20x) = 0")
         bv20B.add_bc("right(B20x) = 0")
-      
+        
+        print("running bv20psi")
         self.BVPpsi = self.solve_BVP(bv20psi)
         self.psi20 = self.BVPpsi.state['psi20']
-        
+
+        print("running bv20u")
         self.BVPu = self.solve_BVP(bv20u)
         self.u20 = self.BVPu.state['u20']
-        
+
+        print("running bv20A")
         self.BVPA = self.solve_BVP(bv20A)
         self.A20 = self.BVPA.state['A20']
-        
+
+        print("running bv20B")
         self.BVPB = self.solve_BVP(bv20B)
         self.B20 = self.BVPB.state['B20']
+        self.B20['g'] = 0.
         
         # V21 equations are coupled
         # second term: -L1twiddle V1
@@ -1107,8 +1100,9 @@ class OrderE2(MRI):
         rhs21_B = term2_B
         
         # These RHS terms must satisfy the solvability condition <V^dagger | RHS> = 0. Test that:
-        ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
-        sctest = self.take_inner_product((ah.psi, ah.u, ah.A, ah.B), (term2_psi, term2_u, term2_A, term2_B))
+        self.ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        
+        sctest = self.take_inner_product_real((term2_psi, term2_u, term2_A, term2_B),(self.ah.psi, self.ah.u, self.ah.A, self.ah.B))
         print("solvability condition satisfied?", sctest)
         if np.abs(sctest) > 1E-10:
             print("CAUTION: solvability condition <V^dagger | RHS> = 0 failed for V21")
@@ -1243,64 +1237,10 @@ class OrderE2(MRI):
             self.A22 = (self.A22*scale22).evaluate()
             self.B22 = (self.B22*scale22).evaluate()
             """
-            
-        self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector(self.psi21, self.u21, self.A21, self.B21)
-        self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector(self.psi22, self.u22, self.A22, self.B22)
-        
-        #self.psi21, self.u21, self.A21, self.B21 = self.normalize_inner_product_eq_1(self.psi21, self.u21, self.A21, self.B21, o1.psi, o1.u, o1.A, o1.B)
-        #self.psi22, self.u22, self.A22, self.B22 = self.normalize_inner_product_eq_1(self.psi22, self.u22, self.A22, self.B22, o1.psi, o1.u, o1.A, o1.B)
-        
+                    
         # These should be zero... 
-        self.psi20['g'] = np.zeros(gridnum, np.complex_)
-        self.B20['g'] = np.zeros(gridnum, np.complex_)
-        
-        if self.norm == True:
-            print("not normalize_all_real_or_imag - ing u20 and A20")
-            #scale20 = self.normalize_all_real_or_imag_bystate(self.u20)
-            #self.u20 = (self.u20*scale20).evaluate()
-            #self.A20 = (self.A20*scale20).evaluate()
-            
-        # Try normalizing to RHS(x = 0) value
-        #print("Normalizing s.t. u(x = 0) = u_RHS(x = 0)")
-        #self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector_toRHS(self.psi20, self.u20, self.A20, self.B20, n2.N20_u)
-        #self.psi21, self.u21, self.A21, self.B21 = self.normalize_state_vector_toRHS(self.psi21, self.u21, self.A21, self.B21, term2_u)
-        #self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector_toRHS(self.psi22, self.u22, self.A22, self.B22, n2.N22_u)
-        
-        self.psi20, self.u20, self.A20, self.B20 = self.normalize_state_vector(self.psi20, self.u20, self.A20, self.B20)
-        #print("big normalization of V2")
-        #self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22 = self.normalize_state_vector2(self.psi20, self.u20, self.A20, self.B20, self.psi21, self.u21, self.A21, self.B21, self.psi22, self.u22, self.A22, self.B22)
-        
-        #self.psi20, self.u20, self.A20, self.B20 = self.normalize_inner_product_eq_1(self.psi20, self.u20, self.A20, self.B20, o1.psi, o1.u, o1.A, o1.B)
-
-        #self.u20['g'] = self.normalize_vector(self.u20['g'])
-        #self.A20['g'] = self.normalize_vector(self.A20['g'])
-        
-        """
-        print("normalizing o1 s.t. <o1 | o2>/<o2 | o1> = -1")
-        o1o1ip = self.take_inner_product([self.psi20, self.u20, self.A20, self.B20], [o1.psi, o1.u, o1.A, o1.B])
-        o1o1ipflip = self.take_inner_product([o1.psi, o1.u, o1.A, o1.B], [self.psi20, self.u20, self.A20, self.B20])
-        normc = -1.0/(o1o1ip/o1o1ipflip)
-        self.psi20 = (self.psi20*normc).evaluate()
-        self.u20 = (self.u20*normc).evaluate()
-        self.A20 = (self.A20*normc).evaluate()
-        self.B20 = (self.B20*normc).evaluate()
-        
-        o1o1ip = self.take_inner_product([self.psi21, self.u21, self.A21, self.B21], [o1.psi, o1.u, o1.A, o1.B])
-        o1o1ipflip = self.take_inner_product([o1.psi, o1.u, o1.A, o1.B], [self.psi21, self.u21, self.A21, self.B21])
-        normc = -1.0/(o1o1ip/o1o1ipflip)
-        self.psi21 = (self.psi21*normc).evaluate()
-        self.u21 = (self.u21*normc).evaluate()
-        self.A21 = (self.A21*normc).evaluate()
-        self.B21 = (self.B21*normc).evaluate()
-        
-        o1o1ip = self.take_inner_product([self.psi22, self.u22, self.A22, self.B22], [o1.psi, o1.u, o1.A, o1.B])
-        o1o1ipflip = self.take_inner_product([o1.psi, o1.u, o1.A, o1.B], [self.psi22, self.u22, self.A22, self.B22])
-        normc = -1.0/(o1o1ip/o1o1ipflip)
-        self.psi22 = (self.psi22*normc).evaluate()
-        self.u22 = (self.u22*normc).evaluate()
-        self.A22 = (self.A22*normc).evaluate()
-        self.B22 = (self.B22*normc).evaluate()
-        """
+        #self.psi20['g'] = np.zeros(gridnum, np.complex_)
+        #self.B20['g'] = np.zeros(gridnum, np.complex_)
         
         self.psi20.name = "psi20"
         self.u20.name = "u20"
