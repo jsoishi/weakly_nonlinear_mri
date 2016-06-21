@@ -916,7 +916,7 @@ class N2(MRI):
     
         print("initializing N2")
     
-        if o1 == None:
+        if o1 is None:
             o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
             MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         else:
@@ -985,7 +985,7 @@ class OrderE2(MRI):
     
         print("initializing Order E2")
         
-        if o1 == None:
+        if o1 is None:
             o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
             MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
             n2 = N2(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
@@ -1433,7 +1433,7 @@ class AmplitudeAlpha(MRI):
         if o1 == None:
             o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
             MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            n2 = N2(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            n2 = N2(o1 = o1, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         else:
             MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
             n2 = N2(o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
@@ -1543,7 +1543,6 @@ class AmplitudeAlpha(MRI):
         
         # a = <va . D V11*>
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
-        self.a2 = self.take_inner_product2([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs2, o1.u_star, o1.A_star, o1.B_star]) #testing
         
         # c = <va . N31*>
         self.c = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
@@ -1576,7 +1575,8 @@ class AmplitudeAlpha(MRI):
         self.n3 = n3
         self.ah = ah
         self.n2 = n2
-        
+
+    def solve_IVP(self):
         # Actually solve the IVP
         Absolute = operators.Absolute
         
