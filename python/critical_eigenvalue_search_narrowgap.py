@@ -11,11 +11,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 Q = 0.75
-Pm = 5e-3
+Pm = 1e-3
 q = 1.5
 beta = 25.0
 
-x = de.Chebyshev('x',50)
+x = de.Chebyshev('x',100)
 d = de.Domain([x],comm=MPI.COMM_SELF)
 
 mri = de.EVP(d,['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],'iRm')
