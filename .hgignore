@@ -1,0 +1,9 @@
+syntax: glob
+
+python/simulations/scratch/
+__pycache__*
+*aux
+*log
+*out
+*~
+.ipynb_checkpoints/*
