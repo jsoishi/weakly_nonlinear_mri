@@ -1220,28 +1220,6 @@ class OrderE2(MRI):
         self.A22 = self.BVP22.state['A22']
         self.B22 = self.BVP22.state['B22']
         
-        
-        if self.norm == True:
-            print("not normalize_all_real_or_imag - ing V21 or V22")
-            """
-            scale21 = self.normalize_all_real_or_imag_bystate(self.psi21)
-            scale22 = self.normalize_all_real_or_imag_bystate(self.psi22)
-    
-            self.psi21 = (self.psi21*scale21).evaluate()
-            self.u21 = (self.u21*scale21).evaluate()
-            self.A21 = (self.A21*scale21).evaluate()
-            self.B21 = (self.B21*scale21).evaluate()
-            
-            self.psi22 = (self.psi22*scale22).evaluate()
-            self.u22 = (self.u22*scale22).evaluate()
-            self.A22 = (self.A22*scale22).evaluate()
-            self.B22 = (self.B22*scale22).evaluate()
-            """
-                    
-        # These should be zero... 
-        #self.psi20['g'] = np.zeros(gridnum, np.complex_)
-        #self.B20['g'] = np.zeros(gridnum, np.complex_)
-        
         self.psi20.name = "psi20"
         self.u20.name = "u20"
         self.A20.name = "A20"
