@@ -227,54 +227,6 @@ class MRI():
         
         return field_star
         
-class OrderEIdeal():
-
-    def __init__(self, Q = 10, Omega = 1, beta = 25):
-        
-        print("initializing wide gap Order epsilon")
-
-        # widegap order epsilon
-        widegap1 = de.EVP(d1,['psi','u', 'A', 'B', 'psir', 'Ar'],'sigma')
-        #widegap2 = de.EVP(d2,['psi','u', 'A', 'B', 'psir', 'Ar'],'sigma')
-        
-        # Add equations
-        for widegap in [widegap1]:#, widegap2]:
-            
-            widegap.parameters['k'] = Q
-            widegap.parameters['Omega'] = Omega
-            widegap.parameters['beta'] = beta
-            widegap.parameters['q'] = 1.5
-            
-            widegap.add_equation("sigma*(r*dr(psir) + r*(1j*k)**2*psi - psir) - r**2*2*Omega*1j*k*u - (2/beta)*(r*(1j*k)**3*A + r*1j*k*dr(Ar) - 1j*k*Ar) = 0")
-            widegap.add_equation("sigma*u*r + (2-q)*Omega*1j*k*psi - r*(2/beta)*1j*k*B = 0")
-            widegap.add_equation("sigma*A - 1j*k*psi = 0")
-            widegap.add_equation("sigma*B*r - 1j*k*r*u + q*Omega*1j*k*A = 0")    
-        
-            widegap.add_equation("dr(psi) - psir = 0")
-            widegap.add_equation("dr(A) - Ar = 0")
-
-            widegap.add_bc('left(u) = 0')
-            #widegap.add_bc('right(u) = 0')
-            widegap.add_bc('left(psi) = 0')
-            widegap.add_bc('right(psi) = 0')
-            #widegap.add_bc('left(A) = 0')
-            #widegap.add_bc('right(A) = 0')
-            #widegap.add_bc('left(psir) = 0')
-            #widegap.add_bc('right(psir) = 0')
-            #widegap.add_bc('left(dr(r*B)) = 0')
-            #widegap.add_bc('right(dr(r*B)) = 0') # axial component of current = 0
-
-            solver1 = widegap1.build_solver()
-            #solver2 = widegap2.build_solver()
-        
-            solver1.solve(solver1.pencils[0])
-            #solver2.solve(solver2.pencils[0])
-        
-            # Discard spurious eigenvalues
-            ev1 = solver1.eigenvalues
-            #ev2 = solver2.eigenvalues
-            
-            self.solver1 = solver1
 
 class OrderE(MRI):
 
@@ -284,7 +236,7 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True, inviscid = False, ideal = False):
+    def __init__(self, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, xi = 0, norm = True, inviscid = False):
         
         print("initializing wide gap Order epsilon")
         
@@ -299,6 +251,9 @@ class OrderE(MRI):
         R = Rm/Pm
         iR = 1./R
         
+        if xi != 0:
+            print("Helical MRI with xi = {}".format(xi))
+        
         # Add equations
         for widegap in [widegap1, widegap2]:
             
@@ -309,6 +264,7 @@ class OrderE(MRI):
             widegap.parameters['c2'] = self.c2
             widegap.parameters['beta'] = beta
             widegap.parameters['B0'] = 1
+            widegap.parameters['xi'] = xi
 
             widegap.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
             widegap.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
@@ -318,10 +274,10 @@ class OrderE(MRI):
             widegap.substitutions['Avisc'] = '(r*dr(Ar) - r*k**2*A - Ar)' 
             widegap.substitutions['Bvisc'] = '(-r**3*k**2*B + r**3*dr(Br) + r**2*Br - r*B)'
         
-            widegap.add_equation("sigma*(-r**3*k**2*psi + r**3*psirr - r**2*psir) - r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - iR*psivisc = 0") #corrected on whiteboard 5/6
+            widegap.add_equation("sigma*(-r**3*k**2*psi + r**3*psirr - r**2*psir) - r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*k*B = 0") #corrected on whiteboard 5/6
             widegap.add_equation("sigma*r**3*u + 1j*k*ru0*psi + 1j*k*rrdu0*psi - 1j*k*r**3*twooverbeta*B0*B - iR*uvisc = 0") 
             widegap.add_equation("sigma*r*A - r*B0*1j*k*psi - iRm*Avisc = 0")
-            widegap.add_equation("sigma*r**3*B + ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - iRm*Bvisc = 0") 
+            widegap.add_equation("sigma*r**3*B + ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - iRm*Bvisc - 2*xi*1j*k*psi = 0") 
 
             widegap.add_equation("dr(psi) - psir = 0")
             widegap.add_equation("dr(psir) - psirr = 0")
@@ -465,7 +421,7 @@ class OrderE2(MRI):
     
     """
     
-    def __init__(self, o1 = None, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, norm = True):
+    def __init__(self, o1 = None, Q = np.pi/10, Rm = 4.052, Pm = 1.6E-6, beta = 0.4378, R1 = 9.5, R2 = 10.5, Omega1 = 314, Omega2 = 37.9, xi = 0, norm = True):
     
         print("initializing Order E2")
         
@@ -493,6 +449,7 @@ class OrderE2(MRI):
             V.parameters['c2'] = self.c2
             V.parameters['iR'] = self.iR
             V.parameters['B0'] = 1
+            V.parameters['xi'] = xi
         
         # RHS of V21 = -L1twiddle V11
         rfield = d1.new_field()
@@ -506,7 +463,7 @@ class OrderE2(MRI):
         
         rhs_psi21 = ((rfield**4)*((2/rfield)*u0field*o1.u + (2/self.beta)*(1/rfield)*o1.A_rr - (2/self.beta)*(1/rfield**2)*o1.A_r 
                     - (2/self.beta)*(3/rfield)*self.Q**2*o1.A + self.iR*4*1j*self.Q*(1/rfield)*o1.psi_rr - self.iR*(1/rfield**2)*4*1j*self.Q*o1.psi_r
-                    - self.iR*(1/rfield)*4*1j*self.Q**3*o1.psi))
+                    - self.iR*(1/rfield)*4*1j*self.Q**3*o1.psi - twooverbeta*(1/rfield**2)*2*xi*1j*k*o1.B))
         self.rhs_psi21 = rhs_psi21.evaluate()
         
         rhs_u21 = ((rfield**3)*(-(1/rfield)*du0field*o1.psi - (1/rfield**2)*u0field*o1.psi + (2/self.beta)*o1.B + self.iR*2*1j*self.Q*o1.u))
@@ -515,7 +472,7 @@ class OrderE2(MRI):
         rhs_A21 = (rfield)*(o1.psi + self.iRm*2*1j*self.Q*o1.A)
         self.rhs_A21 = rhs_A21.evaluate()
         
-        rhs_B21 = (rfield**3)*((1/rfield)*du0field*o1.A + o1.u - (1/rfield**2)*u0field*o1.A + self.iRm*2*1j*self.Q*o1.B)
+        rhs_B21 = (rfield**3)*((1/rfield)*du0field*o1.A + o1.u - (1/rfield**2)*u0field*o1.A + self.iRm*2*1j*self.Q*o1.B + (2/rfield**3)*xi*1j*k*o1.psi)
         self.rhs_B21 = rhs_B21.evaluate()
         
         V21.parameters['rhs_psi21'] = self.rhs_psi21
@@ -532,10 +489,10 @@ class OrderE2(MRI):
         V21.substitutions['Avisc'] = '(r*dr(Ar) - r*k**2*A - Ar)' 
         V21.substitutions['Bvisc'] = '(-r**3*k**2*B + r**3*dr(Br) + r**2*Br - r*B)'
     
-        V21.add_equation("-r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - iR*psivisc = rhs_psi21") #corrected on whiteboard 5/6
+        V21.add_equation("-r**2*2*ru0*1j*k*u + r**3*twooverbeta*B0*1j*k**3*A + twooverbeta*B0*r**2*1j*k*Ar - twooverbeta*r**3*B0*1j*k*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*k*B = rhs_psi21") #corrected on whiteboard 5/6
         V21.add_equation("1j*k*ru0*psi + 1j*k*rrdu0*psi - 1j*k*r**3*twooverbeta*B0*B - iR*uvisc = rhs_u21") 
         V21.add_equation("r*B0*1j*k*psi - iRm*Avisc = rhs_A21")
-        V21.add_equation("ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - iRm*Bvisc = rhs_B21") 
+        V21.add_equation("ru0*1j*k*A - r**3*B0*1j*k*u - 1j*k*rrdu0*A - iRm*Bvisc - 2*xi*1j*k*psi = rhs_B21") 
 
         V21.add_equation("dr(psi) - psir = 0")
         V21.add_equation("dr(psir) - psirr = 0")
@@ -601,10 +558,10 @@ class OrderE2(MRI):
         V22.substitutions['twooverbeta'] = '(2.0/beta)'
         V22.substitutions['dz'] = '(1j*2*k)'
         
-        V22.add_equation("-r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi = rhs_psi22")
+        V22.add_equation("-r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi + twooverbeta*r**2*2*xi*(2*1j*k)*B = rhs_psi22")
         V22.add_equation("rrdu0*dz*psi + ru0*dz*psi - r**3*twooverbeta*dz*B - r**3*iR*dr(ur) - r**2*iR*ur - r**3*iR*dz**2*u + r*iR*u = rhs_u22")
         V22.add_equation("-dz*psi*r - r*iRm*dr(Ar) + iRm*Ar - r*iRm*dz**2*A = rhs_A22")
-        V22.add_equation("-dz*rrdu0*A - dz*r**3*u + ru0*dz*A - iRm*r**3*dr(Br) - r**2*iRm*Br - iRm*r**3*dz**2*B + r*iRm*B = rhs_B22")
+        V22.add_equation("-dz*rrdu0*A - dz*r**3*u + ru0*dz*A - iRm*r**3*dr(Br) - r**2*iRm*Br - iRm*r**3*dz**2*B + r*iRm*B - 2*xi*(2*1j*k)*psi = rhs_B22")
         
         V22.add_equation("dr(psi) - psir = 0")
         V22.add_equation("dr(psir) - psirr = 0")
