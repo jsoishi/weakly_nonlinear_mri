@@ -57,9 +57,7 @@ class MRI():
         
         self.gridnum = gridnum
         self.x = domain.grid(0)
-        #self.x_basis = Chebyshev(gridnum)
-        #self.domain = Domain([self.x_basis], grid_dtype=np.complex128)
-    
+        
         print("MRI parameters: ", self.Q, self.Rm, self.Pm, self.q, self.beta, 'norm = ', norm, "Reynolds number", self.R)
         
     def set_boundary_conditions(self, problem):
@@ -699,11 +697,6 @@ class AdjointHomogenous(MRI):
         self.A = self.EP.solver.state['A']
         self.B = self.EP.solver.state['B']
                
-        #self.psi['g'] = self.normalize_vector(self.psi['g'])
-        #self.u['g'] = self.normalize_vector(self.u['g'])
-        #self.A['g'] = self.normalize_vector(self.A['g'])
-        #self.B['g'] = self.normalize_vector(self.B['g'])
-        
         if self.norm == True:
             scale = self.normalize_all_real_or_imag(self.EP.solver)
             
@@ -712,19 +705,6 @@ class AdjointHomogenous(MRI):
             self.A = (self.A*scale).evaluate()
             self.B = (self.B*scale).evaluate()
             
-        # Normalize adjoint homogenous s.t. <ah | o1> = 1
-        #aho1ip = self.take_inner_product([self.psi, self.u, self.A, self.B], [o1.psi, o1.u, o1.A, o1.B])
-        #normc = 1.0/(aho1ip)
-        #self.psi = (self.psi*normc).evaluate()
-        #self.u = (self.u*normc).evaluate()
-        #self.A = (self.A*normc).evaluate()
-        #self.B = (self.B*normc).evaluate()
-        
-        #self.psi, self.u, self.A, self.B = self.normalize_inner_product_eq_1(self.psi, self.u, self.A, self.B, o1.psi, o1.u, o1.A, o1.B)
-        #self.psi, self.u, self.A, self.B = self.normalize_inner_product_eq_1(self.psi, self.u, self.A, self.B, self.psi, self.u, self.A, self.B)
-
-        #self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
-        
         self.psi.name = "psi"
         self.u.name = "u"
         self.A.name = "A"
@@ -743,21 +723,6 @@ class AdjointHomogenous(MRI):
         
         self.B_x = self.get_derivative(self.B)
         
-        # I guess we should be normalizing derivatives too?
-        """
-        self.psi_x['g'] = self.normalize_vector(self.psi_x['g'])
-        self.psi_xx['g'] = self.normalize_vector(self.psi_xx['g'])
-        self.psi_xxx['g'] = self.normalize_vector(self.psi_xxx['g'])
-        
-        self.u_x['g'] = self.normalize_vector(self.u_x['g'])
-        
-        self.A_x['g'] = self.normalize_vector(self.A_x['g'])
-        self.A_xx['g'] = self.normalize_vector(self.A_xx['g'])
-        self.A_xxx['g'] = self.normalize_vector(self.A_xxx['g'])
-        
-        self.B_x['g'] = self.normalize_vector(self.B_x['g'])
-        """
-            
 class OrderE(MRI):
 
     """
@@ -803,32 +768,17 @@ class OrderE(MRI):
         self.A = self.EP.solver.state['A']
         self.B = self.EP.solver.state['B']
         
-        #self.psi['g'] = self.normalize_vector(self.psi['g'])
-        #self.u['g'] = self.normalize_vector(self.u['g'])
-        #self.A['g'] = self.normalize_vector(self.A['g'])
-        #self.B['g'] = self.normalize_vector(self.B['g'])
-        #print("pre norm", self.psi['g'])
         self.prenormpsi = self.psi
         
         if self.norm == True:
             scale = self.normalize_all_real_or_imag(self.EP.solver)
             
             self.psi = (self.psi*scale).evaluate()
-            #print(self.psi['g'])
             self.u = (self.u*scale).evaluate()
             self.A = (self.A*scale).evaluate()
             self.B = (self.B*scale).evaluate()
             
         self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
-        #print("normalizing o1 s.t. <o1 | o1> = 1")
-        #o1o1ip = self.take_inner_product([self.psi, self.u, self.A, self.B], [self.psi, self.u, self.A, self.B])
-        #normc = 1.0/(o1o1ip)
-        #self.psi = (self.psi*normc).evaluate()
-        #self.u = (self.u*normc).evaluate()
-        #self.A = (self.A*normc).evaluate()
-        #self.B = (self.B*normc).evaluate()
-        
-        #self.psi, self.u, self.A, self.B = self.normalize_inner_product_eq_1(self.psi, self.u, self.A, self.B, self.psi, self.u, self.A, self.B)
         
         self.normpsi = self.psi
             
@@ -873,37 +823,6 @@ class OrderE(MRI):
         self.B_star = self.get_complex_conjugate(self.B)
         self.B_star_x = self.get_derivative(self.B_star)
         
-        # Normalize derivatives and cc's as well... 
-        """
-        self.psi_x['g'] = self.normalize_vector(self.psi_x['g'])
-        self.psi_xx['g'] = self.normalize_vector(self.psi_xx['g'])
-        self.psi_xxx['g'] = self.normalize_vector(self.psi_xxx['g'])
-        
-        self.u_x['g'] = self.normalize_vector(self.u_x['g'])
-        
-        self.A_x['g'] = self.normalize_vector(self.A_x['g'])
-        self.A_xx['g'] = self.normalize_vector(self.A_xx['g'])
-        self.A_xxx['g'] = self.normalize_vector(self.A_xxx['g'])
-        
-        self.B_x['g'] = self.normalize_vector(self.B_x['g'])
-        
-        self.psi_star['g'] = self.normalize_vector(self.psi_star['g'])
-        self.psi_star_x['g'] = self.normalize_vector(self.psi_star_x['g'])
-        self.psi_star_xx['g'] = self.normalize_vector(self.psi_star_xx['g'])
-        self.psi_star_xxx['g'] = self.normalize_vector(self.psi_star_xxx['g'])
-        
-        self.u_star['g'] = self.normalize_vector(self.u_star['g'])
-        self.u_star_x['g'] = self.normalize_vector(self.u_star_x['g'])
-        
-        self.A_star['g'] = self.normalize_vector(self.A_star['g'])
-        self.A_star_x['g'] = self.normalize_vector(self.A_star_x['g'])
-        self.A_star_xx['g'] = self.normalize_vector(self.A_star_xx['g'])
-        self.A_star_xxx['g'] = self.normalize_vector(self.A_star_xxx['g'])
-        
-        self.B_star['g'] = self.normalize_vector(self.B_star['g'])
-        self.B_star_x['g'] = self.normalize_vector(self.B_star_x['g'])
-        """
-        
 class N2(MRI):
 
     """
@@ -927,7 +846,7 @@ class N2(MRI):
         self.N22_psi.name = "N22_psi"
     
         N20psi = 1j*self.Q*o1.psi*(o1.psi_star_xxx - self.Q**2*o1.psi_star_x) - o1.psi_x*(-1j*self.Q*o1.psi_star_xx + 1j*self.Q**3*o1.psi_star) + (2/self.beta)*o1.A_x*(-1j*self.Q*o1.A_star_xx + 1j*self.Q**3*o1.A_star) - (2/self.beta)*1j*self.Q*o1.A*(o1.A_star_xxx - self.Q**2*o1.A_star_x) # Confirmed 11/2/15
-        #N20psi = 1j*self.Q*o1.psi*(o1.psi_star_xxx - self.Q**2*o1.psi_star_x) - o1.psi_x*(1j*self.Q*o1.psi_star_xx - 1j*self.Q**3*o1.psi_star) + (2/self.beta)*o1.A_x*(1j*self.Q*o1.A_star_xx - 1j*self.Q**3*o1.A_star) - (2/self.beta)*1j*self.Q*o1.A*(o1.A_star_xxx - self.Q**2*o1.A_star_x)
+
         self.N20_psi = N20psi.evaluate()
         self.N20_psi.name = "N20_psi"
         
@@ -936,7 +855,7 @@ class N2(MRI):
         self.N22_u.name = "N22_u"
         
         N20u = 1j*self.Q*o1.psi*o1.u_star_x + o1.psi_x*1j*self.Q*o1.u_star - (2/self.beta)*1j*self.Q*o1.A*o1.B_star_x - (2/self.beta)*o1.A_x*1j*self.Q*o1.B_star # confirmed 10/30/15
-        #N20u = 1j*self.Q*o1.psi*o1.u_star_x - o1.psi_x*1j*self.Q*o1.u_star - (2/self.beta)*1j*self.Q*o1.A*o1.B_star_x + (2/self.beta)*o1.A_x*1j*self.Q*o1.B_star
+
         self.N20_u = N20u.evaluate()
         self.N20_u.name = "N20_u"
         
@@ -953,25 +872,9 @@ class N2(MRI):
         self.N22_B.name = "N22_B"
         
         N20B = 1j*self.Q*o1.psi*o1.B_star_x + o1.psi_x*1j*self.Q*o1.B_star - 1j*self.Q*o1.A*o1.u_star_x - o1.A_x*1j*self.Q*o1.u_star # confirmed 1/2/15
-        #N20B = 1j*self.Q*o1.psi*o1.B_star_x - o1.psi_x*1j*self.Q*o1.B_star - 1j*self.Q*o1.A*o1.u_star_x + o1.A_x*1j*self.Q*o1.u_star
+
         self.N20_B = N20B.evaluate()
         self.N20_B.name = "N20_B"
-        
-        # Let's try normalizing N2 eigenvectors.
-        """
-        self.N22_psi['g'] = self.normalize_vector(self.N22_psi['g'])
-        self.N22_u['g'] = self.normalize_vector(self.N22_u['g'])
-        self.N22_A['g'] = self.normalize_vector(self.N22_A['g'])
-        self.N22_B['g'] = self.normalize_vector(self.N22_B['g'])
-        
-        self.N20_psi['g'] = self.normalize_vector(self.N20_psi['g'])
-        self.N20_u['g'] = self.normalize_vector(self.N20_u['g'])
-        self.N20_A['g'] = self.normalize_vector(self.N20_A['g'])
-        self.N20_B['g'] = self.normalize_vector(self.N20_B['g'])
-        """
-        #self.N20_psi, self.N20_u, self.N20_A, self.N20_B = self.normalize_state_vector(self.N20_psi, self.N20_u, self.N20_A, self.N20_B)
-        #self.N22_psi, self.N22_u, self.N22_A, self.N22_B = self.normalize_state_vector(self.N22_psi, self.N22_u, self.N22_A, self.N22_B)
-       
         
 class OrderE2(MRI):
 
@@ -1010,11 +913,7 @@ class OrderE2(MRI):
         rhs20_u = n2.N20_u + N20_u_cc
         rhs20_A = n2.N20_A + N20_A_cc
         rhs20_B = n2.N20_B + N20_B_cc
-        #rhs20_psi = n2.N20_psi['g']
-        #rhs20_u = n2.N20_u['g'] - (2.0/beta)
-        #rhs20_A = n2.N20_A['g'] 
-        #rhs20_B = n2.N20_B['g'] - 2*1j*Q*self.iRm
-        
+
         # V20 equations are separable because dz terms -> 0
         bv20psi = de.LBVP(domain, ['psi20', 'psi20x', 'psi20xx', 'psi20xxx'])
         
@@ -1122,12 +1021,6 @@ class OrderE2(MRI):
         bv21.parameters['rhs21_A'] = rhs21_A
         bv21.parameters['rhs21_B'] = rhs21_B
         
-
-        #bv21.add_equation("1j*(2/beta)*Q**3*A21 - 1j*(2/beta)*Q*dx(A21x) - 2*1j*Q*u21 - iR*Q**4*psi21 + 2*iR*Q**2*psi21xx - iR*dx(psi21xxx) = rhs21_psi")
-        #bv21.add_equation("-1j*(2/beta)*Q*B21 - 1j*Q*(q - 2)*psi21 + iR*Q**2*u21 - iR*dx(u21x) = rhs21_u")
-        #bv21.add_equation("iRm*Q**2*A21 - iRm*dx(A21x) - 1j*Q*psi21 = rhs21_A")
-        #bv21.add_equation("1j*Q*q*A21 + iRm*Q**2*B21 - iRm*dx(B21x) - 1j*Q*u21 = rhs21_B")   
-        
         bv21.add_equation("-1j*(2/beta)*Q**3*A21 + 1j*(2/beta)*Q*dx(A21x) + 2*1j*Q*u21 + iR*Q**4*psi21 - 2*iR*Q**2*psi21xx + iR*dx(psi21xxx) = rhs21_psi")
         bv21.add_equation("1j*(2/beta)*Q*B21 + 1j*Q*(q - 2)*psi21 - iR*Q**2*u21 + iR*dx(u21x) = rhs21_u") 
         bv21.add_equation("-iRm*Q**2*A21 + iRm*dx(A21x) + 1j*Q*psi21 = rhs21_A")
@@ -1157,12 +1050,6 @@ class OrderE2(MRI):
         self.u21 = self.BVP21.state['u21']
         self.A21 = self.BVP21.state['A21']
         self.B21 = self.BVP21.state['B21']
-        
-        #wild alternative version
-        #self.psi21['g'] = o1.psi['g']
-        #self.u21['g'] = o1.u['g']
-        #self.A21['g'] = o1.A['g']
-        #self.B21['g'] = o1.B['g']
         
         #V22 equations are coupled
         rhs22_psi = n2.N22_psi
@@ -1320,11 +1207,6 @@ class N3(MRI):
         N31_psi_my3 = 1j*2*self.Q*(o2.psi22*o1.psi_star_xxx) - 1j*2*self.Q**3*(o2.psi22*o1.psi_star_x) - 1j*self.Q*(o2.psi20_x*o1.psi_xx) + 1j*self.Q*(o2.psi22_x*o1.psi_star_xx) - 1j*self.Q*(o2.psi20_star_x*o1.psi_xx) + 1j*self.Q**3*(o2.psi20_x*o1.psi) + 1j*self.Q**3*(o2.psi20_star_x*o1.psi) - 1j*self.Q**3*(o2.psi22_x*o1.psi_star)
         N31_psi_my4 = -1j*2*self.Q*(2/self.beta)*(o2.A22*o1.A_star_xxx) + 1j*2*self.Q**3*(2/self.beta)*(o2.A22*o1.A_star_x) + 1j*self.Q*(2/self.beta)*(o2.A20_x*o1.A_xx) - 1j*self.Q*(2/self.beta)*(o2.A22_x*o1.A_star_xx) + 1j*self.Q*(2/self.beta)*(o2.A20_star_x*o1.A_xx) - 1j*self.Q**3*(2/self.beta)*(o2.A20_x*o1.A) - 1j*self.Q**3*(2/self.beta)*(o2.A20_star_x*o1.A) + 1j*self.Q**3*(2/self.beta)*(o2.A22_x*o1.A_star)
         
-        #N31_psi_my1 = 1j*self.Q*(o1.psi*o2.psi20_xxx) - 1j*self.Q*(o1.psi_star*o2.psi22_xxx) - 1j*2*self.Q*(o1.psi_star_x*o2.psi22_xx) + 1j*8*self.Q**3*(o1.psi_star_x*o2.psi22) + 1j*4*self.Q**3*(o1.psi_star*o2.psi22_x)
-        #N31_psi_my2 = -1j*self.Q*(2/self.beta)*(o1.A*o2.A20_xxx) + 1j*self.Q*(2/self.beta)*(o1.A_star*o2.A22_xxx) + 1j*2*self.Q*(2/self.beta)*(o1.A_star_x*o2.A22_xx) - 1j*8*self.Q**3*(2/self.beta)*(o1.A_star_x*o2.A22) - 1j*4*self.Q**3*(2/self.beta)*(o1.A_star*o2.A22_x)
-        #N31_psi_my3 = 1j*2*self.Q*(o2.psi22*o1.psi_star_xxx) - 1j*2*self.Q**3*(o2.psi22*o1.psi_star_x) - 1j*self.Q*(o2.psi20_x*o1.psi_xx) + 1j*self.Q*(o2.psi22_x*o1.psi_star_xx) + 1j*self.Q**3*(o2.psi20_x*o1.psi) - 1j*self.Q**3*(o2.psi22_x*o1.psi_star)
-        #N31_psi_my4 = -1j*2*self.Q*(2/self.beta)*(o2.A22*o1.A_star_xxx) + 1j*2*self.Q**3*(2/self.beta)*(o2.A22*o1.A_star_x) + 1j*self.Q*(2/self.beta)*(o2.A20_x*o1.A_xx) - 1j*self.Q*(2/self.beta)*(o2.A22_x*o1.A_star_xx) - 1j*self.Q**3*(2/self.beta)*(o2.A20_x*o1.A) + 1j*self.Q**3*(2/self.beta)*(o2.A22_x*o1.A_star)
-        
         
         N31_psi = N31_psi_my1 + N31_psi_my2 + N31_psi_my3 +  N31_psi_my4
         
@@ -1336,10 +1218,6 @@ class N3(MRI):
         p2 = N31_psi_my2.evaluate()
         p3 = N31_psi_my3.evaluate()
         p4 = N31_psi_my4.evaluate()
-        #print("N31_psi_my1", p1['g'])
-        #print("N31_psi_my2", p2['g'])
-        #print("N31_psi_my3", p3['g'])
-        #print("N31_psi_my4", p4['g'])
         
         # u component
         N31_u_my1 = 1j*self.Q*(o1.psi*o2.u20_x) + 1j*self.Q*(o1.psi*o2.u20_star_x) - 1j*self.Q*(o1.psi_star*o2.u22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.u22)
@@ -1347,28 +1225,18 @@ class N3(MRI):
         N31_u_my3 = -1j*self.Q*(2/self.beta)*(o1.A*o2.B20_x) - 1j*self.Q*(2/self.beta)*(o1.A*o2.B20_star_x) + 1j*self.Q*(2/self.beta)*(o1.A_star*o2.B22_x) + 1j*2*self.Q*(2/self.beta)*(o1.A_star_x*o2.B22)
         N31_u_my4 = 1j*self.Q*(2/self.beta)*(o1.B*o2.A20_x) + 1j*self.Q*(2/self.beta)*(o1.B*o2.A20_star_x) - 1j*self.Q*(2/self.beta)*(o1.B_star*o2.A20_x) - 1j*2*self.Q*(2/self.beta)*(o1.B_star_x*o2.A22)
         
-        #N31_u_my1 = 1j*self.Q*(o1.psi*o2.u20_x) - 1j*self.Q*(o1.psi_star*o2.u22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.u22)
-        #N31_u_my2 = -1j*self.Q*(o1.u*o2.psi20_x) + 1j*self.Q*(o1.u_star*o2.psi22_x) + 1j*2*self.Q*(o1.u_star_x*o2.psi22)
-        #N31_u_my3 = -1j*self.Q*(2/self.beta)*(o1.A*o2.B20_x) + 1j*self.Q*(2/self.beta)*(o1.A_star*o2.B22_x) + 1j*2*self.Q*(2/self.beta)*(o1.A_star_x*o2.B22)
-        #N31_u_my4 = 1j*self.Q*(2/self.beta)*(o1.B*o2.A20_x) - 1j*self.Q*(2/self.beta)*(o1.B_star*o2.A20_x) - 1j*2*self.Q*(2/self.beta)*(o1.B_star_x*o2.A22)
-        
         
         N31_u = N31_u_my1 + N31_u_my2 + N31_u_my3 + N31_u_my4
         
         self.N31_u = N31_u.evaluate()
-        #print(self.N31_u['g'])
         
         # A component -- correct with all-positive V2 definition. Checked 11/14/15
         N31_A_my1 = -1j*self.Q*(o1.A*o2.psi20_x) - 1j*self.Q*(o1.A*o2.psi20_star_x) + 1j*self.Q*(o1.A_star*o2.psi22_x) + 1j*2*self.Q*(o1.A_star_x*o2.psi22)
         N31_A_my2 = 1j*self.Q*(o1.psi*o2.A20_x) + 1j*self.Q*(o1.psi*o2.A20_star_x) - 1j*self.Q*(o1.psi_star*o2.A22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.A22)
         
-        #N31_A_my1 = -1j*self.Q*(o1.A*o2.psi20_x) + 1j*self.Q*(o1.A_star*o2.psi22_x) + 1j*2*self.Q*(o1.A_star_x*o2.psi22)
-        #N31_A_my2 = 1j*self.Q*(o1.psi*o2.A20_x) - 1j*self.Q*(o1.psi_star*o2.A22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.A22)
-        
         N31_A = N31_A_my1 + N31_A_my2
         
         self.N31_A = N31_A.evaluate()
-        #print(self.N31_A['g'])
         
         # B component -- correct with all-positive V2 definition. Checked 11/6/15
         N31_B_my1 = 1j*self.Q*(o1.psi*o2.B20_x) + 1j*self.Q*(o1.psi*o2.B20_star_x) - 1j*self.Q*(o1.psi_star*o2.B22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.B22)
@@ -1376,25 +1244,9 @@ class N3(MRI):
         N31_B_my3 = -1j*self.Q*(o1.A*o2.u20_x) - 1j*self.Q*(o1.A*o2.u20_star_x) + 1j*self.Q*(o1.A_star*o2.u22_x) + 1j*2*self.Q*(o1.A_star_x*o2.u22)
         N31_B_my4 = 1j*self.Q*(o1.u*o2.A20_x) + 1j*self.Q*(o1.u*o2.A20_star_x) - 1j*self.Q*(o1.u_star*o2.A22_x) - 1j*2*self.Q*(o1.u_star_x*o2.A22)
         
-        # Umurhan+ has no 20_star elements. Try that?
-        #N31_B_my1 = 1j*self.Q*(o1.psi*o2.B20_x) - 1j*self.Q*(o1.psi_star*o2.B22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.B22)
-        #N31_B_my2 = -1j*self.Q*(o1.B*o2.psi20_x) + 1j*self.Q*(o1.B_star*o2.psi22_x) + 1j*2*self.Q*(o1.B_star_x*o2.psi22)
-        #N31_B_my3 = -1j*self.Q*(o1.A*o2.u20_x) + 1j*self.Q*(o1.A_star*o2.u22_x) + 1j*2*self.Q*(o1.A_star_x*o2.u22)
-        #N31_B_my4 = 1j*self.Q*(o1.u*o2.A20_x)  - 1j*self.Q*(o1.u_star*o2.A22_x) - 1j*2*self.Q*(o1.u_star_x*o2.A22)
-        
-        
         N31_B = N31_B_my1 + N31_B_my2 + N31_B_my3 + N31_B_my4
         
         self.N31_B = N31_B.evaluate()
-        #print(self.N31_B['g'])
-        
-        # Let's try normalizing N3 eigenvectors.
-        #self.N31_psi['g'] = self.normalize_vector(self.N31_psi['g'])
-        #self.N31_u['g'] = self.normalize_vector(self.N31_u['g'])
-        #self.N31_A['g'] = self.normalize_vector(self.N31_A['g'])
-        #self.N31_B['g'] = self.normalize_vector(self.N31_B['g'])
-        
-        #self.N31_psi, self.N31_u, self.N31_A, self.N31_B = self.normalize_state_vector(self.N31_psi, self.N31_u, self.N31_A, self.N31_B)
 
 
 class AmplitudeAlpha(MRI):
@@ -1418,10 +1270,6 @@ class AmplitudeAlpha(MRI):
     
         if o2 == None:
             o2 = OrderE2(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
-        
-        # Dumb, crazy hack
-        #o1.psi, o1.u, o1.A, o1.B, o2.psi20, o2.u20, o2.A20, o2.B20, o2.psi21, o2.u21, o2.A21, o2.B21, o2.psi22, o2.u22, o2.A22, o2.B22 = self.bignorm(o1.psi, o1.u, o1.A, o1.B, o2.psi20, o2.u20, o2.A20, o2.B20, o2.psi21, o2.u21, o2.A21, o2.B21, o2.psi22, o2.u22, o2.A22, o2.B22)
-        #n2 = N2(o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
         
         n3 = N3(o1 = o1, o2 = o2, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
