@@ -8,14 +8,6 @@ comm = MPI.COMM_WORLD
 from allorders_2 import AmplitudeAlpha
 from find_crit import find_crit
 
-class Blank():
-    def __init__(self,a,b,c,ct,h):
-        self.a = a + 1j
-        self.b = b +1j
-        self.c = c +1j
-        self.ctwiddle = ct +1j
-        self.h = h +1j
-
 q = 1.5
 beta = 25.0
 npoints = 4
@@ -33,23 +25,28 @@ coeffs = {'a':np.empty(local_size,dtype='complex128'),
           'b': np.empty(local_size,dtype='complex128'),
           'c': np.empty(local_size,dtype='complex128'),
           'ctwiddle': np.empty(local_size,dtype='complex128'),
-          'h': np.empty(local_size,dtype='complex128')}
+          'h': np.empty(local_size,dtype='complex128'),
+          'Q_c': np.empty(local_size,dtype='complex128'),
+          'Rm_c': np.empty(local_size,dtype='complex128')}
 
 global_coeffs = {'a':np.empty(npoints,dtype='complex128'),
                  'b': np.empty(npoints,dtype='complex128'),
                  'c': np.empty(npoints,dtype='complex128'),
                  'ctwiddle': np.empty(npoints,dtype='complex128'),
-                 'h': np.empty(npoints,dtype='complex128')}
+                 'h': np.empty(npoints,dtype='complex128'),
+                 'Q_c': np.empty(npoints,dtype='complex128'),
+                 'Rm_c': np.empty(npoints,dtype='complex128')}
 
 for i,Pm in enumerate(local_Pm):
-    #Q_c, Rm_c = find_crit(Pm, q, beta)
-    #aa = AmplitudeAlpha(Q = Q_c, Rm = Rm_c, Pm = Pm, q = q, beta = beta)
-    aa = Blank(Pm,rank,rank,rank,rank)
+    Q_c, Rm_c = find_crit(Pm, q, beta)
+    aa = AmplitudeAlpha(Q = Q_c, Rm = Rm_c, Pm = Pm, q = q, beta = beta)
     coeffs['a'][i] = aa.a
     coeffs['b'][i] = aa.b
     coeffs['c'][i] = aa.c
     coeffs['ctwiddle'][i] = aa.ctwiddle
     coeffs['h'][i] = aa.h
+    coeffs['Q_c'][i] = Q_c
+    coeffs['Rm_c'][i] = Rm_c
 
 rec_counts = [i.size for i in Pm_split]
 displacements = np.cumsum(rec_counts) - rec_counts
