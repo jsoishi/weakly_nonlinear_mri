@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from mpi4py import MPI
 import dedalus.public as de
 from eigentools import Eigenproblem
 from scipy.linalg import eig, norm
@@ -18,13 +19,13 @@ from matplotlib import rc
 gridnum = 50#128
 print("running at gridnum", gridnum)
 x_basis = de.Chebyshev('x',gridnum)
-domain = de.Domain([x_basis], np.complex128)
+domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 
 # Second basis for checking eigenvalues
 x_basis192 = de.Chebyshev('x',64)
 #x_basis192 = Chebyshev(64)
 #x_basis192 = Chebyshev(192)
-domain192 = de.Domain([x_basis192], np.complex128)
+domain192 = de.Domain([x_basis192], np.complex128, comm=MPI.COMM_SELF)
 
 
 class MRI():
@@ -79,8 +80,7 @@ class MRI():
         
         return problem
 
-    def fastest_growing(self, problem):
-        self.EP = Eigenproblem(problem)
+    def fastest_growing(self):
         gr, largest_eval_indx  = self.EP.growth_rate({})
         self.largest_eval_indx = largest_eval_indx
         self.EP.solver.set_state(largest_eval_indx)
@@ -653,7 +653,7 @@ class AdjointHomogenous(MRI):
     Returns V^dagger
     """
 
-    def __init__(self, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
         
         print("initializing Adjoint Homogenous")
         
@@ -688,9 +688,14 @@ class AdjointHomogenous(MRI):
         lv1.add_equation("dx(B) - Bx = 0")
 
         # Set boundary conditions for MRI problem
-        lv1 = self.set_boundary_conditions(lv1)
+        self.lv1 = self.set_boundary_conditions(lv1)
+        self.EP = Eigenproblem(self.lv1)
 
-        self.fastest_growing(lv1)
+        if finalize:
+            self.finalize()
+            
+    def finalize(self):
+        self.fastest_growing()
                 
         self.psi = self.EP.solver.state['psi']
         self.u = self.EP.solver.state['u']
@@ -731,7 +736,7 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
         
         print("initializing Order E")
         
@@ -757,10 +762,14 @@ class OrderE(MRI):
         lv1.add_equation("dx(u) - ux = 0")
         lv1.add_equation("dx(A) - Ax = 0")
         lv1.add_equation("dx(B) - Bx = 0")
-        
-        lv1 = self.set_boundary_conditions(lv1)
-        
-        self.fastest_growing(lv1)        
+
+        self.lv1 = self.set_boundary_conditions(lv1)
+        self.EP = Eigenproblem(self.lv1)
+        if finalize:
+            self.finalize()
+
+    def finalize(self):
+        self.fastest_growing()        
         
         # All eigenfunctions must be scaled s.t. their max is 1
         self.psi = self.EP.solver.state['psi']
@@ -884,7 +893,7 @@ class OrderE2(MRI):
     
     """
     
-    def __init__(self, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         print("initializing Order E2")
         
@@ -894,7 +903,7 @@ class OrderE2(MRI):
             n2 = N2(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         else:
             MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
-            n2 = N2(Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            n2 = N2(o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
         
         self.o1 = o1
         self.n2 = n2
@@ -999,7 +1008,10 @@ class OrderE2(MRI):
         rhs21_B = term2_B
         
         # These RHS terms must satisfy the solvability condition <V^dagger | RHS> = 0. Test that:
-        self.ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        if ah == False:
+            self.ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        else:
+            self.ah = ah
         
         sctest = self.take_inner_product_real((term2_psi, term2_u, term2_A, term2_B),(self.ah.psi, self.ah.u, self.ah.A, self.ah.B))
         print("solvability condition satisfied?", sctest)
@@ -1185,7 +1197,7 @@ class N3(MRI):
     
     """
     
-    def __init__(self, o1 = None, o2 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, o1 = None, o2 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing N3")
         
@@ -1196,9 +1208,11 @@ class N3(MRI):
         else:
             MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
             n2 = N2(Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+
+        if ah == None:
+            ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
     
-        if o2 == None:
-            o2 = OrderE2(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        o2 = OrderE2(o1 = o1, ah = ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         
         # Components of N31
         # psi component
@@ -1267,12 +1281,13 @@ class AmplitudeAlpha(MRI):
         else:
             MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
             n2 = N2(o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
-    
-        if o2 == None:
-            o2 = OrderE2(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
-        
-        n3 = N3(o1 = o1, o2 = o2, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+
         ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        if o2 == None:
+            o2 = OrderE2(o1 = o1, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        
+        n3 = N3(o1 = o1, o2 = o2, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+
         
         magicnumberhack = False
         print("magicnumberhack is ", magicnumberhack)
@@ -1390,10 +1405,8 @@ class AmplitudeAlpha(MRI):
         #self.linear_term = 1j*self.Q*self.b - 1j*self.Q**3*self.g
         self.linear_term = self.b
     
-        print("sat_amp_coeffs = b/c")
+
         self.sat_amp_coeffs = np.sqrt(self.b/self.c) #np.sqrt((-1j*self.Q*self.b + 1j*self.Q**3*self.g)/self.c)
-        print("a", self.a, "c", self.c, "ctwiddle", self.ctwiddle, "b", self.b, "h", self.h)#, "g", self.g)
-        print("saturation amp", self.sat_amp_coeffs)
         
         # For interactive diagnostic purposes only
         self.o1 = o1
@@ -1401,6 +1414,11 @@ class AmplitudeAlpha(MRI):
         self.n3 = n3
         self.ah = ah
         self.n2 = n2
+
+    def print_coeffs(self):
+        print("sat_amp_coeffs = b/c")
+        print("a", self.a, "c", self.c, "ctwiddle", self.ctwiddle, "b", self.b, "h", self.h)#, "g", self.g)
+        print("saturation amp", self.sat_amp_coeffs)
 
     def solve_IVP(self):
         # Actually solve the IVP
