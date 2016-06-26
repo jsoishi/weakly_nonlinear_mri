@@ -1,0 +1,69 @@
+import time
+import numpy as np
+import h5py
+from mpi4py import MPI
+from scipy import optimize as opt
+comm = MPI.COMM_WORLD
+
+from allorders_2 import AmplitudeAlpha
+from find_crit import find_crit
+
+class Blank():
+    def __init__(self,a,b,c,ct,h):
+        self.a = a + 1j
+        self.b = b +1j
+        self.c = c +1j
+        self.ctwiddle = ct +1j
+        self.h = h +1j
+
+q = 1.5
+beta = 25.0
+npoints = 4
+global_Pm = [5e-4,1e-3,3e-3,5e-3] #np.logspace(-5,-3.5, npoints)
+
+nproc = comm.size
+rank = comm.rank
+
+Pm_split = np.array_split(global_Pm, nproc)
+local_Pm = Pm_split[rank]
+
+local_size = local_Pm.size 
+
+coeffs = {'a':np.empty(local_size,dtype='complex128'),
+          'b': np.empty(local_size,dtype='complex128'),
+          'c': np.empty(local_size,dtype='complex128'),
+          'ctwiddle': np.empty(local_size,dtype='complex128'),
+          'h': np.empty(local_size,dtype='complex128')}
+
+global_coeffs = {'a':np.empty(npoints,dtype='complex128'),
+                 'b': np.empty(npoints,dtype='complex128'),
+                 'c': np.empty(npoints,dtype='complex128'),
+                 'ctwiddle': np.empty(npoints,dtype='complex128'),
+                 'h': np.empty(npoints,dtype='complex128')}
+
+for i,Pm in enumerate(local_Pm):
+    #Q_c, Rm_c = find_crit(Pm, q, beta)
+    #aa = AmplitudeAlpha(Q = Q_c, Rm = Rm_c, Pm = Pm, q = q, beta = beta)
+    aa = Blank(Pm,rank,rank,rank,rank)
+    coeffs['a'][i] = aa.a
+    coeffs['b'][i] = aa.b
+    coeffs['c'][i] = aa.c
+    coeffs['ctwiddle'][i] = aa.ctwiddle
+    coeffs['h'][i] = aa.h
+
+rec_counts = [i.size for i in Pm_split]
+displacements = np.cumsum(rec_counts) - rec_counts
+if rank == 0:
+    print(rec_counts,displacements)
+
+keys = list(coeffs.keys())
+keys.sort()
+for k in keys:
+    comm.Gatherv(coeffs[k],[global_coeffs[k],rec_counts,displacements,MPI.F_DOUBLE_COMPLEX],root=0)
+
+if rank == 0:
+    outfile = h5py.File("../data/pm_sat_coeffs.h5","w")
+    for k in keys:
+        outfile.create_dataset(k,data=global_coeffs[k])
+    outfile.create_dataset('Pm',data=global_Pm)
+    outfile.close()
