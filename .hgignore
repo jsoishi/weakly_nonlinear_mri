@@ -1,6 +1,7 @@
 syntax: glob
 
 python/simulations/scratch/
+python/simulations/frames/
 __pycache__*
 *aux
 *log
