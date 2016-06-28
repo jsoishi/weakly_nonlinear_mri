@@ -10,7 +10,7 @@ from eigentools import Eigenproblem
 import logging
 logger = logging.getLogger(__name__)
 
-def find_crit(Pm, q, beta, res=50):
+def find_crit(domain, Pm, q, beta):
     """find critical parmaeters for the narrow gap MRI
 
     inputs
@@ -21,10 +21,8 @@ def find_crit(Pm, q, beta, res=50):
     """
 
     Q = 0.75 # initial guess
-    x = de.Chebyshev('x',res)
-    d = de.Domain([x],comm=MPI.COMM_SELF)
 
-    mri = de.EVP(d,['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],'iRm')
+    mri = de.EVP(domain,['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],'iRm')
 
     mri.parameters['Q'] = Q
     mri.parameters['Pm'] = Pm

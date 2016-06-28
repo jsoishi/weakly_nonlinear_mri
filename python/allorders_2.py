@@ -16,11 +16,6 @@ from matplotlib import rc
 #rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 #rc('text', usetex=True)
 
-gridnum = 50#128
-print("running at gridnum", gridnum)
-x_basis = de.Chebyshev('x',gridnum)
-domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
-
 class MRI():
 
     """
@@ -33,8 +28,9 @@ class MRI():
     critical Re =    4.87903
     """
 
-    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
-    
+    def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+
+        self.domain = domain
         self.Q = Q
         self.Rm = Rm
         self.Pm = Pm
@@ -49,8 +45,8 @@ class MRI():
         self.R = self.Rm/self.Pm
         self.iR = 1.0/self.R
         
-        self.gridnum = gridnum
-        self.x = domain.grid(0)
+        self.gridnum = self.domain.bases[0].coeff_size
+        self.x = self.domain.grid(0)
         
         print("MRI parameters: ", self.Q, self.Rm, self.Pm, self.q, self.beta, 'norm = ', norm, "Reynolds number", self.R)
         
@@ -183,7 +179,7 @@ class MRI():
         Take complex conjugate of a single field.
         """
         
-        field_star = domain.new_field()
+        field_star = self.domain.new_field()
         field_star.name = field.name + "_star"
         field_star['g'] = field['g'].conj()
         
@@ -198,10 +194,10 @@ class MRI():
         
         inner_product = vector1[0]['g']*vector2[0]['g'].conj() + vector1[1]['g']*vector2[1]['g'].conj() + vector1[2]['g']*vector2[2]['g'].conj() + vector1[3]['g']*vector2[3]['g'].conj()
         
-        ip = domain.new_field()
+        ip = self.domain.new_field()
         ip.name = "inner product"
         ip['g'] = inner_product
-        ip = ip.integrate(x_basis)
+        ip = ip.integrate('x')
         ip = ip['g'][0] 
         
         return ip
@@ -222,18 +218,18 @@ class AdjointHomogenous(MRI):
     Returns V^dagger
     """
 
-    def __init__(self, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
+    def __init__(self, domain, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
         
         print("initializing Adjoint Homogenous")
         
         if o1 == None:
-            self.o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            self.o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         else:
-            MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
       
         # Set up problem object
-        lv1 = de.EVP(domain,
+        lv1 = de.EVP(self.domain,
                      ['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'], 'sigma')
 
         lv1.parameters['Q'] = self.Q
@@ -305,13 +301,13 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
+    def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
         
         print("initializing Order E")
         
-        MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         
-        lv1 = de.EVP(domain,
+        lv1 = de.EVP(self.domain,
                      ['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],'sigma')
         
         lv1.parameters['Q'] = self.Q
@@ -409,15 +405,15 @@ class N2(MRI):
     
     """
     
-    def __init__(self, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, domain, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         print("initializing N2")
     
         if o1 is None:
-            o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         else:
-            MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
     
         N22psi = 1j*self.Q*o1.psi*(o1.psi_xxx - self.Q**2*o1.psi_x) - o1.psi_x*(1j*self.Q*o1.psi_xx - 1j*self.Q**3*o1.psi) + (2/self.beta)*o1.A_x*(1j*self.Q*o1.A_xx - 1j*self.Q**3*o1.A) - (2/self.beta)*1j*self.Q*o1.A*(o1.A_xxx - self.Q**2*o1.A_x) # Confirmed 11/2/15
         self.N22_psi = N22psi.evaluate()
@@ -462,29 +458,29 @@ class OrderE2(MRI):
     
     """
     
-    def __init__(self, o1 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, domain, o1 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         print("initializing Order E2")
         
         if o1 is None:
-            o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            n2 = N2(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            n2 = N2(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         else:
-            MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
-            n2 = N2(o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
         
         self.o1 = o1
         self.n2 = n2
         # righthand side for the 20 terms (e^0)
         # need N20 + N20* on RHS
-        N20_psi_cc = domain.new_field()
+        N20_psi_cc = self.domain.new_field()
         N20_psi_cc['g'] = n2.N20_psi['g'].conj()
-        N20_u_cc = domain.new_field()
+        N20_u_cc = self.domain.new_field()
         N20_u_cc['g'] = n2.N20_u['g'].conj()
-        N20_A_cc = domain.new_field()
+        N20_A_cc = self.domain.new_field()
         N20_A_cc['g'] = n2.N20_A['g'].conj()
-        N20_B_cc = domain.new_field()
+        N20_B_cc = self.domain.new_field()
         N20_B_cc['g'] = n2.N20_B['g'].conj()
 
         rhs20_psi = n2.N20_psi + N20_psi_cc
@@ -493,7 +489,7 @@ class OrderE2(MRI):
         rhs20_B = n2.N20_B + N20_B_cc
 
         # V20 equations are separable because dz terms -> 0
-        bv20psi = de.LBVP(domain, ['psi20', 'psi20x', 'psi20xx', 'psi20xxx'])
+        bv20psi = de.LBVP(self.domain, ['psi20', 'psi20x', 'psi20xx', 'psi20xxx'])
         
         bv20psi.parameters['iR'] = self.iR
         bv20psi.parameters['rhs20_psi'] = rhs20_psi 
@@ -506,7 +502,7 @@ class OrderE2(MRI):
         bv20psi.add_bc("left(psi20x) = 0")
         bv20psi.add_bc("right(psi20x) = 0")
         
-        bv20u = de.LBVP(domain, ['u20', 'u20x'])
+        bv20u = de.LBVP(self.domain, ['u20', 'u20x'])
         bv20u.parameters['iR'] = self.iR
         bv20u.parameters['rhs20_u'] = rhs20_u
         
@@ -515,7 +511,7 @@ class OrderE2(MRI):
         bv20u.add_bc("left(u20) = 0")
         bv20u.add_bc("right(u20) = 0")
         
-        bv20A = de.LBVP(domain, ['A20', 'A20x'])
+        bv20A = de.LBVP(self.domain, ['A20', 'A20x'])
         bv20A.parameters['iRm'] = self.iRm
         bv20A.parameters['rhs20_A'] = rhs20_A
         
@@ -524,7 +520,7 @@ class OrderE2(MRI):
         bv20A.add_bc("left(A20) = 0")
         bv20A.add_bc("right(A20) = 0")
         
-        bv20B = de.LBVP(domain,['B20', 'B20x'])
+        bv20B = de.LBVP(self.domain,['B20', 'B20x'])
         bv20B.parameters['iRm'] = self.iRm
         bv20B.parameters['rhs20_B'] = rhs20_B
         
@@ -584,7 +580,7 @@ class OrderE2(MRI):
                 
         # define problem using righthand side as nonconstant coefficients
         
-        bv21 = de.LBVP(domain,
+        bv21 = de.LBVP(self.domain,
               ['psi21', 'psi21x', 'psi21xx', 'psi21xxx', 'u21', 'u21x', 'A21', 'A21x', 'B21', 'B21x'])
         # parameters
         bv21.parameters['Q'] = self.Q
@@ -639,7 +635,7 @@ class OrderE2(MRI):
         self.rhs22_B = rhs22_B
         
         # define problem using righthand side as nonconstant coefficients
-        bv22 = de.LBVP(domain,
+        bv22 = de.LBVP(self.domain,
               ['psi22', 'psi22x', 'psi22xx', 'psi22xxx', 'u22', 'u22x', 'A22', 'A22x', 'B22', 'B22x'])
         
         # parameters
@@ -761,22 +757,23 @@ class N3(MRI):
     
     """
     
-    def __init__(self, o1 = None, o2 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, domain, o1 = None, o2 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing N3")
         
         if o1 == None:
-            o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            n2 = N2(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            n2 = N2(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         else:
-            MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
-            n2 = N2(Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            n2 = N2(domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
 
         if ah == None:
-            ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
-    
-        o2 = OrderE2(o1 = o1, ah = ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+            ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+
+        if o2 == None:
+            o2 = OrderE2(domain, o1 = o1, ah = ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         
         # Components of N31
         # psi component
@@ -834,23 +831,23 @@ class AmplitudeAlpha(MRI):
     
     """
     
-    def __init__(self, o1 = None, o2 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, domain, o1 = None, o2 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
         print("initializing Amplitude Alpha")
       
         if o1 == None:
-            o1 = OrderE(Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            MRI.__init__(self, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            n2 = N2(o1 = o1, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            n2 = N2(domain, o1 = o1, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         else:
-            MRI.__init__(self, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
-            n2 = N2(o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
 
-        ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         if o2 == None:
-            o2 = OrderE2(o1 = o1, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+            o2 = OrderE2(domain, o1 = o1, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         
-        n3 = N3(o1 = o1, o2 = o2, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        n3 = N3(domain, o1 = o1, o2 = o2, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
 
         
         magicnumberhack = False
@@ -862,7 +859,7 @@ class AmplitudeAlpha(MRI):
             o1.A['g'] = o1.A['g']*o1scale
             o1.B['g'] = o1.B['g']*o1scale
             
-        self.x = domain.grid(0)
+        self.x = self.domain.grid(0)
         
         a_psi_rhs = o1.psi_xx - self.Q**2*o1.psi
         a_psi_rhs = a_psi_rhs.evaluate()
@@ -870,11 +867,11 @@ class AmplitudeAlpha(MRI):
         a_psi_rhs2 = o1.psi_star_xx - self.Q**2*o1.psi #test
         a_psi_rhs2 = a_psi_rhs2.evaluate()
         
-        u20_twiddle = domain.new_field()
+        u20_twiddle = self.domain.new_field()
         u20_twiddle.name = 'self.v20_utwiddle'
         u20_twiddle['g'] = 0.5*(2/self.beta)*self.R*(self.x**2 - 1)
         
-        allzeros = domain.new_field()
+        allzeros = self.domain.new_field()
         allzeros['g'] = np.zeros(len(self.x), np.complex_)
         
         u20_twiddle_x = self.get_derivative(u20_twiddle)
@@ -1006,9 +1003,9 @@ class AmplitudeAlpha(MRI):
         
         Z_basis = Fourier(self.gridnum, interval=(-lambda_crit, lambda_crit), dealias=2/3)
         Zdomain = Domain([Z_basis], np.complex128)
-        problem.expand(domain)
+        problem.expand(self.domain)
         
-        solver = solvers.IVP(problem, domain, timesteppers.SBDF2)
+        solver = solvers.IVP(problem, self.domain, timesteppers.SBDF2)
         
         # stopping criteria
         solver.stop_sim_time = np.inf

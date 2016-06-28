@@ -1,12 +1,21 @@
 import time
 import numpy as np
 import h5py
+import dedalus.public as de
 from mpi4py import MPI
 from scipy import optimize as opt
 comm = MPI.COMM_WORLD
 
 from allorders_2 import AmplitudeAlpha
 from find_crit import find_crit
+
+import logging
+logger = logging.getLogger(__name__)
+
+res = 50
+x = de.Chebyshev('x',res)
+domain = de.Domain([x], np.complex128, comm=MPI.COMM_SELF)
+logger.info("running at resolution {}".format(res))
 
 q = 1.5
 beta = 25.0
@@ -38,8 +47,8 @@ global_coeffs = {'a':np.empty(npoints,dtype='complex128'),
                  'Rm_c': np.empty(npoints,dtype='complex128')}
 
 for i,Pm in enumerate(local_Pm):
-    Q_c, Rm_c = find_crit(Pm, q, beta)
-    aa = AmplitudeAlpha(Q = Q_c, Rm = Rm_c, Pm = Pm, q = q, beta = beta)
+    Q_c, Rm_c = find_crit(domain, Pm, q, beta)
+    aa = AmplitudeAlpha(domain, Q = Q_c, Rm = Rm_c, Pm = Pm, q = q, beta = beta)
     coeffs['a'][i] = aa.a
     coeffs['b'][i] = aa.b
     coeffs['c'][i] = aa.c
@@ -51,7 +60,7 @@ for i,Pm in enumerate(local_Pm):
 rec_counts = [i.size for i in Pm_split]
 displacements = np.cumsum(rec_counts) - rec_counts
 if rank == 0:
-    print(rec_counts,displacements)
+    logger.info("Rec_counts = {}; displacements = {}".format(rec_counts,displacements))
 
 keys = list(coeffs.keys())
 keys.sort()
