@@ -98,7 +98,7 @@ class Equations():
         self.problem.substitutions['plane_avg(A)'] = 'integ(A, "z")/Lz'
         self.problem.substitutions['vol_avg(A)']   = 'integ(A)/Lz'
         self.problem.substitutions['KE'] = '(psi_x**2 + dz(psi)**2 + u**2)/2'
-        self.problem.substitutions['BE'] = '(A_x**2 + dz(A)**2 + b**2)/2)'
+        self.problem.substitutions['BE'] = '(A_x**2 + dz(A)**2 + b**2)/2'
         self.problem.substitutions['vx_rms'] = 'sqrt((dz(psi))**2)'
         self.problem.substitutions['vy_rms'] = 'sqrt(u*u)'
         self.problem.substitutions['vz_rms'] = 'sqrt(psi_x**2)'
