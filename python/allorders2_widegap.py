@@ -33,6 +33,7 @@ class MRI():
         self.Omega2 = Omega2
         self.xi = xi
         self.norm = norm
+        self.B0 = 1
         
         # Inverse magnetic reynolds number
         self.iRm = 1.0/self.Rm
@@ -175,14 +176,14 @@ class MRI():
         Take derivative of a single field.
         """
         
-        field_x = field.differentiate(0)
+        field_r = field.differentiate(0)
         
-        if field.name.endswith("x"):
-            field_x.name = field.name + "x"
+        if field.name.endswith("r"):
+            field_r.name = field.name + "r"
         else:
-            field_x.name = field.name + "_x"
+            field_r.name = field.name + "_r"
             
-        return field_x
+        return field_r
         
     def get_complex_conjugate(self, field):
         
@@ -234,34 +235,39 @@ class AdjointHomogenous(MRI):
         logger.info("initializing Adjoint Homogenous")
         
         if o1 == None:
-            self.o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
-            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, Omega1 = Omega1, Omega2 = Omega2, norm = norm)
+            self.o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
         else:
-            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
       
         # Set up problem object
         lv1 = de.EVP(self.domain,
-                     ['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'], 'sigma')
+                     ['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
 
         lv1.parameters['Q'] = self.Q
         lv1.parameters['iR'] = self.iR
         lv1.parameters['iRm'] = self.iRm
-        lv1.parameters['q'] = self.q
+        lv1.parameters['xi'] = self.xi
         lv1.parameters['beta'] = self.beta
-
-        # JSO: these are correct with my rederivation.
-        #wait - adjoint should be taken as (L.subs(dz, 1j*Q)).adjoint() -- the following are correct.
-        lv1.add_equation("-sigma*Q**2*psi + sigma*psixx + 1j*Q*A + 1j*(q - 2)*Q*u - iR*Q**4*psi + 2*iR*Q**2*psixx - iR*dx(psixxx) = 0")
-        lv1.add_equation("sigma*u + 1j*Q*B + 2*1j*Q*psi + iR*Q**2*u - iR*dx(ux) = 0")
-        lv1.add_equation("sigma*A + iRm*Q**2*A - iRm*dx(Ax) - 1j*Q*q*B - 1j*(2/beta)*Q**3*psi + 1j*(2/beta)*Q*psixx = 0")
-        lv1.add_equation("sigma*B + iRm*Q**2*B - iRm*dx(Bx) + 1j*(2/beta)*Q*u = 0")
+        lv1.parameters['c1'] = self.c1
+        lv1.parameters['c2'] = self.c2
+        lv1.parameters['B0'] = self.B0
         
-        lv1.add_equation("dx(psi) - psix = 0")
-        lv1.add_equation("dx(psix) - psixx = 0")
-        lv1.add_equation("dx(psixx) - psixxx = 0")
-        lv1.add_equation("dx(u) - ux = 0")
-        lv1.add_equation("dx(A) - Ax = 0")
-        lv1.add_equation("dx(B) - Bx = 0")
+        lv1.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
+        lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
+        lv1.substitutions['twooverbeta'] = '(2.0/beta)'
+        
+        lv1.add_equation("sigma*(-r**3*k**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*rrdu0*u - r*ru0*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*k**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
+        lv1.add_equation("sigma*r**3*u + r*2*1j*Q*ru0*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*rrdu0 + iR*r*u = 0") 
+        lv1.add_equation("sigma*r*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*k*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
+        lv1.add_equation("sigma*r**2*B + r**2*twooverbeta*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - twooverbeta*2*1j*Q*B0*xi*psi = 0") 
+
+        lv1.add_equation("dr(psi) - psir = 0")
+        lv1.add_equation("dr(psir) - psirr = 0")
+        lv1.add_equation("dr(psirr) - psirrr = 0")
+        lv1.add_equation("dr(u) - ur = 0")
+        lv1.add_equation("dr(A) - Ar = 0")
+        lv1.add_equation("dr(B) - Br = 0")
 
         # Set boundary conditions for MRI problem
         self.lv1 = self.set_boundary_conditions(lv1)
@@ -292,17 +298,17 @@ class AdjointHomogenous(MRI):
         self.B.name = "B"
             
         # Take all relevant derivates for use with higher order terms
-        self.psi_x = self.get_derivative(self.psi)
-        self.psi_xx = self.get_derivative(self.psi_x)
-        self.psi_xxx = self.get_derivative(self.psi_xx)
+        self.psi_r = self.get_derivative(self.psi)
+        self.psi_rr = self.get_derivative(self.psi_r)
+        self.psi_rrr = self.get_derivative(self.psi_rr)
       
-        self.u_x = self.get_derivative(self.u)
+        self.u_r = self.get_derivative(self.u)
         
-        self.A_x = self.get_derivative(self.A)
-        self.A_xx = self.get_derivative(self.A_x)
-        self.A_xxx = self.get_derivative(self.A_xx)
+        self.A_r = self.get_derivative(self.A)
+        self.A_rr = self.get_derivative(self.A_r)
+        self.A_rrr = self.get_derivative(self.A_rr)
         
-        self.B_x = self.get_derivative(self.B)
+        self.B_r = self.get_derivative(self.B)
         
 class OrderE(MRI):
 
