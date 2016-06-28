@@ -1,20 +1,12 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from mpi4py import MPI
 import dedalus.public as de
 from eigentools import Eigenproblem
-from scipy.linalg import eig, norm
-import pylab
-import copy
-import pickle
-
-import streamplot_uneven as su
 import random
 
-import matplotlib
-from matplotlib import rc
-#rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-#rc('text', usetex=True)
+import logging
+logger = logging.getLogger(__name__)
+
 
 class MRI():
 
@@ -48,7 +40,8 @@ class MRI():
         self.gridnum = self.domain.bases[0].coeff_size
         self.x = self.domain.grid(0)
         
-        print("MRI parameters: ", self.Q, self.Rm, self.Pm, self.q, self.beta, 'norm = ', norm, "Reynolds number", self.R)
+        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; q = {}; beta = {}; norm = {}, Re = {}".format(self.Q, self.Rm, self.Pm, self.q, self.beta, norm, self.R))
+        
         
     def set_boundary_conditions(self, problem):
         
@@ -143,7 +136,7 @@ class MRI():
         """
         Normalize total state vector.
         """
-        print("norm hack: Using max(A) from URM07")
+        logger.warn("norm hack: Using max(A) from URM07")
 
         # this value read from A(x = 0) figure 2c of Umurhan, Regev, &
         # Menou (2007) using WebPlotDigitizer. I estimate the error to
@@ -220,7 +213,7 @@ class AdjointHomogenous(MRI):
 
     def __init__(self, domain, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
         
-        print("initializing Adjoint Homogenous")
+        logger.info("initializing Adjoint Homogenous")
         
         if o1 == None:
             self.o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
@@ -303,7 +296,7 @@ class OrderE(MRI):
 
     def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
         
-        print("initializing Order E")
+        logger.info("initializing Order E")
         
         MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         
@@ -407,7 +400,7 @@ class N2(MRI):
     
     def __init__(self, domain, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
-        print("initializing N2")
+        logger.info("initializing N2")
     
         if o1 is None:
             o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
@@ -460,7 +453,7 @@ class OrderE2(MRI):
     
     def __init__(self, domain, o1 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
-        print("initializing Order E2")
+        logger.info("initializing Order E2")
         
         if o1 is None:
             o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
@@ -574,9 +567,9 @@ class OrderE2(MRI):
             self.ah = ah
         
         sctest = self.take_inner_product_real((term2_psi, term2_u, term2_A, term2_B),(self.ah.psi, self.ah.u, self.ah.A, self.ah.B))
-        print("solvability condition satisfied?", sctest)
+        logger.info("solvability condition satisfied?", sctest)
         if np.abs(sctest) > 1E-10:
-            print("CAUTION: solvability condition <V^dagger | RHS> = 0 failed for V21")
+            logger.warn("CAUTION: solvability condition <V^dagger | RHS> = 0 failed for V21")
                 
         # define problem using righthand side as nonconstant coefficients
         
@@ -759,7 +752,7 @@ class N3(MRI):
     
     def __init__(self, domain, o1 = None, o2 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
-        print("initializing N3")
+        logger.info("initializing N3")
         
         if o1 == None:
             o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
@@ -833,7 +826,7 @@ class AmplitudeAlpha(MRI):
     
     def __init__(self, domain, o1 = None, o2 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
         
-        print("initializing Amplitude Alpha")
+        logger.info("initializing Amplitude Alpha")
       
         if o1 == None:
             o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
@@ -851,7 +844,7 @@ class AmplitudeAlpha(MRI):
 
         
         magicnumberhack = False
-        print("magicnumberhack is ", magicnumberhack)
+        logger.info("magicnumberhack is ", magicnumberhack)
         if magicnumberhack == True:
             o1scale = -0.55
             o1.psi['g'] = o1.psi['g']*o1scale
@@ -940,7 +933,7 @@ class AmplitudeAlpha(MRI):
         """
         # Normalize s.t. a = 1
         if magicnumberhack == False:
-            print("Normalizing V^dagger s.t. a = 1")
+            logger.info("Normalizing V^dagger s.t. a = 1")
             ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
         # a = <va . D V11*>
@@ -977,9 +970,9 @@ class AmplitudeAlpha(MRI):
         self.n2 = n2
 
     def print_coeffs(self):
-        print("sat_amp_coeffs = b/c")
-        print("a", self.a, "c", self.c, "ctwiddle", self.ctwiddle, "b", self.b, "h", self.h)#, "g", self.g)
-        print("saturation amp", self.sat_amp_coeffs)
+        logger.info("sat_amp_coeffs = b/c")
+        logger.info("a = {}; c = {}; ctwiddle = {}; b = {}; h = {}".format(self.a, self.c, self.ctwiddle, self.b, self.h))
+        logger.info("saturation amp = {}".format(self.sat_amp_coeffs))
 
     def solve_IVP(self):
         # Actually solve the IVP
