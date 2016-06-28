@@ -155,13 +155,9 @@ class MRI():
         """
         Normalize total state vector.
         """
-        #logger.warn("norm hack: Using max(A) from URM07")
+        logger.warn("Normalizing according to norm(psi)")
 
-        # this value read from A(x = 0) figure 2c of Umurhan, Regev, &
-        # Menou (2007) using WebPlotDigitizer. I estimate the error to
-        # be +0.03/-0.04.
-        #Amax = 0.535
-        norm = A.interpolate(r = 0)['g'][0]#/Amax
+        norm = np.linalg.norm(psi['g'])
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
@@ -968,20 +964,6 @@ class AmplitudeAlpha(MRI):
         g_psi = (2/self.beta)*o1.A
         g_psi = g_psi.evaluate()
         
-        # Hack... normalize all the RHS's
-        """
-        a_psi_rhs['g'] = self.normalize_vector(a_psi_rhs['g'])
-        b_psi_rhs['g'] = self.normalize_vector(b_psi_rhs['g'])
-        n3.N31_psi['g'] = self.normalize_vector(n3.N31_psi['g'])
-        n3.N31_u['g'] = self.normalize_vector(n3.N31_u['g'])
-        n3.N31_A['g'] = self.normalize_vector(n3.N31_A['g'])
-        n3.N31_B['g'] = self.normalize_vector(n3.N31_B['g'])
-        l2twiddlel1twiddle_psi['g'] = self.normalize_vector(l2twiddlel1twiddle_psi['g'])
-        l2twiddlel1twiddle_u['g'] = self.normalize_vector(l2twiddlel1twiddle_u['g'])
-        l2twiddlel1twiddle_A['g'] = self.normalize_vector(l2twiddlel1twiddle_A['g'])
-        l2twiddlel1twiddle_B['g'] = self.normalize_vector(l2twiddlel1twiddle_B['g'])
-        g_psi['g'] = self.normalize_vector(g_psi['g'])
-        """
         # Normalize s.t. a = 1
         if magicnumberhack == False:
             logger.info("Normalizing V^dagger s.t. a = 1")
