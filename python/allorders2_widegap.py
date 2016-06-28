@@ -56,8 +56,8 @@ class MRI():
         
         self.zeta_mean = 2*(self.R2**2*self.Omega2 - self.R1**2*self.Omega1)/((self.R2**2 - self.R1**2)*np.sqrt(self.Omega1*self.Omega2))
         
-        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; q = {}; beta = {}; norm = {}, Re = {}".format(self.Q, self.Rm, self.Pm, self.q, self.beta, norm, self.R))
-        logger.info("Mean zeta is {}, meaning effective shear parameter q(r0) = 2 - zeta = {}".format(zeta_mean, 2 - zeta_mean))
+        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; beta = {}; norm = {}, Re = {}".format(self.Q, self.Rm, self.Pm, self.beta, norm, self.R))
+        logger.info("Mean zeta is {}, meaning effective shear parameter q(r0) = 2 - zeta = {}".format(self.zeta_mean, 2 - self.zeta_mean))
         
         if self.xi != 0:
             logger.info("A nonzero xi means this is the HMRI")
@@ -155,13 +155,13 @@ class MRI():
         """
         Normalize total state vector.
         """
-        logger.warn("norm hack: Using max(A) from URM07")
+        #logger.warn("norm hack: Using max(A) from URM07")
 
         # this value read from A(x = 0) figure 2c of Umurhan, Regev, &
         # Menou (2007) using WebPlotDigitizer. I estimate the error to
         # be +0.03/-0.04.
-        Amax = 0.535
-        norm = A.interpolate(x = 0)['g'][0]/Amax
+        #Amax = 0.535
+        norm = A.interpolate(r = 0)['g'][0]#/Amax
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
@@ -230,7 +230,7 @@ class AdjointHomogenous(MRI):
     Returns V^dagger
     """
 
-    def __init__(self, domain, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, finalize=True):
+    def __init__(self, domain, o1 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, finalize=True):
         
         logger.info("initializing Adjoint Homogenous")
         
@@ -257,10 +257,17 @@ class AdjointHomogenous(MRI):
         lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
         lv1.substitutions['twooverbeta'] = '(2.0/beta)'
         
-        lv1.add_equation("sigma*(-r**3*k**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*rrdu0*u - r*ru0*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*k**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
-        lv1.add_equation("sigma*r**3*u + r*2*1j*Q*ru0*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*rrdu0 + iR*r*u = 0") 
-        lv1.add_equation("sigma*r*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*k*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
-        lv1.add_equation("sigma*r**2*B + r**2*twooverbeta*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - twooverbeta*2*1j*Q*B0*xi*psi = 0") 
+        # Substitutions (temporarily?) not working with EP
+        #lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*rrdu0*u - r*ru0*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
+        #lv1.add_equation("sigma*r**3*u + r*2*1j*Q*ru0*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
+        #lv1.add_equation("sigma*r*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*Q*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
+        #lv1.add_equation("sigma*r**2*B + r**2*twooverbeta*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - twooverbeta*2*1j*Q*B0*xi*psi = 0") 
+
+        lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*(c1*r*r-c2)*u - r*(r*r*c1 + c2)*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
+        lv1.add_equation("sigma*r**3*u + r*2*1j*Q*(r*r*c1 + c2)*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
+        lv1.add_equation("sigma*r*A + (c1*r*r-c2)*1j*Q*B - (r*r*c1 + c2)*1j*Q*B - (2.0/beta)*r**2*1j*Q**3*psi + (2.0/beta)*r**2*1j*Q*psirr - (2.0/beta)*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
+        lv1.add_equation("sigma*r**2*B + r**2*(2.0/beta)*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - (2.0/beta)*2*1j*Q*B0*xi*psi = 0") 
+
 
         lv1.add_equation("dr(psi) - psir = 0")
         lv1.add_equation("dr(psir) - psirr = 0")
@@ -322,28 +329,46 @@ class OrderE(MRI):
         
         logger.info("initializing Order E")
         
-        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, norm = norm)
         
         lv1 = de.EVP(self.domain,
-                     ['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],'sigma')
-        
+                     ['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
+
         lv1.parameters['Q'] = self.Q
         lv1.parameters['iR'] = self.iR
         lv1.parameters['iRm'] = self.iRm
-        lv1.parameters['q'] = self.q
+        lv1.parameters['xi'] = self.xi
         lv1.parameters['beta'] = self.beta
+        lv1.parameters['c1'] = self.c1
+        lv1.parameters['c2'] = self.c2
+        lv1.parameters['B0'] = self.B0
         
-        lv1.add_equation("sigma*psixx - sigma*Q**2*psi - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A = 0")
-        lv1.add_equation("sigma*u - iR*dx(ux) + iR*Q**2*u - (q - 2)*1j*Q*psi - (2/beta)*1j*Q*B = 0") 
-        lv1.add_equation("sigma*A - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
-        lv1.add_equation("sigma*B - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
+        #lv1.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
+        #lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
+        #lv1.substitutions['twooverbeta'] = '(2.0/beta)'
         
-        lv1.add_equation("dx(psi) - psix = 0")
-        lv1.add_equation("dx(psix) - psixx = 0")
-        lv1.add_equation("dx(psixx) - psixxx = 0")
-        lv1.add_equation("dx(u) - ux = 0")
-        lv1.add_equation("dx(A) - Ax = 0")
-        lv1.add_equation("dx(B) - Bx = 0")
+        #lv1.substitutions['psivisc'] = '(2*r**2*Q**2*psir - 2*r**3*Q**2*psirr + r**3*Q**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr)'
+        #lv1.substitutions['uvisc'] = '(-r**3*Q**2*u + r**3*dr(ur) + r**2*ur - r*u)'
+        #lv1.substitutions['Avisc'] = '(r*dr(Ar) - r*Q**2*A - Ar)' 
+        #lv1.substitutions['Bvisc'] = '(-r**3*Q**2*B + r**3*dr(Br) + r**2*Br - r*B)'
+    
+        #lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r**2*2*ru0*1j*Q*u + r**3*twooverbeta*B0*1j*Q**3*A + twooverbeta*B0*r**2*1j*Q*Ar - twooverbeta*r**3*B0*1j*Q*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*Q*B = 0") #corrected on whiteboard 5/6
+        #lv1.add_equation("sigma*r**3*u + 1j*Q*ru0*psi + 1j*Q*rrdu0*psi - 1j*Q*r**3*twooverbeta*B0*B - iR*uvisc = 0") 
+        #lv1.add_equation("sigma*r*A - r*B0*1j*Q*psi - iRm*Avisc = 0")
+        #lv1.add_equation("sigma*r**3*B + ru0*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*rrdu0*A - iRm*Bvisc - 2*xi*1j*Q*psi = 0") 
+        
+        # Substitutions (temporarily?) not working with EP
+        lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r**2*2*(r*r*c1 + c2)*1j*Q*u + r**3*(2.0/beta)*B0*1j*Q**3*A + (2.0/beta)*B0*r**2*1j*Q*Ar - (2.0/beta)*r**3*B0*1j*Q*dr(Ar) - iR*(2*r**2*Q**2*psir - 2*r**3*Q**2*psirr + r**3*Q**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr) + (2.0/beta)*r**2*2*xi*1j*Q*B = 0") #corrected on whiteboard 5/6
+        lv1.add_equation("sigma*r**3*u + 1j*Q*(r*r*c1 + c2)*psi + 1j*Q*(c1*r*r-c2)*psi - 1j*Q*r**3*(2.0/beta)*B0*B - iR*(-r**3*Q**2*u + r**3*dr(ur) + r**2*ur - r*u) = 0") 
+        lv1.add_equation("sigma*r*A - r*B0*1j*Q*psi - iRm*(r*dr(Ar) - r*Q**2*A - Ar) = 0")
+        lv1.add_equation("sigma*r**3*B + (r*r*c1 + c2)*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*(c1*r*r-c2)*A - iRm*(-r**3*Q**2*B + r**3*dr(Br) + r**2*Br - r*B) - 2*xi*1j*Q*psi = 0") 
+
+        lv1.add_equation("dr(psi) - psir = 0")
+        lv1.add_equation("dr(psir) - psirr = 0")
+        lv1.add_equation("dr(psirr) - psirrr = 0")
+        lv1.add_equation("dr(u) - ur = 0")
+        lv1.add_equation("dr(A) - Ar = 0")
+        lv1.add_equation("dr(B) - Br = 0")
 
         self.lv1 = self.set_boundary_conditions(lv1)
         self.EP = Eigenproblem(self.lv1)
@@ -359,6 +384,7 @@ class OrderE(MRI):
         self.A = self.EP.solver.state['A']
         self.B = self.EP.solver.state['B']
         
+        
         self.prenormpsi = self.psi
         
         if self.norm == True:
@@ -369,6 +395,7 @@ class OrderE(MRI):
             self.A = (self.A*scale).evaluate()
             self.B = (self.B*scale).evaluate()
             
+        # THIS LINE MAKES EVERYTHING NAN
         self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
         
         self.normpsi = self.psi
@@ -379,40 +406,40 @@ class OrderE(MRI):
         self.B.name = "B"
             
         # Take all relevant derivates for use with higher order terms
-        self.psi_x = self.get_derivative(self.psi)
-        self.psi_xx = self.get_derivative(self.psi_x)
-        self.psi_xxx = self.get_derivative(self.psi_xx)
+        self.psi_r = self.get_derivative(self.psi)
+        self.psi_rr = self.get_derivative(self.psi_r)
+        self.psi_rrr = self.get_derivative(self.psi_rr)
       
-        self.u_x = self.get_derivative(self.u)
+        self.u_r = self.get_derivative(self.u)
         
         # relevant for alternate O2 calculation
-        self.u_xx = self.get_derivative(self.u_x)
+        self.u_rr = self.get_derivative(self.u_r)
         
-        self.A_x = self.get_derivative(self.A)
-        self.A_xx = self.get_derivative(self.A_x)
-        self.A_xxx = self.get_derivative(self.A_xx)
+        self.A_r = self.get_derivative(self.A)
+        self.A_rr = self.get_derivative(self.A_r)
+        self.A_rrr = self.get_derivative(self.A_rr)
         
-        self.B_x = self.get_derivative(self.B)
+        self.B_r = self.get_derivative(self.B)
         
         # relevant for alternate O2 calculation
-        self.B_xx = self.get_derivative(self.B_x)
+        self.B_rr = self.get_derivative(self.B_r)
         
         # Also take relevant complex conjugates
         self.psi_star = self.get_complex_conjugate(self.psi)
-        self.psi_star_x = self.get_derivative(self.psi_star)
-        self.psi_star_xx = self.get_derivative(self.psi_star_x)
-        self.psi_star_xxx = self.get_derivative(self.psi_star_xx)
+        self.psi_star_r = self.get_derivative(self.psi_star)
+        self.psi_star_rr = self.get_derivative(self.psi_star_r)
+        self.psi_star_rrr = self.get_derivative(self.psi_star_rr)
         
         self.u_star = self.get_complex_conjugate(self.u)
-        self.u_star_x = self.get_derivative(self.u_star)
+        self.u_star_r = self.get_derivative(self.u_star)
         
         self.A_star = self.get_complex_conjugate(self.A)
-        self.A_star_x = self.get_derivative(self.A_star)
-        self.A_star_xx = self.get_derivative(self.A_star_x)
-        self.A_star_xxx = self.get_derivative(self.A_star_xx)
+        self.A_star_r = self.get_derivative(self.A_star)
+        self.A_star_rr = self.get_derivative(self.A_star_r)
+        self.A_star_rrr = self.get_derivative(self.A_star_rr)
         
         self.B_star = self.get_complex_conjugate(self.B)
-        self.B_star_x = self.get_derivative(self.B_star)
+        self.B_star_r = self.get_derivative(self.B_star)
         
 class N2(MRI):
 
