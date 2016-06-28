@@ -21,13 +21,6 @@ print("running at gridnum", gridnum)
 x_basis = de.Chebyshev('x',gridnum)
 domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 
-# Second basis for checking eigenvalues
-x_basis192 = de.Chebyshev('x',64)
-#x_basis192 = Chebyshev(64)
-#x_basis192 = Chebyshev(192)
-domain192 = de.Domain([x_basis192], np.complex128, comm=MPI.COMM_SELF)
-
-
 class MRI():
 
     """
@@ -85,312 +78,16 @@ class MRI():
         self.largest_eval_indx = largest_eval_indx
         self.EP.solver.set_state(largest_eval_indx)
     
-    def solve_LEV(self, LEV):
-    
-        """
-        Solves the linear eigenvalue problem for a LEV object.
-        """
-        
-        solver = LEV.build_solver()
-        solver.solve(LEV.pencils[0])
-        
-        return solver
-        
-    def solve_LEV_secondgrid(self, problem):
-    
-        """
-        Solves the linear eigenvalue problem for a LEV object.
-        Uses gridnum = 192 domain. For use in discarding spurious eigenvalues.
-        """
-        
-        problem.expand(domain192)
-        LEV = LinearEigenvalue(problem, domain192)
-        LEV.solve(LEV.pencils[0])
-        
-        return LEV
-        
     def solve_BVP(self, BVP):
     
         """
-        Solves the boundary value problem for a ParsedProblem object.
+        Solves the boundary value problem for a BVP object.
         """
     
         solver = BVP.build_solver()
         solver.solve()
         
         return solver
-        
-    def discard_spurious_eigenvalues(self, problem):
-    
-        """
-        Solves the linear eigenvalue problem for two different resolutions.
-        Returns trustworthy eigenvalues using nearest delta, from Boyd chapter 7.
-        """
-
-        # Solve the linear eigenvalue problem at two different resolutions.
-        LEV1 = self.solve_LEV(problem)
-        LEV2 = self.solve_LEV_secondgrid(problem)
-    
-        # Eigenvalues returned by dedalus must be multiplied by -1
-        lambda1 = -LEV1.eigenvalues
-        lambda2 = -LEV2.eigenvalues
-
-        # Reverse engineer correct indices to make unsorted list from sorted
-        reverse_lambda1_indx = np.arange(len(lambda1)) 
-        reverse_lambda2_indx = np.arange(len(lambda2))
-    
-        lambda1_and_indx = np.asarray(list(zip(lambda1, reverse_lambda1_indx)))
-        lambda2_and_indx = np.asarray(list(zip(lambda2, reverse_lambda2_indx)))
-        
-        #print(lambda1_and_indx, lambda1_and_indx.shape, lambda1, len(lambda1))
-
-        # remove nans
-        lambda1_and_indx = lambda1_and_indx[np.isfinite(lambda1)]
-        lambda2_and_indx = lambda2_and_indx[np.isfinite(lambda2)]
-    
-        # Sort lambda1 and lambda2 by real parts
-        lambda1_and_indx = lambda1_and_indx[np.argsort(lambda1_and_indx[:, 0].real)]
-        lambda2_and_indx = lambda2_and_indx[np.argsort(lambda2_and_indx[:, 0].real)]
-        
-        lambda1_sorted = lambda1_and_indx[:, 0]
-        lambda2_sorted = lambda2_and_indx[:, 0]
-    
-        # Compute sigmas from lower resolution run (gridnum = N1)
-        sigmas = np.zeros(len(lambda1_sorted))
-        sigmas[0] = np.abs(lambda1_sorted[0] - lambda1_sorted[1])
-        sigmas[1:-1] = [0.5*(np.abs(lambda1_sorted[j] - lambda1_sorted[j - 1]) + np.abs(lambda1_sorted[j + 1] - lambda1_sorted[j])) for j in range(1, len(lambda1_sorted) - 1)]
-        sigmas[-1] = np.abs(lambda1_sorted[-2] - lambda1_sorted[-1])
-
-        if not (np.isfinite(sigmas)).all():
-            print("WARNING: at least one eigenvalue spacings (sigmas) is non-finite (np.inf or np.nan)!")
-    
-        # Nearest delta
-        delta_near = np.array([np.nanmin(np.abs(lambda1_sorted[j] - lambda2_sorted)/sigmas[j]) for j in range(len(lambda1_sorted))])
-    
-        # Discard eigenvalues with 1/delta_near < 10^6
-        lambda1_and_indx = lambda1_and_indx[np.where((1.0/delta_near) > 1E6)]
-        #print(lambda1_and_indx)
-        
-        lambda1 = lambda1_and_indx[:, 0]
-        indx = lambda1_and_indx[:, 1]
-        
-        #delta_near_unsorted = delta_near[reverse_lambda1_indx]
-        #lambda1[np.where((1.0/delta_near_unsorted) < 1E6)] = None
-        #lambda1[np.where(np.isnan(1.0/delta_near_unsorted) == True)] = None
-    
-        return lambda1, indx, LEV1
-        
-    def discard_spurious_eigenvalues2(self, problem):
-    
-        """
-        Solves the linear eigenvalue problem for two different resolutions.
-        Returns trustworthy eigenvalues using nearest delta, from Boyd chapter 7.
-        """
-
-        # Solve the linear eigenvalue problem at two different resolutions.
-        LEV1 = self.solve_LEV(problem)
-        LEV2 = self.solve_LEV_secondgrid(problem)
-    
-        # Eigenvalues returned by dedalus must be multiplied by -1
-        lambda1 = -LEV1.eigenvalues
-        lambda2 = -LEV2.eigenvalues
-    
-        # Sorted indices for lambda1 and lambda2 by real parts
-        lambda1_indx = np.argsort(lambda1.real)
-        lambda2_indx = np.argsort(lambda2.real)
-        
-        # Reverse engineer correct indices to make unsorted list from sorted
-        reverse_lambda1_indx = sorted(range(len(lambda1_indx)), key=lambda1_indx.__getitem__)
-        reverse_lambda2_indx = sorted(range(len(lambda2_indx)), key=lambda2_indx.__getitem__)
-        
-        self.lambda1_indx = lambda1_indx
-        self.reverse_lambda1_indx = reverse_lambda1_indx
-        self.lambda1 = lambda1
-        
-        # remove nans
-        lambda1_indx = lambda1_indx[np.isfinite(lambda1)]
-        reverse_lambda1_indx = np.asarray(reverse_lambda1_indx)
-        reverse_lambda1_indx = reverse_lambda1_indx[np.isfinite(lambda1) == True]
-        #lambda1 = lambda1[np.isfinite(lambda1)]
-        
-        lambda2_indx = lambda2_indx[np.isfinite(lambda2)]
-        reverse_lambda2_indx = np.asarray(reverse_lambda2_indx)
-        reverse_lambda2_indx = reverse_lambda2_indx[np.isfinite(lambda2)]
-        #lambda2 = lambda2[np.isfinite(lambda2)]
-        
-        # Actually sort the eigenvalues by their real parts
-        lambda1_sorted = lambda1[lambda1_indx]
-        lambda2_sorted = lambda2[lambda2_indx]
-        
-        self.lambda1_sorted = lambda1_sorted
-        #print(lambda1_sorted)
-        #print(len(lambda1_sorted), len(np.where(np.isfinite(lambda1) == True)))
-    
-        # Compute sigmas from lower resolution run (gridnum = N1)
-        sigmas = np.zeros(len(lambda1_sorted))
-        sigmas[0] = np.abs(lambda1_sorted[0] - lambda1_sorted[1])
-        sigmas[1:-1] = [0.5*(np.abs(lambda1_sorted[j] - lambda1_sorted[j - 1]) + np.abs(lambda1_sorted[j + 1] - lambda1_sorted[j])) for j in range(1, len(lambda1_sorted) - 1)]
-        sigmas[-1] = np.abs(lambda1_sorted[-2] - lambda1_sorted[-1])
-
-        if not (np.isfinite(sigmas)).all():
-            print("WARNING: at least one eigenvalue spacings (sigmas) is non-finite (np.inf or np.nan)!")
-    
-        # Nearest delta
-        delta_near = np.array([np.nanmin(np.abs(lambda1_sorted[j] - lambda2_sorted)/sigmas[j]) for j in range(len(lambda1_sorted))])
-    
-        #print(len(delta_near), len(reverse_lambda1_indx), len(LEV1.eigenvalues))
-        # Discard eigenvalues with 1/delta_near < 10^6
-        delta_near_unsorted = np.zeros(len(LEV1.eigenvalues))
-        for i in range(len(delta_near)):
-            delta_near_unsorted[reverse_lambda1_indx[i]] = delta_near[i]
-        #delta_near_unsorted[reverse_lambda1_indx] = delta_near#[reverse_lambda1_indx]
-        #print(delta_near_unsorted)
-        
-        self.delta_near_unsorted = delta_near_unsorted
-        self.delta_near = delta_near
-        
-        goodeigs = copy.copy(LEV1.eigenvalues)
-        goodeigs[np.where((1.0/delta_near_unsorted) < 1E6)] = None
-        goodeigs[np.where(np.isfinite(1.0/delta_near_unsorted) == False)] = None
-    
-        return goodeigs, LEV1
-        
-    def find_spurious_eigenvalues(self, problem):
-    
-        """
-        Solves the linear eigenvalue problem for two different resolutions.
-        Returns drift ratios, from Boyd chapter 7.
-        """
-    
-        # Solve the linear eigenvalue problem at two different resolutions.
-        LEV1 = self.solve_LEV(problem)
-        LEV2 = self.solve_LEV_secondgrid(problem)
-        
-        lambda1 = LEV1.eigenvalues
-        lambda2 = LEV2.eigenvalues
-        
-        # Make sure argsort treats complex infs correctly
-        for i in range(len(lambda1)):
-            if (np.isnan(lambda1[i]) == True) or (np.isinf(lambda1[i]) == True):
-                lambda1[i] = None
-        for i in range(len(lambda2)):
-            if (np.isnan(lambda2[i]) == True) or (np.isinf(lambda2[i]) == True):
-                lambda2[i] = None        
-        
-        #lambda1[np.where(np.isnan(lambda1) == True)] = None
-        #lambda2[np.where(np.isnan(lambda2) == True)] = None
-                
-        # Sort lambda1 and lambda2 by real parts
-        lambda1_indx = np.argsort(lambda1.real)
-        lambda1 = lambda1[lambda1_indx]
-        lambda2_indx = np.argsort(lambda2.real)
-        lambda2 = lambda2[lambda2_indx]
-        
-        # try using lower res (gridnum = N1) instead
-        sigmas = np.zeros(len(lambda1))
-        sigmas[0] = np.abs(lambda1[0] - lambda1[1])
-        sigmas[1:-1] = [0.5*(np.abs(lambda1[j] - lambda1[j - 1]) + np.abs(lambda1[j + 1] - lambda1[j])) for j in range(1, len(lambda1) - 1)]
-        sigmas[-1] = np.abs(lambda1[-2] - lambda1[-1])
-        
-        # Ordinal delta, calculated for the number of lambda1's.
-        delta_ord = (lambda1 - lambda2[:len(lambda1)])/sigmas
-        
-        # Nearest delta
-        delta_near = [np.nanmin(np.abs(lambda1[j] - lambda2)) for j in range(len(lambda1))]/sigmas
-        
-        # Discard eigenvalues with 1/delta_near < 10^6
-        goodevals1 = lambda1[1/delta_near > 1E6]
-        
-        return delta_ord, delta_near, lambda1, lambda2, sigmas
-        
-    def get_largest_eigenvalue_index(self, LEV, goodevals = None):
-        
-        """
-        Return index of largest eigenvalue. Can be positive or negative.
-        """
-        if goodevals == None:
-            evals = LEV.eigenvalues
-        else:
-            evals = goodevals
-            
-        indx = np.arange(len(evals))
-        largest_eval_indx = indx[evals == np.nanmax(evals)]
-        
-        return largest_eval_indx
-        
-    def get_largest_real_eigenvalue_index(self, LEV, goodevals = None, goodevals_indx = None):
-        
-        """
-        Return index of largest eigenvalue. Can be positive or negative.
-        """
-        
-        if goodevals == None:
-            evals = LEV.eigenvalues
-        else:
-            evals = goodevals
-        
-        #goodevals_and_indx = zip(goodevals, goodevals_indx)
-        #largest_eval_pseudo_indx = np.nanargmax(goodevals_and_indx[:, 0].real)
-        #largest_eval_indx = goodevals_and_indx[largest_eval_pseudo_indx, 1]
-        largest_eval_pseudo_indx = np.nanargmax(goodevals.real)
-        largest_eval_indx = goodevals_indx[largest_eval_pseudo_indx]
-        
-        print("largest eigenvalue indx", largest_eval_indx)
-        
-        return largest_eval_indx
-        
-    def get_largest_real_eigenvalue_index2(self, LEV, goodevals = None):
-        
-        """
-        Return index of largest eigenvalue. Can be positive or negative.
-        """
-        if goodevals == None:
-            evals = LEV.eigenvalues
-        else:
-            evals = goodevals
-            
-        #indx = np.arange(len(evals))
-        #largest_eval_indx = indx[evals.real == np.nanmax(evals.real)]
-        largest_eval_indx = np.nanargmax(evals.real)
-        
-        #print(largest_eval_indx)
-        
-        return largest_eval_indx[0]
-        
-    def get_smallest_eigenvalue_index(self, LEV):
-        
-        """
-        Return index of smallest eigenvalue. Can be positive or negative.
-        """
-    
-        evals = LEV.eigenvalues
-        indx = np.arange(len(evals))
-        smallest_eval_indx = indx[np.abs(evals) == np.nanmin(np.abs(evals))]
-        
-        return smallest_eval_indx
-    
-    def get_smallest_eigenvalue_index_from_above(self, LEV):
-    
-        """
-        Return index of smallest positive eigenvalue.
-        """
-    
-        evals = LEV.eigenvalues
-      
-        # Mask all nans and infs 
-        evals_masked = np.ma.masked_invalid(evals)
-
-        # Anything greater than or equal to zero
-        gt_zero = np.ma.less_equal(evals_masked, 0 + 0j)
-
-        # If all eigenvalues are negative, return None
-        if np.all(gt_zero):
-            return None 
-    
-        final_arr = np.ma.masked_array(np.absolute(evals_masked), gt_zero)
-        smallest_eval_indx = final_arr.argmin()
-        
-        return smallest_eval_indx
         
     def normalize_all_real_or_imag(self, LEV):
         
@@ -465,134 +162,6 @@ class MRI():
         
         return psi, u, A, B
 
-    def normalize_state_vector_toRHS(self, psi, u, A, B, rhsu):
-        
-        """
-        Normalize total state vector s.t. V(x = 0) = RHS(x = 0).
-        """
-        
-        print("begin norm")
-        veclen = len(psi['g'])
-        evector = np.zeros(veclen*4, np.complex_)
-        evector[0:veclen] = psi['g'] 
-        evector[veclen:veclen*2] = u['g'] 
-        evector[veclen*2:veclen*3] = A['g'] 
-        evector[veclen*3:] = B['g']
-        
-        print("norm hack: u(x = 0) = u_RHS(x = 0)")
-        print(rhsu['g'][len(rhsu['g'])/2])
-        norm = u['g'][len(u['g'])/2]
-        normmult = (rhsu['g'][len(rhsu['g'])/2])/norm
-        print("end norm")
-        
-        psi['g'] = psi['g']*normmult
-        u['g'] = u['g']*normmult
-        A['g'] = A['g']*normmult
-        B['g'] = B['g']*normmult
-        
-        return psi, u, A, B
-                
-
-    def normalize_state_vector2(self, psi0, u0, A0, B0, psi1, u1, A1, B1, psi2, u2, A2, B2):
-        
-        """
-        Normalize total state vector.
-        """
-        
-        veclen = len(psi0['g'])
-        evector = np.zeros(veclen*12, np.complex_)
-        evector[0:veclen] = psi0['g']
-        evector[veclen:veclen*2] = u0['g']
-        evector[veclen*2:veclen*3] = A0['g']
-        evector[veclen*3:veclen*4] = B0['g']
-        
-        evector[veclen*4:veclen*5] = psi1['g']
-        evector[veclen*5:veclen*6] = u1['g']
-        evector[veclen*6:veclen*7] = A1['g']
-        evector[veclen*7:veclen*8] = B1['g']
-        
-        evector[veclen*8:veclen*9] = psi2['g']
-        evector[veclen*9:veclen*10] = u2['g']
-        evector[veclen*10:veclen*11] = A2['g']
-        evector[veclen*11:] = B2['g']
-        
-        norm = np.linalg.norm(evector)
-        #print(evector)
-        print(norm)
-        
-        psi0['g'] = psi0['g']/norm
-        u0['g'] = u0['g']/norm
-        A0['g'] = A0['g']/norm
-        B0['g'] = B0['g']/norm
-        
-        psi1['g'] = psi1['g']/norm
-        u1['g'] = u1['g']/norm
-        A1['g'] = A1['g']/norm
-        B1['g'] = B1['g']/norm
-        
-        psi2['g'] = psi2['g']/norm
-        u2['g'] = u2['g']/norm
-        A2['g'] = A2['g']/norm
-        B2['g'] = B2['g']/norm
-        
-        return psi0, u0, A0, B0, psi1, u1, A1, B1, psi2, u2, A2, B2
-        
-    def bignorm(self, psi11, u11, A11, B11, psi0, u0, A0, B0, psi1, u1, A1, B1, psi2, u2, A2, B2):
-        """
-        Normalize V2 and V1 together.
-        """
-        
-        print("HACK: normalizing V1 and V2 simultaneously")
-        
-        veclen = len(psi0['g'])
-        evector = np.zeros(veclen*16, np.complex_)
-        evector[0:veclen] = psi0['g']
-        evector[veclen:veclen*2] = u0['g']
-        evector[veclen*2:veclen*3] = A0['g']
-        evector[veclen*3:veclen*4] = B0['g']
-        
-        evector[veclen*4:veclen*5] = psi1['g']
-        evector[veclen*5:veclen*6] = u1['g']
-        evector[veclen*6:veclen*7] = A1['g']
-        evector[veclen*7:veclen*8] = B1['g']
-        
-        evector[veclen*8:veclen*9] = psi2['g']
-        evector[veclen*9:veclen*10] = u2['g']
-        evector[veclen*10:veclen*11] = A2['g']
-        evector[veclen*11:veclen*12] = B2['g']
-        
-        evector[veclen*12:veclen*13] = psi11['g']
-        evector[veclen*13:veclen*14] = u11['g']
-        evector[veclen*14:veclen*15] = A11['g']
-        evector[veclen*15:] = B11['g']
-        
-        norm = np.linalg.norm(evector)
-        #print(evector)
-        print(norm)
-       
-        psi11['g'] = psi11['g']/norm
-        u11['g'] = u11['g']/norm
-        A11['g'] = A11['g']/norm
-        B11['g'] = B11['g']/norm
-        
-        psi0['g'] = psi0['g']/norm
-        u0['g'] = u0['g']/norm
-        A0['g'] = A0['g']/norm
-        B0['g'] = B0['g']/norm
-        
-        psi1['g'] = psi1['g']/norm
-        u1['g'] = u1['g']/norm
-        A1['g'] = A1['g']/norm
-        B1['g'] = B1['g']/norm
-        
-        psi2['g'] = psi2['g']/norm
-        u2['g'] = u2['g']/norm
-        A2['g'] = A2['g']/norm
-        B2['g'] = B2['g']/norm
-        
-        return psi11, u11, A11, B11, psi0, u0, A0, B0, psi1, u1, A1, B1, psi2, u2, A2, B2
-        
-        
     def get_derivative(self, field):
     
         """
@@ -964,19 +533,15 @@ class OrderE2(MRI):
         bv20B.add_bc("left(B20x) = 0")
         bv20B.add_bc("right(B20x) = 0")
         
-        print("running bv20psi")
         self.BVPpsi = self.solve_BVP(bv20psi)
         self.psi20 = self.BVPpsi.state['psi20']
 
-        print("running bv20u")
         self.BVPu = self.solve_BVP(bv20u)
         self.u20 = self.BVPu.state['u20']
 
-        print("running bv20A")
         self.BVPA = self.solve_BVP(bv20A)
         self.A20 = self.BVPA.state['A20']
 
-        print("running bv20B")
         self.BVPB = self.solve_BVP(bv20B)
         self.B20 = self.BVPB.state['B20']
         self.B20['g'] = 0.
@@ -1001,7 +566,6 @@ class OrderE2(MRI):
         term2_B = term2_B.evaluate()
         
         # righthand side for the 21 terms (e^iQz dependence)
-        print("without selfs on V21")
         rhs21_psi = term2_psi
         rhs21_u = term2_u
         rhs21_A = term2_A
@@ -1483,5 +1047,3 @@ class AmplitudeAlpha(MRI):
         self.t_array = t_array
     
         self.saturation_amplitude = alpha_array[-1, 0]
-    
-        
