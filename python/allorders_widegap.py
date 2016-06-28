@@ -510,11 +510,20 @@ class OrderE2(MRI):
         self.A21 = V21solver.state['A']
         self.B21 = V21solver.state['B']
         
-        # LV20 = -N20
-        self.rhs_psi20 = (-n2.N20_psi*rfield**4).evaluate()
-        self.rhs_u20 = (-n2.N20_u*rfield**2).evaluate()
-        self.rhs_A20 = (-n2.N20_A*rfield).evaluate()
-        self.rhs_B20 = (-n2.N20_B*rfield**2).evaluate()
+        # LV20 = -N20 - N20*
+        N20_psi_cc = self.domain.new_field()
+        N20_psi_cc['g'] = n2.N20_psi['g'].conj()
+        N20_u_cc = self.domain.new_field()
+        N20_u_cc['g'] = n2.N20_u['g'].conj()
+        N20_A_cc = self.domain.new_field()
+        N20_A_cc['g'] = n2.N20_A['g'].conj()
+        N20_B_cc = self.domain.new_field()
+        N20_B_cc['g'] = n2.N20_B['g'].conj()
+        
+        self.rhs_psi20 = ((-n2.N20_psi - N20_psi_cc)*rfield**4).evaluate()
+        self.rhs_u20 = ((-n2.N20_u - N20_u_cc)*rfield**2).evaluate()
+        self.rhs_A20 = ((-n2.N20_A - N20_A_cc)*rfield).evaluate()
+        self.rhs_B20 = ((-n2.N20_B - N20_B_cc)*rfield**2).evaluate()
         
         V20.parameters['rhs_psi20'] = self.rhs_psi20
         V20.parameters['rhs_u20'] = self.rhs_u20
