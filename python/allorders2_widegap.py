@@ -205,7 +205,7 @@ class MRI():
         ip = self.domain.new_field()
         ip.name = "inner product"
         ip['g'] = inner_product
-        ip = ip.integrate('x')
+        ip = ip.integrate('r')
         ip = ip['g'][0] 
         
         return ip
@@ -254,15 +254,15 @@ class AdjointHomogenous(MRI):
         lv1.substitutions['twooverbeta'] = '(2.0/beta)'
         
         # Substitutions (temporarily?) not working with EP
-        #lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*rrdu0*u - r*ru0*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
-        #lv1.add_equation("sigma*r**3*u + r*2*1j*Q*ru0*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
-        #lv1.add_equation("sigma*r*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*Q*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
-        #lv1.add_equation("sigma*r**2*B + r**2*twooverbeta*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - twooverbeta*2*1j*Q*B0*xi*psi = 0") 
+        lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*rrdu0*u - r*ru0*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
+        lv1.add_equation("sigma*r**3*u + r*2*1j*Q*ru0*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
+        lv1.add_equation("sigma*r*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*Q*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
+        lv1.add_equation("sigma*r**2*B + r**2*twooverbeta*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - twooverbeta*2*1j*Q*B0*xi*psi = 0") 
 
-        lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*(c1*r*r-c2)*u - r*(r*r*c1 + c2)*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
-        lv1.add_equation("sigma*r**3*u + r*2*1j*Q*(r*r*c1 + c2)*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
-        lv1.add_equation("sigma*r*A + (c1*r*r-c2)*1j*Q*B - (r*r*c1 + c2)*1j*Q*B - (2.0/beta)*r**2*1j*Q**3*psi + (2.0/beta)*r**2*1j*Q*psirr - (2.0/beta)*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
-        lv1.add_equation("sigma*r**2*B + r**2*(2.0/beta)*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - (2.0/beta)*2*1j*Q*B0*xi*psi = 0") 
+        #lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*(c1*r*r-c2)*u - r*(r*r*c1 + c2)*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
+        #lv1.add_equation("sigma*r**3*u + r*2*1j*Q*(r*r*c1 + c2)*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
+        #lv1.add_equation("sigma*r*A + (c1*r*r-c2)*1j*Q*B - (r*r*c1 + c2)*1j*Q*B - (2.0/beta)*r**2*1j*Q**3*psi + (2.0/beta)*r**2*1j*Q*psirr - (2.0/beta)*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
+        #lv1.add_equation("sigma*r**2*B + r**2*(2.0/beta)*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - (2.0/beta)*2*1j*Q*B0*xi*psi = 0") 
 
 
         lv1.add_equation("dr(psi) - psir = 0")
@@ -325,7 +325,7 @@ class OrderE(MRI):
         
         logger.info("initializing Order E")
         
-        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, norm = norm)
+        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
         
         lv1 = de.EVP(self.domain,
                      ['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
@@ -339,25 +339,25 @@ class OrderE(MRI):
         lv1.parameters['c2'] = self.c2
         lv1.parameters['B0'] = self.B0
         
-        #lv1.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
-        #lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
-        #lv1.substitutions['twooverbeta'] = '(2.0/beta)'
+        lv1.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
+        lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
+        lv1.substitutions['twooverbeta'] = '(2.0/beta)'
         
-        #lv1.substitutions['psivisc'] = '(2*r**2*Q**2*psir - 2*r**3*Q**2*psirr + r**3*Q**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr)'
-        #lv1.substitutions['uvisc'] = '(-r**3*Q**2*u + r**3*dr(ur) + r**2*ur - r*u)'
-        #lv1.substitutions['Avisc'] = '(r*dr(Ar) - r*Q**2*A - Ar)' 
-        #lv1.substitutions['Bvisc'] = '(-r**3*Q**2*B + r**3*dr(Br) + r**2*Br - r*B)'
+        lv1.substitutions['psivisc'] = '(2*r**2*Q**2*psir - 2*r**3*Q**2*psirr + r**3*Q**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr)'
+        lv1.substitutions['uvisc'] = '(-r**3*Q**2*u + r**3*dr(ur) + r**2*ur - r*u)'
+        lv1.substitutions['Avisc'] = '(r*dr(Ar) - r*Q**2*A - Ar)' 
+        lv1.substitutions['Bvisc'] = '(-r**3*Q**2*B + r**3*dr(Br) + r**2*Br - r*B)'
     
-        #lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r**2*2*ru0*1j*Q*u + r**3*twooverbeta*B0*1j*Q**3*A + twooverbeta*B0*r**2*1j*Q*Ar - twooverbeta*r**3*B0*1j*Q*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*Q*B = 0") #corrected on whiteboard 5/6
-        #lv1.add_equation("sigma*r**3*u + 1j*Q*ru0*psi + 1j*Q*rrdu0*psi - 1j*Q*r**3*twooverbeta*B0*B - iR*uvisc = 0") 
-        #lv1.add_equation("sigma*r*A - r*B0*1j*Q*psi - iRm*Avisc = 0")
-        #lv1.add_equation("sigma*r**3*B + ru0*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*rrdu0*A - iRm*Bvisc - 2*xi*1j*Q*psi = 0") 
+        lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r**2*2*ru0*1j*Q*u + r**3*twooverbeta*B0*1j*Q**3*A + twooverbeta*B0*r**2*1j*Q*Ar - twooverbeta*r**3*B0*1j*Q*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*Q*B = 0") #corrected on whiteboard 5/6
+        lv1.add_equation("sigma*r**3*u + 1j*Q*ru0*psi + 1j*Q*rrdu0*psi - 1j*Q*r**3*twooverbeta*B0*B - iR*uvisc = 0") 
+        lv1.add_equation("sigma*r*A - r*B0*1j*Q*psi - iRm*Avisc = 0")
+        lv1.add_equation("sigma*r**3*B + ru0*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*rrdu0*A - iRm*Bvisc - 2*xi*1j*Q*psi = 0") 
         
         # Substitutions (temporarily?) not working with EP
-        lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r**2*2*(r*r*c1 + c2)*1j*Q*u + r**3*(2.0/beta)*B0*1j*Q**3*A + (2.0/beta)*B0*r**2*1j*Q*Ar - (2.0/beta)*r**3*B0*1j*Q*dr(Ar) - iR*(2*r**2*Q**2*psir - 2*r**3*Q**2*psirr + r**3*Q**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr) + (2.0/beta)*r**2*2*xi*1j*Q*B = 0") #corrected on whiteboard 5/6
-        lv1.add_equation("sigma*r**3*u + 1j*Q*(r*r*c1 + c2)*psi + 1j*Q*(c1*r*r-c2)*psi - 1j*Q*r**3*(2.0/beta)*B0*B - iR*(-r**3*Q**2*u + r**3*dr(ur) + r**2*ur - r*u) = 0") 
-        lv1.add_equation("sigma*r*A - r*B0*1j*Q*psi - iRm*(r*dr(Ar) - r*Q**2*A - Ar) = 0")
-        lv1.add_equation("sigma*r**3*B + (r*r*c1 + c2)*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*(c1*r*r-c2)*A - iRm*(-r**3*Q**2*B + r**3*dr(Br) + r**2*Br - r*B) - 2*xi*1j*Q*psi = 0") 
+        #lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r**2*2*(r*r*c1 + c2)*1j*Q*u + r**3*(2.0/beta)*B0*1j*Q**3*A + (2.0/beta)*B0*r**2*1j*Q*Ar - (2.0/beta)*r**3*B0*1j*Q*dr(Ar) - iR*(2*r**2*Q**2*psir - 2*r**3*Q**2*psirr + r**3*Q**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr) + (2.0/beta)*r**2*2*xi*1j*Q*B = 0") #corrected on whiteboard 5/6
+        #lv1.add_equation("sigma*r**3*u + 1j*Q*(r*r*c1 + c2)*psi + 1j*Q*(c1*r*r-c2)*psi - 1j*Q*r**3*(2.0/beta)*B0*B - iR*(-r**3*Q**2*u + r**3*dr(ur) + r**2*ur - r*u) = 0") 
+        #lv1.add_equation("sigma*r*A - r*B0*1j*Q*psi - iRm*(r*dr(Ar) - r*Q**2*A - Ar) = 0")
+        #lv1.add_equation("sigma*r**3*B + (r*r*c1 + c2)*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*(c1*r*r-c2)*A - iRm*(-r**3*Q**2*B + r**3*dr(Br) + r**2*Br - r*B) - 2*xi*1j*Q*psi = 0") 
 
         lv1.add_equation("dr(psi) - psir = 0")
         lv1.add_equation("dr(psir) - psirr = 0")
@@ -391,7 +391,6 @@ class OrderE(MRI):
             self.A = (self.A*scale).evaluate()
             self.B = (self.B*scale).evaluate()
             
-        # THIS LINE MAKES EVERYTHING NAN
         self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
         
         self.normpsi = self.psi
@@ -445,49 +444,61 @@ class N2(MRI):
     
     """
     
-    def __init__(self, domain, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, domain, o1 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
     
         logger.info("initializing N2")
     
         if o1 is None:
-            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
         else:
-            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
     
-        N22psi = 1j*self.Q*o1.psi*(o1.psi_xxx - self.Q**2*o1.psi_x) - o1.psi_x*(1j*self.Q*o1.psi_xx - 1j*self.Q**3*o1.psi) + (2/self.beta)*o1.A_x*(1j*self.Q*o1.A_xx - 1j*self.Q**3*o1.A) - (2/self.beta)*1j*self.Q*o1.A*(o1.A_xxx - self.Q**2*o1.A_x) # Confirmed 11/2/15
-        self.N22_psi = N22psi.evaluate()
+        rfield = domain.new_field()
+        rfield['g'] = o1.r
+    
+        N22_psi_jacobians = ((1j*Q*o1.psi)*((1/rfield**2)*(-Q**2)*o1.psi_r - (3/rfield**3)*o1.psi_rr + (1/rfield**2)*o1.psi_rrr - (2/rfield**3)*(-Q**2)*o1.psi + (3/rfield**4)*o1.psi_r)
+                - (o1.psi_r)*((1/rfield**2)*(1j*Q)*o1.psi_rr - (1/rfield**3)*(1j*Q)*o1.psi_r + (1/rfield**2)*(1j*Q)**3*o1.psi)
+                - (2/beta)*((1j*Q*o1.A)*((1/rfield**2)*(-Q**2)*o1.A_r - (3/rfield**3)*o1.A_rr + (1/rfield**2)*o1.A_rrr - (2/rfield**3)*(-Q**2)*o1.A + (3/rfield**4)*o1.A_r)
+                - (o1.A_r)*((1/rfield**2)*(1j*Q)*o1.A_rr - (1/rfield**3)*(1j*Q)*o1.A_r + (1/rfield**2)*(1j*Q)**3*o1.A)))
+        N22_psi_advectives = (-(2/rfield)*o1.u*(1j*Q)*o1.u + (2/beta)*(2/rfield)*o1.B*(1j*Q)*o1.B)
+        self.N22_psi = (N22_psi_jacobians + N22_psi_advectives).evaluate()
         self.N22_psi.name = "N22_psi"
     
-        N20psi = 1j*self.Q*o1.psi*(o1.psi_star_xxx - self.Q**2*o1.psi_star_x) - o1.psi_x*(-1j*self.Q*o1.psi_star_xx + 1j*self.Q**3*o1.psi_star) + (2/self.beta)*o1.A_x*(-1j*self.Q*o1.A_star_xx + 1j*self.Q**3*o1.A_star) - (2/self.beta)*1j*self.Q*o1.A*(o1.A_star_xxx - self.Q**2*o1.A_star_x) # Confirmed 11/2/15
-
-        self.N20_psi = N20psi.evaluate()
+        N20_psi_jacobians = ((1j*Q*o1.psi)*((1/rfield**2)*((-1j*Q)**2)*o1.psi_star_r - (3/rfield**3)*o1.psi_star_rr + (1/rfield**2)*o1.psi_star_rrr - (2/rfield**3)*((-1j*Q)**2)*o1.psi_star + (3/rfield**4)*o1.psi_star_r)
+                - (o1.psi_r)*((1/rfield**2)*(-1j*Q)*o1.psi_star_rr - (1/rfield**3)*(-1j*Q)*o1.psi_star_r + (1/rfield**2)*(-1j*Q)**3*o1.psi_star)
+                - (2/beta)*((1j*Q*o1.A)*((1/rfield**2)*((-1j*Q)**2)*o1.A_star_r - (3/rfield**3)*o1.A_star_rr + (1/rfield**2)*o1.A_star_rrr - (2/rfield**3)*((-1j*Q)**2)*o1.A_star + (3/rfield**4)*o1.A_star_r)
+                - (o1.A_r)*((1/rfield**2)*(-1j*Q)*o1.A_star_rr - (1/rfield**3)*(-1j*Q)*o1.A_star_r + (1/rfield**2)*(-1j*Q)**3*o1.A_star)))
+        N20_psi_advectives = (-(2/rfield)*o1.u*(-1j*Q)*o1.u_star + (2/beta)*(2/rfield)*o1.B*(-1j*Q)*o1.B_star)
+        self.N20_psi = (N20_psi_jacobians + N20_psi_advectives).evaluate()
         self.N20_psi.name = "N20_psi"
         
-        N22u = 1j*self.Q*o1.psi*o1.u_x - o1.psi_x*1j*self.Q*o1.u - (2/self.beta)*1j*self.Q*o1.A*o1.B_x + (2/self.beta)*o1.A_x*1j*self.Q*o1.B # confirmed 10/30/15
-        self.N22_u = N22u.evaluate()
+        N22_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_r - (1j*Q*o1.u)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_r - (1j*Q*o1.B)*o1.A_r)))
+        N22_u_advectives = ((1/rfield**2)*o1.u*1j*Q*o1.psi - (2/beta)*(1/rfield**2)*o1.B*1j*Q*o1.A)
+        self.N22_u = (N22_u_jacobians + N22_u_advectives).evaluate()
         self.N22_u.name = "N22_u"
         
-        N20u = 1j*self.Q*o1.psi*o1.u_star_x + o1.psi_x*1j*self.Q*o1.u_star - (2/self.beta)*1j*self.Q*o1.A*o1.B_star_x - (2/self.beta)*o1.A_x*1j*self.Q*o1.B_star # confirmed 10/30/15
-
-        self.N20_u = N20u.evaluate()
+        N20_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_star_r - (-1j*Q*o1.u_star)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_star_r - (-1j*Q*o1.B_star)*o1.A_r)))
+        N20_u_advectives = ((1/rfield**2)*o1.u*(-1j*Q)*o1.psi_star - (2/beta)*(1/rfield**2)*o1.B*(-1j*Q)*o1.A_star)
+        self.N20_u = (N20_u_jacobians + N20_u_advectives).evaluate()
         self.N20_u.name = "N20_u"
-        
-        N22A = -1j*self.Q*o1.A*o1.psi_x + o1.A_x*1j*self.Q*o1.psi # confirmed 1/2/15
-        self.N22_A = N22A.evaluate()
+                
+        N22_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_r - (1j*Q*o1.A)*o1.psi_r)
+        self.N22_A = N22_A.evaluate()
         self.N22_A.name = "N22_A"
         
-        N20A = -1j*self.Q*o1.A*o1.psi_star_x - o1.A_x*1j*self.Q*o1.psi_star # confirmed 1/2/15
-        self.N20_A = N20A.evaluate()
+        N20_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_star_r - (-1j*Q*o1.A_star)*o1.psi_r)
+        self.N20_A = N20_A.evaluate()
         self.N20_A.name = "N20_A"
-
-        N22B = 1j*self.Q*o1.psi*o1.B_x - o1.psi_x*1j*self.Q*o1.B - 1j*self.Q*o1.A*o1.u_x + o1.A_x*1j*self.Q*o1.u # confirmed 1/2/15
-        self.N22_B = N22B.evaluate()
-        self.N22_B.name = "N22_B"
         
-        N20B = 1j*self.Q*o1.psi*o1.B_star_x + o1.psi_x*1j*self.Q*o1.B_star - 1j*self.Q*o1.A*o1.u_star_x - o1.A_x*1j*self.Q*o1.u_star # confirmed 1/2/15
-
-        self.N20_B = N20B.evaluate()
+        N22_B_jacobians = ((1/rfield)*((1j*Q*o1.u)*o1.A_r - (1j*Q*o1.A)*o1.u_r) + (1/rfield)*((1j*Q*o1.psi)*o1.B_r - (1j*Q*o1.B)*o1.psi_r))
+        N22_B_advectives = (-(1/rfield**2)*o1.B*(1j*Q)*o1.psi + (1/rfield**2)*o1.u*(1j*Q)*o1.A)
+        self.N22_B = (N22_B_jacobians + N22_B_advectives).evaluate()
+        self.N22_B.name = "N22_B"
+         
+        N20_B_jacobians = ((1/rfield)*((1j*Q*o1.u)*o1.A_star_r - (-1j*Q*o1.A_star)*o1.u_r) + (1/rfield)*((1j*Q*o1.psi)*o1.B_star_r - (-1j*Q*o1.B_star)*o1.psi_r))
+        N20_B_advectives = (-(1/rfield**2)*o1.B*(-1j*Q)*o1.psi_star + (1/rfield**2)*o1.u*(-1j*Q)*o1.A_star)
+        self.N20_B = (N20_B_jacobians + N20_B_advectives).evaluate()
         self.N20_B.name = "N20_B"
         
 class OrderE2(MRI):
@@ -498,22 +509,27 @@ class OrderE2(MRI):
     
     """
     
-    def __init__(self, domain, o1 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, domain, o1 = None, ah = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
     
         logger.info("initializing Order E2")
         
         if o1 is None:
-            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            n2 = N2(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            n2 = N2(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
         else:
-            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
-            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
+            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
         
         self.o1 = o1
         self.n2 = n2
+        
+        rfield = self.domain.new_field()
+        rfield['g'] = o1.r
+        
         # righthand side for the 20 terms (e^0)
         # need N20 + N20* on RHS
+        # LV20 = -N20 - N20*
         N20_psi_cc = self.domain.new_field()
         N20_psi_cc['g'] = n2.N20_psi['g'].conj()
         N20_u_cc = self.domain.new_field()
@@ -522,202 +538,182 @@ class OrderE2(MRI):
         N20_A_cc['g'] = n2.N20_A['g'].conj()
         N20_B_cc = self.domain.new_field()
         N20_B_cc['g'] = n2.N20_B['g'].conj()
-
-        rhs20_psi = n2.N20_psi + N20_psi_cc
-        rhs20_u = n2.N20_u + N20_u_cc
-        rhs20_A = n2.N20_A + N20_A_cc
-        rhs20_B = n2.N20_B + N20_B_cc
-
-        # V20 equations are separable because dz terms -> 0
-        bv20psi = de.LBVP(self.domain, ['psi20', 'psi20x', 'psi20xx', 'psi20xxx'])
         
-        bv20psi.parameters['iR'] = self.iR
-        bv20psi.parameters['rhs20_psi'] = rhs20_psi 
-        bv20psi.add_equation("iR*dx(psi20xxx) = rhs20_psi")
-        bv20psi.add_equation("dx(psi20) - psi20x = 0")
-        bv20psi.add_equation("dx(psi20x) - psi20xx = 0")
-        bv20psi.add_equation("dx(psi20xx) - psi20xxx = 0")
-        bv20psi.add_bc("left(psi20) = 0")
-        bv20psi.add_bc("right(psi20) = 0")
-        bv20psi.add_bc("left(psi20x) = 0")
-        bv20psi.add_bc("right(psi20x) = 0")
+        self.rhs_psi20 = ((-n2.N20_psi - N20_psi_cc)*rfield**4).evaluate()
+        self.rhs_u20 = ((-n2.N20_u - N20_u_cc)*rfield**2).evaluate()
+        self.rhs_A20 = ((-n2.N20_A - N20_A_cc)*rfield).evaluate()
+        self.rhs_B20 = ((-n2.N20_B - N20_B_cc)*rfield**2).evaluate()
+    
+        # V20 equations are separable because dz terms -> 0, but we'll solve them coupled anyway.
+        bv20 = de.LBVP(self.domain,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
         
-        bv20u = de.LBVP(self.domain, ['u20', 'u20x'])
-        bv20u.parameters['iR'] = self.iR
-        bv20u.parameters['rhs20_u'] = rhs20_u
+        bv20.parameters['rhs_psi20'] = self.rhs_psi20
+        bv20.parameters['rhs_u20'] = self.rhs_u20
+        bv20.parameters['rhs_A20'] = self.rhs_A20
+        bv20.parameters['rhs_B20'] = self.rhs_B20
+        bv20.parameters['iR'] = self.iR
+        bv20.parameters['iRm'] = self.iRm
         
-        bv20u.add_equation("iR*dx(u20x) = rhs20_u")
-        bv20u.add_equation("dx(u20) - u20x = 0")
-        bv20u.add_bc("left(u20) = 0")
-        bv20u.add_bc("right(u20) = 0")
+        bv20.add_equation("-iR*(r**3*dr(psirrr) - r**2*2*psirrr + r*3*psirr - 3*psir) = rhs_psi20")
+        bv20.add_equation("-iR*(r**2*dr(ur) + r*ur - u) = rhs_u20")
+        bv20.add_equation("-iRm*(r*dr(Ar) - Ar) = rhs_A20")
+        bv20.add_equation("-iRm*(r**2*dr(Br) + r*Br - B) = rhs_B20")
         
-        bv20A = de.LBVP(self.domain, ['A20', 'A20x'])
-        bv20A.parameters['iRm'] = self.iRm
-        bv20A.parameters['rhs20_A'] = rhs20_A
+        bv20.add_equation("dr(psi) - psir = 0")
+        bv20.add_equation("dr(psir) - psirr = 0")
+        bv20.add_equation("dr(psirr) - psirrr = 0")
+        bv20.add_equation("dr(u) - ur = 0")
+        bv20.add_equation("dr(A) - Ar = 0")
+        bv20.add_equation("dr(B) - Br = 0")
         
-        bv20A.add_equation("iRm*dx(A20x) = rhs20_A")
-        bv20A.add_equation("dx(A20) - A20x = 0")
-        bv20A.add_bc("left(A20) = 0")
-        bv20A.add_bc("right(A20) = 0")
+        bv20 = self.set_boundary_conditions(bv20)
+        self.BVP20 = self.solve_BVP(bv20)
         
-        bv20B = de.LBVP(self.domain,['B20', 'B20x'])
-        bv20B.parameters['iRm'] = self.iRm
-        bv20B.parameters['rhs20_B'] = rhs20_B
-        
-        bv20B.add_equation("iRm*dx(B20x) = rhs20_B")
-        bv20B.add_equation("dx(B20) - B20x = 0")
-        bv20B.add_bc("left(B20x) = 0")
-        bv20B.add_bc("right(B20x) = 0")
-        
-        self.BVPpsi = self.solve_BVP(bv20psi)
-        self.psi20 = self.BVPpsi.state['psi20']
-
-        self.BVPu = self.solve_BVP(bv20u)
-        self.u20 = self.BVPu.state['u20']
-
-        self.BVPA = self.solve_BVP(bv20A)
-        self.A20 = self.BVPA.state['A20']
-
-        self.BVPB = self.solve_BVP(bv20B)
-        self.B20 = self.BVPB.state['B20']
-        self.B20['g'] = 0.
+        self.psi20 = self.BVP20.state['psi']
+        self.u20 = self.BVP20.state['u']
+        self.A20 = self.BVP20.state['A']
+        self.B20 = self.BVP20.state['B']
         
         # V21 equations are coupled
-        # second term: -L1twiddle V1
-        term2_psi = 3*(2/self.beta)*self.Q**2*o1.A - (2/self.beta)*o1.A_xx + 4*self.iR*1j*self.Q**3*o1.psi - 4*self.iR*1j*self.Q*o1.psi_xx - 2*o1.u
-        self.term2_psi = term2_psi.evaluate()
-        term2_psi = term2_psi.evaluate()
+        # RHS of V21 = -L1twiddle V11
+        rfield = self.domain.new_field()
+        rfield['g'] = o1.r
         
-        #term2_u = (2/self.beta)*o1.B + 2*self.iR*self.Q*o1.u + (self.q - 2)*o1.psi ## why does (q - 2) and (2 - q) make no diff here??
-        term2_u = -(2/self.beta)*o1.B - 2*self.iR*1j*self.Q*o1.u - (self.q - 2)*o1.psi #added missing 1j in second term 10/14/15
-        self.term2_u = term2_u.evaluate()
-        term2_u = term2_u.evaluate()
+        u0field = self.domain.new_field()
+        u0field['g'] = self.c1*rfield['g'] + self.c2*(1/rfield['g'])
         
-        term2_A = -2*self.iRm*1j*self.Q*o1.A - o1.psi
-        self.term2_A = term2_A.evaluate()
-        term2_A = term2_A.evaluate()
+        du0field = self.domain.new_field()
+        du0field['g'] = self.c1 - self.c2*(1/rfield['g']**2)
         
-        term2_B = self.q*o1.A - 2*self.iRm*1j*self.Q*o1.B - o1.u
-        self.term2_B = term2_B.evaluate()
-        term2_B = term2_B.evaluate()
+        rhs_psi21 = ((rfield**4)*((2/rfield)*u0field*o1.u + (2/self.beta)*(1/rfield)*o1.A_rr - (2/self.beta)*(1/rfield**2)*o1.A_r 
+                    - (2/self.beta)*(3/rfield)*self.Q**2*o1.A + self.iR*4*1j*self.Q*(1/rfield)*o1.psi_rr - self.iR*(1/rfield**2)*4*1j*self.Q*o1.psi_r
+                    - self.iR*(1/rfield)*4*1j*self.Q**3*o1.psi - (2/self.beta)*(1/rfield**2)*2*xi*1j*self.Q*o1.B))
+        self.rhs_psi21 = rhs_psi21.evaluate()
         
-        # righthand side for the 21 terms (e^iQz dependence)
-        rhs21_psi = term2_psi
-        rhs21_u = term2_u
-        rhs21_A = term2_A
-        rhs21_B = term2_B
+        rhs_u21 = ((rfield**3)*(-(1/rfield)*du0field*o1.psi - (1/rfield**2)*u0field*o1.psi + (2/self.beta)*o1.B + self.iR*2*1j*self.Q*o1.u))
+        self.rhs_u21 = rhs_u21.evaluate()
+        
+        rhs_A21 = (rfield)*(o1.psi + self.iRm*2*1j*self.Q*o1.A)
+        self.rhs_A21 = rhs_A21.evaluate()
+        
+        rhs_B21 = (rfield**3)*((1/rfield)*du0field*o1.A + o1.u - (1/rfield**2)*u0field*o1.A + self.iRm*2*1j*self.Q*o1.B + (2/rfield**3)*xi*1j*self.Q*o1.psi)
+        self.rhs_B21 = rhs_B21.evaluate()
         
         # These RHS terms must satisfy the solvability condition <V^dagger | RHS> = 0. Test that:
         if ah == False:
-            self.ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+            self.ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
         else:
             self.ah = ah
         
-        sctest = self.take_inner_product_real((term2_psi, term2_u, term2_A, term2_B),(self.ah.psi, self.ah.u, self.ah.A, self.ah.B))
+        # RHS terms have been multiplied by [r^4, r^3, r, r^3]^T, so do the same for AH terms
+        ah_psi_r4 = (rfield**4*self.ah.psi).evaluate()
+        ah_u_r3 = (rfield**3*self.ah.u).evaluate()
+        ah_A_r = (rfield*self.ah.A).evaluate()
+        ah_B_r3 = (rfield**3*self.ah.B).evaluate()
+        sctest = self.take_inner_product_real((self.rhs_psi21, self.rhs_u21, self.rhs_A21, self.rhs_B21),(ah_psi_r4, ah_u_r3, ah_A_r, ah_B_r3))
         logger.info("solvability condition satisfied?", sctest)
         if np.abs(sctest) > 1E-10:
             logger.warn("CAUTION: solvability condition <V^dagger | RHS> = 0 failed for V21")
+        
+        rfield = self.domain.new_field()
+        rfield['g'] = o1.r
                 
         # define problem using righthand side as nonconstant coefficients
-        
-        bv21 = de.LBVP(self.domain,
-              ['psi21', 'psi21x', 'psi21xx', 'psi21xxx', 'u21', 'u21x', 'A21', 'A21x', 'B21', 'B21x'])
+        bv21 = de.LBVP(self.domain,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
+              
+        # righthand side for the 21 terms (e^iQz dependence)
+        bv21.parameters['rhs_psi21'] = self.rhs_psi21
+        bv21.parameters['rhs_u21'] = self.rhs_u21
+        bv21.parameters['rhs_A21'] = self.rhs_A21
+        bv21.parameters['rhs_B21'] = self.rhs_B21
+              
         # parameters
         bv21.parameters['Q'] = self.Q
         bv21.parameters['iR'] = self.iR
         bv21.parameters['iRm'] = self.iRm
-        bv21.parameters['q'] = self.q
         bv21.parameters['beta'] = self.beta
-        bv21.parameters['rhs21_psi'] = rhs21_psi
-        bv21.parameters['rhs21_u'] = rhs21_u
-        bv21.parameters['rhs21_A'] = rhs21_A
-        bv21.parameters['rhs21_B'] = rhs21_B
+        bv21.parameters['c1'] = self.c1
+        bv21.parameters['c2'] = self.c2
+        bv21.parameters['B0'] = self.B0
+        bv21.parameters['xi'] = self.xi
         
-        bv21.add_equation("-1j*(2/beta)*Q**3*A21 + 1j*(2/beta)*Q*dx(A21x) + 2*1j*Q*u21 + iR*Q**4*psi21 - 2*iR*Q**2*psi21xx + iR*dx(psi21xxx) = rhs21_psi")
-        bv21.add_equation("1j*(2/beta)*Q*B21 + 1j*Q*(q - 2)*psi21 - iR*Q**2*u21 + iR*dx(u21x) = rhs21_u") 
-        bv21.add_equation("-iRm*Q**2*A21 + iRm*dx(A21x) + 1j*Q*psi21 = rhs21_A")
-        bv21.add_equation("-1j*Q*q*A21 - iRm*Q**2*B21 + iRm*dx(B21x) + 1j*Q*u21 = rhs21_B")   
-        
-        bv21.add_equation("dx(psi21) - psi21x = 0")
-        bv21.add_equation("dx(psi21x) - psi21xx = 0")
-        bv21.add_equation("dx(psi21xx) - psi21xxx = 0")
-        bv21.add_equation("dx(u21) - u21x = 0")
-        bv21.add_equation("dx(A21) - A21x = 0")
-        bv21.add_equation("dx(B21) - B21x = 0")
+        bv21.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
+        bv21.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
+        bv21.substitutions['twooverbeta'] = '(2.0/beta)'
+        bv21.substitutions['psivisc'] = '(2*r**2*Q**2*psir - 2*r**3*Q**2*psirr + r**3*Q**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr)'
+        bv21.substitutions['uvisc'] = '(-r**3*Q**2*u + r**3*dr(ur) + r**2*ur - r*u)'
+        bv21.substitutions['Avisc'] = '(r*dr(Ar) - r*Q**2*A - Ar)' 
+        bv21.substitutions['Bvisc'] = '(-r**3*Q**2*B + r**3*dr(Br) + r**2*Br - r*B)'
+    
+        bv21.add_equation("-r**2*2*ru0*1j*Q*u + r**3*twooverbeta*B0*1j*Q**3*A + twooverbeta*B0*r**2*1j*Q*Ar - twooverbeta*r**3*B0*1j*Q*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*Q*B = rhs_psi21") #corrected on whiteboard 5/6
+        bv21.add_equation("1j*Q*ru0*psi + 1j*Q*rrdu0*psi - 1j*Q*r**3*twooverbeta*B0*B - iR*uvisc = rhs_u21") 
+        bv21.add_equation("r*B0*1j*Q*psi - iRm*Avisc = rhs_A21")
+        bv21.add_equation("ru0*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*rrdu0*A - iRm*Bvisc - 2*xi*1j*Q*psi = rhs_B21") 
+
+        bv21.add_equation("dr(psi) - psir = 0")
+        bv21.add_equation("dr(psir) - psirr = 0")
+        bv21.add_equation("dr(psirr) - psirrr = 0")
+        bv21.add_equation("dr(u) - ur = 0")
+        bv21.add_equation("dr(A) - Ar = 0")
+        bv21.add_equation("dr(B) - Br = 0")
 
         # boundary conditions
-        bv21.add_bc("left(psi21) = 0")
-        bv21.add_bc("right(psi21) = 0")
-        bv21.add_bc("left(u21) = 0")
-        bv21.add_bc("right(u21) = 0")
-        bv21.add_bc("left(A21) = 0")
-        bv21.add_bc("right(A21) = 0")
-        bv21.add_bc("left(psi21x) = 0")
-        bv21.add_bc("right(psi21x) = 0")
-        bv21.add_bc("left(B21x) = 0")
-        bv21.add_bc("right(B21x) = 0")
+        bv21 = self.set_boundary_conditions(bv21)
 
         self.BVP21 = self.solve_BVP(bv21)
-        self.psi21 = self.BVP21.state['psi21']
-        self.u21 = self.BVP21.state['u21']
-        self.A21 = self.BVP21.state['A21']
-        self.B21 = self.BVP21.state['B21']
-        
-        #V22 equations are coupled
-        rhs22_psi = n2.N22_psi
-        rhs22_u = n2.N22_u
-        rhs22_A = n2.N22_A
-        rhs22_B = n2.N22_B
-        
-        self.rhs22_psi = rhs22_psi
-        self.rhs22_u = rhs22_u
-        self.rhs22_A = rhs22_A
-        self.rhs22_B = rhs22_B
+        self.psi21 = self.BVP21.state['psi']
+        self.u21 = self.BVP21.state['u']
+        self.A21 = self.BVP21.state['A']
+        self.B21 = self.BVP21.state['B']
         
         # define problem using righthand side as nonconstant coefficients
-        bv22 = de.LBVP(self.domain,
-              ['psi22', 'psi22x', 'psi22xx', 'psi22xxx', 'u22', 'u22x', 'A22', 'A22x', 'B22', 'B22x'])
+        bv22 = de.LBVP(self.domain,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
+        
+        # LV22 = -N22
+        self.rhs_psi22 = -n2.N22_psi
+        self.rhs_u22 = -n2.N22_u
+        self.rhs_A22 = -n2.N22_A
+        self.rhs_B22 = -n2.N22_B
+        
+        bv22.parameters['rhs_psi22'] = (self.rhs_psi22*rfield**4).evaluate()
+        bv22.parameters['rhs_u22'] = (self.rhs_u22*rfield**3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
+        bv22.parameters['rhs_A22'] = (self.rhs_A22*rfield).evaluate()
+        bv22.parameters['rhs_B22'] = (self.rhs_B22*rfield**3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
         
         # parameters
         bv22.parameters['Q'] = self.Q
         bv22.parameters['iR'] = self.iR
         bv22.parameters['iRm'] = self.iRm
-        bv22.parameters['q'] = self.q
         bv22.parameters['beta'] = self.beta
-        bv22.parameters['rhs22_psi'] = rhs22_psi
-        bv22.parameters['rhs22_u'] = rhs22_u
-        bv22.parameters['rhs22_A'] = rhs22_A
-        bv22.parameters['rhs22_B'] = rhs22_B
+        bv22.parameters['xi'] = self.xi
+        bv22.parameters['c1'] = self.c1
+        bv22.parameters['c2'] = self.c2
         
-        bv22.add_equation("-8*1j*(2/beta)*Q**3*A22 + 2*1j*(2/beta)*Q*dx(A22x) + 4*1j*Q*u22 + 16*iR*Q**4*psi22 - 8*iR*Q**2*psi22xx + iR*dx(psi22xxx) = rhs22_psi")
-        bv22.add_equation("2*1j*(2/beta)*Q*B22 + 2*1j*Q*(q-2)*psi22 - 4*iR*Q**2*u22 + iR*dx(u22x) = rhs22_u")
-        bv22.add_equation("-iRm*4*Q**2*A22 + iRm*dx(A22x) + 2*1j*Q*psi22 = rhs22_A")
-        bv22.add_equation("-2*1j*Q*q*A22 - iRm*4*Q**2*B22 + iRm*dx(B22x) + 2*1j*Q*u22 = rhs22_B")
+        bv22.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
+        bv22.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
+        bv22.substitutions['twooverbeta'] = '(2.0/beta)'
+        bv22.substitutions['dz'] = '(1j*2*Q)'
         
-        bv22.add_equation("dx(psi22) - psi22x = 0")
-        bv22.add_equation("dx(psi22x) - psi22xx = 0")
-        bv22.add_equation("dx(psi22xx) - psi22xxx = 0")      
-        bv22.add_equation("dx(u22) - u22x = 0")
-        bv22.add_equation("dx(A22) - A22x = 0")
-        bv22.add_equation("dx(B22) - B22x = 0")
-
+        bv22.add_equation("-r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi + twooverbeta*r**2*2*xi*(2*1j*Q)*B = rhs_psi22")
+        bv22.add_equation("rrdu0*dz*psi + ru0*dz*psi - r**3*twooverbeta*dz*B - r**3*iR*dr(ur) - r**2*iR*ur - r**3*iR*dz**2*u + r*iR*u = rhs_u22")
+        bv22.add_equation("-dz*psi*r - r*iRm*dr(Ar) + iRm*Ar - r*iRm*dz**2*A = rhs_A22")
+        bv22.add_equation("-dz*rrdu0*A - dz*r**3*u + ru0*dz*A - iRm*r**3*dr(Br) - r**2*iRm*Br - iRm*r**3*dz**2*B + r*iRm*B - 2*xi*(2*1j*Q)*psi = rhs_B22")
+        
+        bv22.add_equation("dr(psi) - psir = 0")
+        bv22.add_equation("dr(psir) - psirr = 0")
+        bv22.add_equation("dr(psirr) - psirrr = 0")
+        bv22.add_equation("dr(u) - ur = 0")
+        bv22.add_equation("dr(A) - Ar = 0")
+        bv22.add_equation("dr(B) - Br = 0")
+        
         # boundary conditions
-        bv22.add_bc("left(psi22) = 0")
-        bv22.add_bc("right(psi22) = 0")
-        bv22.add_bc("left(u22) = 0")
-        bv22.add_bc("right(u22) = 0")
-        bv22.add_bc("left(A22) = 0")
-        bv22.add_bc("right(A22) = 0")
-        bv22.add_bc("left(psi22x) = 0")
-        bv22.add_bc("right(psi22x) = 0")
-        bv22.add_bc("left(B22x) = 0")
-        bv22.add_bc("right(B22x) = 0")
+        bv22 = self.set_boundary_conditions(bv22)
         
         self.BVP22 = self.solve_BVP(bv22)
-        self.psi22 = self.BVP22.state['psi22']
-        self.u22 = self.BVP22.state['u22']
-        self.A22 = self.BVP22.state['A22']
-        self.B22 = self.BVP22.state['B22']
+        self.psi22 = self.BVP22.state['psi']
+        self.u22 = self.BVP22.state['u']
+        self.A22 = self.BVP22.state['A']
+        self.B22 = self.BVP22.state['B']
         
         self.psi20.name = "psi20"
         self.u20.name = "u20"
@@ -735,58 +731,58 @@ class OrderE2(MRI):
         self.B22.name = "B22"  
         
         # Take relevant derivatives and complex conjugates
-        self.psi20_x = self.get_derivative(self.psi20)
-        self.psi20_xx = self.get_derivative(self.psi20_x)
-        self.psi20_xxx = self.get_derivative(self.psi20_xx)
+        self.psi20_r = self.get_derivative(self.psi20)
+        self.psi20_rr = self.get_derivative(self.psi20_r)
+        self.psi20_rrr = self.get_derivative(self.psi20_rr)
         
         self.psi20_star = self.get_complex_conjugate(self.psi20)
         
-        self.psi20_star_x = self.get_derivative(self.psi20_star)
-        self.psi20_star_xx = self.get_derivative(self.psi20_star_x)
-        self.psi20_star_xxx = self.get_derivative(self.psi20_star_xx)
+        self.psi20_star_r = self.get_derivative(self.psi20_star)
+        self.psi20_star_rr = self.get_derivative(self.psi20_star_r)
+        self.psi20_star_rrr = self.get_derivative(self.psi20_star_rr)
         
-        self.psi21_x = self.get_derivative(self.psi21)
-        self.psi21_xx = self.get_derivative(self.psi21_x)
+        self.psi21_r = self.get_derivative(self.psi21)
+        self.psi21_rr = self.get_derivative(self.psi21_r)
         
-        self.psi22_x = self.get_derivative(self.psi22)
-        self.psi22_xx = self.get_derivative(self.psi22_x)
-        self.psi22_xxx = self.get_derivative(self.psi22_xx)
+        self.psi22_r = self.get_derivative(self.psi22)
+        self.psi22_rr = self.get_derivative(self.psi22_r)
+        self.psi22_rrr = self.get_derivative(self.psi22_rr)
         
         # u
-        self.u20_x = self.get_derivative(self.u20)
+        self.u20_r = self.get_derivative(self.u20)
         self.u20_star = self.get_complex_conjugate(self.u20)
-        self.u20_star_x = self.get_derivative(self.u20_star)
+        self.u20_star_r = self.get_derivative(self.u20_star)
         
-        self.u22_x = self.get_derivative(self.u22)
+        self.u22_r = self.get_derivative(self.u22)
         self.u22_star = self.get_complex_conjugate(self.u22)
-        self.u22_star_x = self.get_derivative(self.u22_star)
+        self.u22_star_r = self.get_derivative(self.u22_star)
         
         # B 
-        self.B20_x = self.get_derivative(self.B20)
+        self.B20_r = self.get_derivative(self.B20)
         self.B20_star = self.get_complex_conjugate(self.B20)
-        self.B20_star_x = self.get_derivative(self.B20_star)
+        self.B20_star_r = self.get_derivative(self.B20_star)
         
-        self.B22_x = self.get_derivative(self.B22)
+        self.B22_r = self.get_derivative(self.B22)
         self.B22_star = self.get_complex_conjugate(self.B22)
-        self.B22_star_x = self.get_derivative(self.B22_star)
+        self.B22_star_r = self.get_derivative(self.B22_star)
         
         # A 
-        self.A20_x = self.get_derivative(self.A20)
-        self.A20_xx = self.get_derivative(self.A20_x)
-        self.A20_xxx = self.get_derivative(self.A20_xx)
+        self.A20_r = self.get_derivative(self.A20)
+        self.A20_rr = self.get_derivative(self.A20_r)
+        self.A20_rrr = self.get_derivative(self.A20_rr)
         
         self.A20_star = self.get_complex_conjugate(self.A20)
         
-        self.A20_star_x = self.get_derivative(self.A20_star)
-        self.A20_star_xx = self.get_derivative(self.A20_star_x)
-        self.A20_star_xxx = self.get_derivative(self.A20_star_xx)
+        self.A20_star_r = self.get_derivative(self.A20_star)
+        self.A20_star_rr = self.get_derivative(self.A20_star_r)
+        self.A20_star_rrr = self.get_derivative(self.A20_star_rr)
         
-        self.A21_x = self.get_derivative(self.A21)
-        self.A21_xx = self.get_derivative(self.A21_x)
+        self.A21_r = self.get_derivative(self.A21)
+        self.A21_rr = self.get_derivative(self.A21_r)
         
-        self.A22_x = self.get_derivative(self.A22)
-        self.A22_xx = self.get_derivative(self.A22_x)
-        self.A22_xxx = self.get_derivative(self.A22_xx)
+        self.A22_r = self.get_derivative(self.A22)
+        self.A22_rr = self.get_derivative(self.A22_r)
+        self.A22_rrr = self.get_derivative(self.A22_rr)
         
        
 class N3(MRI):
@@ -797,71 +793,133 @@ class N3(MRI):
     
     """
     
-    def __init__(self, domain, o1 = None, o2 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, domain, o1 = None, o2 = None, ah = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
         
         logger.info("initializing N3")
         
         if o1 == None:
-            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            n2 = N2(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            n2 = N2(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
         else:
-            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
-            n2 = N2(domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
+            n2 = N2(domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
 
         if ah == None:
-            ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+            ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
 
         if o2 == None:
-            o2 = OrderE2(domain, o1 = o1, ah = ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+            o2 = OrderE2(domain, o1 = o1, ah = ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
         
-        # Components of N31
-        # psi component
-        N31_psi_my1 = 1j*self.Q*(o1.psi*o2.psi20_xxx) + 1j*self.Q*(o1.psi*o2.psi20_star_xxx) - 1j*self.Q*(o1.psi_star*o2.psi22_xxx) - 1j*2*self.Q*(o1.psi_star_x*o2.psi22_xx) + 1j*8*self.Q**3*(o1.psi_star_x*o2.psi22) + 1j*4*self.Q**3*(o1.psi_star*o2.psi22_x)
-        N31_psi_my2 = -1j*self.Q*(2/self.beta)*(o1.A*o2.A20_xxx) - 1j*self.Q*(2/self.beta)*(o1.A*o2.A20_star_xxx) + 1j*self.Q*(2/self.beta)*(o1.A_star*o2.A22_xxx) + 1j*2*self.Q*(2/self.beta)*(o1.A_star_x*o2.A22_xx) - 1j*8*self.Q**3*(2/self.beta)*(o1.A_star_x*o2.A22) - 1j*4*self.Q**3*(2/self.beta)*(o1.A_star*o2.A22_x)
-        N31_psi_my3 = 1j*2*self.Q*(o2.psi22*o1.psi_star_xxx) - 1j*2*self.Q**3*(o2.psi22*o1.psi_star_x) - 1j*self.Q*(o2.psi20_x*o1.psi_xx) + 1j*self.Q*(o2.psi22_x*o1.psi_star_xx) - 1j*self.Q*(o2.psi20_star_x*o1.psi_xx) + 1j*self.Q**3*(o2.psi20_x*o1.psi) + 1j*self.Q**3*(o2.psi20_star_x*o1.psi) - 1j*self.Q**3*(o2.psi22_x*o1.psi_star)
-        N31_psi_my4 = -1j*2*self.Q*(2/self.beta)*(o2.A22*o1.A_star_xxx) + 1j*2*self.Q**3*(2/self.beta)*(o2.A22*o1.A_star_x) + 1j*self.Q*(2/self.beta)*(o2.A20_x*o1.A_xx) - 1j*self.Q*(2/self.beta)*(o2.A22_x*o1.A_star_xx) + 1j*self.Q*(2/self.beta)*(o2.A20_star_x*o1.A_xx) - 1j*self.Q**3*(2/self.beta)*(o2.A20_x*o1.A) - 1j*self.Q**3*(2/self.beta)*(o2.A20_star_x*o1.A) + 1j*self.Q**3*(2/self.beta)*(o2.A22_x*o1.A_star)
+        rfield = self.domain.new_field()
+        rfield['g'] = o1.r
         
+        invr = self.domain.new_field()
+        invr['g'] = (1/o1.r)
         
-        N31_psi = N31_psi_my1 + N31_psi_my2 + N31_psi_my3 +  N31_psi_my4
+        k = self.Q
         
-        self.N31_psi = N31_psi.evaluate()
+        Jacobian1_part1 = ((1j*k*o1.psi)*(-2*invr**3*o2.psi20_rr + invr**2*o2.psi20_rrr - 3*invr**4*o2.psi20_r + invr**3*o2.psi20_rr)
+                        + (1j*k*o1.psi)*(-2*invr**3*o2.psi20_star_rr + invr**2*o2.psi20_star_rrr - 3*invr**4*o2.psi20_star_r + invr**3*o2.psi20_star_rr)
+                        + (-1j*k*o1.psi_star)*(-2*invr**3*o2.psi22_rr + invr**2*o2.psi22_rrr - 3*invr**4*o2.psi22_r + invr**3*o2.psi22_rr + (2*1j*k)**2*(-2*invr**3*o2.psi22 + invr**2*o2.psi22_r))
+                        + (-2*1j*k*o1.psi_star_r)*(invr**2*o2.psi22_rr + invr**3*o2.psi22_r + (2*1j*k)**2*invr**2*o2.psi22))
         
-        # diagnostics reveal that my_2 and my_4 are nan with the new normalizations. A_star? A22?
-        #print(self.N31_psi['g'])
-        p1 = N31_psi_my1.evaluate()
-        p2 = N31_psi_my2.evaluate()
-        p3 = N31_psi_my3.evaluate()
-        p4 = N31_psi_my4.evaluate()
+        Jacobian1_part2 = ((1j*k*o1.psi)*(6*invr**4*o2.psi20_r - 2*invr**3*o2.psi20_rr) + (1j*k*o1.psi)*(6*invr**4*o2.psi20_star_r - 2*invr**3*o2.psi20_star_rr)
+                        + (-1j*k*o1.psi_star)*(6*invr**4*o2.psi22_r - 2*invr**3*o2.psi22_rr) - (o1.psi_star_r)*(2*1j*k*(-2)*invr**2*o2.psi22_r))
         
-        # u component
-        N31_u_my1 = 1j*self.Q*(o1.psi*o2.u20_x) + 1j*self.Q*(o1.psi*o2.u20_star_x) - 1j*self.Q*(o1.psi_star*o2.u22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.u22)
-        N31_u_my2 = -1j*self.Q*(o1.u*o2.psi20_x) - 1j*self.Q*(o1.u*o2.psi20_star_x) + 1j*self.Q*(o1.u_star*o2.psi22_x) + 1j*2*self.Q*(o1.u_star_x*o2.psi22)
-        N31_u_my3 = -1j*self.Q*(2/self.beta)*(o1.A*o2.B20_x) - 1j*self.Q*(2/self.beta)*(o1.A*o2.B20_star_x) + 1j*self.Q*(2/self.beta)*(o1.A_star*o2.B22_x) + 1j*2*self.Q*(2/self.beta)*(o1.A_star_x*o2.B22)
-        N31_u_my4 = 1j*self.Q*(2/self.beta)*(o1.B*o2.A20_x) + 1j*self.Q*(2/self.beta)*(o1.B*o2.A20_star_x) - 1j*self.Q*(2/self.beta)*(o1.B_star*o2.A20_x) - 1j*2*self.Q*(2/self.beta)*(o1.B_star_x*o2.A22)
+        Jacobian2_part1 = (-2/self.beta)*((1j*k*o1.A)*(-2*invr**3*o2.A20_rr + invr**2*o2.A20_rrr - 3*invr**4*o2.A20_r + invr**3*o2.A20_rr)
+                        + (1j*k*o1.A)*(-2*invr**3*o2.A20_star_rr + invr**2*o2.A20_star_rrr - 3*invr**4*o2.A20_star_r + invr**3*o2.A20_star_rr)
+                        + (-1j*k*o1.A_star)*(-2*invr**3*o2.A22_rr + invr**2*o2.A22_rrr - 3*invr**4*o2.A22_r + invr**3*o2.A22_rr + (2*1j*k)**2*(-2*invr**3*o2.A22 + invr**2*o2.A22_r))
+                        + (-2*1j*k*o1.A_star_r)*(invr**2*o2.A22_rr + invr**3*o2.A22_r + (2*1j*k)**2*invr**2*o2.A22))
         
+        Jacobian2_part2 = (-2/self.beta)*((1j*k*o1.A)*(6*invr**4*o2.A20_r - 2*invr**3*o2.A20_rr) + (1j*k*o1.A)*(6*invr**4*o2.A20_star_r - 2*invr**3*o2.A20_star_rr)
+                        + (-1j*k*o1.A_star)*(6*invr**4*o2.A22_r - 2*invr**3*o2.A22_rr) - (o1.A_star_r)*(2*1j*k*(-2)*invr**2*o2.A22_r))
         
-        N31_u = N31_u_my1 + N31_u_my2 + N31_u_my3 + N31_u_my4
+        Jacobian3_part1 = (-o2.psi20_r*(1j*k)*(invr**2*o1.psi_rr + invr**2*(1j*k)**2*o1.psi + invr**3*o1.psi_r)
+                          -o2.psi20_star_r*(1j*k)*(invr**2*o1.psi_rr + invr**2*(1j*k)**2*o1.psi + invr**3*o1.psi_r)
+                          + (1j*2*k)*o2.psi22*(-2*invr**3*o1.psi_star_rr + invr**2*o1.psi_star_rrr + (-1j*k)**2*(-2*invr**3*o1.psi_star + invr**2*o1.psi_star) - 3*invr**4*o1.psi_star_r + invr**3*o1.psi_star_rr)
+                          - o2.psi22_r*(-1j*k)*(invr**2*o1.psi_star_rr + invr**2*(-1j*k)**2*o1.psi_star + invr**3*o1.psi_star_r))
         
-        self.N31_u = N31_u.evaluate()
+        Jacobian3_part2 = (-o2.psi20_r*(1j*k)*(-2*invr**3*o1.psi_r) - o2.psi20_star_r*(1j*k)*(-2*invr**3*o1.psi_r)
+                          + (1j*2*k)*o2.psi22*(6*invr**4*o1.psi_star_r - 2*invr**3*o1.psi_star_rr)
+                          - o2.psi22_r*(1j*k)*(-2*invr**3*o1.psi_star_r))
+                          
+        Jacobian4_part1 = (-2/self.beta)*(-o2.A20_r*(1j*k)*(invr**2*o1.A_rr + invr**2*(1j*k)**2*o1.A + invr**3*o1.A_r)
+                          -o2.A20_star_r*(1j*k)*(invr**2*o1.A_rr + invr**2*(1j*k)**2*o1.A + invr**3*o1.A_r)
+                          + (1j*2*k)*o2.A22*(-2*invr**3*o1.A_star_rr + invr**2*o1.A_star_rrr + (-1j*k)**2*(-2*invr**3*o1.A_star + invr**2*o1.A_star) - 3*invr**4*o1.A_star_r + invr**3*o1.A_star_rr)
+                          - o2.A22_r*(-1j*k)*(invr**2*o1.A_star_rr + invr**2*(-1j*k)**2*o1.A_star + invr**3*o1.A_star_r))
         
-        # A component -- correct with all-positive V2 definition. Checked 11/14/15
-        N31_A_my1 = -1j*self.Q*(o1.A*o2.psi20_x) - 1j*self.Q*(o1.A*o2.psi20_star_x) + 1j*self.Q*(o1.A_star*o2.psi22_x) + 1j*2*self.Q*(o1.A_star_x*o2.psi22)
-        N31_A_my2 = 1j*self.Q*(o1.psi*o2.A20_x) + 1j*self.Q*(o1.psi*o2.A20_star_x) - 1j*self.Q*(o1.psi_star*o2.A22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.A22)
+        Jacobian4_part2 = (-2/self.beta)*(-o2.A20_r*(1j*k)*(-2*invr**3*o1.A_r) - o2.A20_star_r*(1j*k)*(-2*invr**3*o1.A_r)
+                          + (1j*2*k)*o2.A22*(6*invr**4*o1.A_star_r - 2*invr**3*o1.A_star_rr)
+                          - o2.A22_r*(1j*k)*(-2*invr**3*o1.A_star_r))
         
-        N31_A = N31_A_my1 + N31_A_my2
+        advective1 = -2*invr*o1.u_star*2*1j*k*o2.u22
         
-        self.N31_A = N31_A.evaluate()
+        advective2 = -2*invr*(o2.u20*1j*k*o1.u + o2.u20_star*1j*k*o1.u + o2.u22*(-1j*k)*o1.u_star)
         
-        # B component -- correct with all-positive V2 definition. Checked 11/6/15
-        N31_B_my1 = 1j*self.Q*(o1.psi*o2.B20_x) + 1j*self.Q*(o1.psi*o2.B20_star_x) - 1j*self.Q*(o1.psi_star*o2.B22_x) - 1j*2*self.Q*(o1.psi_star_x*o2.B22)
-        N31_B_my2 = -1j*self.Q*(o1.B*o2.psi20_x) - 1j*self.Q*(o1.B*o2.psi20_star_x) + 1j*self.Q*(o1.B_star*o2.psi22_x) + 1j*2*self.Q*(o1.B_star_x*o2.psi22)
-        N31_B_my3 = -1j*self.Q*(o1.A*o2.u20_x) - 1j*self.Q*(o1.A*o2.u20_star_x) + 1j*self.Q*(o1.A_star*o2.u22_x) + 1j*2*self.Q*(o1.A_star_x*o2.u22)
-        N31_B_my4 = 1j*self.Q*(o1.u*o2.A20_x) + 1j*self.Q*(o1.u*o2.A20_star_x) - 1j*self.Q*(o1.u_star*o2.A22_x) - 1j*2*self.Q*(o1.u_star_x*o2.A22)
+        advective3 = 2*invr*(2/self.beta)*o1.B_star*2*1j*k*o2.B22
         
-        N31_B = N31_B_my1 + N31_B_my2 + N31_B_my3 + N31_B_my4
+        advective4 = 2*invr*(2/self.beta)*(o2.B20*1j*k*o1.B + o2.B20_star*1j*k*o1.B + o2.B22*(-1j*k)*o1.B_star)
         
-        self.N31_B = N31_B.evaluate()
+        self.N31_psi = (Jacobian1_part1 + Jacobian1_part2 + Jacobian2_part1 + Jacobian2_part2 + Jacobian3_part1 + Jacobian3_part2 
+                       + Jacobian4_part1 + Jacobian4_part2 + advective1 + advective2 + advective3 + advective4).evaluate()
+                       
+        self.N31_psi_noadvective = (Jacobian1_part1 + Jacobian1_part2 + Jacobian2_part1 + Jacobian2_part2 + Jacobian3_part1 + Jacobian3_part2 
+                       + Jacobian4_part1 + Jacobian4_part2).evaluate()
+                       
+        Jacobian1 = invr*(1j*k*o1.psi*(o2.u20_r + o2.u20_star_r) + (-1j*k)*o1.psi_star*o2.u22_r - o1.psi_star_r*(2*1j*k)*o2.u22)
+        
+        Jacobian2 = -invr*(2/self.beta)*(1j*k*o1.A*(o2.B20_r + o2.B20_star_r) + (-1j*k)*o1.A_star*o2.B22_r - o1.A_star_r*(2*1j*k)*o2.B22)
+        
+        Jacobian3 = invr*(-o2.psi20_r*1j*k*o1.u - o2.psi20_star_r*1j*k*o1.u + 2*1j*k*o2.psi22*o1.u_star_r - o2.psi22_r*(-1j*k)*o1.u_star)
+        
+        Jacobian4 = -invr*(2/self.beta)*(-o2.A20_r*1j*k*o1.B - o2.A20_star_r*1j*k*o1.B + 2*1j*k*o2.A22*o1.B_star_r - o2.A22_r*(-1j*k)*o1.B_star)
+        
+        advective1 = invr**2*(o1.u_star*2*1j*k*o2.psi22)
+        
+        advective2 = invr**2*(o2.u20*1j*k*o1.psi + o2.u20_star*1j*k*o1.psi + o2.u22*(-1j*k)*o1.psi_star)
+        
+        advective3 = -(2/self.beta)*invr**2*(o1.B_star*2*1j*k*o2.A22)
+        
+        advective4 = -(2/self.beta)*invr**2*(o2.B20*1j*k*o1.A + o2.B20_star*1j*k*o1.A + o2.B22*(-1j*k)*o1.A_star)
+        
+        self.N31_u = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4 + advective1 + advective2 + advective3 + advective4).evaluate()
+        
+        self.N31_u_noadvective = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4).evaluate()
+        
+        Jacobian1 = -invr*(1j*k*o1.A*(o2.psi20_r + o2.psi20_star_r) + (-1j*k)*o1.A_star*o2.psi22_r - o1.A_star_r*(2*1j*k)*o2.psi22)
+        
+        Jacobian2 = -invr*(-o2.A20_r*1j*k*o1.psi - o2.A20_star_r*1j*k*o1.psi + 2*1j*k*o2.A22*o1.psi_star_r - o2.A22_r*(-1j*k)*o1.psi_star)
+        
+        self.N31_A = (Jacobian1 + Jacobian2).evaluate()
+        
+        # -(1/r) J(A1, u2)
+        Jacobian1 = -invr*(1j*k*o1.A*(o2.u20_r + o2.u20_star_r) + (-1j*k)*o1.A_star*o2.u22_r - o1.A_star_r*(2*1j*k)*o2.u22)
+        
+        # -(1/r) J(B1, psi2)
+        Jacobian2 = -invr*(1j*k*o1.B*(o2.psi20_r + o2.psi20_star_r) + (-1j*k)*o1.B_star*o2.psi22_r - o1.B_star_r*(2*1j*k)*o2.psi22)
+        
+        # -(1/r) J(A2, u1)
+        Jacobian3 = -invr*(-o2.A20_r*1j*k*o1.u - o2.A20_star_r*1j*k*o1.u + 2*1j*k*o2.A22*o1.u_star_r - o2.A22_r*(-1j*k)*o1.u_star)
+        
+        # -(1/r) J(B2, psi1)
+        Jacobian4 = -invr*(-o2.B20_r*1j*k*o1.psi - o2.B20_star_r*1j*k*o1.psi + 2*1j*k*o2.B22*o1.psi_star_r - o2.B22_r*(-1j*k)*o1.psi_star)
+        
+        # -(1/r^2) B1 partial_z psi2
+        advective1 = -invr**2*(o1.B_star*2*1j*k*o2.psi22)
+        
+        # +(1/r^2) u1 partial_z A2
+        advective2 = -invr**2*(o1.u_star*2*1j*k*o2.A22)
+        
+        # -(1/r^2) B2 partial_z psi1
+        advective3 = -invr**2*(o2.B20*1j*k*o1.psi + o2.B20_star*1j*k*o1.psi + o2.B22*(-1j*k)*o1.psi_star)
+        
+        # +(1/r^2) u2 partial_z A1
+        advective4 = -invr**2*(o2.u20*1j*k*o1.A + o2.u20_star*1j*k*o1.A + o2.u22*(-1j*k)*o1.A_star)
+        
+        self.N31_B = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4 + advective1 + advective2 + advective3 + advective4).evaluate()
+        
+        self.N31_B_noadvective = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4).evaluate()
 
 
 class AmplitudeAlpha(MRI):
@@ -871,101 +929,71 @@ class AmplitudeAlpha(MRI):
     
     """
     
-    def __init__(self, domain, o1 = None, o2 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, domain, o1 = None, o2 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
         
         logger.info("initializing Amplitude Alpha")
       
         if o1 == None:
-            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
-            n2 = N2(domain, o1 = o1, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            n2 = N2(domain, o1 = o1, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
         else:
-            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
-            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
+            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
 
-        ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+        ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
         if o2 == None:
-            o2 = OrderE2(domain, o1 = o1, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+            o2 = OrderE2(domain, o1 = o1, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
         
-        n3 = N3(domain, o1 = o1, o2 = o2, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
-
-        
-        magicnumberhack = False
-        logger.info("magicnumberhack is ", magicnumberhack)
-        if magicnumberhack == True:
-            o1scale = -0.55
-            o1.psi['g'] = o1.psi['g']*o1scale
-            o1.u['g'] = o1.u['g']*o1scale
-            o1.A['g'] = o1.A['g']*o1scale
-            o1.B['g'] = o1.B['g']*o1scale
+        n3 = N3(domain, o1 = o1, o2 = o2, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
             
-        self.x = self.domain.grid(0)
+        rfield = self.domain.new_field()
+        rfield['g'] = o1.r
         
-        a_psi_rhs = o1.psi_xx - self.Q**2*o1.psi
+        invr = self.domain.new_field()
+        invr['g'] = (1/o1.r)
+        
+        # u0 = r Omega(r) = Ar + B/r
+        u0 = self.domain.new_field()
+        u0['g'] = self.c1*rfield['g'] + self.c2*(1/rfield['g'])
+        
+        du0 = self.domain.new_field()
+        du0['g'] = self.c1 - self.c2*(1/rfield['g']**2)
+        
+        # D . V11
+        a_psi_rhs = invr*o1.psi_rr - invr**2*o1.psi_r - invr*self.Q**2*o1.psi
         a_psi_rhs = a_psi_rhs.evaluate()
         
-        a_psi_rhs2 = o1.psi_star_xx - self.Q**2*o1.psi #test
-        a_psi_rhs2 = a_psi_rhs2.evaluate()
-        
-        u20_twiddle = self.domain.new_field()
-        u20_twiddle.name = 'self.v20_utwiddle'
-        u20_twiddle['g'] = 0.5*(2/self.beta)*self.R*(self.x**2 - 1)
-        
-        allzeros = self.domain.new_field()
-        allzeros['g'] = np.zeros(len(self.x), np.complex_)
-        
-        u20_twiddle_x = self.get_derivative(u20_twiddle)
-        
-        c_twiddle_u_rhs = (1j*self.Q*o1.psi)*u20_twiddle_x
-        c_twiddle_u_rhs = c_twiddle_u_rhs.evaluate()
-        
-        c_twiddle_B_rhs = (-1j*self.Q*o1.psi)*(u20_twiddle_x)
-        c_twiddle_B_rhs = c_twiddle_B_rhs.evaluate()
-        
-        # Old definition of b
-        #b_psi_rhs = (2/self.beta)*o1.A_xx
-        #b_psi_rhs = b_psi_rhs.evaluate()
-        
-        # New definition :: b = <Gtwiddle | V+ >
-        b_psi_rhs = 1j*self.Q**3*(2/self.beta)*o1.A - 1j*self.Q*(2/self.beta)*o1.A_xx
+        # Gtwiddle . V11 - xi dz H . V11
+        b_psi_rhs = -(2/self.beta)*invr*1j*self.Q**3*o1.A + (2/self.beta)*invr*1j*Q*o1.A_rr - (2/self.beta)*invr**2*1j*Q*o1.A_r - (2/self.beta)*invr**2*2*1j*self.Q*self.xi*o1.B
         b_psi_rhs = b_psi_rhs.evaluate()
         
-        b_u_rhs = -1j*self.Q*(2/self.beta)*o1.B
+        b_u_rhs = (2/self.beta)*1j*Q*o1.B
         b_u_rhs = b_u_rhs.evaluate()
         
-        b_A_rhs = -1j*self.Q*o1.psi
+        b_A_rhs = 1j*self.Q*o1.psi
         b_A_rhs = b_A_rhs.evaluate()
         
-        b_B_rhs = -1j*self.Q*o1.u
+        b_B_rhs = 1j*self.Q*o1.u + invr**3*2*1j*self.Q*self.xi*o1.psi
         b_B_rhs = b_B_rhs.evaluate()
-                
-        l2twiddlel1twiddle_psi = 3*1j*(2/self.beta)*self.Q*o1.A - 3*(2/self.beta)*self.Q**2*o2.A21 + (2/self.beta)*o2.A21_xx - 6*self.Q**2*self.iR*o1.psi + 2*self.iR*o1.psi_xx - 4*1j*self.iR*self.Q**3*o2.psi21 + 4*self.iR*1j*self.Q*o2.psi21_xx + 2*o2.u21
-        #l2twiddlel1twiddle_psi = 6*1j*(2/self.beta)*self.Q*o1.A - 3*(2/self.beta)*self.Q**2*o2.A21 + (2/self.beta)*o2.A21_xx - 12*self.Q**2*self.iR*o1.psi + 4*self.iR*o1.psi_xx - 4*1j*self.iR*self.Q**3*o2.psi21 + 4*self.iR*1j*self.Q*o2.psi21_xx + 2*o2.u21 # Umurhan+'s wrong definition of L2twiddle
-        l2twiddlel1twiddle_psi = l2twiddlel1twiddle_psi.evaluate()
         
-        #l2twiddlel1twiddle_u = (2/self.beta)*o1.B - 1j*self.Q*(2/self.beta)*o2.B21 - 1j*self.Q*(self.q - 2)*o2.psi21 + self.iR*o1.u #what?
-        l2twiddlel1twiddle_u = (2/self.beta)*o2.B21 + 2*1j*self.iR*self.Q*o2.u21 + (self.q - 2)*o2.psi21 + self.iR*o1.u #correct
-        #l2twiddlel1twiddle_u = (2/self.beta)*o2.B21 + 2*1j*self.iR*self.Q*o2.u21 + (self.q - 2)*o2.psi21 + 2*self.iR*o1.u #Umurhan+'s wrong def of L2twiddle
-        l2twiddlel1twiddle_u = l2twiddlel1twiddle_u.evaluate()
+        # (L1twiddle V21 + L2twiddle V11 + xi H V21)
+        h_psi_rhs = (self.iR*invr*4*1j*self.Q**3*o2.psi21 + (2/self.beta)*invr*3*self.Q**2*o2.A21 + self.iR*invr*6*self.Q**2*o1.psi - (2/self.beta)*invr*3*1j*Q*o1.A
+                    - self.iR*invr*4*1j*self.Q*o2.psi21_rr + self.iR*invr**2*4*1j*self.Q*o2.psi21_r - invr*2*u0*o2.u21 - (2/self.beta)*invr*o2.A21_rr
+                    + (2/self.beta)*invr**2*o2.A21_r + (2/self.beta)*invr**2*2*self.xi*o2.B21 - self.iR*invr*2*o1.psi_rr + self.iR*invr**2*2*o1.psi_r)
+        h_psi_rhs = h_psi_rhs.evaluate()
         
-        l2twiddlel1twiddle_A = self.iRm*o1.A + 2*1j*self.iRm*self.Q*o2.A21 + o2.psi21
-        #l2twiddlel1twiddle_A = 2*self.iRm*o1.A + 2*1j*self.iRm*self.Q*o2.A21 + o2.psi21 #Umurhan+'s wrong def of L2twiddle
-        l2twiddlel1twiddle_A = l2twiddlel1twiddle_A.evaluate()
+        h_u_rhs = -self.iR*2*1j*self.Q*o2.u21 + invr*du0*o2.psi21 + invr**2*u0*o2.psi21 - (2/self.beta)*o2.B21 - self.iR*o1.u
+        h_u_rhs = h_u_rhs.evaluate()
         
-        l2twiddlel1twiddle_B = -self.q*o2.A21 + self.iRm*o1.B + 2*1j*self.iRm*self.Q*o2.B21 + o2.u21
-        #l2twiddlel1twiddle_B = -self.q*o2.A21 + 2*self.iRm*o1.B + 2*1j*self.iRm*self.Q*o2.B21 + o2.u21 #Umurhan+'s wrong def of L2twiddle
-        l2twiddlel1twiddle_B = l2twiddlel1twiddle_B.evaluate()
+        h_A_rhs = -self.iRm*2*1j*self.Q*o2.A21 - o2.psi21 - self.iRm*o1.A
+        h_A_rhs = h_A_rhs.evaluate()
         
-        self.l2twiddlel1twiddle_psi = l2twiddlel1twiddle_psi
-        self.l2twiddlel1twiddle_u = l2twiddlel1twiddle_u
-        self.l2twiddlel1twiddle_A = l2twiddlel1twiddle_A
-        self.l2twiddlel1twiddle_B = l2twiddlel1twiddle_B
-        
-        g_psi = (2/self.beta)*o1.A
-        g_psi = g_psi.evaluate()
+        h_B_rhs = -self.iRm*2*1j*self.Q*o2.B21 - invr*du0*o2.A21 - o2.u21 + invr**2*u0*o2.A21 - invr**3*2*self.xi*o2.psi21 - self.iRm*o1.B
+        h_B_rhs = h_B_rhs.evaluate()
         
         # Normalize s.t. a = 1
-        if magicnumberhack == False:
+        if norm is True:
             logger.info("Normalizing V^dagger s.t. a = 1")
             ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
@@ -975,21 +1003,13 @@ class AmplitudeAlpha(MRI):
         # c = <va . N31*>
         self.c = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
         
-        # ctwiddle = < va . N31_twiddle_star >. Should be zero.
-        self.ctwiddle = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [allzeros, c_twiddle_u_rhs, allzeros, c_twiddle_B_rhs])
-        
-        # b = < va . (X v11)* > :: in new terminology, b = < va . (Gtwiddle v11)* >
-        #self.b = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, o1.B, o1.psi, o1.u])
+        # b = < va . (Gtwiddle v11 - xi*dz*H v11)* > 
         self.b = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
   
-        # h = < va . (L2twiddle v11 + L1twiddle v21)* >
-        self.h = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [l2twiddlel1twiddle_psi, l2twiddlel1twiddle_u, l2twiddlel1twiddle_A, l2twiddlel1twiddle_B])
+        # h = < va . (L1twiddle V21 + L2twiddle V11 + xi H V21)* >
+        self.h = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
   
-        # With new definition of b, no need for g
-        # g = < va . (L3 v11) * >
-        #self.g = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [g_psi, allzeros, allzeros, allzeros])
-    
-        #self.linear_term = 1j*self.Q*self.b - 1j*self.Q**3*self.g
+        # linear term alias
         self.linear_term = self.b
     
 
@@ -1004,7 +1024,7 @@ class AmplitudeAlpha(MRI):
 
     def print_coeffs(self):
         logger.info("sat_amp_coeffs = b/c")
-        logger.info("a = {}; c = {}; ctwiddle = {}; b = {}; h = {}".format(self.a, self.c, self.ctwiddle, self.b, self.h))
+        logger.info("a = {}; c = {}; b = {}; h = {}".format(self.a, self.c, self.b, self.h))
         logger.info("saturation amp = {}".format(self.sat_amp_coeffs))
 
     def solve_IVP(self):
