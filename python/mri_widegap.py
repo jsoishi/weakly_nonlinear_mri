@@ -1,5 +1,5 @@
 """finds the critical Renoylds number and wave number for the
-Orr-Somerfeld eigenvalue equation.
+wide-gap MRI eigenvalue equation.
 
 """
 from mpi4py import MPI
