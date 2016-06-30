@@ -1,5 +1,5 @@
 """finds the critical Renoylds number and wave number for the
-wide-gap MRI eigenvalue equation.
+Orr-Somerfeld eigenvalue equation.
 
 """
 from mpi4py import MPI
@@ -13,22 +13,36 @@ comm = MPI.COMM_WORLD
 
 
 # Define the widegap MRI problem in Dedalus: 
-nr = 50
-R1 = 1
-R2 = 2
-Omega1 = 314
-Omega2 = 37.9
+nr = 100
 
+R1 = 5
+R2 = 15
+Omega1 = 313.55
+Omega2 = 67.0631
 beta = 25.0
 k = 0.748
 Rm = 4.879
 Pm = 1.0E-3
+#Pm = 5.0E-3
+
+# Parameters approximating Goodman & Ji 2001 
+#Pm = 1.6E-6
+#beta = 0.43783886002604167#25.0
+#R1 = 5
+#R2 = 15
+#Omega1 = 313.55
+#Omega2 = 37.9
+#k = np.pi/10
+#Rm = 4.052
 
 R = Rm/Pm
 iR = 1.0/R
 
 c1 = (Omega2*R2**2 - Omega1*R1**2)/(R2**2 - R1**2)
 c2 = (R1**2*R2**2*(Omega1 - Omega2))/(R2**2 - R1**2)
+
+zeta_mean = 2*(R2**2*Omega2 - R1**2*Omega1)/((R2**2 - R1**2)*np.sqrt(Omega1*Omega2))
+print("mean zeta is {}, meaning q = 2 - zeta = {}".format(zeta_mean, 2 - zeta_mean))
 
 r = de.Chebyshev('r', nr, interval = (R1, R2))
 d = de.Domain([r],comm=MPI.COMM_SELF)
@@ -87,11 +101,15 @@ cf = CriticalFinder(shim, comm)
 
 # generating the grid is the longest part
 start = time.time()
-gridl = 4
-cf.grid_generator(4.5, 5.2, 0.6, 0.9, gridl, gridl)
+gridl = 20
+#cf.grid_generator(0.5, 2.0, 0.0001, 0.001, gridl, gridl)
+cf.grid_generator(0.5, 2.0, 0.001, 0.2, gridl, gridl) # Rm = (0.5, 2.0); k = (0.001, 0.1) is not a bracketing interval for Pm = 1E-4. neither is (0.5, 2.0, 0.0001, 0.001)
+#cf.grid_generator(0.5, 1.1, 0.005, 0.025, gridl, gridl)
+#cf.grid_generator(0.8, 0.9, 0.014, 0.02, gridl, gridl)
 end = time.time()
 if comm.rank == 0:
     print("grid generation time: {:10.5f} sec".format(end-start))
+    cf.save_grid('widegap_growth_rates_res{}'.format(nr))
 
 cf.root_finder()
 crit = cf.crit_finder()
@@ -100,5 +118,5 @@ if comm.rank == 0:
     print("critical wavenumber k = {:10.5f}".format(crit[0]))
     print("critical Rm = {:10.5f}".format(crit[1]))
 
-    cf.plot_crit()
-    cf.save_grid('widegap_growth_rates')
+    cf.plot_crit(title = "growth_rates_Pm"+str(Pm), xlabel = r"$k_z$", ylabel = r"$\mathrm{Rm}$")
+
