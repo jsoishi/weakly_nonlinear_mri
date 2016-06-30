@@ -85,6 +85,8 @@ class MRI():
         gr, largest_eval_indx  = self.EP.growth_rate({})
         self.largest_eval_indx = largest_eval_indx
         self.EP.solver.set_state(largest_eval_indx)
+        
+        print("Fastest mode has growth rate {}".format(gr))
     
     def solve_BVP(self, BVP):
     
@@ -253,17 +255,10 @@ class AdjointHomogenous(MRI):
         lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
         lv1.substitutions['twooverbeta'] = '(2.0/beta)'
         
-        # Substitutions (temporarily?) not working with EP
         lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*rrdu0*u - r*ru0*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
         lv1.add_equation("sigma*r**3*u + r*2*1j*Q*ru0*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
         lv1.add_equation("sigma*r*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*Q*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
         lv1.add_equation("sigma*r**2*B + r**2*twooverbeta*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - twooverbeta*2*1j*Q*B0*xi*psi = 0") 
-
-        #lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*(c1*r*r-c2)*u - r*(r*r*c1 + c2)*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
-        #lv1.add_equation("sigma*r**3*u + r*2*1j*Q*(r*r*c1 + c2)*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
-        #lv1.add_equation("sigma*r*A + (c1*r*r-c2)*1j*Q*B - (r*r*c1 + c2)*1j*Q*B - (2.0/beta)*r**2*1j*Q**3*psi + (2.0/beta)*r**2*1j*Q*psirr - (2.0/beta)*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
-        #lv1.add_equation("sigma*r**2*B + r**2*(2.0/beta)*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - (2.0/beta)*2*1j*Q*B0*xi*psi = 0") 
-
 
         lv1.add_equation("dr(psi) - psir = 0")
         lv1.add_equation("dr(psir) - psirr = 0")
@@ -610,7 +605,14 @@ class OrderE2(MRI):
         ah_u_r3 = (rfield**3*self.ah.u).evaluate()
         ah_A_r = (rfield*self.ah.A).evaluate()
         ah_B_r3 = (rfield**3*self.ah.B).evaluate()
-        sctest = self.take_inner_product_real((self.rhs_psi21, self.rhs_u21, self.rhs_A21, self.rhs_B21),(ah_psi_r4, ah_u_r3, ah_A_r, ah_B_r3))
+        
+        self.rhs_psi21_nor = (self.rhs_psi21/rfield**4).evaluate()
+        self.rhs_u21_nor = (self.rhs_u21/rfield**3).evaluate()
+        self.rhs_A21_nor = (self.rhs_A21/rfield).evaluate()
+        self.rhs_B21_nor = (self.rhs_B21/rfield**3).evaluate()
+        
+        #sctest = self.take_inner_product_real((self.rhs_psi21, self.rhs_u21, self.rhs_A21, self.rhs_B21),(ah_psi_r4, ah_u_r3, ah_A_r, ah_B_r3))
+        sctest = self.take_inner_product_real((self.rhs_psi21_nor, self.rhs_u21_nor, self.rhs_A21_nor, self.rhs_B21_nor),(ah.psi, ah.u, ah.A, ah.B))
         logger.info("solvability condition satisfied?", sctest)
         if np.abs(sctest) > 1E-10:
             logger.warn("CAUTION: solvability condition <V^dagger | RHS> = 0 failed for V21")
