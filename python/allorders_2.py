@@ -893,21 +893,29 @@ class AmplitudeAlpha(MRI):
         b_B_rhs = b_B_rhs.evaluate()
                 
         l2twiddlel1twiddle_psi = 3*1j*(2/self.beta)*self.Q*o1.A - 3*(2/self.beta)*self.Q**2*o2.A21 + (2/self.beta)*o2.A21_xx - 6*self.Q**2*self.iR*o1.psi + 2*self.iR*o1.psi_xx - 4*1j*self.iR*self.Q**3*o2.psi21 + 4*self.iR*1j*self.Q*o2.psi21_xx + 2*o2.u21
-        #l2twiddlel1twiddle_psi = 6*1j*(2/self.beta)*self.Q*o1.A - 3*(2/self.beta)*self.Q**2*o2.A21 + (2/self.beta)*o2.A21_xx - 12*self.Q**2*self.iR*o1.psi + 4*self.iR*o1.psi_xx - 4*1j*self.iR*self.Q**3*o2.psi21 + 4*self.iR*1j*self.Q*o2.psi21_xx + 2*o2.u21 # Umurhan+'s wrong definition of L2twiddle
         l2twiddlel1twiddle_psi = l2twiddlel1twiddle_psi.evaluate()
+        
+        l2twiddlel1twiddle_psi_URM07 = 6*1j*(2/self.beta)*self.Q*o1.A - 3*(2/self.beta)*self.Q**2*o2.A21 + (2/self.beta)*o2.A21_xx - 12*self.Q**2*self.iR*o1.psi + 4*self.iR*o1.psi_xx - 4*1j*self.iR*self.Q**3*o2.psi21 + 4*self.iR*1j*self.Q*o2.psi21_xx + 2*o2.u21 # Umurhan+'s wrong definition of L2twiddle
+        l2twiddlel1twiddle_psi_URM07 = l2twiddlel1twiddle_psi_URM07.evaluate()
         
         #l2twiddlel1twiddle_u = (2/self.beta)*o1.B - 1j*self.Q*(2/self.beta)*o2.B21 - 1j*self.Q*(self.q - 2)*o2.psi21 + self.iR*o1.u #what?
         l2twiddlel1twiddle_u = (2/self.beta)*o2.B21 + 2*1j*self.iR*self.Q*o2.u21 + (self.q - 2)*o2.psi21 + self.iR*o1.u #correct
-        #l2twiddlel1twiddle_u = (2/self.beta)*o2.B21 + 2*1j*self.iR*self.Q*o2.u21 + (self.q - 2)*o2.psi21 + 2*self.iR*o1.u #Umurhan+'s wrong def of L2twiddle
         l2twiddlel1twiddle_u = l2twiddlel1twiddle_u.evaluate()
         
+        l2twiddlel1twiddle_u_URM07 = (2/self.beta)*o2.B21 + 2*1j*self.iR*self.Q*o2.u21 + (self.q - 2)*o2.psi21 + 2*self.iR*o1.u #Umurhan+'s wrong def of L2twiddle
+        l2twiddlel1twiddle_u_URM07 = l2twiddlel1twiddle_u_URM07.evaluate()
+        
         l2twiddlel1twiddle_A = self.iRm*o1.A + 2*1j*self.iRm*self.Q*o2.A21 + o2.psi21
-        #l2twiddlel1twiddle_A = 2*self.iRm*o1.A + 2*1j*self.iRm*self.Q*o2.A21 + o2.psi21 #Umurhan+'s wrong def of L2twiddle
         l2twiddlel1twiddle_A = l2twiddlel1twiddle_A.evaluate()
         
+        l2twiddlel1twiddle_A_URM07 = 2*self.iRm*o1.A + 2*1j*self.iRm*self.Q*o2.A21 + o2.psi21 #Umurhan+'s wrong def of L2twiddle
+        l2twiddlel1twiddle_A_URM07 = l2twiddlel1twiddle_A_URM07.evaluate()
+        
         l2twiddlel1twiddle_B = -self.q*o2.A21 + self.iRm*o1.B + 2*1j*self.iRm*self.Q*o2.B21 + o2.u21
-        #l2twiddlel1twiddle_B = -self.q*o2.A21 + 2*self.iRm*o1.B + 2*1j*self.iRm*self.Q*o2.B21 + o2.u21 #Umurhan+'s wrong def of L2twiddle
         l2twiddlel1twiddle_B = l2twiddlel1twiddle_B.evaluate()
+        
+        l2twiddlel1twiddle_B_URM07 = -self.q*o2.A21 + 2*self.iRm*o1.B + 2*1j*self.iRm*self.Q*o2.B21 + o2.u21 #Umurhan+'s wrong def of L2twiddle
+        l2twiddlel1twiddle_B_URM07 = l2twiddlel1twiddle_B_URM07.evaluate()
         
         self.l2twiddlel1twiddle_psi = l2twiddlel1twiddle_psi
         self.l2twiddlel1twiddle_u = l2twiddlel1twiddle_u
@@ -951,6 +959,7 @@ class AmplitudeAlpha(MRI):
   
         # h = < va . (L2twiddle v11 + L1twiddle v21)* >
         self.h = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [l2twiddlel1twiddle_psi, l2twiddlel1twiddle_u, l2twiddlel1twiddle_A, l2twiddlel1twiddle_B])
+        self.h_URM07 = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [l2twiddlel1twiddle_psi_URM07, l2twiddlel1twiddle_u_URM07, l2twiddlel1twiddle_A_URM07, l2twiddlel1twiddle_B_URM07])
   
         # With new definition of b, no need for g
         # g = < va . (L3 v11) * >
@@ -972,6 +981,7 @@ class AmplitudeAlpha(MRI):
     def print_coeffs(self):
         logger.info("sat_amp_coeffs = b/c")
         logger.info("a = {}; c = {}; ctwiddle = {}; b = {}; h = {}".format(self.a, self.c, self.ctwiddle, self.b, self.h))
+        logger.info("h with URM07's wrong definition of L2twiddle = {}".format(self.h_URM07))
         logger.info("saturation amp = {}".format(self.sat_amp_coeffs))
 
     def solve_IVP(self):
