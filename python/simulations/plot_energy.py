@@ -69,7 +69,7 @@ if __name__ == "__main__":
         plt.legend(loc='lower right')
         plt.ylabel("Energy")
         #plt.xlabel("time (orbits)")
-        plt.title("Rm = {:5.2e}".format(float(params["Rm"])))
+        plt.title("Pm = {:5.2e}".format(float(params["Pm"])))
 
         plt.subplot(212)
         plt.semilogy(t/t_orb,u_rms,linestyle='-')
@@ -78,5 +78,5 @@ if __name__ == "__main__":
         plt.ylabel("r$<v_x>_{rms}$")
         plt.xlabel("time (orbits)")
 
-    outfile = base.joinpath("kinetic_energy.png")
+    outfile = "../../figs/kinetic_energy_{}.png".format(base.parts[-1])
     plt.savefig(str(outfile))
