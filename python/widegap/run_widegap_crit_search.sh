@@ -11,6 +11,7 @@ cd $PBS_O_WORKDIR
 
 source /u/joishi1/dedalus/bin/activate
 export PYTHONPATH=$PYTHONPATH:$HOME/hg-projects/eigentools
+export MPLBACKEND='Agg'
 date
-mpiexec_mpt -np 400 python3 $dedalus_script.py --k_max=0.3 --k_min=0.03
+mpiexec_mpt -np 400 python3 $dedalus_script.py --k_max=0.15 --k_min=0.001
 date
