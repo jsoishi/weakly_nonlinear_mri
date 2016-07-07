@@ -144,7 +144,7 @@ solver.stop_wall_time = np.inf
 solver.stop_iteration = np.inf
 
 output_time_cadence = 0.1*period
-analysis_tasks = MRI.initialize_output(solver, data_dir, iter=30)#sim_dt=output_time_cadence)
+analysis_tasks = MRI.initialize_output(solver, data_dir, sim_dt=output_time_cadence)
 
 flow = flow_tools.GlobalFlowProperty(solver, cadence=10)
 flow.add_property("psi_x**2 + (dz(psi))**2 + u**2", name='Ekin')
