@@ -13,5 +13,5 @@ source /u/sclark9/dedalus/bin/activate
 export PYTHONPATH=$PYTHONPATH:$HOME/eigentools
 export MPLBACKEND='Agg'
 date
-mpiexec_mpt -np 400 python3 $dedalus_script.py --R1=1 --R2=2 --Omega1=313.55 --Omega2=84.6585 --Pm=1.0E-6 --beta=0.0174 --xi=4.0 --Rm_min=0.0005 --Rm_max=0.003 --k_min=0.5 --k_max=5.0
+mpiexec_mpt -np 400 python3 $dedalus_script.py --R1=1 --R2=2 --Omega1=313.55 --Omega2=84.6585 --Pm=1.0E-6 --beta=0.0174 --xi=4.0 --Rm_min=1.0E-3 --Rm_max=1.0E-1 --k_min=1.0 --k_max=10.0
 date
