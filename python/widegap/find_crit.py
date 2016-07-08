@@ -37,7 +37,7 @@ comm = MPI.COMM_WORLD
 #Rm = 4.052
 
 
-def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr):
+def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr, insulate):
     Rm = Rm_min
     k = k_min
     R = Rm/Pm
@@ -49,6 +49,11 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
     zeta_mean = 2*(R2**2*Omega2 - R1**2*Omega1)/((R2**2 - R1**2)*np.sqrt(Omega1*Omega2))
     if comm.rank == 0:
         print("mean zeta is {}, meaning q = 2 - zeta = {}".format(zeta_mean, 2 - zeta_mean))
+        
+    if insulate == 1:
+        magnetic_bcs = "insulating"
+    else:
+        magnetic_bcs = "conducting"
 
     r = de.Chebyshev('r', nr, interval = (R1, R2))
     d = de.Domain([r],comm=MPI.COMM_SELF)
@@ -88,12 +93,20 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
     widegap.add_bc('right(u) = 0')
     widegap.add_bc('left(psi) = 0')
     widegap.add_bc('right(psi) = 0')
-    widegap.add_bc('left(A) = 0')
-    widegap.add_bc('right(A) = 0')
     widegap.add_bc('left(psir) = 0')
     widegap.add_bc('right(psir) = 0')
-    widegap.add_bc('left(B + r*Br) = 0')
-    widegap.add_bc('right(B + r*Br) = 0') # axial component of current = 0
+    
+    if magnetic_bcs == "conducting":
+        widegap.add_bc('left(A) = 0')
+        widegap.add_bc('right(A) = 0')
+        widegap.add_bc('left(B + r*Br) = 0')
+        widegap.add_bc('right(B + r*Br) = 0') # axial component of current = 0
+
+    if magnetic_bcs == "insulating":
+        widegap.add_bc('left(dr(r*dz*A) - k*r*bessel1*dz*A) = 0')
+        widegap.add_bc('right(dr(r*dz*A) + k*r*bessel2*dz*A) = 0')
+        widegap.add_bc('left(B) = 0')
+        widegap.add_bc('right(B) = 0')
 
     # create an Eigenproblem object
     EP = Eigenproblem(widegap)
@@ -114,7 +127,11 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
         if xi == 0:
             gridname = '../../data/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
         else:
-            gridname = '../../data/hmri_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+            if magnetic_bcs == "conducting":
+                gridname = '../../data/hmri_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+            elif magnetic_bcs == "insulating":
+                gridname = '../../data/hmri_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}_insulating'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+        
         cf.save_grid(gridname)
 
     cf.root_finder()

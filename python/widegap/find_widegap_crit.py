@@ -2,7 +2,7 @@
 Driver to find critical Rm, k_z for widegap MRI 
 
 Usage:
-    find_widegap_crit.py [--R1=<R1> --R2=<R2> --Omega1=<Omega1> --Omega2=<Omega2> --Pm=<Pm> --beta=<beta> --xi=<xi> --Rm_min=<Rm_min> --Rm_max=<Rm_max> --k_min=<k_min> --k_max=<k_max> --n_Rm=<n_Rm> --n_k=<n_k> --n_r=<n_r>]
+    find_widegap_crit.py [--R1=<R1> --R2=<R2> --Omega1=<Omega1> --Omega2=<Omega2> --Pm=<Pm> --beta=<beta> --xi=<xi> --Rm_min=<Rm_min> --Rm_max=<Rm_max> --k_min=<k_min> --k_max=<k_max> --n_Rm=<n_Rm> --n_k=<n_k> --n_r=<n_r> --insulate=<insulate>]
 
 Options:
 
@@ -20,6 +20,7 @@ Options:
     --n_Rm=<n_Rm>              number of points on Rm grid [default: 20]
     --n_k=<n_k>                number of points on k grid [default: 20]
     --n_r=<n_r>                number of points on Chebyshev r grid for eigenvalue solution [default: 100]
+    --insulate=<insulate>      if 1, insulating boundary conditions [default: 0]
 """
 from docopt import docopt
 from find_crit import find_crit
@@ -42,5 +43,6 @@ k_max = float(args['--k_max'])
 n_Rm = int(args['--n_Rm'])
 n_k = int(args['--n_k'])
 n_r = int(args['--n_r'])
+insulate = int(args['--insulate'])
 
-find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, n_r)
+find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, n_r, insulate)
