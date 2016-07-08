@@ -8,6 +8,7 @@ import time
 import dedalus.public as de
 import numpy as np
 import matplotlib.pylab as plt
+from scipy import special
 
 comm = MPI.COMM_WORLD
 
@@ -68,6 +69,9 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
     widegap.parameters['beta'] = beta
     widegap.parameters['B0'] = 1
     widegap.parameters['xi'] = xi
+    if magnetic_bcs == "insulating":
+        widegap.parameters['bessel1'] = special.iv(0, k*R1)/special.iv(1, k*R1)
+        widegap.parameters['bessel2'] = special.kn(0, k*R2)/special.kn(1, k*R2)
 
     widegap.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
     widegap.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
@@ -103,8 +107,8 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
         widegap.add_bc('right(B + r*Br) = 0') # axial component of current = 0
 
     if magnetic_bcs == "insulating":
-        widegap.add_bc('left(dr(r*dz*A) - k*r*bessel1*dz*A) = 0')
-        widegap.add_bc('right(dr(r*dz*A) + k*r*bessel2*dz*A) = 0')
+        widegap.add_bc('left(dr(r*1j*k*A) - k*r*bessel1*1j*k*A) = 0')
+        widegap.add_bc('right(dr(r*1j*k*A) + k*r*bessel2*1j*k*A) = 0')
         widegap.add_bc('left(B) = 0')
         widegap.add_bc('right(B) = 0')
 
