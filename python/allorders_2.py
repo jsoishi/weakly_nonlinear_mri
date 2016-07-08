@@ -567,7 +567,7 @@ class OrderE2(MRI):
             self.ah = ah
         
         sctest = self.take_inner_product_real((term2_psi, term2_u, term2_A, term2_B),(self.ah.psi, self.ah.u, self.ah.A, self.ah.B))
-        logger.info("solvability condition satisfied?", sctest)
+        logger.info("solvability condition satisfied? sctest = {}".format(sctest))
         if np.abs(sctest) > 1E-10:
             logger.warn("CAUTION: solvability condition <V^dagger | RHS> = 0 failed for V21")
                 
@@ -844,7 +844,7 @@ class AmplitudeAlpha(MRI):
 
         
         magicnumberhack = False
-        logger.info("magicnumberhack is ", magicnumberhack)
+        logger.info("magicnumberhack is {}".format(magicnumberhack))
         if magicnumberhack == True:
             o1scale = -0.55
             o1.psi['g'] = o1.psi['g']*o1scale

@@ -48,7 +48,7 @@ class Equations():
         
     def initialize_output(self, solver ,data_dir, **kwargs):
         self.analysis_tasks = []
-        analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), max_writes=20, parallel=False, **kwargs)
+        analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), max_writes=200, parallel=False, **kwargs)
         analysis_slice.add_task("psi", name="psi")
         analysis_slice.add_task("A", name="A")
         analysis_slice.add_task("u", name="u")
@@ -56,7 +56,7 @@ class Equations():
         
         self.analysis_tasks.append(analysis_slice)
         
-        analysis_profile = solver.evaluator.add_file_handler(os.path.join(data_dir,"profiles"), max_writes=20, parallel=False, **kwargs)
+        analysis_profile = solver.evaluator.add_file_handler(os.path.join(data_dir,"profiles"), max_writes=200, parallel=False, **kwargs)
         analysis_profile.add_task("plane_avg(KE)", name="KE")
 
         analysis_profile.add_task("plane_avg(vx_rms)", name="vx_rms")
@@ -68,9 +68,16 @@ class Equations():
         analysis_scalar = solver.evaluator.add_file_handler(os.path.join(data_dir,"scalar"), max_writes=np.inf, parallel=False, **kwargs)
         analysis_scalar.add_task("vol_avg(KE)", name="KE")
         analysis_scalar.add_task("vol_avg(BE)", name="BE")
+        analysis_scalar.add_task("vol_avg(Re_stress)", name="uxuy")
+        analysis_scalar.add_task("vol_avg(Max_stress)", name="BxBy")
         analysis_scalar.add_task("vol_avg(vx_rms)", name="vx_rms")
         analysis_scalar.add_task("vol_avg(vy_rms)", name="vy_rms")
         analysis_scalar.add_task("vol_avg(vz_rms)", name="vz_rms")
+        analysis_scalar.add_task("vol_avg(Bx_rms)", name="Bx_rms")
+        analysis_scalar.add_task("vol_avg(By_rms)", name="By_rms")
+        analysis_scalar.add_task("vol_avg(Bz_rms)", name="Bz_rms")
+        analysis_scalar.add_task("vol_avg(psi_rms)", name="psi_rms")
+        analysis_scalar.add_task("vol_avg(A_rms)", name="A_rms")
 
         self.analysis_tasks.append(analysis_scalar)
 
@@ -97,11 +104,22 @@ class Equations():
     def _set_subs(self):
         self.problem.substitutions['plane_avg(A)'] = 'integ(A, "z")/Lz'
         self.problem.substitutions['vol_avg(A)']   = 'integ(A)/Lz'
-        self.problem.substitutions['KE'] = '(psi_x**2 + dz(psi)**2 + u**2)/2'
-        self.problem.substitutions['BE'] = '(A_x**2 + dz(A)**2 + b**2)/2'
-        self.problem.substitutions['vx_rms'] = 'sqrt((dz(psi))**2)'
+        self.problem.substitutions['vx'] = 'dz(psi)'
+        self.problem.substitutions['vz'] = '-psi_x**2'
+        self.problem.substitutions['Bx'] = 'dz(A)'
+        self.problem.substitutions['Bz'] = '-A_x**2'
+        self.problem.substitutions['KE'] = '(vx**2 + vz**2 + u**2)/2'
+        self.problem.substitutions['BE'] = '(Bx**2 + Bz**2 + b**2)/2'
+        self.problem.substitutions['vx_rms'] = 'sqrt(vx**2)'
         self.problem.substitutions['vy_rms'] = 'sqrt(u*u)'
-        self.problem.substitutions['vz_rms'] = 'sqrt(psi_x**2)'
+        self.problem.substitutions['vz_rms'] = 'sqrt(vz**2)'
+        self.problem.substitutions['Bx_rms'] = 'sqrt(Bx**2)'
+        self.problem.substitutions['By_rms'] = 'sqrt(b*b)'
+        self.problem.substitutions['Bz_rms'] = 'sqrt(Bz**2)'
+        self.problem.substitutions['psi_rms'] = 'sqrt(psi**2)'
+        self.problem.substitutions['A_rms'] = 'sqrt(A**2)'
+        self.problem.substitutions['Re_stress'] = 'vx*u'
+        self.problem.substitutions['Max_stress'] = 'Bx*b'
 
 class MRI_equations(Equations):
     """

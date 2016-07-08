@@ -12,15 +12,15 @@ from find_crit import find_crit
 import logging
 logger = logging.getLogger(__name__)
 
-res = 50
+res = 100
 x = de.Chebyshev('x',res)
 domain = de.Domain([x], np.complex128, comm=MPI.COMM_SELF)
 logger.info("running at resolution {}".format(res))
 
 q = 1.5
 beta = 25.0
-npoints = 4
-global_Pm = [5e-4,1e-3,3e-3,5e-3] #np.logspace(-5,-3.5, npoints)
+npoints = 20
+global_Pm = np.logspace(-4,-2.5, npoints)
 
 nproc = comm.size
 rank = comm.rank
