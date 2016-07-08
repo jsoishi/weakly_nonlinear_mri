@@ -37,7 +37,7 @@ comm = MPI.COMM_WORLD
 #Rm = 4.052
 
 
-def find_crit(R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr):
+def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr):
     Rm = Rm_min
     k = k_min
     R = Rm/Pm
@@ -62,7 +62,7 @@ def find_crit(R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_
     widegap.parameters['c2'] = c2
     widegap.parameters['beta'] = beta
     widegap.parameters['B0'] = 1
-    widegap.parameters['xi'] = 0
+    widegap.parameters['xi'] = xi
 
     widegap.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
     widegap.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2

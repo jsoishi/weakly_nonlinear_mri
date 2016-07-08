@@ -12,6 +12,7 @@ Options:
     --Omega2=<Omega2>          outer cylinder rotation rate (units of 1/s) [default: 67.0631]
     --Pm=<Pm>                  magnetic Prandtl number [default: 1e-3]
     --beta=<beta>              plasma beta [default: 25.]
+    --xi=<xi>                  helical base field strength for HMRI [default: 0.]
     --Rm_min=<Rm_min>          minimum magnetic Reynolds number [default: 0.5]
     --Rm_max=<Rm_max>          maximum magnetic Reynolds number [default: 2.0]
     --k_min=<k_min>            minimum z wavenumber [default: 0.001]
@@ -33,6 +34,7 @@ Omega1 = float(args['--Omega1'])
 Omega2 = float(args['--Omega2'])
 Pm = float(args['--Pm'])
 beta = float(args['--beta'])
+xi = float(args['--xi'])
 Rm_min = float(args['--Rm_min'])
 Rm_max = float(args['--Rm_max'])
 k_min = float(args['--k_min'])
@@ -41,4 +43,4 @@ n_Rm = int(args['--n_Rm'])
 n_k = int(args['--n_k'])
 n_r = int(args['--n_r'])
 
-find_crit(R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, n_r)
+find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, n_r)
