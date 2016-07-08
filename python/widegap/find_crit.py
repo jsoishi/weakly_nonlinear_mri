@@ -111,7 +111,11 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
     end = time.time()
     if comm.rank == 0:
         print("grid generation time: {:10.5f} sec".format(end-start))
-        cf.save_grid('../../data/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k))
+        if xi == 0:
+            gridname = '../../data/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+        else:
+            gridname = '../../data/hmri_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+        cf.save_grid(gridname)
 
     cf.root_finder()
     crit = cf.crit_finder()
@@ -119,6 +123,9 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
     if comm.rank == 0:
         print("critical wavenumber k = {:10.5f}".format(crit[0]))
         print("critical Rm = {:10.5f}".format(crit[1]))
-        title_str = '../../figs/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+        if xi == 0:
+            title_str = '../../figs/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+        else:
+            title_str = '../../figs/helical_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
         cf.plot_crit(title = title_str, xlabel = r"$k_z$", ylabel = r"$\mathrm{Rm}$")
 
