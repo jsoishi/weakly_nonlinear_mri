@@ -44,12 +44,4 @@ n_Rm = int(args['--n_Rm'])
 n_k = int(args['--n_k'])
 n_r = int(args['--n_r'])
 
-n_pm = 20
-global_pms = np.logspace(pm_min,pm_max,n_pm)
-
-color = int(comm.size/n_pm)
-crit_finder_comm = comm.Split(color,rank)
-
-
-
-find_crit(crit_finder_comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, n_r)
+find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, n_r)

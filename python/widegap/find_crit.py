@@ -9,9 +9,6 @@ import dedalus.public as de
 import numpy as np
 import matplotlib.pylab as plt
 
-comm = MPI.COMM_WORLD
-
-
 # Reasonable parameters
 
 # URM07-like
@@ -37,7 +34,7 @@ comm = MPI.COMM_WORLD
 #Rm = 4.052
 
 
-def find_crit(R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr):
+def find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr):
     Rm = Rm_min
     k = k_min
     R = Rm/Pm
