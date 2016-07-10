@@ -118,7 +118,8 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
     # create a shim function to translate (x, y) to the parameters for the eigenvalue problem:
     def shim(x,y):
         gr, indx = EP.growth_rate({"k":x,"Rm":y})
-        return gr
+        #return gr
+        return EP.evalues_good[indx] #return complex eigenval
 
     cf = CriticalFinder(shim, comm)
 
