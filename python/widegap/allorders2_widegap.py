@@ -55,9 +55,11 @@ class MRI():
         self.c2 = (self.R1**2*self.R2**2*(self.Omega1 - self.Omega2))/(self.R2**2 - self.R1**2)
         
         self.zeta_mean = 2*(self.R2**2*self.Omega2 - self.R1**2*self.Omega1)/((self.R2**2 - self.R1**2)*np.sqrt(self.Omega1*self.Omega2))
+        self.R0 = (self.R1 + self.R2)/2.0
+        self.q_R0 = 2*self.c2/(self.R0**2*self.c1 + self.c2)
         
         logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; beta = {}; norm = {}, Re = {}".format(self.Q, self.Rm, self.Pm, self.beta, norm, self.R))
-        logger.info("Mean zeta is {}, meaning effective shear parameter q(r0) = 2 - zeta = {}".format(self.zeta_mean, 2 - self.zeta_mean))
+        logger.info("Effective shear parameter q(R0) = {}".format(self.q_R0))
         
         if self.xi != 0:
             logger.info("A nonzero xi means this is the HMRI")

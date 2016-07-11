@@ -95,11 +95,6 @@ while IVP.ok:
 alpha_array = np.array(alpha_list)
 t_array = np.array(t_list)
 
-#self.alpha = alpha
-#self.alphaZ = alphaZ
-#self.alpha_array = alpha_array
-#self.t_array = t_array
-
 saturation_amplitude = alpha_array[-1, 0]
 print(saturation_amplitude)
 
