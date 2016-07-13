@@ -480,11 +480,11 @@ class N2(MRI):
         self.N20_u = (N20_u_jacobians + N20_u_advectives).evaluate()
         self.N20_u.name = "N20_u"
                 
-        N22_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_r - (1j*Q*o1.A)*o1.psi_r)
+        N22_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_r - (1j*Q*o1.A)*o1.psi_r) # correct - checked 7/13/16
         self.N22_A = N22_A.evaluate()
         self.N22_A.name = "N22_A"
         
-        N20_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_star_r - (-1j*Q*o1.A_star)*o1.psi_r)
+        N20_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_star_r - (-1j*Q*o1.A_star)*o1.psi_r) # correct - checked 7/13/16
         self.N20_A = N20_A.evaluate()
         self.N20_A.name = "N20_A"
         
@@ -982,19 +982,19 @@ class AmplitudeAlpha(MRI):
         b_B_rhs = 1j*self.Q*o1.u + invr**3*2*1j*self.Q*self.xi*o1.psi
         b_B_rhs = b_B_rhs.evaluate()
         
-        # (-L1twiddle V21 + L2twiddle V11 - xi H V21)
-        h_psi_rhs = (-self.iR*invr*4*1j*self.Q**3*o2.psi21 - (2/self.beta)*invr*3*self.Q**2*o2.A21 + self.iR*invr*6*self.Q**2*o1.psi - (2/self.beta)*invr*3*1j*self.Q*o1.A
-                    + self.iR*invr*4*1j*self.Q*o2.psi21_rr - self.iR*invr**2*4*1j*self.Q*o2.psi21_r + invr*2*u0*o2.u21 + (2/self.beta)*invr*o2.A21_rr
-                    - (2/self.beta)*invr**2*o2.A21_r - (2/self.beta)*invr**2*2*self.xi*o2.B21 - self.iR*invr*2*o1.psi_rr + self.iR*invr**2*2*o1.psi_r)
+        # (L1twiddle V21 + L2twiddle V11 + xi H V21)
+        h_psi_rhs = (self.iR*invr*4*1j*self.Q**3*o2.psi21 + (2/self.beta)*invr*3*self.Q**2*o2.A21 + self.iR*invr*6*self.Q**2*o1.psi - (2/self.beta)*invr*3*1j*self.Q*o1.A
+                    - self.iR*invr*4*1j*self.Q*o2.psi21_rr + self.iR*invr**2*4*1j*self.Q*o2.psi21_r - invr*2*u0*o2.u21 - (2/self.beta)*invr*o2.A21_rr
+                    + (2/self.beta)*invr**2*o2.A21_r + (2/self.beta)*invr**2*2*self.xi*o2.B21 - self.iR*invr*2*o1.psi_rr + self.iR*invr**2*2*o1.psi_r)
         h_psi_rhs = h_psi_rhs.evaluate()
         
-        h_u_rhs = self.iR*2*1j*self.Q*o2.u21 - invr*du0*o2.psi21 - invr**2*u0*o2.psi21 + (2/self.beta)*o2.B21 - self.iR*o1.u
+        h_u_rhs = -self.iR*2*1j*self.Q*o2.u21 + invr*du0*o2.psi21 + invr**2*u0*o2.psi21 - (2/self.beta)*o2.B21 - self.iR*o1.u
         h_u_rhs = h_u_rhs.evaluate()
         
-        h_A_rhs = self.iRm*2*1j*self.Q*o2.A21 + o2.psi21 - self.iRm*o1.A
+        h_A_rhs = -self.iRm*2*1j*self.Q*o2.A21 - o2.psi21 - self.iRm*o1.A
         h_A_rhs = h_A_rhs.evaluate()
         
-        h_B_rhs = self.iRm*2*1j*self.Q*o2.B21 + invr*du0*o2.A21 + o2.u21 - invr**2*u0*o2.A21 + invr**3*2*self.xi*o2.psi21 - self.iRm*o1.B
+        h_B_rhs = -self.iRm*2*1j*self.Q*o2.B21 - invr*du0*o2.A21 - o2.u21 + invr**2*u0*o2.A21 - invr**3*2*self.xi*o2.psi21 - self.iRm*o1.B
         h_B_rhs = h_B_rhs.evaluate()
         
         # Normalize s.t. a = 1
