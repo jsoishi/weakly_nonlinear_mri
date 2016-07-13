@@ -63,7 +63,7 @@ Wide gap formulation and preliminary results
 The magnetorotational instability (MRI) is thought to be a crucial driver of angular momentum transport and turbulence in astrophysical disks. (more MRI intro)
 
 %The MRI is fundamental to our understanding of star formation, but its 
-
+- people make a number of simplifications, incl thin gap, shearing box, etc
 
 
 Many investigations of the MRI use the ``narrow gap" approximation, in which the radial extent of the fluid channel is taken to be much smaller than the radius of curvature. That is, for a channel center $r_0$ bounded by inner and outer radii $r_1$ and $r_2$, respectively, the narrow gap approximation applies when $r_0 \gg (r_2 - r_1)$. The narrow gap approximation simplifies the MRI equations by excluding curvature terms, because the flow through a narrow gap can be taken to be approximately linear in $\phi$, i.e. Cartesian. In this work we undertake the first (to our knowledge) weakly nonlinear analysis of the MRI in the wide gap regime, where the channel width may be comparable to or larger than its distance from the center of rotation.
@@ -125,6 +125,23 @@ where $a = (\Omega_2 r^2_2 - \Omega_1 r^2_1)/(r^2_2 - r^2_1)$, $b = r^2_1 r^2_2 
 
 Thus through judicious choice of cylinder rotation rates, we can set $q(r_0) = 3/2$, for quasi-Keplerian flow. Note that in the narrow gap approximation we have the freedom to choose any rotation profile, as the narrow gap width imposes a linear shear (constant $q$). Our base velocity is $\mathbf{u_0} = r\Omega(r) \phihat$. We initialize a magnetic field $\mathbf{B_0} = B_0 \zhat + B_0 \xi \frac{r_0}{r} \phihat$, so that the base magnetic field is axial when $\xi = 0$ and otherwise helical. 
 
+In this work we will focus our findings on two fiducial parameter sets, one for the standard MRI (hereafter SMRI) where $\xi = 0$ and one for the helical MRI (hereafter HMRI). Our fiducial parameters are described in Table \ref{table:parameters}.
+
+\begin{table}[ht]\label{table:parameters}
+\normalsize
+\caption{Fiducial parameters for MRI runs} 
+\centering
+%\resizebox{\textwidth}{!}
+{\begin{tabular}{rlrrrrrrr}
+  \hline
+ & $\xi$ & $Pm$ & $\Omega_2/\Omega_1$ & $\beta$ & X \\ 
+  \hline\hline
+Standard MRI & 0 & 25 & 0 & 0 & 0 \\ 
+Helical MRI & 4 & 0 & 0\\ 
+   \hline
+\end{tabular}}
+\end{table} 
+
 Our perturbed system is 
 
 \beq
@@ -166,13 +183,13 @@ where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices d
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{../python/widegap/figures/orders_1_2_widegap_fiducial_eigenfunctions.pdf}
-\caption{Eigenfunctions}
+\caption{Eigenfunctions of the first order equations, first order adjoint homogenous equations, and second order equations. We use our fiducial parameters for the standard MRI ($\xi = 0$). Eigenfunctions are normalized such that either the real or imaginary part is zero.}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{../python/widegap/figures/nonlinear_2_3_widegap_fiducial_eigenfunctions.pdf}
-\caption{Nonlinear terms}
+\caption{Nonlinear terms $N_2$ and $N_3$ for our fiducial standard MRI parameters.}
 \end{figure}
 
 See Appendix \ref{app:basic_equations} for the definition of matrices and nonlinear vectors, and a thorough derivation. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the narrow gap case, although the matrices (which contain all radial derivatives) are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution $\mathbf{V}_1 = \alpha(Z, T) \mathbb{V}_{11}(r) e^{i k_z z} + c.c.$, where the radial variation is contained in $\mathbb{V}_{11}$. We defer full expressions and derivations thereof to the Appendix, and focus here on features of the wide gap system which distinguish it from the thin gap limit.
