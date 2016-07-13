@@ -123,14 +123,14 @@ where $a = (\Omega_2 r^2_2 - \Omega_1 r^2_1)/(r^2_2 - r^2_1)$, $b = r^2_1 r^2_2 
   q(r) \equiv -\frac{d \ln \Omega}{d \ln r} = \frac{2 b}{a r^2 + b}.
 \end{equation}
 
-Thus through judicious choice of cylinder rotation rates, we can set $q(r_0) = 3/2$, for quasi-Keplerian flow. Note that in the narrow gap approximation we have the freedom to choose any rotation profile, as the narrow gap width imposes a linear shear (constant $q$). Our base velocity is $\mathbf{u_0} = r\Omega(r) \phihat$. We initialize an axial magnetic field $\mathbf{B_0} = B_0 \zhat$. 
+Thus through judicious choice of cylinder rotation rates, we can set $q(r_0) = 3/2$, for quasi-Keplerian flow. Note that in the narrow gap approximation we have the freedom to choose any rotation profile, as the narrow gap width imposes a linear shear (constant $q$). Our base velocity is $\mathbf{u_0} = r\Omega(r) \phihat$. We initialize a magnetic field $\mathbf{B_0} = B_0 \zhat + B_0 \xi \frac{r_0}{r} \phihat$, so that the base magnetic field is axial when $\xi = 0$ and otherwise helical. 
 
 Our perturbed system is 
 
 \beq
 \begin{split}
 \label{eq:Psi_perturbed}
-\frac{1}{r}\partial_t (\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi) - \frac{2}{\beta} \frac{1}{r}B_0 \partial_z (\nabla^2 A - \frac{2}{r} \partial_r A) - \frac{2}{r}u_0 \partial_z u_\phi - \frac{1}{\reye} \left[ \nabla^2 (\frac{1}{r} \nabla^2 \Psi) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] \\
+\frac{1}{r}\partial_t (\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi) - \frac{2}{\beta} \frac{1}{r}B_0 \partial_z (\nabla^2 A - \frac{2}{r} \partial_r A) - \frac{2}{r}u_0 \partial_z u_\phi + \frac{2}{\beta} \frac{2}{r^2}B_0 \xi \partial_z B_\phi - \frac{1}{\reye} \left[ \nabla^2 (\frac{1}{r} \nabla^2 \Psi) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] \\
 = - J(\Psi, \frac{1}{r^2} ( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi) ) + \frac{2}{\beta} J(A, \frac{1}{r^2} ( \nabla^2 A - \frac{2}{r} \partial_rA) ) - \frac{2}{\beta} \frac{2}{r}B_\phi \partial_z B_\phi  + \frac{2}{r} u_\phi \partial_z u_\phi \\
 \end{split}
 \eeq
@@ -139,7 +139,7 @@ Our perturbed system is
 & \partial_t \uphi + \frac{1}{r^2} u_0 \partial_z \Psi + \frac{1}{r} \partial_r u_0 \partial_z \Psi - \frac{2}{\beta} B_0 \partial_z B_\phi - \frac{1}{\reye} ( \nabla^2 \uphi - \frac{1}{r^2} \uphi ) = \frac{2}{\beta} \frac{1}{r} J(A, B_\phi) - \frac{1}{r} J(\Psi, \uphi) + \frac{2}{\beta}\frac{1}{r^2} B_\phi \partial_z A - \frac{1}{r^2} \uphi \partial_z \Psi \label{eq:uphi_perturbed} \\
 & \partial_t A - B_0 \partial_z \Psi - \frac{1}{\reym} ( \nabla^2 A - \frac{2}{r} \partial_r A )= \frac{1}{r} J(A, \psi)  \label{eq:A_perturbed}\\
   \label{eq:Bphi_perturbed}
-& \partial_t B_\phi + \frac{1}{r^2} u_0 \partial_z A - B_0 \partial_z u_\phi - \frac{1}{r} \partial_r u_0 \partial_z A - \frac{1}{\reym} (\nabla^2 B_\phi - \frac{1}{r^2} B_\phi ) = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)
+& \partial_t B_\phi + \frac{1}{r^2} u_0 \partial_z A - B_0 \partial_z u_\phi - \frac{1}{r} \partial_r u_0 \partial_z A - \frac{2}{r^3} B_0 \xi \partial_z \Psi - \frac{1}{\reym} (\nabla^2 B_\phi - \frac{1}{r^2} B_\phi ) = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi)
 + \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A 
 \end{align}
 
@@ -152,15 +152,15 @@ We solve the system subject to periodic vertical boundary conditions and no-slip
 Just as in the weakly nonlinear analyses of \citei{Umurhan:2007hs} and \citei{Clark:2016}, we tune the system away from marginality by taking $B_0 \rightarrow B_0\left(1 - \epsilon^2\right)$, where $\epsilon \ll 1$. We parameterize scale separation as $Z = \epsilon z$ and $T = \epsilon^2 t$, where $Z$ and $T$ are slowly varying spatial and temporal scales, respectively. We group the fluid variables into a state vector $\mathbf{V} = \left[\Psi, u, A, B\right]^{\mathrm{T}}$, such that the full nonlinear system can be expressed as
 
 \beq\label{eq:unperturbed_matrix_eqns}
-\mathcal{D}\partial_t\mathbf{V} + \mathcal{L}\mathbf{V} + \epsilon^2 \widetilde{\mathcal{G}} \mathbf{V} + \mathbf{N} = 0,
+\mathcal{D}\partial_t\mathbf{V} + \mathcal{L}\mathbf{V} + \epsilon^2 \widetilde{\mathcal{G}} \mathbf{V} + \xi \widetilde{\mathcal{H}} \mathbf{V} +  \mathbf{N} = 0,
 \eeq
 
 where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices defined in Appendix \ref{app:basic_equations}, and $\mathbf{N}$ is a vector containing all nonlinear terms. We then expand the variables in a perturbation series $\mathbf{V} = \epsilon \mathbf{V}_1 + \epsilon^2 \mathbf{V}_2 + \epsilon^2 \mathbf{V}_3 + h.o.t.$ The perturbed system can then be expressed at each order by the equations
 
 \begin{align}
-\mathcal{O}(\epsilon)&: \mathcal{L} \mathbf{V}_1 + \mathcal{D} \partial_t \mathbf{V}_1 = 0 \label{eq:ordere}\\
-\mathcal{O}(\epsilon^2)&: \mathcal{L} \mathbf{V}_2 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \label{eq:ordere2}\\
-\mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3. \label{eq:ordere3}
+\mathcal{O}(\epsilon)&: \mathcal{L} \mathbf{V}_1 + \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \mathcal{D} \partial_t \mathbf{V}_1 = 0 \label{eq:ordere}\\
+\mathcal{O}(\epsilon^2)&: \mathcal{L} \mathbf{V}_2 + \xi \widetilde{\mathcal{H}} \mathbf{V}_2 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_1 + \xi \mathcal{H} \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \label{eq:ordere2}\\
+\mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \xi \widetilde{\mathcal{H}} \mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2 + \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \label{eq:ordere3}
 \end{align}
 
 \begin{figure}
