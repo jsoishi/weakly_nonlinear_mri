@@ -33,7 +33,6 @@ pmcoeffs_fn = '/Users/susanclark/weakly_nonlinear_mri/data/pm_sat_coeffs.h5'
 #coeff = Coefficients(19, pmcoeffs_fn)
 coeff = Coefficients(5, pmcoeffs_fn)
 
-print("ac = {}, bc = {}, hc = {}".format(coeff.a/coeff.c, coeff.b/coeff.c, coeff.h/coeff.c))
 print("saturation amplitude = {}".format(np.sqrt(coeff.b/coeff.c)))
 
 # Actually solve the IVP
@@ -48,6 +47,8 @@ problem = de.IVP(Zdomain, variables=['alpha', 'alphaZ'], ncc_cutoff=1e-10)
 problem.parameters['ac'] = -coeff.a/coeff.c
 problem.parameters['bc'] = coeff.b/coeff.c
 problem.parameters['hc'] = -coeff.h/coeff.c
+
+print("ac = {}, bc = {}, hc = {}".format(-coeff.a/coeff.c, coeff.b/coeff.c, -coeff.h/coeff.c))
 
 problem.add_equation("-ac*dt(alpha) + bc*alpha + hc*dZ(alphaZ) = alpha*abs(alpha**2)") 
 problem.add_equation("alphaZ - dZ(alpha) = 0")

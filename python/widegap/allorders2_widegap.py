@@ -615,7 +615,7 @@ class OrderE2(MRI):
         
         #sctest = self.take_inner_product_real((self.rhs_psi21, self.rhs_u21, self.rhs_A21, self.rhs_B21),(ah_psi_r4, ah_u_r3, ah_A_r, ah_B_r3))
         sctest = self.take_inner_product_real((self.rhs_psi21_nor, self.rhs_u21_nor, self.rhs_A21_nor, self.rhs_B21_nor),(ah.psi, ah.u, ah.A, ah.B))
-        logger.info("solvability condition satisfied?", sctest)
+        logger.info("solvability condition satisfied? {}".format(sctest))
         if np.abs(sctest) > 1E-10:
             logger.warn("CAUTION: solvability condition <V^dagger | RHS> = 0 failed for V21")
         
@@ -936,6 +936,7 @@ class AmplitudeAlpha(MRI):
     def __init__(self, domain, o1 = None, o2 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
         
         logger.info("initializing Amplitude Alpha")
+        logger.info("Corrected h")
       
         if o1 == None:
             o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
@@ -969,10 +970,10 @@ class AmplitudeAlpha(MRI):
         a_psi_rhs = a_psi_rhs.evaluate()
         
         # Gtwiddle . V11 - xi dz H . V11
-        b_psi_rhs = -(2/self.beta)*invr*1j*self.Q**3*o1.A + (2/self.beta)*invr*1j*Q*o1.A_rr - (2/self.beta)*invr**2*1j*Q*o1.A_r - (2/self.beta)*invr**2*2*1j*self.Q*self.xi*o1.B
+        b_psi_rhs = -(2/self.beta)*invr*1j*self.Q**3*o1.A + (2/self.beta)*invr*1j*self.Q*o1.A_rr - (2/self.beta)*invr**2*1j*self.Q*o1.A_r - (2/self.beta)*invr**2*2*1j*self.Q*self.xi*o1.B
         b_psi_rhs = b_psi_rhs.evaluate()
         
-        b_u_rhs = (2/self.beta)*1j*Q*o1.B
+        b_u_rhs = (2/self.beta)*1j*self.Q*o1.B
         b_u_rhs = b_u_rhs.evaluate()
         
         b_A_rhs = 1j*self.Q*o1.psi
@@ -981,19 +982,19 @@ class AmplitudeAlpha(MRI):
         b_B_rhs = 1j*self.Q*o1.u + invr**3*2*1j*self.Q*self.xi*o1.psi
         b_B_rhs = b_B_rhs.evaluate()
         
-        # (L1twiddle V21 + L2twiddle V11 + xi H V21)
-        h_psi_rhs = (self.iR*invr*4*1j*self.Q**3*o2.psi21 + (2/self.beta)*invr*3*self.Q**2*o2.A21 + self.iR*invr*6*self.Q**2*o1.psi - (2/self.beta)*invr*3*1j*Q*o1.A
-                    - self.iR*invr*4*1j*self.Q*o2.psi21_rr + self.iR*invr**2*4*1j*self.Q*o2.psi21_r - invr*2*u0*o2.u21 - (2/self.beta)*invr*o2.A21_rr
-                    + (2/self.beta)*invr**2*o2.A21_r + (2/self.beta)*invr**2*2*self.xi*o2.B21 - self.iR*invr*2*o1.psi_rr + self.iR*invr**2*2*o1.psi_r)
+        # (-L1twiddle V21 + L2twiddle V11 - xi H V21)
+        h_psi_rhs = (-self.iR*invr*4*1j*self.Q**3*o2.psi21 - (2/self.beta)*invr*3*self.Q**2*o2.A21 + self.iR*invr*6*self.Q**2*o1.psi - (2/self.beta)*invr*3*1j*self.Q*o1.A
+                    + self.iR*invr*4*1j*self.Q*o2.psi21_rr - self.iR*invr**2*4*1j*self.Q*o2.psi21_r + invr*2*u0*o2.u21 + (2/self.beta)*invr*o2.A21_rr
+                    - (2/self.beta)*invr**2*o2.A21_r - (2/self.beta)*invr**2*2*self.xi*o2.B21 - self.iR*invr*2*o1.psi_rr + self.iR*invr**2*2*o1.psi_r)
         h_psi_rhs = h_psi_rhs.evaluate()
         
-        h_u_rhs = -self.iR*2*1j*self.Q*o2.u21 + invr*du0*o2.psi21 + invr**2*u0*o2.psi21 - (2/self.beta)*o2.B21 - self.iR*o1.u
+        h_u_rhs = self.iR*2*1j*self.Q*o2.u21 - invr*du0*o2.psi21 - invr**2*u0*o2.psi21 + (2/self.beta)*o2.B21 - self.iR*o1.u
         h_u_rhs = h_u_rhs.evaluate()
         
-        h_A_rhs = -self.iRm*2*1j*self.Q*o2.A21 - o2.psi21 - self.iRm*o1.A
+        h_A_rhs = self.iRm*2*1j*self.Q*o2.A21 + o2.psi21 - self.iRm*o1.A
         h_A_rhs = h_A_rhs.evaluate()
         
-        h_B_rhs = -self.iRm*2*1j*self.Q*o2.B21 - invr*du0*o2.A21 - o2.u21 + invr**2*u0*o2.A21 - invr**3*2*self.xi*o2.psi21 - self.iRm*o1.B
+        h_B_rhs = self.iRm*2*1j*self.Q*o2.B21 + invr*du0*o2.A21 + o2.u21 - invr**2*u0*o2.A21 + invr**3*2*self.xi*o2.psi21 - self.iRm*o1.B
         h_B_rhs = h_B_rhs.evaluate()
         
         # Normalize s.t. a = 1
@@ -1010,7 +1011,7 @@ class AmplitudeAlpha(MRI):
         # b = < va . (Gtwiddle v11 - xi*dz*H v11)* > 
         self.b = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
   
-        # h = < va . (L1twiddle V21 + L2twiddle V11 + xi H V21)* >
+        # h = < va . ( -L1twiddle V21 + L2twiddle V11 - xi H V21)* > ***signs corrected 7/12/16
         self.h = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
   
         # linear term alias
