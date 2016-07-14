@@ -45,7 +45,7 @@
 
 \begin{document}
 
-\title{The Weakly Nonlinear Magnetorotational Instability in a Taylor Couette Flow}
+\title{The Weakly Nonlinear Standard and Helical Magnetorotational Instabilities in a Taylor Couette Flow}
 \author{Clark, S.E.\altaffilmark{1}}
 \author{Oishi, J.S. \altaffilmark{2,}\altaffilmark{3}}
 %\author{Mac Low, M.-M.\altaffilmark{1,}\altaffilmark{2}}
@@ -67,9 +67,9 @@ The magnetorotational instability (MRI) is thought to be a crucial driver of ang
 
 Despite the challenges inherent in studying the MRI, much progress has been made nu
 
-Many investigations of the MRI use the ``narrow gap" approximation, in which the radial extent of the fluid channel is taken to be much smaller than the radius of curvature. That is, for a channel center $r_0$ bounded by inner and outer radii $r_1$ and $r_2$, respectively, the narrow gap approximation applies when $r_0 \gg (r_2 - r_1)$. The narrow gap approximation simplifies the MRI equations by excluding curvature terms, because the flow through a narrow gap can be taken to be approximately linear in $\phi$, i.e. Cartesian. In this work we undertake the first (to our knowledge) weakly nonlinear analysis of the MRI in the wide gap regime, where the channel width may be comparable to or larger than its distance from the center of rotation.
+Many investigations of the MRI use the ``narrow gap" approximation, in which the radial extent of the fluid channel is taken to be much smaller than the radius of curvature. That is, for a channel center $r_0$ bounded by inner and outer radii $r_1$ and $r_2$, respectively, the narrow gap approximation applies when $r_0 \gg (r_2 - r_1)$. The narrow gap approximation simplifies the MRI equations by excluding curvature terms, because the flow through a narrow gap can be taken to be approximately linear in $\phi$, i.e. Cartesian. Previous investigations into the weakly nonlinear MRI have used this narrow gap approximation (\citei{Umurhan:2007dz}, \citei{Umurhan:2007hs}, \citei{Clark:2016}). In this work we undertake the first (to our knowledge) weakly nonlinear analysis of the MRI in the wide gap regime, where the channel width may be comparable to or larger than its distance from the center of rotation.
 
-Because we include curvature terms, our theory is also relevant to the helical magnetorotational instability (HMRI). Discovered by \citeauthor{Hollerbach:2005tr} (\citeyear{Hollerbach:2005tr}), the HMRI is an overstability in which the background magnetic field is helical. The HMRI currently occupies a special place in the MRI puzzle. The HMRI has been proposed as a method of awakening angular momentum transport in the ``dead zones" of protoplanetary disks where the magnetic Prandtl number ($Pm = \nu/\eta$) becomes very small. However the rotation profiles needed to excite HMRI may be prohibitively steeper than Keplerian depending on the boundary conditions, and so its role in astrophysical disks is currently debated (\citei{Liu:2006}, \citei{Rudiger:2007}, \citei{Kirillov:2013}). However, the HMRI is significantly easier to excite in a laboratory setting, and has already been detected in the laboratory by the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE; \citei{Stefani:2006iv}, \citei{Stefani:2009hp}).
+Because we include curvature terms, our theory is also relevant to the helical magnetorotational instability (HMRI). Discovered by \citeauthor{Hollerbach:2005tr} (\citeyear{Hollerbach:2005tr}), the HMRI is an overstability in which the background magnetic field is helical. The HMRI currently occupies a special place in the MRI puzzle. The HMRI has been proposed as a method of awakening angular momentum transport in the ``dead zones" of protoplanetary disks where the magnetic Prandtl number ($Pm = \nu/\eta$) becomes very small. However the rotation profiles needed to excite HMRI may be prohibitively steeper than Keplerian depending on the boundary conditions, and so its role in astrophysical disks is currently debated (\citei{Liu:2006}, \citei{Rudiger:2007}, \citei{Kirillov:2013}). However, the HMRI is significantly easier to excite in a laboratory setting than the standard MRI, and has already been detected in the laboratory by the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE; \citei{Stefani:2006iv}, \citei{Stefani:2009hp}).
 
 We explore the weakly nonlinear HMRI
 
@@ -303,6 +303,15 @@ and the constituent matrices are defined as
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 -\frac{2}{r^3} & 0 & 0 & 0 \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{D} = \left[\begin{matrix}
+\frac{1}{r}\partial_r^2 + \frac{1}{r}\partial_z^2 - \frac{1}{r^2}\partial_r & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
 \end{matrix}\right]
 \eeq
 
