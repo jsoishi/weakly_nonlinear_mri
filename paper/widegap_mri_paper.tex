@@ -67,6 +67,8 @@ The magnetorotational instability (MRI) is thought to be a crucial driver of ang
 
 Despite the challenges inherent in studying the MRI, much progress has been made nu
 
+Because of the MRI's complexity, analytical treatments of the MRI use some combination of convenient approximations: ideal MHD, linearized equations, expedient boundary conditions, and simplified geometries. In particular, much of the analytical work on MRI saturation has focused on local approximations, often representing a section of a disk by solving the MHD equations in an isolated region subject to shear periodic boundary conditions (the ``shearing box"). While the MRI is a local instability, 
+
 Many investigations of the MRI use the ``narrow gap" approximation, in which the radial extent of the fluid channel is taken to be much smaller than the radius of curvature. That is, for a channel center $r_0$ bounded by inner and outer radii $r_1$ and $r_2$, respectively, the narrow gap approximation applies when $r_0 \gg (r_2 - r_1)$. The narrow gap approximation simplifies the MRI equations by excluding curvature terms, because the flow through a narrow gap can be taken to be approximately linear in $\phi$, i.e. Cartesian. Previous investigations into the weakly nonlinear MRI have used this narrow gap approximation (\citei{Umurhan:2007dz}, \citei{Umurhan:2007hs}, \citei{Clark:2016}). In this work we undertake the first (to our knowledge) weakly nonlinear analysis of the MRI in the wide gap regime, where the channel width may be comparable to or larger than its distance from the center of rotation.
 
 Because we include curvature terms, our theory is also relevant to the helical magnetorotational instability (HMRI). Discovered by \citeauthor{Hollerbach:2005tr} (\citeyear{Hollerbach:2005tr}), the HMRI is an overstability in which the background magnetic field is helical. The HMRI currently occupies a special place in the MRI puzzle. The HMRI has been proposed as a method of awakening angular momentum transport in the ``dead zones" of protoplanetary disks where the magnetic Prandtl number ($Pm = \nu/\eta$) becomes very small. However the rotation profiles needed to excite HMRI may be prohibitively steeper than Keplerian depending on the boundary conditions, and so its role in astrophysical disks is currently debated (\citei{Liu:2006}, \citei{Rudiger:2007}, \citei{Kirillov:2013}). However, the HMRI is significantly easier to excite in a laboratory setting than the standard MRI, and has already been detected in the laboratory by the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE; \citei{Stefani:2006iv}, \citei{Stefani:2009hp}).
@@ -139,10 +141,10 @@ In this work we will focus our findings on two fiducial parameter sets, one for 
 %\resizebox{\textwidth}{!}
 {\begin{tabular}{rlrrrrrrr}
   \hline
- & $\xi$ & $Pm$ & $\beta$ & $\Omega_2/\Omega_1$ & $R_1/R_2$ \\ 
+ & $\xi$ & $Pm$ & $\beta$ & $\Omega_2/\Omega_1$ & $R_1/R_2$ & radial magnetic b.c. \\ 
   \hline\hline
-Standard MRI & 0 & 1E-3 & 25 & 0.18 & 0.33 \\ 
-Helical MRI & 4 & 1E-6 & 1.7E-2 & 0.27 & 0.5\\ 
+Standard MRI & 0 & 1E-3 & 25 & 0.18 & 0.33 & conducting \\ 
+Helical MRI & 4 & 1E-6 & 1.7E-2 & 0.27 & 0.5 & insulating\\ 
    \hline
 \end{tabular}}
 \end{table} 
@@ -399,7 +401,7 @@ Liu, W, Goodman, J, Herron, I, and Ji, H, 2006, Phys. Rev. E 74, 056302
 R\"udiger, G, \& Hollerbach, R, Phys. Rev. E 76, 068301
 
 \bibitem[{Stefani et al.(2006)}]{Stefani:2006iv}
-Stefani, F, Gundrum, T, Gerbeth, G, RŸdiger, G, Schultz, M, Szklarski, J, Hollerbach, R, Phys Rev Lett, 2006, 97, 184502
+Stefani, F, Gundrum, T, Gerbeth, G, R\"udiger, G, Schultz, M, Szklarski, J, Hollerbach, R, Phys Rev Lett, 2006, 97, 184502
 
 \bibitem[{Stefani et al.(2009)}]{Stefani:2009hp}
 Stefani, F, Gerbeth, G, Gundrum, T, Hollerbach, R, Priede, J, R\"udiger, G, and Szklarski, J, Phys Rev E, 80, 066303

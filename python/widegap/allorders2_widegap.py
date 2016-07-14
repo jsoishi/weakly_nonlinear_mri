@@ -701,7 +701,7 @@ class OrderE2(MRI):
         bv22.add_equation("-r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi + twooverbeta*r**2*2*xi*(2*1j*Q)*B = rhs_psi22")
         bv22.add_equation("rrdu0*dz*psi + ru0*dz*psi - r**3*twooverbeta*dz*B - r**3*iR*dr(ur) - r**2*iR*ur - r**3*iR*dz**2*u + r*iR*u = rhs_u22")
         bv22.add_equation("-dz*psi*r - r*iRm*dr(Ar) + iRm*Ar - r*iRm*dz**2*A = rhs_A22")
-        bv22.add_equation("-dz*rrdu0*A - dz*r**3*u + ru0*dz*A - iRm*r**3*dr(Br) - r**2*iRm*Br - iRm*r**3*dz**2*B + r*iRm*B - 2*xi*(2*1j*Q)*psi = rhs_B22")
+        bv22.add_equation("-dz*rrdu0*A - dz*r**3*u + ru0*dz*A - iRm*r**3*dr(Br) - r**2*iRm*Br - iRm*r**3*dz**2*B + r*iRm*B - 2*xi*(2*1j*Q)*psi = rhs_B22") #checked 7/14/16 - these are all right
         
         bv22.add_equation("dr(psi) - psir = 0")
         bv22.add_equation("dr(psir) - psirr = 0")
@@ -877,6 +877,20 @@ class N3(MRI):
         # (2/beta) (2/r) B2 dz B1
         advective4 = 2*invr*(2/self.beta)*(o2.B20*1j*k*o1.B + o2.B20_star*1j*k*o1.B + o2.B22*(-1j*k)*o1.B_star)
         
+        # diagnostics
+        self.N31_psi_Jacobian1_part1 = Jacobian1_part1.evaluate()
+        self.N31_psi_Jacobian1_part2 = Jacobian1_part2.evaluate()
+        self.N31_psi_Jacobian2_part1 = Jacobian2_part1.evaluate()
+        self.N31_psi_Jacobian2_part2 = Jacobian2_part2.evaluate()
+        self.N31_psi_Jacobian3_part1 = Jacobian3_part1.evaluate()
+        self.N31_psi_Jacobian3_part2 = Jacobian3_part2.evaluate()
+        self.N31_psi_Jacobian4_part1 = Jacobian4_part1.evaluate()
+        self.N31_psi_Jacobian4_part2 = Jacobian4_part2.evaluate()
+        self.N31_psi_advective1 = advective1.evaluate()
+        self.N31_psi_advective2 = advective2.evaluate()
+        self.N31_psi_advective3 = advective3.evaluate()
+        self.N31_psi_advective4 = advective4.evaluate()
+        
         self.N31_psi = (Jacobian1_part1 + Jacobian1_part2 + Jacobian2_part1 + Jacobian2_part2 + Jacobian3_part1 + Jacobian3_part2 
                        + Jacobian4_part1 + Jacobian4_part2 + advective1 + advective2 + advective3 + advective4).evaluate()
                        
@@ -907,6 +921,16 @@ class N3(MRI):
         # - (2/beta)(1/r^2) B2 dz A1
         advective4 = -(2/self.beta)*invr**2*(o2.B20*1j*k*o1.A + o2.B20_star*1j*k*o1.A + o2.B22*(-1j*k)*o1.A_star)
         
+        # diagnostics
+        self.N31_u_Jacobian1 = Jacobian1.evaluate()
+        self.N31_u_Jacobian2 = Jacobian2.evaluate()
+        self.N31_u_Jacobian3 = Jacobian3.evaluate()
+        self.N31_u_Jacobian4 = Jacobian4.evaluate()
+        self.N31_u_advective1 = advective1.evaluate()
+        self.N31_u_advective2 = advective2.evaluate()
+        self.N31_u_advective3 = advective3.evaluate()
+        self.N31_u_advective4 = advective4.evaluate()
+        
         self.N31_u = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4 + advective1 + advective2 + advective3 + advective4).evaluate()
         
         self.N31_u_noadvective = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4).evaluate()
@@ -916,6 +940,9 @@ class N3(MRI):
         
         # -(1/r) J(A2, psi1)
         Jacobian2 = -invr*(-o2.A20_r*1j*k*o1.psi - o2.A20_star_r*1j*k*o1.psi + 2*1j*k*o2.A22*o1.psi_star_r - o2.A22_r*(-1j*k)*o1.psi_star)
+        
+        self.N31_A_Jacobian1 = Jacobian1.evaluate()
+        self.N31_A_Jacobian2 = Jacobian2.evaluate()
         
         self.N31_A = (Jacobian1 + Jacobian2).evaluate()
         
@@ -943,6 +970,16 @@ class N3(MRI):
         # +(1/r^2) u2 partial_z A1
         advective4 = invr**2*(o2.u20*1j*k*o1.A + o2.u20_star*1j*k*o1.A + o2.u22*(-1j*k)*o1.A_star) # fixed sign 7/14/16
         
+        # diagnostics
+        self.N31_B_Jacobian1 = Jacobian1.evaluate()
+        self.N31_B_Jacobian2 = Jacobian2.evaluate()
+        self.N31_B_Jacobian3 = Jacobian3.evaluate()
+        self.N31_B_Jacobian4 = Jacobian4.evaluate()
+        self.N31_B_advective1 = advective1.evaluate()
+        self.N31_B_advective2 = advective2.evaluate()
+        self.N31_B_advective3 = advective3.evaluate()
+        self.N31_B_advective4 = advective4.evaluate()
+        
         self.N31_B = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4 + advective1 + advective2 + advective3 + advective4).evaluate()
         
         self.N31_B_noadvective = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4).evaluate()
@@ -958,7 +995,6 @@ class AmplitudeAlpha(MRI):
     def __init__(self, domain, o1 = None, o2 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
         
         logger.info("initializing Amplitude Alpha")
-        logger.info("Corrected h")
       
         if o1 == None:
             o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
