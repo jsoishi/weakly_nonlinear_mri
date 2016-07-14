@@ -804,11 +804,10 @@ class N3(MRI):
         if o1 == None:
             o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
             MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
-            n2 = N2(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            
         else:
             MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
-            n2 = N2(domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
-
+            
         if ah == None:
             ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
 
