@@ -823,46 +823,58 @@ class N3(MRI):
         
         k = self.Q
         
+        # J(psi1, (1/r^2)del^2 psi2)
         Jacobian1_part1 = ((1j*k*o1.psi)*(-2*invr**3*o2.psi20_rr + invr**2*o2.psi20_rrr - 3*invr**4*o2.psi20_r + invr**3*o2.psi20_rr)
                         + (1j*k*o1.psi)*(-2*invr**3*o2.psi20_star_rr + invr**2*o2.psi20_star_rrr - 3*invr**4*o2.psi20_star_r + invr**3*o2.psi20_star_rr)
                         + (-1j*k*o1.psi_star)*(-2*invr**3*o2.psi22_rr + invr**2*o2.psi22_rrr - 3*invr**4*o2.psi22_r + invr**3*o2.psi22_rr + (2*1j*k)**2*(-2*invr**3*o2.psi22 + invr**2*o2.psi22_r))
-                        + (-2*1j*k*o1.psi_star_r)*(invr**2*o2.psi22_rr + invr**3*o2.psi22_r + (2*1j*k)**2*invr**2*o2.psi22))
+                        + (-2*1j*k*o1.psi_star_r)*(invr**2*o2.psi22_rr + invr**3*o2.psi22_r + (2*1j*k)**2*invr**2*o2.psi22)) # checked
         
+        # J(psi1, (-2/r^3) dr psi2)
         Jacobian1_part2 = ((1j*k*o1.psi)*(6*invr**4*o2.psi20_r - 2*invr**3*o2.psi20_rr) + (1j*k*o1.psi)*(6*invr**4*o2.psi20_star_r - 2*invr**3*o2.psi20_star_rr)
                         + (-1j*k*o1.psi_star)*(6*invr**4*o2.psi22_r - 2*invr**3*o2.psi22_rr) - (o1.psi_star_r)*(2*1j*k*(-2)*invr**2*o2.psi22_r))
         
+        # -(2/beta)J(A1, (1/r^2)del^2 A2)
         Jacobian2_part1 = (-2/self.beta)*((1j*k*o1.A)*(-2*invr**3*o2.A20_rr + invr**2*o2.A20_rrr - 3*invr**4*o2.A20_r + invr**3*o2.A20_rr)
                         + (1j*k*o1.A)*(-2*invr**3*o2.A20_star_rr + invr**2*o2.A20_star_rrr - 3*invr**4*o2.A20_star_r + invr**3*o2.A20_star_rr)
                         + (-1j*k*o1.A_star)*(-2*invr**3*o2.A22_rr + invr**2*o2.A22_rrr - 3*invr**4*o2.A22_r + invr**3*o2.A22_rr + (2*1j*k)**2*(-2*invr**3*o2.A22 + invr**2*o2.A22_r))
                         + (-2*1j*k*o1.A_star_r)*(invr**2*o2.A22_rr + invr**3*o2.A22_r + (2*1j*k)**2*invr**2*o2.A22))
         
+        # -(2/beta) J(A1, -(2/r^3) dr A2)
         Jacobian2_part2 = (-2/self.beta)*((1j*k*o1.A)*(6*invr**4*o2.A20_r - 2*invr**3*o2.A20_rr) + (1j*k*o1.A)*(6*invr**4*o2.A20_star_r - 2*invr**3*o2.A20_star_rr)
                         + (-1j*k*o1.A_star)*(6*invr**4*o2.A22_r - 2*invr**3*o2.A22_rr) - (o1.A_star_r)*(2*1j*k*(-2)*invr**2*o2.A22_r))
         
+        # J(psi2, (1/r^2) del^2 psi1)
         Jacobian3_part1 = (-o2.psi20_r*(1j*k)*(invr**2*o1.psi_rr + invr**2*(1j*k)**2*o1.psi + invr**3*o1.psi_r)
                           -o2.psi20_star_r*(1j*k)*(invr**2*o1.psi_rr + invr**2*(1j*k)**2*o1.psi + invr**3*o1.psi_r)
-                          + (1j*2*k)*o2.psi22*(-2*invr**3*o1.psi_star_rr + invr**2*o1.psi_star_rrr + (-1j*k)**2*(-2*invr**3*o1.psi_star + invr**2*o1.psi_star) - 3*invr**4*o1.psi_star_r + invr**3*o1.psi_star_rr)
+                          + (1j*2*k)*o2.psi22*(-2*invr**3*o1.psi_star_rr + invr**2*o1.psi_star_rrr + (-1j*k)**2*(-2*invr**3*o1.psi_star + invr**2*o1.psi_star_r) - 3*invr**4*o1.psi_star_r + invr**3*o1.psi_star_rr) # added missing derivative 7/14/16
                           - o2.psi22_r*(-1j*k)*(invr**2*o1.psi_star_rr + invr**2*(-1j*k)**2*o1.psi_star + invr**3*o1.psi_star_r))
         
+        # J(psi2, -(2/r^3) dr psi1)
         Jacobian3_part2 = (-o2.psi20_r*(1j*k)*(-2*invr**3*o1.psi_r) - o2.psi20_star_r*(1j*k)*(-2*invr**3*o1.psi_r)
                           + (1j*2*k)*o2.psi22*(6*invr**4*o1.psi_star_r - 2*invr**3*o1.psi_star_rr)
-                          - o2.psi22_r*(1j*k)*(-2*invr**3*o1.psi_star_r))
-                          
+                          - o2.psi22_r*(-1j*k)*(-2*invr**3*o1.psi_star_r)) # added missing negative sign 7/14/15
+        
+        # -(2/beta) J(A2, (1/r^2) del^2 A1)                  
         Jacobian4_part1 = (-2/self.beta)*(-o2.A20_r*(1j*k)*(invr**2*o1.A_rr + invr**2*(1j*k)**2*o1.A + invr**3*o1.A_r)
                           -o2.A20_star_r*(1j*k)*(invr**2*o1.A_rr + invr**2*(1j*k)**2*o1.A + invr**3*o1.A_r)
-                          + (1j*2*k)*o2.A22*(-2*invr**3*o1.A_star_rr + invr**2*o1.A_star_rrr + (-1j*k)**2*(-2*invr**3*o1.A_star + invr**2*o1.A_star) - 3*invr**4*o1.A_star_r + invr**3*o1.A_star_rr)
+                          + (1j*2*k)*o2.A22*(-2*invr**3*o1.A_star_rr + invr**2*o1.A_star_rrr + (-1j*k)**2*(-2*invr**3*o1.A_star + invr**2*o1.A_star_r) - 3*invr**4*o1.A_star_r + invr**3*o1.A_star_rr)  # added missing derivative 7/14/16
                           - o2.A22_r*(-1j*k)*(invr**2*o1.A_star_rr + invr**2*(-1j*k)**2*o1.A_star + invr**3*o1.A_star_r))
         
+        # -(2/beta) J(A2, -(2/r^3) dr A1)
         Jacobian4_part2 = (-2/self.beta)*(-o2.A20_r*(1j*k)*(-2*invr**3*o1.A_r) - o2.A20_star_r*(1j*k)*(-2*invr**3*o1.A_r)
                           + (1j*2*k)*o2.A22*(6*invr**4*o1.A_star_r - 2*invr**3*o1.A_star_rr)
-                          - o2.A22_r*(1j*k)*(-2*invr**3*o1.A_star_r))
+                          - o2.A22_r*(-1j*k)*(-2*invr**3*o1.A_star_r)) # added missing negative sign 7/14/15
         
+        # -(2/r) u1 dz u2 
         advective1 = -2*invr*o1.u_star*2*1j*k*o2.u22
         
+        # -(2/r) u2 dz u1
         advective2 = -2*invr*(o2.u20*1j*k*o1.u + o2.u20_star*1j*k*o1.u + o2.u22*(-1j*k)*o1.u_star)
         
+        # (2/beta) (2/r) B1 dz B2
         advective3 = 2*invr*(2/self.beta)*o1.B_star*2*1j*k*o2.B22
         
+        # (2/beta) (2/r) B2 dz B1
         advective4 = 2*invr*(2/self.beta)*(o2.B20*1j*k*o1.B + o2.B20_star*1j*k*o1.B + o2.B22*(-1j*k)*o1.B_star)
         
         self.N31_psi = (Jacobian1_part1 + Jacobian1_part2 + Jacobian2_part1 + Jacobian2_part2 + Jacobian3_part1 + Jacobian3_part2 
