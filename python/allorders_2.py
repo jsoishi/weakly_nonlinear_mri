@@ -451,7 +451,7 @@ class OrderE2(MRI):
     
     """
     
-    def __init__(self, domain, o1 = None, ah = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, domain, o1 = None, ah = None, n2 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
     
         logger.info("initializing Order E2")
         
@@ -461,7 +461,7 @@ class OrderE2(MRI):
             n2 = N2(domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
         else:
             MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
-            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
+            #n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, q = o1.q, beta = o1.beta, norm = o1.norm)
         
         self.o1 = o1
         self.n2 = n2
@@ -838,7 +838,7 @@ class AmplitudeAlpha(MRI):
 
         ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         if o2 == None:
-            o2 = OrderE2(domain, o1 = o1, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
+            o2 = OrderE2(domain, o1 = o1, ah=ah, n2=n2, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
         
         n3 = N3(domain, o1 = o1, o2 = o2, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
 
@@ -948,14 +948,14 @@ class AmplitudeAlpha(MRI):
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
         
         # c = <va . N31*>
-        self.c = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
+        self.c = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
         
         # ctwiddle = < va . N31_twiddle_star >. Should be zero.
         self.ctwiddle = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [allzeros, c_twiddle_u_rhs, allzeros, c_twiddle_B_rhs])
         
         # b = < va . (X v11)* > :: in new terminology, b = < va . (Gtwiddle v11)* >
         #self.b = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, o1.B, o1.psi, o1.u])
-        self.b = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
+        self.b = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
   
         # h = < va . (L2twiddle v11 + L1twiddle v21)* >
         self.h = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [l2twiddlel1twiddle_psi, l2twiddlel1twiddle_u, l2twiddlel1twiddle_A, l2twiddlel1twiddle_B])
