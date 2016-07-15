@@ -11,13 +11,19 @@ import h5py
 # Rm = 4.876
 # Pm = 5e-4
 
-Q = 0.7470
-Rm = 4.879
-Pm = 1e-3
+#Q = 0.7470
+#Rm = 4.879
+#Pm = 1E-2#1e-3
+
+tgc = h5py.File('/Users/susanclark/weakly_nonlinear_mri/data/pm_sat_coeffs.h5', 'r')
+Pm = tgc['Pm'].value[0]
+Rm = tgc['Rm_c'].value[0]
+Q = tgc['Q_c'].value[0]
+
 q = 1.5
 beta = 25.0
 
-gridnum = 50
+gridnum = 128
 x_basis = de.Chebyshev('x',gridnum, interval=(0, 1))
 domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)
