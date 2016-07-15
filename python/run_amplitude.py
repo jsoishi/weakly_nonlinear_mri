@@ -18,7 +18,7 @@ q = 1.5
 beta = 25.0
 
 gridnum = 50
-x_basis = de.Chebyshev('x',gridnum)
+x_basis = de.Chebyshev('x',gridnum, interval=(0, 1))
 domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)
 
