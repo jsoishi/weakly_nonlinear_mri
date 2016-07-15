@@ -16,23 +16,26 @@ import h5py
 #Pm = 1E-2#1e-3
 
 tgc = h5py.File('/Users/susanclark/weakly_nonlinear_mri/data/pm_sat_coeffs.h5', 'r')
-Pm = tgc['Pm'].value[0]
-Rm = tgc['Rm_c'].value[0]
-Q = tgc['Q_c'].value[0]
+Pm = tgc['Pm'].value[0].real
+Rm = tgc['Rm_c'].value[0].real
+Q = tgc['Q_c'].value[0].real
 
 q = 1.5
 beta = 25.0
 
 gridnum = 128
-x_basis = de.Chebyshev('x',gridnum, interval=(0, 1))
+x_basis = de.Chebyshev('x',gridnum)
 domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)
+
+fn_root = "../data/"
+fn = fn_root + "thingap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_q_{:02.1f}_beta_{:.2f}_gridnum_{}.h5".format(Q, Rm, Pm, q, beta, gridnum)
+
+print(fn)
 
 aa = AmplitudeAlpha(domain,Q = Q,Rm = Rm, Pm = Pm, q=q, beta=beta)
 aa.print_coeffs()
 
-fn_root = "../data/"
-fn = fn_root + "thingap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_q_{:02.1f}_beta_{:.2f}_gridnum_{}.h5".format(Q, Rm, Pm, q, beta, gridnum)
 with h5py.File(fn,'w') as f:
     x = f.create_dataset("x", data=aa.x)
     o1psi = f.create_dataset("psi11", data=aa.o1.psi['g'])

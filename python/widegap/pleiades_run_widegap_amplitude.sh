@@ -13,5 +13,5 @@ source /u/sclark9/dedalus/bin/activate
 export PYTHONPATH=$PYTHONPATH:$HOME/eigentools
 export MPLBACKEND='Agg'
 date
-mpiexec_mpt -np 24 python3 $dedalus_script.py
+mpiexec_mpt -np 20 python3 $dedalus_script.py
 date
