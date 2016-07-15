@@ -2,6 +2,7 @@ import dedalus.public as de
 import numpy as np
 from mpi4py import MPI
 from allorders_2 import AmplitudeAlpha
+import h5py
 
 # Q = 0.74955
 # Rm = 4.898
@@ -14,16 +15,17 @@ Q = 0.7470
 Rm = 4.879
 Pm = 1e-3
 q = 1.5
+beta = 25.0
 
 gridnum = 50
 x_basis = de.Chebyshev('x',gridnum)
 domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)
 
-aa = AmplitudeAlpha(domain,Q = Q,Rm = Rm, Pm = Pm, q=q)
+aa = AmplitudeAlpha(domain,Q = Q,Rm = Rm, Pm = Pm, q=q, beta=beta)
 aa.print_coeffs()
 
-fn_root = "../../data/"
+fn_root = "../data/"
 fn = fn_root + "thingap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_q_{:02.1f}_beta_{:.2f}_gridnum_{}.h5".format(Q, Rm, Pm, q, beta, gridnum)
 with h5py.File(fn,'w') as f:
     x = f.create_dataset("x", data=aa.x)
