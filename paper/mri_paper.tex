@@ -532,17 +532,23 @@ From the behavior of the second order velocity perturbations (Figure \ref{stress
 \begin{figure*}
 \centering
 \includegraphics[trim=6cm 4cm 6cm 3cm, scale=0.5]{stress_uy_cuts.pdf}
-\caption{(Placeholder) The total stress (left) and vertical cuts of the azimuthal velocity perturbations (right). The $u_y$ perturbations shown are first order (purple), second order (orange), and total (black). The blue shaded area represents the region where the second order and total perturbations are opposing the background shear because they are negative, and the red shaded region indicates where the second order and total perturbations are opposing the background shear because they are positive.}\label{allorders_velocity}
+\caption{(Placeholder) The total stress (left) and vertical cuts of the azimuthal velocity perturbations (right). The $u_y$ perturbations shown are first order (purple), second order (orange), and total (black). The blue shaded area represents the region where the second order and total perturbations are opposing the background shear because they are negative, and the red shaded region indicates where the second order and total perturbations are opposing the background shear because they are positive.}
 \label{stress_uy_cuts}
 \end{figure*}
 
 \section{Parameter Space}\label{sec:pspace}
 
-We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. Because we solve spectrally in only one dimension, rather than in two or three, our analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of $10^{-6}$ or lower.
+We conduct a full study of the MRI parameter space, focused on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. Because we solve spectrally in only one dimension, rather than in two or three, our analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of $10^{-6}$ or lower.
 
 \section{Simulations}
 
 We compute the solutions to our derived equations pseudospectrally, using Dedalus. One advantage to using Dedalus for these computations is that the code can compute the evolution of the fully nonlinear MRI system on the same Fourier/Chebyshev grid. This allows us to directly compare simulation and theory. 
+
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{../figures/final_slice_MRI_run_Rm5_00e+01_eps0_00e+00_Pm1_00e-03_beta2_50e+01_Q7_50e-01_qsh1_50e+00_Omega1_00e+00_nx256_nz256_Lz10_CFL.pdf}
+\caption{The final timestamp of each simulation.}\label{fig:final_slices}
+\end{figure*}
 
 
 \section{Discussion}\label{discussion}
