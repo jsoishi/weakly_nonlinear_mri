@@ -15,10 +15,12 @@ import h5py
 #Rm = 4.879
 #Pm = 1E-2#1e-3
 
+# indx = 0 : Pm = 1E-4
 tgc = h5py.File('/Users/susanclark/weakly_nonlinear_mri/data/pm_sat_coeffs.h5', 'r')
-Pm = tgc['Pm'].value[0].real
-Rm = tgc['Rm_c'].value[0].real
-Q = tgc['Q_c'].value[0].real
+indx = -1
+Pm = tgc['Pm'].value[indx].real
+Rm = tgc['Rm_c'].value[indx].real
+Q = tgc['Q_c'].value[indx].real
 
 q = 1.5
 beta = 25.0
