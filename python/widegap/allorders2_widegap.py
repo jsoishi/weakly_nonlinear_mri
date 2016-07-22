@@ -479,9 +479,9 @@ class N2(MRI):
         self.N20_psi.name = "N20_psi"
         
         # Note: doesn't matter which of (psi1, psi1) is chosen to be psi1_star -- here i am using opposite from above
-        N20_psi_r4 = ((1j*Q*o1.psi_star)*(-2*rfield*o1.psi_rr + rfield**2*o1.psi_rrr - 2*rfield*(1j*Q)**2*o1.psi + rfield**2*(1j*Q)**2*o1.psi_r - 3*o1.psi_r + rfield*o1.psi_r + 6*o1.psi_r - 2*rfield*o1.psi_r)
+        N20_psi_r4 = ((-1j*Q*o1.psi_star)*(-2*rfield*o1.psi_rr + rfield**2*o1.psi_rrr - 2*rfield*(1j*Q)**2*o1.psi + rfield**2*(1j*Q)**2*o1.psi_r - 3*o1.psi_r + rfield*o1.psi_r + 6*o1.psi_r - 2*rfield*o1.psi_r)
                                 - o1.psi_star_r*(1j*Q)*(rfield**2*o1.psi_rr + rfield**2*(1j*Q)**2*o1.psi + rfield*o1.psi_r - 2*rfield*o1.psi_r))
-                        -(2/beta)*((1j*Q*o1.A_star)*(-2*rfield*o1.A_rr + rfield**2*o1.A_rrr - 2*rfield*(1j*Q)**2*o1.A + rfield**2*(1j*Q)**2*o1.A_r - 3*o1.A_r + rfield*o1.A_r + 6*o1.A_r - 2*rfield*o1.A_r)
+                        -(2/beta)*((-1j*Q*o1.A_star)*(-2*rfield*o1.A_rr + rfield**2*o1.A_rrr - 2*rfield*(1j*Q)**2*o1.A + rfield**2*(1j*Q)**2*o1.A_r - 3*o1.A_r + rfield*o1.A_r + 6*o1.A_r - 2*rfield*o1.A_r)
                                 - o1.A_star_r*(1j*Q)*(rfield**2*o1.A_rr + rfield**2*(1j*Q)**2*o1.A + rfield*o1.A_r - 2*rfield*o1.A_r))
                                 -2*rfield**2*o1.u*(1j*Q)*o1.u_star + (2/beta)*2*rfield**3*o1.B*(1j*Q)*o1.B_star
         self.N20_psi_r4 = N20_psi_r4.evaluate()
@@ -492,10 +492,18 @@ class N2(MRI):
         self.N22_u = (N22_u_jacobians + N22_u_advectives).evaluate()
         self.N22_u.name = "N22_u"
         
+        N22_u_r2 = rfield*(1j*Q*o1.psi*o1.u_r - 1j*Q*o1.u*o1.psi_r) - rfield*(2/beta)*(1j*Q*o1.A*o1.B_r - 1j*Q*o1.B*o1.A_r) + o1.u*(1j*Q)*o1.psi - (2/beta)*o1.B*(1j*Q)*o1.A
+        N22_u_r2 = N22_u_r2.evaluate()
+        N22_u_r2.name = "N22_u_r2"
+        
         N20_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_star_r - (-1j*Q*o1.u_star)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_star_r - (-1j*Q*o1.B_star)*o1.A_r)))
         N20_u_advectives = ((1/rfield**2)*o1.u*(-1j*Q)*o1.psi_star - (2/beta)*(1/rfield**2)*o1.B*(-1j*Q)*o1.A_star)
         self.N20_u = (N20_u_jacobians + N20_u_advectives).evaluate()
         self.N20_u.name = "N20_u"
+        
+        N20_u_r2 = rfield*(1j*Q*o1.psi*o1.u_star_r - -1j*Q*o1.u_star*o1.psi_r) - rfield*(2/beta)*(1j*Q*o1.A*o1.B_star_r - -1j*Q*o1.B_star*o1.A_r) + o1.u*(-1j*Q)*o1.psi_star - (2/beta)*o1.B*(-1j*Q)*o1.A_star
+        N20_u_r2 = N22_u_r2.evaluate()
+        N20_u_r2.name = "N20_u_r2"
                 
         N22_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_r - (1j*Q*o1.A)*o1.psi_r) # correct - checked 7/13/16
         self.N22_A = N22_A.evaluate()
