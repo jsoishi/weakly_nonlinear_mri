@@ -493,8 +493,8 @@ class N2(MRI):
         self.N22_u.name = "N22_u"
         
         N22_u_r3 = rfield**2*(1j*Q*o1.psi*o1.u_r - 1j*Q*o1.u*o1.psi_r) - rfield**2*(2/beta)*(1j*Q*o1.A*o1.B_r - 1j*Q*o1.B*o1.A_r) + rfield*o1.u*(1j*Q)*o1.psi - rfield*(2/beta)*o1.B*(1j*Q)*o1.A
-        N22_u_r3 = N22_u_r3.evaluate()
-        N22_u_r3.name = "N22_u_r3"
+        self.N22_u_r3 = N22_u_r3.evaluate()
+        self.N22_u_r3.name = "N22_u_r3"
         
         N20_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_star_r - (-1j*Q*o1.u_star)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_star_r - (-1j*Q*o1.B_star)*o1.A_r)))
         N20_u_advectives = ((1/rfield**2)*o1.u*(-1j*Q)*o1.psi_star - (2/beta)*(1/rfield**2)*o1.B*(-1j*Q)*o1.A_star)
@@ -502,8 +502,8 @@ class N2(MRI):
         self.N20_u.name = "N20_u"
         
         N20_u_r2 = rfield*(1j*Q*o1.psi*o1.u_star_r - -1j*Q*o1.u_star*o1.psi_r) - rfield*(2/beta)*(1j*Q*o1.A*o1.B_star_r - -1j*Q*o1.B_star*o1.A_r) + o1.u*(-1j*Q)*o1.psi_star - (2/beta)*o1.B*(-1j*Q)*o1.A_star
-        N20_u_r2 = N20_u_r2.evaluate()
-        N20_u_r2.name = "N20_u_r2"
+        self.N20_u_r2 = N20_u_r2.evaluate()
+        self.N20_u_r2.name = "N20_u_r2"
                 
         N22_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_r - (1j*Q*o1.A)*o1.psi_r) # correct - checked 7/13/16
         self.N22_A = N22_A.evaluate()
@@ -594,8 +594,8 @@ class OrderE2(MRI):
     
         self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
         self.rhs_u20 = (-n2.N20_u_r2 - N20_u_r2_cc).evaluate()
-        self.rhs_A20 = (-n2.N20_r_A - N20_A_r_cc).evaluate()
-        self.rhs_B20 = (-n2.N20_r2_B - N20_B_r2_cc).evaluate()
+        self.rhs_A20 = (-n2.N20_A_r - N20_A_r_cc).evaluate()
+        self.rhs_B20 = (-n2.N20_B_r2 - N20_B_r2_cc).evaluate()
     
         # V20 equations are separable because dz terms -> 0, but we'll solve them coupled anyway.
         bv20 = de.LBVP(self.domain,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
@@ -744,7 +744,7 @@ class OrderE2(MRI):
         bv22.parameters['rhs_psi22'] = (-n2.N22_psi_r4).evaluate()
         bv22.parameters['rhs_u22'] = (-n2.N22_u_r3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
         bv22.parameters['rhs_A22'] = (-n2.N22_A_r).evaluate()
-        bv22.parameters['rhs_B22'] = (-n2.N2_B_r3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
+        bv22.parameters['rhs_B22'] = (-n2.N22_B_r3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
         
         # parameters
         bv22.parameters['Q'] = self.Q
