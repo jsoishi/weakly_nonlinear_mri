@@ -1,9 +1,9 @@
 #PBS -S /bin/bash
 #PBS -N Widegap_Amplitude
 #PBS -l select=2:ncpus=10:mpiprocs=10:model=has
-#PBS -l walltime=80:00:00
+#PBS -l walltime=08:00:00
 #PBS -j oe
-#PBS -q long
+#PBS -q normal
 
 dedalus_script=run_widegap_amplitude
 
