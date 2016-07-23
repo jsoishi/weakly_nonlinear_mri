@@ -4,7 +4,14 @@ import dedalus.public as de
 from eigentools import Eigenproblem
 import random
 
+#import logging
+#logger = logging.getLogger(__name__)
+
 import logging
+root = logging.root
+for h in root.handlers:
+    h.setLevel("DEBUG")
+    
 logger = logging.getLogger(__name__)
 
 
@@ -469,7 +476,18 @@ class N2(MRI):
                         -2*rfield**2*o1.u*(1j*Q)*o1.u + (2/beta)*2*rfield**3*o1.B*(1j*Q)*o1.B)
         self.N22_psi_r4 = N22_psi_r4.evaluate()
         self.N22_psi_r4.name = "N22_psi_r4"
-    
+        
+        N22_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(1j*Q)*o1.psi + rfield**2*(1j*Q)*o1.psi*(1j*Q)**2*o1.psi_r - rfield**2*o1.psi_r*(1j*Q)**3*o1.psi
+                               + 3*(1j*Q)*o1.psi*o1.psi_r + rfield*(1j*Q)*o1.psi_r*o1.psi_r - 3*rfield*(1j*Q)*o1.psi*o1.psi_rr 
+                               + rfield**2*(1j*Q)*o1.psi*o1.psi_rrr - rfield**2*o1.psi_r*(1j*Q)*o1.psi_rr
+                               - 2*rfield**3*o1.u*(1j*Q)*o1.u)
+                               - (2/beta)*(-2*rfield*(1j*Q)**2*o1.A*(1j*Q)*o1.A + rfield**2*(1j*Q)*o1.A*(1j*Q)**2*o1.A_r - rfield**2*o1.A_r*(1j*Q)**3*o1.A
+                               + 3*(1j*Q)*o1.A*o1.A_r + rfield*(1j*Q)*o1.A_r*o1.A_r - 3*rfield*(1j*Q)*o1.A*o1.A_rr 
+                               + rfield**2*(1j*Q)*o1.A*o1.A_rrr - rfield**2*o1.A_r*(1j*Q)*o1.A_rr
+                               - 2*rfield**3*o1.B*(1j*Q)*o1.B))
+        self.N22_psi_r4_rederived = N22_psi_r4_rederived.evaluate()
+        self.N22_psi_r4_rederived.name = "N22_psi_r4_rederived"
+                               
         N20_psi_jacobians = ((1j*Q*o1.psi)*((1/rfield**2)*((-1j*Q)**2)*o1.psi_star_r - (3/rfield**3)*o1.psi_star_rr + (1/rfield**2)*o1.psi_star_rrr - (2/rfield**3)*((-1j*Q)**2)*o1.psi_star + (3/rfield**4)*o1.psi_star_r)
                 - (o1.psi_r)*((1/rfield**2)*(-1j*Q)*o1.psi_star_rr - (1/rfield**3)*(-1j*Q)*o1.psi_star_r + (1/rfield**2)*(-1j*Q)**3*o1.psi_star)
                 - (2/beta)*((1j*Q*o1.A)*((1/rfield**2)*((-1j*Q)**2)*o1.A_star_r - (3/rfield**3)*o1.A_star_rr + (1/rfield**2)*o1.A_star_rrr - (2/rfield**3)*((-1j*Q)**2)*o1.A_star + (3/rfield**4)*o1.A_star_r)
@@ -653,8 +671,9 @@ class OrderE2(MRI):
         self.rhs_B21 = rhs_B21.evaluate()
         
         # These RHS terms must satisfy the solvability condition <V^dagger | RHS> = 0. Test that:
-        if ah == False:
-            self.ah = AdjointHomogenous(o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
+        if ah == None:
+            self.ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
+            ah = self.ah
         else:
             self.ah = ah
         
@@ -957,6 +976,27 @@ class N3(MRI):
                        
         self.N31_psi_noadvective = (Jacobian1_part1 + Jacobian1_part2 + Jacobian2_part1 + Jacobian2_part2 + Jacobian3_part1 + Jacobian3_part2 
                        + Jacobian4_part1 + Jacobian4_part2).evaluate()
+                       
+        # re-derivation, N31_psi
+        n31_psi_psi11_dot_psi20 = (3*invr**4*(1j*Q)*o1.psi*o2.psi20_r + invr**3*(1j*Q)*o1.psi_r*o2.psi20_r - 3*invr**3*(1j*Q)*o1.psi*o2.psi20_rr
+                                 + invr**2*(1j*Q)*o1.psi*o2.psi20_rrr)
+        n31_psi_psi11_dot_psi20_star = (3*invr**4*(1j*Q)*o1.psi*o2.psi20_star_r + invr**3*(1j*Q)*o1.psi_r*o2.psi20_star_r - 3*invr**3*(1j*Q)*o1.psi*o2.psi20_star_rr
+                                 + invr**2*(1j*Q)*o1.psi*o2.psi20_star_rrr)
+        n31_psi_psi11_star_dot_psi22 = (-2*invr**3*(-1j*Q)**2*o1.psi_star*(2*1j*Q)*o2.psi22 + invr**2*(-1j*Q)*o1.psi_star*(2*1j*Q)**2*o2.psi22_r - invr**2*o1.psi_star_r*(2*1j*Q)**3*o2.psi22
+                                        + 3*invr**4*(-1j*Q)*o1.psi_star*o2.psi22_r + invr**3*(-1j*Q)*o1.psi_star_r*o2.psi22_r - 3*invr**3*(-1j*Q)*o1.psi_star*o2.psi22_rr
+                                        + invr**2*(-1j*Q)*o1.psi_star*o2.psi22_rrr - invr**2*o1.psi_star_r*(2*1j*Q)*o2.psi22_rr 
+                                        - 2*invr*o1.u_star*(2*1j*Q)*o2.u22)
+        n31_psi_psi20_dot_psi11 = (-invr**2*o2.psi20_r*(1j*Q)**3*o1.psi - invr**2*o2.psi20_r*(1j*Q)*o1.psi_rr
+                                   - 2*invr*o2.u20*(1j*Q)*o1.u)
+        n31_psi_psi20_star_dot_psi11 = (-invr**2*o2.psi20_star_r*(1j*Q)**3*o1.psi - invr**2*o2.psi20_star_r*(1j*Q)*o1.psi_rr
+                                   - 2*invr*o2.u20_star*(1j*Q)*o1.u)
+        n31_psi_psi22_dot_psi11_star = (-2*invr**3*(2*1j*Q)**2*o2.psi22*(-1j*Q)*o1.psi_star + invr**2*(2*1j*Q)*o2.psi22*(-1j*Q)**2*o1.psi_star_r - invr**2*o2.psi22_r*(-1j*Q)**3*o1.psi_star
+                                        + 3*invr**4*(2*1j*Q)*o2.psi22*o1.psi_star_r + invr**3*(2*1j*Q)*o2.psi22_r*o1.psi_star_r - 3*invr**3*(2*1j*Q)*o2.psi22*o1.psi_star_rr
+                                        + invr**2*(2*1j*Q)*o2.psi22*o1.psi_star_rrr - invr**2*o2.psi22_r*(-1j*Q)*o1.psi_star_rr 
+                                        - 2*invr*o2.u22*(-1j*Q)*o1.u_star)
+        self.N31_psi = (n31_psi_psi11_dot_psi20 + n31_psi_psi11_dot_psi20_star + n31_psi_psi11_star_dot_psi22
+                + n31_psi_psi20_dot_psi11 + n31_psi_psi20_star_dot_psi11 + n31_psi_psi22_dot_psi11_star).evaluate()
+        
         
         # (1/r) J(psi1, u2)               
         Jacobian1 = invr*(1j*k*o1.psi*(o2.u20_r + o2.u20_star_r) + (-1j*k)*o1.psi_star*o2.u22_r - o1.psi_star_r*(2*1j*k)*o2.u22)
