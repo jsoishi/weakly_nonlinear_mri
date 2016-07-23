@@ -496,6 +496,31 @@ class N2(MRI):
         self.N20_psi = (N20_psi_jacobians + N20_psi_advectives).evaluate()
         self.N20_psi.name = "N20_psi"
         
+        # explicitly include (psi1, psi1star) and (psi1star, psi1)
+        N20_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(-1j*Q)*o1.psi_star + rfield**2*(1j*Q)*o1.psi*(-1*Q)**2*o1.psi_star_r
+                               - rfield**2*o1.psi_star_r*(-1j*Q)**3*o1.psi_star + 3*(1j*Q)*o1.psi*o1.psi_star_r
+                               + rfield*(-1j*Q)*o1.psi_r*o1.psi_star_r - 3*rfield*(1j*Q)*o1.psi*o1.psi_star_rr
+                               + rfield**2*(1j*Q)*o1.psi*o1.psi_star_rrr - rfield**2*o1.psi_r*(-1j*Q)*o1.psi_star_rr
+                               + 2*rfield**3*1j*Q*o1.u*o1.u_star
+                               - 2*rfield*(-1j*Q)**2*o1.psi_star*(1j*Q)*o1.psi + rfield**2*(-1j*Q)*o1.psi_star*(1j*Q)**2*o1.psi_r
+                               - rfield**2*o1.psi_star_r*(1j*Q)**3*o1.psi + 3*(-1j*Q)*o1.psi_star*o1.psi_r
+                               + rfield*(-1j*Q)*o1.psi_star_r*o1.psi_r - 3*rfield*(-1j*Q)*o1.psi_star*o1.psi_rr
+                               + rfield**2*(-1j*Q)*o1.psi_star*o1.psi_rrr - rfield**2*o1.psi_star_r*(1j*Q)*o1.psi_rr
+                               - 2*rfield**3*1j*Q*o1.u*o1.u_star)
+                   - (2/beta)*(-2*rfield*(1j*Q)**2*o1.A*(-1j*Q)*o1.A_star + rfield**2*(1j*Q)*o1.A*(-1*Q)**2*o1.A_star_r
+                               - rfield**2*o1.A_star_r*(-1j*Q)**3*o1.A_star + 3*(1j*Q)*o1.A*o1.A_star_r
+                               + rfield*(-1j*Q)*o1.A_r*o1.A_star_r - 3*rfield*(1j*Q)*o1.A*o1.A_star_rr
+                               + rfield**2*(1j*Q)*o1.A*o1.A_star_rrr - rfield**2*o1.A_r*(-1j*Q)*o1.A_star_rr
+                               + 2*rfield**3*1j*Q*o1.B*o1.B_star
+                               - 2*rfield*(-1j*Q)**2*o1.A_star*(1j*Q)*o1.A + rfield**2*(-1j*Q)*o1.A_star*(1j*Q)**2*o1.A_r
+                               - rfield**2*o1.A_star_r*(1j*Q)**3*o1.A + 3*(-1j*Q)*o1.A_star*o1.A_r
+                               + rfield*(-1j*Q)*o1.A_star_r*o1.A_r - 3*rfield*(-1j*Q)*o1.A_star*o1.A_rr
+                               + rfield**2*(-1j*Q)*o1.A_star*o1.A_rrr - rfield**2*o1.A_star_r*(1j*Q)*o1.A_rr
+                               - 2*rfield**3*1j*Q*o1.B*o1.B_star))
+                               
+        self.N20_psi_r4_rederived = N20_psi_r4_rederived.evaluate()
+        self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
+        
         # Note: doesn't matter which of (psi1, psi1) is chosen to be psi1_star -- here i am using opposite from above
         N20_psi_r4 = (((-1j*Q*o1.psi_star)*(-2*rfield*o1.psi_rr + rfield**2*o1.psi_rrr - 2*rfield*(1j*Q)**2*o1.psi + rfield**2*(1j*Q)**2*o1.psi_r - 3*o1.psi_r + rfield*o1.psi_r + 6*o1.psi_r - 2*rfield*o1.psi_r)
                         - o1.psi_star_r*(1j*Q)*(rfield**2*o1.psi_rr + rfield**2*(1j*Q)**2*o1.psi + rfield*o1.psi_r - 2*rfield*o1.psi_r))
@@ -504,6 +529,9 @@ class N2(MRI):
                         -2*rfield**2*o1.u*(1j*Q)*o1.u_star + (2/beta)*2*rfield**3*o1.B*(1j*Q)*o1.B_star)
         self.N20_psi_r4 = N20_psi_r4.evaluate()
         self.N20_psi_r4.name = "N20_psi_r4"
+        
+        print("N20 psi r4 + cc:", self.N20_psi_r4['g'] + self.N20_psi_r4['g'].conj())
+        print("rederived:", self.N20_psi_r4_rederived['g'])
         
         N22_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_r - (1j*Q*o1.u)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_r - (1j*Q*o1.B)*o1.A_r)))
         N22_u_advectives = ((1/rfield**2)*o1.u*1j*Q*o1.psi - (2/beta)*(1/rfield**2)*o1.B*1j*Q*o1.A)
@@ -522,6 +550,13 @@ class N2(MRI):
         N20_u_r2 = rfield*(1j*Q*o1.psi*o1.u_star_r - -1j*Q*o1.u_star*o1.psi_r) - rfield*(2/beta)*(1j*Q*o1.A*o1.B_star_r - -1j*Q*o1.B_star*o1.A_r) + o1.u*(-1j*Q)*o1.psi_star - (2/beta)*o1.B*(-1j*Q)*o1.A_star
         self.N20_u_r2 = N20_u_r2.evaluate()
         self.N20_u_r2.name = "N20_u_r2"
+        
+        N20_u_r2_rederived = (rfield*(1j*Q)*o1.psi*o1.psi_star_r - rfield*(-1j*Q)*o1.u_star*o1.psi_r + o1.u*(-1j*Q)*o1.psi_star
+                            - rfield*(2/beta)*o1.A*o1.B_star_r - -rfield*(2/beta)*(-1j*Q)*o1.B_star*o1.A_r - (2/beta)*o1.B*(-1j*Q)*o1.A_star
+                            + rfield*(1j*Q)*o1.psi_star*o1.u_r - rfield*(1j*Q)*o1.u*o1.psi_star_r + o1.u_star*(1j*Q)*o1.psi
+                            - rfield*(2/beta)*(-1j*Q)*o1.A_star*o1.B_r - -rfield*(2/beta)*(1j*Q)*o1.B*o1.A_star_r - (2/beta)*o1.B_star*(1j*Q)*o1.A)
+        self.N20_u_r2_rederived = N20_u_r2_rederived.evaluate()
+        self.N20_u_r2_rederived.name = "N20_u_r2_rederived"
                 
         N22_A = (1/rfield)*((1j*Q*o1.psi)*o1.A_r - (1j*Q*o1.A)*o1.psi_r) # correct - checked 7/13/16
         self.N22_A = N22_A.evaluate()
@@ -538,6 +573,10 @@ class N2(MRI):
         N20_A_r = 1j*Q*o1.psi*o1.A_star_r - -1j*Q*o1.A_star*o1.psi_r
         self.N20_A_r = N20_A_r.evaluate()
         self.N20_A_r.name = "N20_A_r"
+        
+        N20_A_r_rederived = (-(1j*Q)*o1.A*o1.psi_star_r + (-1j*Q)*o1.psi_star*o1.A_r - (-1j*Q)*o1.A_star*o1.psi_r + (1j*Q)*o1.psi*o1.A_star_r)
+        self.N20_A_r_rederived = N20_A_r_rederived.evaluate()
+        self.N20_A_r_rederived.name = "N20_A_r_rederived"
         
         N22_B_jacobians = ((1/rfield)*((1j*Q*o1.u)*o1.A_r - (1j*Q*o1.A)*o1.u_r) + (1/rfield)*((1j*Q*o1.psi)*o1.B_r - (1j*Q*o1.B)*o1.psi_r))
         N22_B_advectives = (-(1/rfield**2)*o1.B*(1j*Q)*o1.psi + (1/rfield**2)*o1.u*(1j*Q)*o1.A)
@@ -556,6 +595,13 @@ class N2(MRI):
         N20_B_r2 = rfield*(1j*Q*o1.u*o1.A_star_r - -1j*Q*o1.A_star*o1.u_r) - rfield*(1j*Q*o1.B*o1.psi_star_r - -1j*Q*o1.psi_star*o1.B_r) + o1.u*1j*Q*o1.A_star - o1.B*1j*Q*o1.psi_star
         self.N20_B_r2 = N20_B_r2.evaluate()
         self.N20_B_r2.name = "N20_B_r2"
+        
+        N20_B_r2_rederived = (-rfield*(1j*Q)*o1.A*o1.u_star_r + rfield*(-1j*Q)*o1.u_star*o1.A_r - rfield*(-1j*Q)*o1.A*o1.u_r + rfield*(1j*Q)*o1.u*o1.A_star_r
+                             -rfield*(1j*Q)*o1.B*o1.psi_star_r + rfield*(-1j*Q)*o1.psi_star*o1.B_r - rfield*(-1j*Q)*o1.B_star*o1.psi_r + rfield*(1j*Q)*o1.psi*o1.B_star_r
+                             - o1.B*(-1j*Q)*o1.psi_star - o1.B_star*(1j*Q)*o1.psi
+                             + o1.u*(-1j*Q)*o1.A_star + o1.u_star*(1j*Q)*o1.A)
+        self.N20_B_r2_rederived = N20_B_r2_rederived.evaluate()
+        self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
         
 class OrderE2(MRI):
 
@@ -610,10 +656,16 @@ class OrderE2(MRI):
         #self.rhs_A20 = ((-n2.N20_A - N20_A_cc)*rfield).evaluate()
         #self.rhs_B20 = ((-n2.N20_B - N20_B_cc)*rfield**2).evaluate()
     
-        self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
-        self.rhs_u20 = (-n2.N20_u_r2 - N20_u_r2_cc).evaluate()
-        self.rhs_A20 = (-n2.N20_A_r - N20_A_r_cc).evaluate()
-        self.rhs_B20 = (-n2.N20_B_r2 - N20_B_r2_cc).evaluate()
+        #self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
+        #self.rhs_u20 = (-n2.N20_u_r2 - N20_u_r2_cc).evaluate()
+        #self.rhs_A20 = (-n2.N20_A_r - N20_A_r_cc).evaluate()
+        #self.rhs_B20 = (-n2.N20_B_r2 - N20_B_r2_cc).evaluate()
+        
+        self.rhs_psi20 = (-n2.N20_psi_r4_rederived).evaluate() # trying explicit "cc" term included 
+        self.rhs_u20 = (-n2.N20_u_r2_rederived).evaluate()
+        self.rhs_A20 = (-n2.N20_A_r_rederived).evaluate()
+        self.rhs_B20 = (-n2.N20_B_r2_rederived).evaluate()
+    
     
         # V20 equations are separable because dz terms -> 0, but we'll solve them coupled anyway.
         bv20 = de.LBVP(self.domain,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
@@ -978,6 +1030,7 @@ class N3(MRI):
                        + Jacobian4_part1 + Jacobian4_part2).evaluate()
                        
         # re-derivation, N31_psi
+        # u dot del u
         n31_psi_psi11_dot_psi20 = (3*invr**4*(1j*Q)*o1.psi*o2.psi20_r + invr**3*(1j*Q)*o1.psi_r*o2.psi20_r - 3*invr**3*(1j*Q)*o1.psi*o2.psi20_rr
                                  + invr**2*(1j*Q)*o1.psi*o2.psi20_rrr)
         n31_psi_psi11_dot_psi20_star = (3*invr**4*(1j*Q)*o1.psi*o2.psi20_star_r + invr**3*(1j*Q)*o1.psi_r*o2.psi20_star_r - 3*invr**3*(1j*Q)*o1.psi*o2.psi20_star_rr
@@ -994,8 +1047,27 @@ class N3(MRI):
                                         + 3*invr**4*(2*1j*Q)*o2.psi22*o1.psi_star_r + invr**3*(2*1j*Q)*o2.psi22_r*o1.psi_star_r - 3*invr**3*(2*1j*Q)*o2.psi22*o1.psi_star_rr
                                         + invr**2*(2*1j*Q)*o2.psi22*o1.psi_star_rrr - invr**2*o2.psi22_r*(-1j*Q)*o1.psi_star_rr 
                                         - 2*invr*o2.u22*(-1j*Q)*o1.u_star)
+        # - (2/beta) B dot del B                                
+        n31_psi_A11_dot_A20 = (3*invr**4*(1j*Q)*o1.A*o2.A20_r + invr**3*(1j*Q)*o1.A_r*o2.A20_r - 3*invr**3*(1j*Q)*o1.A*o2.A20_rr
+                                 + invr**2*(1j*Q)*o1.A*o2.A20_rrr)
+        n31_psi_A11_dot_A20_star = (3*invr**4*(1j*Q)*o1.A*o2.A20_star_r + invr**3*(1j*Q)*o1.A_r*o2.A20_star_r - 3*invr**3*(1j*Q)*o1.A*o2.A20_star_rr
+                                 + invr**2*(1j*Q)*o1.A*o2.A20_star_rrr)
+        n31_psi_A11_star_dot_A22 = (-2*invr**3*(-1j*Q)**2*o1.A_star*(2*1j*Q)*o2.A22 + invr**2*(-1j*Q)*o1.A_star*(2*1j*Q)**2*o2.A22_r - invr**2*o1.A_star_r*(2*1j*Q)**3*o2.A22
+                                        + 3*invr**4*(-1j*Q)*o1.A_star*o2.A22_r + invr**3*(-1j*Q)*o1.A_star_r*o2.A22_r - 3*invr**3*(-1j*Q)*o1.A_star*o2.A22_rr
+                                        + invr**2*(-1j*Q)*o1.A_star*o2.A22_rrr - invr**2*o1.A_star_r*(2*1j*Q)*o2.A22_rr 
+                                        - 2*invr*o1.B_star*(2*1j*Q)*o2.B22)
+        n31_psi_A20_dot_A11 = (-invr**2*o2.A20_r*(1j*Q)**3*o1.A - invr**2*o2.A20_r*(1j*Q)*o1.A_rr
+                                   - 2*invr*o2.B20*(1j*Q)*o1.B)
+        n31_psi_A20_star_dot_A11 = (-invr**2*o2.A20_star_r*(1j*Q)**3*o1.A - invr**2*o2.A20_star_r*(1j*Q)*o1.A_rr
+                                   - 2*invr*o2.B20_star*(1j*Q)*o1.B)
+        n31_psi_A22_dot_A11_star = (-2*invr**3*(2*1j*Q)**2*o2.A22*(-1j*Q)*o1.A_star + invr**2*(2*1j*Q)*o2.A22*(-1j*Q)**2*o1.A_star_r - invr**2*o2.A22_r*(-1j*Q)**3*o1.A_star
+                                        + 3*invr**4*(2*1j*Q)*o2.A22*o1.A_star_r + invr**3*(2*1j*Q)*o2.A22_r*o1.A_star_r - 3*invr**3*(2*1j*Q)*o2.A22*o1.A_star_rr
+                                        + invr**2*(2*1j*Q)*o2.A22*o1.A_star_rrr - invr**2*o2.A22_r*(-1j*Q)*o1.A_star_rr 
+                                        - 2*invr*o2.B22*(-1j*Q)*o1.B_star)
         self.N31_psi = (n31_psi_psi11_dot_psi20 + n31_psi_psi11_dot_psi20_star + n31_psi_psi11_star_dot_psi22
-                + n31_psi_psi20_dot_psi11 + n31_psi_psi20_star_dot_psi11 + n31_psi_psi22_dot_psi11_star).evaluate()
+                + n31_psi_psi20_dot_psi11 + n31_psi_psi20_star_dot_psi11 + n31_psi_psi22_dot_psi11_star
+                -(2/beta)*(n31_psi_A11_dot_A20 + n31_psi_A11_dot_A20_star + n31_psi_A11_star_dot_A22
+                + n31_psi_A20_dot_A11 + n31_psi_A20_star_dot_A11 + n31_psi_A22_dot_A11_star)).evaluate()
         
         
         # (1/r) J(psi1, u2)               
