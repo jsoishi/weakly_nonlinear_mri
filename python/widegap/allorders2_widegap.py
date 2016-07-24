@@ -551,10 +551,10 @@ class N2(MRI):
         self.N20_u_r2 = N20_u_r2.evaluate()
         self.N20_u_r2.name = "N20_u_r2"
         
-        N20_u_r2_rederived = (rfield*(1j*Q)*o1.psi*o1.psi_star_r - rfield*(-1j*Q)*o1.u_star*o1.psi_r + o1.u*(-1j*Q)*o1.psi_star
-                            - rfield*(2/beta)*o1.A*o1.B_star_r - -rfield*(2/beta)*(-1j*Q)*o1.B_star*o1.A_r - (2/beta)*o1.B*(-1j*Q)*o1.A_star
-                            + rfield*(1j*Q)*o1.psi_star*o1.u_r - rfield*(1j*Q)*o1.u*o1.psi_star_r + o1.u_star*(1j*Q)*o1.psi
-                            - rfield*(2/beta)*(-1j*Q)*o1.A_star*o1.B_r - -rfield*(2/beta)*(1j*Q)*o1.B*o1.A_star_r - (2/beta)*o1.B_star*(1j*Q)*o1.A)
+        N20_u_r2_rederived = (rfield*(1j*Q)*o1.psi*o1.u_star_r - rfield*(-1j*Q)*o1.u_star*o1.psi_r + o1.u*(-1j*Q)*o1.psi_star
+                            - rfield*(2/beta)*(1j*Q)*o1.A*o1.B_star_r + rfield*(2/beta)*(-1j*Q)*o1.B_star*o1.A_r - (2/beta)*o1.B*(-1j*Q)*o1.A_star
+                            + rfield*(-1j*Q)*o1.psi_star*o1.u_r - rfield*(1j*Q)*o1.u*o1.psi_star_r + o1.u_star*(1j*Q)*o1.psi
+                            - rfield*(2/beta)*(-1j*Q)*o1.A_star*o1.B_r + rfield*(2/beta)*(1j*Q)*o1.B*o1.A_star_r - (2/beta)*o1.B_star*(1j*Q)*o1.A)
         self.N20_u_r2_rederived = N20_u_r2_rederived.evaluate()
         self.N20_u_r2_rederived.name = "N20_u_r2_rederived"
                 
