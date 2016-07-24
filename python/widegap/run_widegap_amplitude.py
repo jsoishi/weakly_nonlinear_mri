@@ -45,7 +45,7 @@ aa.print_coeffs()
 
 #fn_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 fn_root = "../../data/"
-fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_newN3_newN2.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
+fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_newN3_newN2_fixed.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
 with h5py.File(fn,'w') as f:
     r = f.create_dataset("r", data=aa.r)
     o1psi = f.create_dataset("psi11", data=aa.o1.psi['g'])
@@ -154,6 +154,12 @@ with h5py.File(fn,'w') as f:
     N20_u = f.create_dataset("N20_u", data=aa.n2.N20_u['g'])
     N20_A = f.create_dataset("N20_A", data=aa.n2.N20_A['g'])
     N20_B = f.create_dataset("N20_B", data=aa.n2.N20_B['g'])
+    
+    # additional diagnostics
+    N20_psi_r4 = f.create_dataset("N20_psi_r4", data=aa.n2.N20_psi_r4_rederived['g'])
+    N20_u_r2 = f.create_dataset("N20_u_r2", data=aa.n2.N20_u_r2_rederived['g'])
+    N20_A_r = f.create_dataset("N20_A_r", data=aa.n2.N20_A_r_rederived['g'])
+    N20_B_r2 = f.create_dataset("N20_B_r2", data=aa.n2.N20_B_r2_rederived['g'])
     
     N22_psi = f.create_dataset("N22_psi", data=aa.n2.N22_psi['g'])
     N22_u = f.create_dataset("N22_u", data=aa.n2.N22_u['g'])
