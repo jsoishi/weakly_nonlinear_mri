@@ -496,9 +496,10 @@ class N2(MRI):
         self.N20_psi = (N20_psi_jacobians + N20_psi_advectives).evaluate()
         self.N20_psi.name = "N20_psi"
         
+        """
         # explicitly include (psi1, psi1star) and (psi1star, psi1)
         N20_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(-1j*Q)*o1.psi_star + rfield**2*(1j*Q)*o1.psi*(-1*Q)**2*o1.psi_star_r
-                               - rfield**2*o1.psi_star_r*(-1j*Q)**3*o1.psi_star + 3*(1j*Q)*o1.psi*o1.psi_star_r
+                               - rfield**2*o1.psi_r*(-1j*Q)**3*o1.psi_star + 3*(1j*Q)*o1.psi*o1.psi_star_r
                                + rfield*(-1j*Q)*o1.psi_r*o1.psi_star_r - 3*rfield*(1j*Q)*o1.psi*o1.psi_star_rr
                                + rfield**2*(1j*Q)*o1.psi*o1.psi_star_rrr - rfield**2*o1.psi_r*(-1j*Q)*o1.psi_star_rr
                                + 2*rfield**3*1j*Q*o1.u*o1.u_star
@@ -519,6 +520,14 @@ class N2(MRI):
                                - 2*rfield**3*1j*Q*o1.B*o1.B_star))
                                
         self.N20_psi_r4_rederived = N20_psi_r4_rederived.evaluate()
+        self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
+        """
+        # hack this to be zero because it's < 1E-15
+        print("setting N20_psi to zero because N20_psi + N20_psi* = 0")
+        allzeros = np.zeros(len(rfield['g']), np.complex)
+        all_zeros_field = domain.new_field()
+        all_zeros_field['g'] = allzeros 
+        self.N20_psi_r4_rederived = all_zeros_field
         self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
         
         # Note: doesn't matter which of (psi1, psi1) is chosen to be psi1_star -- here i am using opposite from above
@@ -615,10 +624,7 @@ class N2(MRI):
         
         # hack this to be zero because it's < 1E-15
         print("setting N20_B to zero because N20_B + N20_B* = 0")
-        allzeros = np.zeros(len(rfield['g']), np.complex)
-        all_zeros_field = domain.new_field()
-        all_zeros_field['g'] = allzeros 
-        self.N20_B_r2_rederived = (rfield*all_zeros_field).evaluate()
+        self.N20_B_r2_rederived = all_zeros_field
         self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
         
 class OrderE2(MRI):
