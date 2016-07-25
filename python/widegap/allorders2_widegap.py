@@ -9,8 +9,8 @@ import random
 
 import logging
 root = logging.root
-for h in root.handlers:
-    h.setLevel("DEBUG")
+#for h in root.handlers:
+#    h.setLevel("DEBUG")
     
 logger = logging.getLogger(__name__)
 
@@ -604,12 +604,21 @@ class N2(MRI):
         self.N20_B_r2_rederived = N20_B_r2_rederived.evaluate()
         self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
         """
-        
+        """
         N20_B_r2_rederived = (rfield*(1j*Q)*o1.psi*o1.B_star_r - rfield*o1.psi_r*(-1j*Q)*o1.B_star + o1.u*(-1j*Q)*o1.A_star - rfield*(1j*Q)*o1.A*o1.u_star_r
                                + rfield*o1.A_r*(-1j*Q)*o1.u_star - o1.B*(-1j*Q)*o1.psi_star
                                + rfield*(-1j*Q)*o1.psi_star*o1.B_r - rfield*o1.psi_star_r*(1j*Q)*o1.B + o1.u_star*(1j*Q)*o1.A - rfield*(-1j*Q)*o1.A_star*o1.u_r
                                + rfield*o1.A_star_r*(1j*Q)*o1.u - o1.B_star*(1j*Q)*o1.psi)
         self.N20_B_r2_rederived = N20_B_r2_rederived.evaluate()
+        self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
+        """
+        
+        # hack this to be zero because it's < 1E-15
+        print("setting N20_B to zero because N20_B + N20_B* = 0")
+        allzeros = np.zeros(len(rfield['g']), np.complex)
+        all_zeros_field = domain.new_field()
+        all_zeros_field['g'] = allzeros 
+        self.N20_B_r2_rederived = (rfield*all_zeros_field).evaluate()
         self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
         
 class OrderE2(MRI):
@@ -705,6 +714,9 @@ class OrderE2(MRI):
         self.u20 = self.BVP20.state['u']
         self.A20 = self.BVP20.state['A']
         self.B20 = self.BVP20.state['B']
+        
+        print('B20', self.B20['g'])
+        print('N20_B rhs', self.rhs_B20['g'])
         
         # V21 equations are coupled
         # RHS of V21 = -L1twiddle V11
