@@ -16,7 +16,7 @@ xi = 0
 R1 = 5
 R2 = 15
 
-for indx in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+for indx in [11, 12, 13, 14, 15]:
 
     crit_params = h5py.File('../../data/widegap_crit_Rm_Q.h5', 'r')
     Q = crit_params['Q_c'].value[indx]
