@@ -6,9 +6,9 @@ import h5py
 
 # UMR07-like parameters
 
-Q = 0.01269
-Rm = 0.67355
-Pm = 1.0e-3
+#Q = 0.01269
+#Rm = 0.67355
+#Pm = 1.0e-3
 beta = 25.0
 Omega1 = 313.55
 Omega2 = 56.43
@@ -16,6 +16,11 @@ xi = 0
 R1 = 5
 R2 = 15
 
+indx = 0
+crit_params = h5py.File('../../data/widegap_crit_Rm_Q.h5', 'r')
+Q = crit_params['Q_c'].value[indx]
+Rm = crit_params['Rm_c'].value[indx]
+Pm = crit_params['Pm'].value[indx]
 
 # Hollerbach & Rudiger
 """
