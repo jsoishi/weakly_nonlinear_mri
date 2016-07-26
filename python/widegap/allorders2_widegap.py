@@ -169,13 +169,13 @@ class MRI():
         #logger.warn("Normalizing according to norm(psi)")
         #norm = np.linalg.norm(psi['g'])
         
-        #logger.warn("Normalizing according to integral(psi)")
-        #intpsi = psi.integrate('r')
-        #norm = intpsi['g'][0]
+        logger.warn("Normalizing according to integral(psi)")
+        intpsi = psi.integrate('r')
+        norm = intpsi['g'][0]
         
-        logger.warn("Normalizing according to integral(u)")
-        intu = u.integrate('r')
-        norm = intu['g'][0]
+        #logger.warn("Normalizing according to integral(u)")
+        #intu = u.integrate('r')
+        #norm = intu['g'][0]
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
