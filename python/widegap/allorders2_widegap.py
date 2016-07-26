@@ -804,6 +804,7 @@ class OrderE2(MRI):
         bv21.parameters['c1'] = self.c1
         bv21.parameters['c2'] = self.c2
         bv21.parameters['xi'] = self.xi
+        bv21.parameters['B0'] = self.B0
         
         bv21.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         bv21.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
