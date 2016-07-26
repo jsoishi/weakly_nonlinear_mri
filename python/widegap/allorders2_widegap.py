@@ -169,9 +169,13 @@ class MRI():
         #logger.warn("Normalizing according to norm(psi)")
         #norm = np.linalg.norm(psi['g'])
         
-        logger.warn("Normalizing according to integral(psi)")
-        intpsi = psi.integrate('r')
-        norm = intpsi['g'][0]
+        #logger.warn("Normalizing according to integral(psi)")
+        #intpsi = psi.integrate('r')
+        #norm = intpsi['g'][0]
+        
+        logger.warn("Normalizing according to integral(u)")
+        intu = u.integrate('r')
+        norm = intu['g'][0]
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
@@ -738,18 +742,22 @@ class OrderE2(MRI):
         du0field = self.domain.new_field()
         du0field['g'] = self.c1 - self.c2*(1/rfield['g']**2)
         
-        rhs_psi21 = ((rfield**4)*((2/rfield)*u0field*o1.u + (2/self.beta)*(1/rfield)*o1.A_rr - (2/self.beta)*(1/rfield**2)*o1.A_r 
-                    - (2/self.beta)*(3/rfield)*self.Q**2*o1.A + self.iR*4*1j*self.Q*(1/rfield)*o1.psi_rr - self.iR*(1/rfield**2)*4*1j*self.Q*o1.psi_r
-                    - self.iR*(1/rfield)*4*1j*self.Q**3*o1.psi - (2/self.beta)*(1/rfield**2)*2*xi*1j*self.Q*o1.B))
+        # multiplied by r^4
+        rhs_psi21 = (-self.iR*4*1j*self.Q**3*rfield**3*o1.psi - (2/self.beta)*3*rfield**3*self.Q**2*o1.A + self.iR*4*1j*self.Q*rfield**3*o1.psi_rr
+                    -self.iR*4*1j*self.Q*rfield**2*o1.psi_r + 2*rfield**3*u0field*o1.u + (2/self.beta)*rfield**3*o1.A_rr - (2/self.beta)*rfield**2*o1.A_r
+                    -(2/self.beta)*2*xi*rfield**2*o1.B)
         self.rhs_psi21 = rhs_psi21.evaluate()
         
-        rhs_u21 = ((rfield**3)*(-(1/rfield)*du0field*o1.psi - (1/rfield**2)*u0field*o1.psi + (2/self.beta)*o1.B + self.iR*2*1j*self.Q*o1.u))
+        # multiplied by r^3
+        rhs_u21 = (2*self.iR*1j*self.Q*rfield**3*o1.u - du0field*rfield**2*o1.psi - rfield*u0field*o1.psi + (2/self.beta)*rfield**3*o1.B)
         self.rhs_u21 = rhs_u21.evaluate()
         
-        rhs_A21 = (rfield)*(o1.psi + self.iRm*2*1j*self.Q*o1.A)
+        # multiplied by r
+        rhs_A21 = self.iRm*2*1j*Q*rfield*o1.A + rfield*o1.psi
         self.rhs_A21 = rhs_A21.evaluate()
         
-        rhs_B21 = (rfield**3)*((1/rfield)*du0field*o1.A + o1.u - (1/rfield**2)*u0field*o1.A + self.iRm*2*1j*self.Q*o1.B + (2/rfield**3)*xi*1j*self.Q*o1.psi)
+        # multiplied by r^3
+        rhs_B21 = (self.iRm*2*1j*self.Q*rfield**3*o1.B + du0field*rfield**2*o1.A + rfield**3*o1.u  - rfield*u0field*o1.A + 2*xi*o1.psi)
         self.rhs_B21 = rhs_B21.evaluate()
         
         # These RHS terms must satisfy the solvability condition <V^dagger | RHS> = 0. Test that:
@@ -795,7 +803,6 @@ class OrderE2(MRI):
         bv21.parameters['beta'] = self.beta
         bv21.parameters['c1'] = self.c1
         bv21.parameters['c2'] = self.c2
-        bv21.parameters['B0'] = self.B0
         bv21.parameters['xi'] = self.xi
         
         bv21.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
@@ -806,7 +813,7 @@ class OrderE2(MRI):
         bv21.substitutions['Avisc'] = '(r*dr(Ar) - r*Q**2*A - Ar)' 
         bv21.substitutions['Bvisc'] = '(-r**3*Q**2*B + r**3*dr(Br) + r**2*Br - r*B)'
     
-        bv21.add_equation("-r**2*2*ru0*1j*Q*u + r**3*twooverbeta*B0*1j*Q**3*A + twooverbeta*B0*r**2*1j*Q*Ar - twooverbeta*r**3*B0*1j*Q*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*Q*B = rhs_psi21") #corrected on whiteboard 5/6
+        bv21.add_equation("-r**2*2*ru0*1j*Q*u + r**3*twooverbeta*1j*Q**3*A + twooverbeta*r**2*1j*Q*Ar - twooverbeta*r**3*1j*Q*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*Q*B = rhs_psi21") #corrected on whiteboard 5/6
         bv21.add_equation("1j*Q*ru0*psi + 1j*Q*rrdu0*psi - 1j*Q*r**3*twooverbeta*B0*B - iR*uvisc = rhs_u21") 
         bv21.add_equation("r*B0*1j*Q*psi - iRm*Avisc = rhs_A21")
         bv21.add_equation("ru0*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*rrdu0*A - iRm*Bvisc - 2*xi*1j*Q*psi = rhs_B21") 
@@ -1272,7 +1279,7 @@ class AmplitudeAlpha(MRI):
         # b = < va . (Gtwiddle v11 - xi*dz*H v11)* > 
         self.b = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
   
-        # h = < va . ( -L1twiddle V21 + L2twiddle V11 - xi H V21)* > ***signs corrected 7/12/16
+        # h = < va . ( L1twiddle V21 + L2twiddle V11 + xi H V21)* > 
         self.h = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
   
         # linear term alias

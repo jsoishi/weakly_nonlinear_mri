@@ -16,7 +16,7 @@ xi = 0
 R1 = 5
 R2 = 15
 
-for indx in [11, 12, 13, 14, 15]:
+for indx in [10]:
 
     crit_params = h5py.File('../../data/widegap_crit_Rm_Q.h5', 'r')
     Q = crit_params['Q_c'].value[indx]
@@ -51,7 +51,7 @@ for indx in [11, 12, 13, 14, 15]:
 
     #fn_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
     fn_root = "../../data/"
-    fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_intnorm.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
+    fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_intnormu.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
     with h5py.File(fn,'w') as f:
         r = f.create_dataset("r", data=aa.r)
         o1psi = f.create_dataset("psi11", data=aa.o1.psi['g'])
