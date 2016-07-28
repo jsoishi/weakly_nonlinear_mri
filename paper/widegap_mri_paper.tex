@@ -69,7 +69,11 @@ The magnetorotational instability (MRI) is thought to be a crucial driver of ang
 Despite the challenges inherent in studying the MRI, much progress has been made nu
 
 Because of the MRI's complexity, analytical treatments of the MRI use some combination of convenient approximations: ideal MHD, linearized equations, expedient boundary conditions, and simplified geometries. In particular, much of the analytical work on MRI saturation has focused on local approximations, often representing a section of a disk by solving the MHD equations in an isolated region subject to shear periodic boundary conditions (the ``shearing box"). While the MRI is a local instability, certain properties of the local problem are not generic to the global problem. In the shearing box, linear evolution is dominated by a class of MRI mode known as channel modes.  %Channel modes, a class of MRI mode that dominates MRI evolution and saturation in the local approximation, are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). 
-These are linear modes which also happen to be exact solutions to the \textit{nonlinear} local MRI equations. Runaway growth is avoided in this paradigm by the instability of the channel modes themselves, which are destroyed by parasitic (secondary) instabilities (\citei{Goodman:1994ul}, \citei{Pessah:2010ic}). 
+These are linear modes which also happen to be exact solutions to the \textit{nonlinear} local MRI equations. Runaway growth is avoided in this paradigm by the instability of the channel modes themselves, which are destroyed by parasitic (secondary) instabilities (\citei{Goodman:1994ul}, \citei{Pessah:2010ic}). The growth of parasitic modes provides a saturation avenue for channel mode-dominated flows, yet this is unlikely to be the dominant saturation mechanism in laboratory experiments or astrophysical disks, as channel modes are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). 
+
+A number of saturation mechanisms have been proposed for the MRI which do not rely on channel modes dominating the flow.
+
+Our investigation is astrophysically motivated, but we also intend our theory to be relevant to laboratory experiments. Several experimental efforts are attempting to observe the MRI in the laboratory, which would allow the study of a crucial astrophysical phenomenon in a controlled setting. Unfortunately, detection of the MRI has so far proven elusive. \citei{Sisan:2004ig} claimed to detect the MRI, but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}, \citei{Gissinger:2011td}). Most relevant to our work is the Princeton Plasma Physics Laboratory (PPPL) MRI Experiment, a liquid gallium Taylor-Couette flow exposed to an axial magnetic field (\citei{Ji:2001kd}).
 
 Many investigations of the MRI use the ``narrow gap" approximation, in which the radial extent of the fluid channel is taken to be much smaller than the radius of curvature. That is, for a channel center $r_0$ bounded by inner and outer radii $r_1$ and $r_2$, respectively, the narrow gap approximation applies when $r_0 \gg (r_2 - r_1)$. The narrow gap approximation simplifies the MRI equations by excluding curvature terms, because the flow through a narrow gap can be taken to be approximately linear in $\phi$, i.e. Cartesian. Previous investigations into the weakly nonlinear MRI have used this narrow gap approximation (\citei{Umurhan:2007dz}, \citei{Umurhan:2007hs}, \citei{Clark:2016}). In this work we undertake the first (to our knowledge) weakly nonlinear analysis of the MRI in the wide gap regime, where the channel width may be comparable to or larger than its distance from the center of rotation.
 
@@ -132,7 +136,7 @@ where $a = (\Omega_2 r^2_2 - \Omega_1 r^2_1)/(r^2_2 - r^2_1)$, $b = r^2_1 r^2_2 
   q(r) \equiv -\frac{d \ln \Omega}{d \ln r} = \frac{2 b}{a r^2 + b}.
 \end{equation}
 
-Thus through judicious choice of cylinder rotation rates, we can set $q(r_0) = 3/2$, for quasi-Keplerian flow. Note that in the narrow gap approximation we have the freedom to choose any rotation profile, as the narrow gap width imposes a linear shear (constant $q$). Our base velocity is $\mathbf{u_0} = r\Omega(r) \phihat$. We initialize a magnetic field $\mathbf{B_0} = B_0 \zhat + B_0 \xi \frac{r_0}{r} \phihat$, so that the base magnetic field is axial when $\xi = 0$ and otherwise helical. 
+Thus through judicious choice of cylinder rotation rates, we can set $q(r_0) = 3/2$, for quasi-Keplerian flow. Note that the narrow gap approximation imposes a linear shear (constant $q$). Our base velocity is $\mathbf{u_0} = r\Omega(r) \phihat$. We initialize a magnetic field $\mathbf{B_0} = B_0 \zhat + B_0 \xi \frac{r_0}{r} \phihat$, so that the base magnetic field is axial when $\xi = 0$ and otherwise helical. 
 
 In this work we will focus our findings on two fiducial parameter sets, one for the standard MRI (hereafter SMRI) where $\xi = 0$ and one for the helical MRI (hereafter HMRI). We choose the SMRI parameters to be comparable to the case explored in \citei{Umurhan:2007hs}, with the geometric parameters of \citei{Goodman:2002ix}. The HMRI parameters were chosen to be comparable to \citei{Hollerbach:2005tr}. Our fiducial parameters are described in Table \ref{table:parameters}.
 
@@ -193,9 +197,9 @@ where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices d
 
 \begin{align}
 \mathcal{O}(\epsilon)&: \mathcal{L} \mathbf{V}_1 + \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \mathcal{D} \partial_t \mathbf{V}_1 = 0 \label{eq:ordere}\\
-\mathcal{O}(\epsilon^2)&: \mathcal{L} \mathbf{V}_2 + \xi \widetilde{\mathcal{H}} \mathbf{V}_2 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_1 + \xi \mathcal{H} \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \label{eq:ordere2}\\
-\mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \xi \widetilde{\mathcal{H}} \mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2 \\ \nonumber
-&+ \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \label{eq:ordere3}
+\mathcal{O}(\epsilon^2)&: \mathcal{L} \mathbf{V}_2 + \xi \widetilde{\mathcal{H}} \mathbf{V}_2 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_1 + \xi \mathcal{H} \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \\\label{eq:ordere2}
+\mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \xi \widetilde{\mathcal{H}} \mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2\nonumber \\ 
+&+ \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \\\label{eq:ordere3}
 \end{align}
 
 \begin{figure*}
@@ -398,14 +402,23 @@ Aranson, I.S. \& Kramer, L., 2002, Rev. Mod. Phys. 74, 99
 \bibitem[{Clark \& Oishi(2016a)}]{Clark:2016}
 Clark, S.E. and Oishi, J.S., 2016, in prep
 
+\bibitem[{Gissinger et al.(2011)}]{Gissinger:2011td}
+Gissinger, C, Ji, H, Goodman, J, Phys. Rev. E, 2011, 84, 026308
+
 \bibitem[{Goodman \& Ji(2002)}]{Goodman:2002ix}
 Goodman, J. \& Ji, H., 2002, JFM, 462, 365
 
 \bibitem[Goodman \& Xu(1994)]{Goodman:1994ul}
 Goodman, J, Xu, G, 1994, ApJ, 432, 213
 
+\bibitem[{Hollerbach(2009)}]{Hollerbach:2009ig}
+Hollerbach, R, Proc. R. Soc. A, 2009, 465, 2107
+
 \bibitem[{Hollerbach \& R\"udiger(2005)}]{Hollerbach:2005tr}
 Hollerbach, R. \& R\"udiger, G., 2005, Phys. Rev. Lett. 95, 124501
+
+\bibitem[{Ji et al.(2001)}]{Ji:2001kd}
+Ji, H, Goodman, J, Kageyama, A, Mon. Not. R. Astron. Soc., 2001, 325, 1
 
 \bibitem[{Kirillov \& Stefani(2013)}]{Kirillov:2013}
 Kirillov, O, \& Stefani, F, 2013, Phys. Rev. Lett. 111, 061103
@@ -421,6 +434,9 @@ Pessah, M, 2010, ApJ, 716, 1012
 
 \bibitem[{R\"udiger \& Hollerbach(2007)}]{Rudiger:2007}
 R\"udiger, G, \& Hollerbach, R, Phys. Rev. E 76, 068301
+
+\bibitem[{Sisan et al.(2004)}]{Sisan:2004ig}
+Sisan, D R, Mujica, N, Tillotson, W A, Huang Y-M, Dorland, W, Hassam, A B, Antonsen, T M, Lathrop, D P, Phys Rev Lett, 2004, 93, 11
 
 \bibitem[{Stefani et al.(2006)}]{Stefani:2006iv}
 Stefani, F, Gundrum, T, Gerbeth, G, R\"udiger, G, Schultz, M, Szklarski, J, Hollerbach, R, Phys Rev Lett, 2006, 97, 184502
