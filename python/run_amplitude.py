@@ -17,7 +17,7 @@ import h5py
 
 # indx = 0 : Pm = 1E-4
 tgc = h5py.File('../data/pm_sat_coeffs.h5', 'r')
-for indx in xrange(len(tgc['Pm'].value)):
+for indx in range(len(tgc['Pm'].value)):
     Pm = tgc['Pm'].value[indx].real
     Rm = tgc['Rm_c'].value[indx].real
     Q = tgc['Q_c'].value[indx].real
