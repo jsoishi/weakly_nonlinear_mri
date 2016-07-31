@@ -151,6 +151,10 @@ if widegap is True:
     Vboth_uz1 = eps*((1/rgrid)*satamp*obj['psi11_r'].value*eiqz) + eps**2*(-satamp**2*(1/rgrid)*ei2qz*obj['psi22_r'].value - (np.abs(satamp))**2*(1/rgrid)*obj['psi20_r'].value*ei0qz)
     Vboth_ur1 = eps*((1/rgrid)*satamp*obj['psi11'].value*eiqz_z) + eps**2*(satamp**2*ei2qz_z*obj['psi22'].value)
 
+    #Vboth_Bz1 = eps*((1/r)*satamp*obj['A11_r'].value*eiqz) + eps**2*(-satamp**2*(1/r)*ei2qz*obj['A22_r'].value - (np.abs(satamp))**2*(1/r)*obj['A20_r'].value*ei0qz)
+    #Vboth_Br1 = eps*((1/r)*satamp*obj['A11'].value*eiqz_z) + eps**2*(satamp**2*ei2qz_z*obj['A22'].value)
+
+
 else:
     file_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
     fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128.h5"
@@ -198,7 +202,11 @@ else:
 
 phi_interpolator = interpolate.interp2d(rgrid, zgrid, Vboth_u)
 z_interpolator = interpolate.interp2d(rgrid, zgrid, Vboth_uz1) 
-r_interpolator = interpolate.interp2d(rgrid, zgrid, Vboth_ur1)        
+r_interpolator = interpolate.interp2d(rgrid, zgrid, Vboth_ur1)   
+
+#B_phi_interpolator = interpolate.interp2d(rgrid, zgrid, Vboth_B)
+#B_z_interpolator = interpolate.interp2d(rgrid, zgrid, Vboth_Bz1) 
+#B_r_interpolator = interpolate.interp2d(rgrid, zgrid, Vboth_Br1)        
 
 def vel_deriv((r, phi, z), t0):
     #Compute the 3D velocities.
@@ -216,6 +224,13 @@ np.random.seed(1)
 x0[:, 0] = np.sort(5 + 10 * np.random.random(N_trajectories))
 x0[:, 1] = 2*np.pi * np.random.random(N_trajectories)
 x0[:, 2] = np.max(zgrid) * np.random.random(N_trajectories) #np.max(zgrid)/2.0 + 0.1 * np.random.random(N_trajectories)
+
+# set one last starting point to something known
+x0special = np.zeros((1, 3), np.float_)
+x0special[0, 0] = 5
+x0special[0, 1] = 0
+x0special[0, 2] = 0
+
 #x0[:, 1] = -1 + 2 * np.random.random(N_trajectories)
 
 #np.random.seed(1)
@@ -229,6 +244,10 @@ x0[:, 2] = np.max(zgrid) * np.random.random(N_trajectories) #np.max(zgrid)/2.0 +
 t = np.linspace(0, 100000, 10000)
 x_t = np.asarray([integrate.odeint(vel_deriv, x0i, t)
                   for x0i in x0])
+                  
+tspecial = np.linspace(0, 1000000, 10000)
+x_tspecial = np.asarray([integrate.odeint(vel_deriv, x0i, t)
+                  for x0i in x0special])
 
 #print("t:", t)
 #print("x_t:", x_t)
@@ -296,12 +315,13 @@ for line, pt, xi in zip(lines, pts, x_t):
     line.set_3d_properties(z)
 """
 
-fig = plt.figure()
-ax1 = fig.add_subplot(121, projection='3d')
-ax2 = fig.add_subplot(122, projection='3d')
+fig = plt.figure(facecolor="white", figsize=(8, 8))
+ax1 = fig.add_subplot(111, projection='3d')
+ax1.set_rasterized(True)
+#ax2 = fig.add_subplot(122, projection='3d')
 
 # set point-of-view: specified by (altitude degrees, azimuth degrees)
-ax2.view_init(90, 0)
+#ax2.view_init(90, 0)
 
 for i in range(N_trajectories):
     # Convert to cartesian for plotting
@@ -312,13 +332,20 @@ for i in range(N_trajectories):
     plot_x = plot_r*np.cos(plot_phi)
     plot_y = plot_r*np.sin(plot_phi)
     
+    ax1.plot(plot_x, plot_y, plot_z, alpha=0.2, lw=2.0, c=colors[i])
     
+
+plot_x_special = x_tspecial[0, :, 0]*np.cos(x_tspecial[0, :, 1])
+plot_y_special = x_tspecial[0, :, 0]*np.sin(x_tspecial[0, :, 1])
+plot_z_special = x_tspecial[0, :, 2]
+
+#ax2.plot(plot_x_special, plot_y_special, plot_z_special, alpha=0.5, lw=1.2, c="black")
     
-    ax1.plot(plot_x, plot_y, plot_z, alpha=0.2, lw=1.2, c=colors[i])
-ax2.plot(plot_x, plot_y, plot_z, alpha=0.2, lw=1.2, c=colors[-1])
+
+#ax2.plot(plot_x, plot_y, plot_z, alpha=0.2, lw=1.2, c=colors[-1])
 
 ax1.axis('off')
-ax2.axis('off')
+#ax2.axis('off')
 
 
 # instantiate the animator.
