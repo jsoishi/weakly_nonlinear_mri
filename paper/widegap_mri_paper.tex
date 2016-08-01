@@ -139,7 +139,7 @@ where $a = (\Omega_2 r^2_2 - \Omega_1 r^2_1)/(r^2_2 - r^2_1)$, $b = r^2_1 r^2_2 
 \begin{figure}
 \centering
 \includegraphics[width=\columnwidth]{../figures/widegap_paramspace_crit_params_Pm_1E-3}
-\caption{Growth rates in the ($\reym, k_z$) plane. Color map shows growth rate found by solving the linear eigenvalue problem for each ($\reym, k_z$) in the grid. The eigenvalue problem was solved for the widegap parameters listed in Table \ref{table:parameters}. Overlaid contours show growth rates at [-2E-3, -1E-3, -1E-5, 1E-5, 1E-3, 2E-3], where dashed contours represent negative values. The gray dotted line shows the interpolated marginal stability curve. The critical parameters $\reym_c = 0.84$ and $k_c = 0.0127$ correspond to the smallest parameter values that yield a zero growth rate.}
+\caption{Growth rates in the ($\reym, k_z$) plane. Color map shows growth rate found by solving the linear eigenvalue problem for each ($\reym, k_z$) in the grid. The eigenvalue problem was solved for the widegap parameters listed in Table \ref{table:parameters}. Overlaid contours show growth rates at [-2E-3, -1E-3, -1E-5, 1E-5, 1E-3, 2E-3], where dashed contours represent negative values. The gray dotted line shows the interpolated marginal stability curve. The critical parameters $\reym_c = 0.84$ and $k_c = 0.0127$ correspond to the smallest parameter values that yield a zero growth rate.}\label{fig:growth_rates}
 \end{figure}
 
 Thus through judicious choice of cylinder rotation rates, we can set $q(r_0) = 3/2$, for quasi-Keplerian flow. Note that the narrow gap approximation imposes a linear shear (constant $q$). Our base velocity is $\mathbf{u_0} = r\Omega(r) \phihat$. We initialize a magnetic field $\mathbf{B_0} = B_0 \zhat + B_0 \xi \frac{r_0}{r} \phihat$, so that the base magnetic field is axial when $\xi = 0$ and otherwise helical. 
@@ -193,8 +193,19 @@ N^{(A)} = \frac{1}{r} J(A, \psi)
 N^{(B)} = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi) + \frac{1}{r^2} B_\phi \partial_z \psi - \frac{1}{r^2} \uphi \partial_z A 
 \label{eq:nonlinear_B}
 \eeq
-
 \end{widetext}
+
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{../python/widegap/figures/orders_1_2_widegap_fiducial_eigenfunctions.pdf}
+\caption{Eigenfunctions of the first order equations, first order adjoint homogenous equations, and second order equations. We use our fiducial parameters for the standard MRI ($\xi = 0$). First-order eigenfunctions are normalized such that they are either purely real or purely imaginary, and such that $\int \Psi_{11} \mathrm{d}r = 1$. Adjoint homogenous eigenfunctions are normalized such that $\left< V_{11}^\dagger \cdot \mathcal{D} V_{11} \right> = 1$.}\label{fig:linear_eigenfunctions}
+\end{figure*}
+
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{../python/widegap/figures/nonlinear_2_3_widegap_fiducial_eigenfunctions.pdf}
+\caption{Nonlinear terms $N_2$ and $N_3$ for our fiducial standard MRI parameters.}\label{fig:N2_N3}
+\end{figure*}
 
 where J is the Jacobian $J(f, g) \equiv \partial_z f \partial_r g - \partial_r f \partial_z g$. Note that in the above, $\nabla^2 f \equiv \partial_r^2 f + \partial_z^2 f + \frac{1}{r} \partial_r f$. Equations \ref{eq:Psi_perturbed} - \ref{eq:nonlinear_B} are nondimensionalized, where lengths have been scaled by $r_0$, velocities by $r_0 \Omega_0$, densities by $\rho_0$, and magnetic fields by $B_0$; where $B_0$ appears in the above it is formally unity. $\Omega_0 = \Omega(r_0)$ is the rotation rate at the center of the channel. We introduce the Reynolds number $\reye = \Omega_0 r_0^2/\nu$, the magnetic Reynolds number $\reym = \Omega_0 r_0^2 / \eta$, and a plasma beta parameter $\beta = \Omega_0^2 r_0^2 \rho_0/B_0^2$. If we define the dimensional cylindrical coordinate $r = r_0(1 + \delta x)$, the narrow gap equations are recovered in the limit $\delta \rightarrow 0$.
 
@@ -209,6 +220,12 @@ at $r = r_1, r_2$.
 We note that Equations \ref{eq:Psi_perturbed} - \ref{eq:Bphi_perturbed} are written in a nonstandard form, with the nonlinear terms on the righthand side. This choice has a practical motivation. As detailed in \S\ref{sec:wnl_analysis}, we expand these equations in a perturbation series and solve them order by order using a pseudospectral code. The code solves partial differential equations of the form $\mathrm{M} \partial_t \mathbf{V} + \mathrm{L} \mathbf{V} = \mathbf{F}$, where $\mathrm{M}$ and $\mathrm{L}$ are matrices and $\mathbf{F}$ is a vector containing any inhomogenous terms. The nonlinear terms in our perturbation analysis become inhomogenous term inputs to the solver.
 
 \section{Weakly Nonlinear Perturbation Analysis}\label{sec:wnl_analysis}
+
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{../figures/widegap_coeffs_by_Pm.pdf}
+\caption{Coefficients.}\label{fig:coefficients}
+\end{figure}
 
 Just as in the weakly nonlinear analyses of \citei{Umurhan:2007hs} and \citei{Clark:2016}, we tune the system away from marginality by taking $B_0 \rightarrow B_0\left(1 - \epsilon^2\right)$, where $\epsilon \ll 1$. We parameterize scale separation as $Z = \epsilon z$ and $T = \epsilon^2 t$, where $Z$ and $T$ are slowly varying spatial and temporal scales, respectively. We group the fluid variables into a state vector $\mathbf{V} = \left[\Psi, u, A, B\right]^{\mathrm{T}}$, such that the full nonlinear system can be expressed as
 
@@ -225,27 +242,16 @@ where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices d
 &+ \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \\\label{eq:ordere3}
 \end{align}
 
-\begin{figure*}
-\centering
-\includegraphics[width=\textwidth]{../python/widegap/figures/orders_1_2_widegap_fiducial_eigenfunctions.pdf}
-\caption{Eigenfunctions of the first order equations, first order adjoint homogenous equations, and second order equations. We use our fiducial parameters for the standard MRI ($\xi = 0$). First-order eigenfunctions are normalized such that they are either purely real or purely imaginary, and such that $\int \Psi_{11} \mathrm{d}r = 1$. Adjoint homogenous eigenfunctions are normalized such that $\left< V_{11}^\dagger \cdot \mathcal{D} V_{11} \right> = 1$.}\label{fig:linear_eigenfunctions}
-\end{figure*}
-
-\begin{figure*}
-\centering
-\includegraphics[width=\textwidth]{../python/widegap/figures/nonlinear_2_3_widegap_fiducial_eigenfunctions.pdf}
-\caption{Nonlinear terms $N_2$ and $N_3$ for our fiducial standard MRI parameters.}\label{fig:N2_N3}
-\end{figure*}
-
 \begin{figure}
 \centering
 \includegraphics[width=\columnwidth]{../figures/widegap_3D_vel_screenshot.png}
-\caption{Visualization of the velocity perturbation field in the fiducial SMRI case.}
+\caption{Visualization of the velocity perturbation field in the fiducial SMRI case. The three dimensional path of twenty randomly placed tracer particles is plotted, where the particle velocity is defined as the total (first + second order) velocity perturbation. This is meant to be a visualization only of the velocity field, so the particle motion feels no contribution from the magnetic field.}
 \end{figure}
 
 See Appendix \ref{app:basic_equations} for the definition of matrices and nonlinear vectors, and a thorough derivation. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the narrow gap case, although the matrices (which contain all radial derivatives) are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution $\mathbf{V}_1 = \alpha(Z, T) \mathbb{V}_{11}(r) e^{i k_z z} + c.c.$, where the radial variation is contained in $\mathbb{V}_{11}$. 
 
 We solve the equations at each order using Dedalus, an open source pseudospectral code (Burns et al. in prep). Because our domain is bounded only radially and not vertically, we solve the radial dimension on a basis of Chebyshev polynomials, and the vertical dimension on a Fourier series basis. We solve Equation \ref{eq:ordere} as a linear eigenvalue problem, and Equations \ref{eq:ordere2} and \ref{eq:ordere3} as linear boundary value problems. %should i mention spurious eigenvals? 
+To analyze the MRI system at marginality, we fix the parameters listed in Table \ref{table:parameters} and determine the critical $\reym$ and $k_z$ by repeatedly solving Equation \ref{eq:ordere} to determine the smallest parameter values for which the fastest growing mode is zero. That is, we solve the linear eigenvalue problem for eigenvalues $\sigma = \gamma + i \omega$. Figure \ref{fig:growth_rates} shows linear MRI growth rates $\gamma$ in the $(\reym, k_z)$ plane. For the fiducial standard MRI parameters in Table \ref{table:parameters} we find critical parameters $\reym_c = 0.84$, $k_c = 0.0127$. 
 
 %We defer full expressions and derivations thereof to the Appendix, and focus here on features of the wide gap system which distinguish it from the narrow gap limit.
 
@@ -256,7 +262,7 @@ The result of the weakly nonlinear analysis is a single amplitude equation for $
 \partial_T \alpha = b \alpha + d \partial_Z^2 \alpha - c \alpha \left|\alpha^2\right|,
 \eeq
 
-a Ginzburg-Landau equation (GLE). The GLE governs the weakly nonlinear amplitude behavior in a wide range of physical systems, including the narrow gap MRI (), Rayleigh-B\'enard convection, and hydrodynamic Taylor Couette flow. We emphasize that this is a model equation, valid only near marginality (see ). The dynamics of the GLE are determined by its coefficients, which are in turn determined by the linear eigenfunctions and nonlinear vectors plotted in Figures \ref{fig:linear_eigenfunctions} and \ref{fig:N2_N3}. Equation \ref{eq:gle} contains three coefficients: $b$, which determines the linear growth rate of the system, $d$, a diffusion coefficient, and $c$, the coefficient of the nonlinear term. When all of the coefficients of Equation \ref{eq:gle} are real, this is known as the real GLE, although the amplitude $\alpha$ remains complex. The real GLE is subject to several well-studied instabilities, including the Ekhaus and Zig-Zag instabilities. When the coefficients are complex, we have the complex GLE, a source of even richer phase dynamics than its real counterpart (e.g. \citei{Aranson:2002}).
+a Ginzburg-Landau equation (GLE). The GLE governs the weakly nonlinear amplitude behavior in a wide range of physical systems, including the narrow gap MRI (\citei{Umurhan:2007hs}), Rayleigh-B\'enard convection, and hydrodynamic Taylor Couette flow. We emphasize that this is a model equation, valid only near marginality (see \citei{Cross:1993el}). The dynamics of the GLE are determined by its coefficients, which are in turn determined by the linear eigenfunctions and nonlinear vectors plotted in Figures \ref{fig:linear_eigenfunctions} and \ref{fig:N2_N3}. Equation \ref{eq:gle} contains three coefficients: $b$, which determines the linear growth rate of the system, $d$, a diffusion coefficient, and $c$, the coefficient of the nonlinear term. When all of the coefficients of Equation \ref{eq:gle} are real, this is known as the real GLE, although the amplitude $\alpha$ remains complex. The real GLE is subject to several well-studied instabilities, including the Ekhaus and Zig-Zag instabilities. When the coefficients are complex, we have the complex GLE, a source of even richer phase dynamics than its real counterpart (e.g. \citei{Aranson:2002}).
 
 For the standard MRI we derive a real GLE, and for the helical MRI we derive a complex GLE. 
  This complex GLE is a natural form for the HMRI, as it is a traveling wave instability.
@@ -435,6 +441,9 @@ Aranson, I.S. \& Kramer, L., 2002, Rev. Mod. Phys. 74, 99
 
 \bibitem[{Clark \& Oishi(2016a)}]{Clark:2016}
 Clark, S.E. and Oishi, J.S., 2016, in prep
+
+\bibitem[{Cross \& Hohenberg(1993)}]{Cross:1993el}
+Cross, M. C., \& Hohenberg, P. C., 1993, Rev. Mod. Phys. 65, 851
 
 \bibitem[{Ebrahimi et al.(2009)}]{Ebrahimi:2009ey}
 Ebrahimi, F., Prager, S.C., Schnack, D.D
