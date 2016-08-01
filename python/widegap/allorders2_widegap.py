@@ -739,17 +739,26 @@ class OrderE2(MRI):
         u0field = self.domain.new_field()
         u0field['g'] = self.c1*rfield['g'] + self.c2*(1/rfield['g'])
         
+        ru0field = self.domain.new_field()
+        ru0field['g'] = self.c1*rfield['g']**2 + self.c2
+        
         du0field = self.domain.new_field()
         du0field['g'] = self.c1 - self.c2*(1/rfield['g']**2)
         
+        rrdu0field = self.domain.new_field()
+        rrdu0field['g'] = rfield['g']**2*self.c1 - self.c2
+        
         # multiplied by r^4
         rhs_psi21 = (-self.iR*4*1j*self.Q**3*rfield**3*o1.psi - (2/self.beta)*3*rfield**3*self.Q**2*o1.A + self.iR*4*1j*self.Q*rfield**3*o1.psi_rr
-                    -self.iR*4*1j*self.Q*rfield**2*o1.psi_r + 2*rfield**3*u0field*o1.u + (2/self.beta)*rfield**3*o1.A_rr - (2/self.beta)*rfield**2*o1.A_r
+                    -self.iR*4*1j*self.Q*rfield**2*o1.psi_r + 2*rfield**2*ru0field*o1.u + (2/self.beta)*rfield**3*o1.A_rr - (2/self.beta)*rfield**2*o1.A_r
                     -(2/self.beta)*2*xi*rfield**2*o1.B)
         self.rhs_psi21 = rhs_psi21.evaluate()
         
         # multiplied by r^3
-        rhs_u21 = (2*self.iR*1j*self.Q*rfield**3*o1.u - du0field*rfield**2*o1.psi - rfield*u0field*o1.psi + (2/self.beta)*rfield**3*o1.B)
+        #rhs_u21 = (2*self.iR*1j*self.Q*rfield**3*o1.u - du0field*rfield**2*o1.psi - rfield*u0field*o1.psi + (2/self.beta)*rfield**3*o1.B)
+        #self.rhs_u21 = rhs_u21.evaluate()
+        
+        rhs_u21 = (2*self.iR*1j*self.Q*rfield**3*o1.u - rrdu0field*o1.psi - ru0field*o1.psi + (2/self.beta)*rfield**3*o1.B)
         self.rhs_u21 = rhs_u21.evaluate()
         
         # multiplied by r
@@ -757,7 +766,7 @@ class OrderE2(MRI):
         self.rhs_A21 = rhs_A21.evaluate()
         
         # multiplied by r^3
-        rhs_B21 = (self.iRm*2*1j*self.Q*rfield**3*o1.B + du0field*rfield**2*o1.A + rfield**3*o1.u  - rfield*u0field*o1.A + 2*xi*o1.psi)
+        rhs_B21 = (self.iRm*2*1j*self.Q*rfield**3*o1.B + rrdu0field*o1.A + rfield**3*o1.u  - ru0field*o1.A + 2*xi*o1.psi)
         self.rhs_B21 = rhs_B21.evaluate()
         
         # These RHS terms must satisfy the solvability condition <V^dagger | RHS> = 0. Test that:
