@@ -33,6 +33,12 @@ pmcoeffs_fn = '/Users/susanclark/weakly_nonlinear_mri/data/pm_sat_coeffs.h5'
 #coeff = Coefficients(19, pmcoeffs_fn)
 coeff = Coefficients(5, pmcoeffs_fn)
 
+print("hack: setting coefficients manually")
+coeff.a = (1.0000000000000002-7.87628310056604e-29j) 
+coeff.c = (113.5995286989022+7.437107283970664e-11j)
+coeff.b = (0.1522176116459535-2.756166265459084e-13j) 
+coeff.h = (0.09295902574657969+1.466113201026659e-12j)
+
 print("saturation amplitude = {}".format(np.sqrt(coeff.b/coeff.c)))
 
 # Actually solve the IVP
@@ -44,17 +50,24 @@ Z_basis = de.Fourier('Z', gridnum, interval=(-(num_critical_wavelengths/2)*lambd
 Zdomain = de.Domain([Z_basis], grid_dtype=np.complex128)
 problem = de.IVP(Zdomain, variables=['alpha', 'alphaZ'], ncc_cutoff=1e-10)
 
-problem.parameters['ac'] = -coeff.a/coeff.c
+#problem.parameters['ac'] = -coeff.a/coeff.c
+#problem.parameters['bc'] = coeff.b/coeff.c
+#problem.parameters['hc'] = -coeff.h/coeff.c
+
+#print("ac = {}, bc = {}, hc = {}".format(-coeff.a/coeff.c, coeff.b/coeff.c, -coeff.h/coeff.c))
+
+#problem.add_equation("-ac*dt(alpha) + bc*alpha + hc*dZ(alphaZ) = alpha*abs(alpha**2)") 
+problem.parameters['ac'] = coeff.a/coeff.c
 problem.parameters['bc'] = coeff.b/coeff.c
-problem.parameters['hc'] = -coeff.h/coeff.c
+problem.parameters['hc'] = coeff.h/coeff.c
 
-print("ac = {}, bc = {}, hc = {}".format(-coeff.a/coeff.c, coeff.b/coeff.c, -coeff.h/coeff.c))
+print("ac = {}, bc = {}, hc = {}".format(coeff.a/coeff.c, coeff.b/coeff.c, coeff.h/coeff.c))
 
-problem.add_equation("-ac*dt(alpha) + bc*alpha + hc*dZ(alphaZ) = alpha*abs(alpha**2)") 
+problem.add_equation("-ac*dt(alpha) + bc*alpha + hc*dZ(alphaZ) = alpha*abs(alpha**2)")
 problem.add_equation("alphaZ - dZ(alpha) = 0")
 
 #dt = max_dt = 1.
-dt = 2E-4
+dt = 2E-3#4
 #period = 2*np.pi/Omega1
 
 ts = de.timesteppers.RK443

@@ -70,6 +70,10 @@ coeff = Coefficients(coeff_fn)
 #coeff.c = 0.008129082765040497+6.182564137121617e-06j#0.008129112543701307+6.182564137121872e-06j#0.020810184143773249-1.3877885448830667e-05j
 #coeff.h = 0.021707778758499826+3.9384254266509086e-11j
 
+print("hack: changing sign of b, c coeffs")
+coeff.b = -coeff.b
+coeff.c = -coeff.c
+
 print("ac = {}, bc = {}, hc = {}".format(-coeff.a/coeff.c, -coeff.b/coeff.c, -coeff.h/coeff.c)) 
 print("saturation amplitude = {}".format(np.sqrt(-coeff.b/coeff.c)))
 

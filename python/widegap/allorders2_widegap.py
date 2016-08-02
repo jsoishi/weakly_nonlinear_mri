@@ -169,13 +169,13 @@ class MRI():
         #logger.warn("Normalizing according to norm(psi)")
         #norm = np.linalg.norm(psi['g'])
         
-        logger.warn("Normalizing according to integral(psi)")
-        intpsi = psi.integrate('r')
-        norm = intpsi['g'][0]
+        #logger.warn("Normalizing according to integral(psi)")
+        #intpsi = psi.integrate('r')
+        #norm = intpsi['g'][0]
         
-        #logger.warn("Normalizing according to integral(u)")
-        #intu = u.integrate('r')
-        #norm = intu['g'][0]
+        logger.warn("Normalizing according to integral(u)")
+        intu = u.integrate('r')
+        norm = intu['g'][0]
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
@@ -546,8 +546,8 @@ class N2(MRI):
         self.N20_psi_r4 = N20_psi_r4.evaluate()
         self.N20_psi_r4.name = "N20_psi_r4"
         
-        print("N20 psi r4 + cc:", self.N20_psi_r4['g'] + self.N20_psi_r4['g'].conj())
-        print("rederived:", self.N20_psi_r4_rederived['g'])
+        #print("N20 psi r4 + cc:", self.N20_psi_r4['g'] + self.N20_psi_r4['g'].conj())
+        #print("rederived:", self.N20_psi_r4_rederived['g'])
         
         N22_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_r - (1j*Q*o1.u)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_r - (1j*Q*o1.B)*o1.A_r)))
         N22_u_advectives = ((1/rfield**2)*o1.u*1j*Q*o1.psi - (2/beta)*(1/rfield**2)*o1.B*1j*Q*o1.A)
@@ -728,8 +728,8 @@ class OrderE2(MRI):
         self.A20 = self.BVP20.state['A']
         self.B20 = self.BVP20.state['B']
         
-        print('B20', self.B20['g'])
-        print('N20_B rhs', self.rhs_B20['g'])
+        #print('B20', self.B20['g'])
+        #print('N20_B rhs', self.rhs_B20['g'])
         
         # V21 equations are coupled
         # RHS of V21 = -L1twiddle V11
@@ -776,12 +776,7 @@ class OrderE2(MRI):
         else:
             self.ah = ah
         
-        # RHS terms have been multiplied by [r^4, r^3, r, r^3]^T, so do the same for AH terms
-        ah_psi_r4 = (rfield**4*self.ah.psi).evaluate()
-        ah_u_r3 = (rfield**3*self.ah.u).evaluate()
-        ah_A_r = (rfield*self.ah.A).evaluate()
-        ah_B_r3 = (rfield**3*self.ah.B).evaluate()
-        
+        # RHS terms have been multiplied by [r^4, r^3, r, r^3]^T, so divide out before testing solvability criterion
         self.rhs_psi21_nor = (self.rhs_psi21/rfield**4).evaluate()
         self.rhs_u21_nor = (self.rhs_u21/rfield**3).evaluate()
         self.rhs_A21_nor = (self.rhs_A21/rfield).evaluate()
@@ -825,7 +820,7 @@ class OrderE2(MRI):
     
         bv21.add_equation("-r**2*2*ru0*1j*Q*u + r**3*twooverbeta*1j*Q**3*A + twooverbeta*r**2*1j*Q*Ar - twooverbeta*r**3*1j*Q*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*Q*B = rhs_psi21") #corrected on whiteboard 5/6
         bv21.add_equation("1j*Q*ru0*psi + 1j*Q*rrdu0*psi - 1j*Q*r**3*twooverbeta*B0*B - iR*uvisc = rhs_u21") 
-        bv21.add_equation("r*B0*1j*Q*psi - iRm*Avisc = rhs_A21")
+        bv21.add_equation("-r*B0*1j*Q*psi - iRm*Avisc = rhs_A21") # r*B0*1j*Q*psi term should be negative!! SEC 8/2/16
         bv21.add_equation("ru0*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*rrdu0*A - iRm*Bvisc - 2*xi*1j*Q*psi = rhs_B21") 
 
         bv21.add_equation("dr(psi) - psir = 0")
