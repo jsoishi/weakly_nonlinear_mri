@@ -18,15 +18,16 @@ R2 = 15
 
 #for indx in [10]:
 
+indx = 10
 crit_params = h5py.File('../../data/widegap_crit_Rm_Q.h5', 'r')
-#Q = crit_params['Q_c'].value[indx]
-#Rm = crit_params['Rm_c'].value[indx]
-#Pm = crit_params['Pm'].value[indx]
+Q = crit_params['Q_c'].value[indx]
+Rm = crit_params['Rm_c'].value[indx]
+Pm = crit_params['Pm'].value[indx]
 
 # Pm=1E-5 critical parameters from Jeff
-Pm = 1.0E-5
-Q = 1.26801e-02
-Rm = 8.40273e-01
+#Pm = 1.0E-5
+#Q = 1.26801e-02
+#Rm = 8.40273e-01
 
 # Hollerbach & Rudiger
 """
@@ -56,7 +57,7 @@ aa.print_coeffs()
 
 #fn_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 fn_root = "../../data/"
-fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_intnorm.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
+fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_intnorm_correctAH.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
 with h5py.File(fn,'w') as f:
     r = f.create_dataset("r", data=aa.r)
     o1psi = f.create_dataset("psi11", data=aa.o1.psi['g'])
