@@ -271,9 +271,12 @@ class AdjointHomogenous(MRI):
         lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
         lv1.substitutions['twooverbeta'] = '(2.0/beta)'
         
+        # multiply by [r^4, r^2, r^3, r^2]
         lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*rrdu0*u - r*ru0*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
-        lv1.add_equation("sigma*r**3*u + r*2*1j*Q*ru0*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
-        lv1.add_equation("sigma*r*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*Q*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
+        #lv1.add_equation("sigma*r**3*u + r*2*1j*Q*ru0*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
+        lv1.add_equation("sigma*r**2*u + 1j*Q*r**2*B + 2*1j*Q*ru0*psi + iR*Q**2*r**2*u - iR*r**2*dr(ur) -iR*r*ur + iR*u = 0")
+        #lv1.add_equation("sigma*r*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*Q*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
+        lv1.add_equation("sigma*r**3*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*Q*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
         lv1.add_equation("sigma*r**2*B + r**2*twooverbeta*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - twooverbeta*2*1j*Q*B0*xi*psi = 0") 
 
         lv1.add_equation("dr(psi) - psir = 0")
@@ -385,13 +388,11 @@ class OrderE(MRI):
     def finalize(self):
         self.fastest_growing()        
         
-        # All eigenfunctions must be scaled s.t. their max is 1
         self.psi = self.EP.solver.state['psi']
         self.u = self.EP.solver.state['u']
         self.A = self.EP.solver.state['A']
         self.B = self.EP.solver.state['B']
-        
-        
+           
         self.prenormpsi = self.psi
         
         if self.norm == True:
@@ -1291,7 +1292,7 @@ class AmplitudeAlpha(MRI):
         self.linear_term = self.b
     
 
-        self.sat_amp_coeffs = np.sqrt(self.b/self.c) #np.sqrt((-1j*self.Q*self.b + 1j*self.Q**3*self.g)/self.c)
+        self.sat_amp_coeffs = np.sqrt(-self.b/self.c) #np.sqrt((-1j*self.Q*self.b + 1j*self.Q**3*self.g)/self.c)
         
         # For interactive diagnostic purposes only
         self.o1 = o1
