@@ -173,14 +173,26 @@ class MRI():
         #intpsi = psi.integrate('r')
         #norm = intpsi['g'][0]
         
-        logger.warn("Normalizing according to integral(u)")
-        intu = u.integrate('r')
-        norm = intu['g'][0]
+        #logger.warn("Normalizing according to integral(u)")
+        #intu = u.integrate('r')
+        #norm = intu['g'][0]
+        #logger.warn("Normalizing by {}".format(norm))
+        
+        logger.warn("norm hack: Using max(A) from URM07")
+        # this value read from A(x = 0) figure 2c of Umurhan, Regev, &
+        # Menou (2007) using WebPlotDigitizer. I estimate the error to
+        # be +0.03/-0.04.
+        Amax = 0.535
+        norm = A.interpolate(r = 10)['g'][0]/Amax
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
         A['g'] = A['g']/norm
         B['g'] = B['g']/norm
+        
+        testu = u.integrate('r')
+        print("new integrated u is {}".format(testu['g'][0]))
+        
         
         return psi, u, A, B
 
@@ -591,6 +603,7 @@ class N2(MRI):
         self.N20_A_r = N20_A_r.evaluate()
         self.N20_A_r.name = "N20_A_r"
         
+        # rederived fields include complex conjugate explicitly
         N20_A_r_rederived = (-(1j*Q)*o1.A*o1.psi_star_r + (-1j*Q)*o1.psi_star*o1.A_r - (-1j*Q)*o1.A_star*o1.psi_r + (1j*Q)*o1.psi*o1.A_star_r)
         self.N20_A_r_rederived = N20_A_r_rederived.evaluate()
         self.N20_A_r_rederived.name = "N20_A_r_rederived"
@@ -1151,6 +1164,7 @@ class N3(MRI):
         
         self.N31_u_noadvective = (Jacobian1 + Jacobian2 + Jacobian3 + Jacobian4).evaluate()
         
+        #N31_A terms: exactly the same as thingap. (except for 1/r factor). checked against allorders_2. correct.
         # -(1/r) J(A1, psi2)
         Jacobian1 = -invr*(1j*k*o1.A*(o2.psi20_r + o2.psi20_star_r) + (-1j*k)*o1.A_star*o2.psi22_r - o1.A_star_r*(2*1j*k)*o2.psi22)
         
@@ -1239,37 +1253,61 @@ class AmplitudeAlpha(MRI):
         du0 = self.domain.new_field()
         du0['g'] = self.c1 - self.c2*(1/rfield['g']**2)
         
+        # a is the same sign as thin gap.
         # D . V11
         a_psi_rhs = invr*o1.psi_rr - invr**2*o1.psi_r - invr*self.Q**2*o1.psi
         a_psi_rhs = a_psi_rhs.evaluate()
         
+        # b is the *opposite sign* as thin gap. .... but then they flip the sign. so same sign. 
+        # let's do the exact same thing...
         # Gtwiddle . V11 - xi dz H . V11
         b_psi_rhs = -(2/self.beta)*invr*1j*self.Q**3*o1.A + (2/self.beta)*invr*1j*self.Q*o1.A_rr - (2/self.beta)*invr**2*1j*self.Q*o1.A_r - (2/self.beta)*invr**2*2*1j*self.Q*self.xi*o1.B
-        b_psi_rhs = b_psi_rhs.evaluate()
-        
+        #b_psi_rhs = b_psi_rhs.evaluate()
+        b_psi_rhs = (-b_psi_rhs).evaluate()
+       
         b_u_rhs = (2/self.beta)*1j*self.Q*o1.B
-        b_u_rhs = b_u_rhs.evaluate()
+        #b_u_rhs = b_u_rhs.evaluate()
+        b_u_rhs = (-b_u_rhs).evaluate()
         
         b_A_rhs = 1j*self.Q*o1.psi
-        b_A_rhs = b_A_rhs.evaluate()
+        #b_A_rhs = b_A_rhs.evaluate()
+        b_A_rhs = (-b_A_rhs).evaluate()
         
         b_B_rhs = 1j*self.Q*o1.u + invr**3*2*1j*self.Q*self.xi*o1.psi
-        b_B_rhs = b_B_rhs.evaluate()
+        #b_B_rhs = b_B_rhs.evaluate()
+        b_B_rhs = (-b_B_rhs).evaluate()
         
         # (L1twiddle V21 + L2twiddle V11 + xi H V21)
         h_psi_rhs = (self.iR*invr*4*1j*self.Q**3*o2.psi21 + (2/self.beta)*invr*3*self.Q**2*o2.A21 + self.iR*invr*6*self.Q**2*o1.psi - (2/self.beta)*invr*3*1j*self.Q*o1.A
                     - self.iR*invr*4*1j*self.Q*o2.psi21_rr + self.iR*invr**2*4*1j*self.Q*o2.psi21_r - invr*2*u0*o2.u21 - (2/self.beta)*invr*o2.A21_rr
                     + (2/self.beta)*invr**2*o2.A21_r + (2/self.beta)*invr**2*2*self.xi*o2.B21 - self.iR*invr*2*o1.psi_rr + self.iR*invr**2*2*o1.psi_r)
-        h_psi_rhs = h_psi_rhs.evaluate()
+        #h_psi_rhs = h_psi_rhs.evaluate()
+        
+        # thin gap version: 
+        #l2twiddlel1twiddle_psi = 3*1j*(2/self.beta)*self.Q*o1.A - 3*(2/self.beta)*self.Q**2*o2.A21 + (2/self.beta)*o2.A21_xx - 6*self.Q**2*self.iR*o1.psi 
+        #                         + 2*self.iR*o1.psi_xx - 4*1j*self.iR*self.Q**3*o2.psi21 + 4*self.iR*1j*self.Q*o2.psi21_xx + 2*o2.u21
+        #l2twiddlel1twiddle_psi = l2twiddlel1twiddle_psi.evaluate()
+        
         
         h_u_rhs = -self.iR*2*1j*self.Q*o2.u21 + invr*du0*o2.psi21 + invr**2*u0*o2.psi21 - (2/self.beta)*o2.B21 - self.iR*o1.u
-        h_u_rhs = h_u_rhs.evaluate()
+        #h_u_rhs = h_u_rhs.evaluate()
+        
+        # thin gap version:
+        #l2twiddlel1twiddle_A = self.iRm*o1.A + 2*1j*self.iRm*self.Q*o2.A21 + o2.psi21
+        #l2twiddlel1twiddle_A = l2twiddlel1twiddle_A.evaluate()
+        # therefore h is the *opposite sign* from the thingap version. Let's change it
         
         h_A_rhs = -self.iRm*2*1j*self.Q*o2.A21 - o2.psi21 - self.iRm*o1.A
-        h_A_rhs = h_A_rhs.evaluate()
+        #h_A_rhs = h_A_rhs.evaluate()
         
         h_B_rhs = -self.iRm*2*1j*self.Q*o2.B21 - invr*du0*o2.A21 - o2.u21 + invr**2*u0*o2.A21 - invr**3*2*self.xi*o2.psi21 - self.iRm*o1.B
-        h_B_rhs = h_B_rhs.evaluate()
+        #h_B_rhs = h_B_rhs.evaluate()
+        
+        #doing same thing as thin gap
+        h_psi_rhs = (-h_psi_rhs).evaluate()
+        h_u_rhs = (-h_u_rhs).evaluate()
+        h_A_rhs = (-h_A_rhs).evaluate()
+        h_B_rhs = (-h_B_rhs).evaluate()
         
         # Normalize s.t. a = 1
         if norm is True:
@@ -1280,10 +1318,10 @@ class AmplitudeAlpha(MRI):
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
         
         # c = <va . N31*>
-        self.c = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
+        self.c = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
         
         # b = < va . (Gtwiddle v11 - xi*dz*H v11)* > 
-        self.b = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
+        self.b = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
   
         # h = < va . ( L1twiddle V21 + L2twiddle V11 + xi H V21)* > 
         self.h = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])

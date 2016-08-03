@@ -52,7 +52,7 @@ fn = "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.
 coeff_fn = fn_root + fn + ".h5"
 
 # For IVP
-gridnum = 50
+gridnum = 128
 lambda_crit = 2*np.pi/Q
 
 # Read coefficients from file
@@ -64,42 +64,39 @@ coeff = Coefficients(coeff_fn)
 #coeff.c = coeff.c.real
 #coeff.h = coeff.h.real
 
-#print("HACK: setting new coeffs")
-#coeff.a = 1.0000000000000002+1.6817162881677001e-26j
-#coeff.b = 0.00056776945676967957+1.5421420067772087e-14j
-#coeff.c = 0.008129082765040497+6.182564137121617e-06j#0.008129112543701307+6.182564137121872e-06j#0.020810184143773249-1.3877885448830667e-05j
-#coeff.h = 0.021707778758499826+3.9384254266509086e-11j
+print("HACK: setting new coeffs")
+coeff.a = 1+2.1485568148251073e-26j
+coeff.b = 0.045368169457467356+2.4922212429290374e-13j#0.0007066860686026265+8.853530842684617e-15j
+coeff.c = 0.24796998124059338+2.259874552160415e-12j
+coeff.h = 2.7433491997827075+1.2795201244316272e-09j
 
-print("hack: changing sign of b, c coeffs")
-coeff.b = -coeff.b
-coeff.c = -coeff.c
 
-print("ac = {}, bc = {}, hc = {}".format(-coeff.a/coeff.c, -coeff.b/coeff.c, -coeff.h/coeff.c)) 
-print("saturation amplitude = {}".format(np.sqrt(-coeff.b/coeff.c)))
+print("ac = {}, bc = {}, hc = {}".format(coeff.a/coeff.c, coeff.b/coeff.c, coeff.h/coeff.c)) 
+print("saturation amplitude = {}".format(np.sqrt(coeff.b/coeff.c)))
 
 # Actually solve the IVP
                    
-num_critical_wavelengths = 20
+num_critical_wavelengths = 2#0
 Z_basis = de.Fourier('Z', gridnum, interval=(-(num_critical_wavelengths/2)*lambda_crit, (num_critical_wavelengths/2)*lambda_crit), dealias=3/2)
 Zdomain = de.Domain([Z_basis], grid_dtype=np.complex128)
 problem = de.IVP(Zdomain, variables=['alpha', 'alphaZ'], ncc_cutoff=1e-10)
 
-problem.parameters['ac'] = -coeff.a/coeff.c
-problem.parameters['bc'] = -coeff.b/coeff.c
-problem.parameters['hc'] = -coeff.h/coeff.c
+problem.parameters['ac'] = coeff.a/coeff.c
+problem.parameters['bc'] = coeff.b/coeff.c
+problem.parameters['hc'] = coeff.h/coeff.c
 
 # a dt alpha + b alpha + h dZ^2 alpha + c alpha|alpha|^2 = 0
 # a dt alpha = b alpha + h dZ^2 alpha - c alpha|alpha|^2 (b -> -b, h -> -h) <- standard GLE structure
 # -a dt alpha + b alpha + h dZ^2 alpha = c alpha |alpha|^2
 
-problem.add_equation("ac*dt(alpha) + bc*alpha + hc*dZ(alphaZ) = alpha*abs(alpha**2)") 
+problem.add_equation("-ac*dt(alpha) + bc*alpha + hc*dZ(alphaZ) = alpha*abs(alpha**2)") 
 problem.add_equation("alphaZ - dZ(alpha) = 0")
 
 ts = de.timesteppers.RK443
 IVP = problem.build_solver(ts)
 IVP.stop_sim_time = np.inf#15.*period
 IVP.stop_wall_time = np.inf
-IVP.stop_iteration = 50000#0#0
+IVP.stop_iteration = 50000#0#0#0
 
 # reference local grid and state fields
 Z = Zdomain.grid(0)
@@ -109,7 +106,7 @@ alphaZ = IVP.state['alphaZ']
 # initial conditions ... plus noise!
 noiselvl = 1E-3#15
 noise = np.array([random.uniform(-noiselvl, noiselvl) for _ in range(len(Z))])
-mean_init = 0.1
+mean_init = 0#0.1
 alpha['g'] = mean_init + noise#1.0E-5 + noise
 alpha['c'][gridnum/2:] = 0 
 
@@ -125,7 +122,7 @@ alpha_list = [np.copy(alpha['g'])]
 t_list = [IVP.sim_time]
 
 # Main loop
-dt = 2e-1#2e-3
+dt = 2e-2#2e-3
 while IVP.ok:
     IVP.step(dt)
     if IVP.iteration % 20 == 0:

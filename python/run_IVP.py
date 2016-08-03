@@ -45,7 +45,7 @@ print("saturation amplitude = {}".format(np.sqrt(coeff.b/coeff.c)))
 #Absolute = operators.Absolute
 Absolute = de.operators.UnaryGridFunction
                    
-num_critical_wavelengths = 20
+num_critical_wavelengths = 2#20
 Z_basis = de.Fourier('Z', gridnum, interval=(-(num_critical_wavelengths/2)*lambda_crit, (num_critical_wavelengths/2)*lambda_crit), dealias=3/2)
 Zdomain = de.Domain([Z_basis], grid_dtype=np.complex128)
 problem = de.IVP(Zdomain, variables=['alpha', 'alphaZ'], ncc_cutoff=1e-10)
@@ -57,6 +57,8 @@ problem = de.IVP(Zdomain, variables=['alpha', 'alphaZ'], ncc_cutoff=1e-10)
 #print("ac = {}, bc = {}, hc = {}".format(-coeff.a/coeff.c, coeff.b/coeff.c, -coeff.h/coeff.c))
 
 #problem.add_equation("-ac*dt(alpha) + bc*alpha + hc*dZ(alphaZ) = alpha*abs(alpha**2)") 
+#problem.add_equation("alphaZ - dZ(alpha) = 0")
+
 problem.parameters['ac'] = coeff.a/coeff.c
 problem.parameters['bc'] = coeff.b/coeff.c
 problem.parameters['hc'] = coeff.h/coeff.c
@@ -67,14 +69,14 @@ problem.add_equation("-ac*dt(alpha) + bc*alpha + hc*dZ(alphaZ) = alpha*abs(alpha
 problem.add_equation("alphaZ - dZ(alpha) = 0")
 
 #dt = max_dt = 1.
-dt = 2E-3#4
+dt = 2E-4
 #period = 2*np.pi/Omega1
 
 ts = de.timesteppers.RK443
 IVP = problem.build_solver(ts)
 IVP.stop_sim_time = np.inf#15.*period
 IVP.stop_wall_time = np.inf
-IVP.stop_iteration = 50000
+IVP.stop_iteration = 5000#0
 
 # reference local grid and state fields
 Z = Zdomain.grid(0)
@@ -89,7 +91,7 @@ alpha['g'] = mean_init + noise#1.0E-5 + noise
 alpha['c'][gridnum/2:] = 0 
 
 # try subtracting mean IC value
-alpha['g'] = alpha['g'] - np.nanmean(alpha['g'])
+#alpha['g'] = alpha['g'] - np.nanmean(alpha['g'])
 
 alpha.differentiate(0, out=alphaZ)
 

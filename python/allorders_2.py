@@ -141,8 +141,13 @@ class MRI():
         # this value read from A(x = 0) figure 2c of Umurhan, Regev, &
         # Menou (2007) using WebPlotDigitizer. I estimate the error to
         # be +0.03/-0.04.
-        Amax = 0.535
+        Amax = 0.535#*2
         norm = A.interpolate(x = 0)['g'][0]/Amax
+        
+        #logger.warn('normalizing by int u instead')
+        #intu = u.integrate('x')
+        #norm = intu['g'][0]
+        #logger.warn("Normalizing by {}".format(norm))
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
