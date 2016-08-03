@@ -1,5 +1,5 @@
 #PBS -S /bin/bash
-#PBS -N Widegap_Amplitude_Anorm
+#PBS -N WidegapAnorm
 #PBS -l select=2:ncpus=10:mpiprocs=10:model=has
 #PBS -l walltime=02:00:00
 #PBS -j oe
