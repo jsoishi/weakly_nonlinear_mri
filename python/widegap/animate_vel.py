@@ -88,7 +88,7 @@ plt.show()
 """
 
 
-N_trajectories = 20
+N_trajectories = 5
 
 widegap = True
 
@@ -224,6 +224,13 @@ np.random.seed(1)
 x0[:, 0] = np.sort(5 + 10 * np.random.random(N_trajectories))
 x0[:, 1] = 2*np.pi * np.random.random(N_trajectories)
 x0[:, 2] = np.max(zgrid) * np.random.random(N_trajectories) #np.max(zgrid)/2.0 + 0.1 * np.random.random(N_trajectories)
+
+# change trajectories to known values
+print("caution: non-random initial points for trajectories")
+for i in range(N_trajectories):
+    x0[i, 0] = 5.0 #+ i*(10.0/N_trajectories)
+    x0[i, 1] = 0.0 #+ i*(2*np.pi/N_trajectories)
+    x0[i, 2] = 0.0 + i*(np.max(zgrid)/N_trajectories)
 
 # set one last starting point to something known
 x0special = np.zeros((1, 3), np.float_)
