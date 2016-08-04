@@ -91,7 +91,7 @@ class MRI():
         return problem
 
     def fastest_growing(self):
-        gr, largest_eval_indx  = self.EP.growth_rate({})
+        gr, largest_eval_indx,freq  = self.EP.growth_rate({})
         self.largest_eval_indx = largest_eval_indx
         self.EP.solver.set_state(largest_eval_indx)
         
