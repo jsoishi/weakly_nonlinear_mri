@@ -46,7 +46,8 @@
 
 \begin{document}
 
-\title{Weakly Nonlinear Analysis of the Standard and Helical Magnetorotational Instabilities in a Taylor Couette Flow}
+%\title{Weakly Nonlinear Analysis of the Standard and Helical Magnetorotational Instabilities in a Taylor Couette Flow}
+\title{The Weakly Nonlinear Magnetorotational Instability} % maybe this is punchier?
 \author{Clark, S.E.\altaffilmark{1}}
 \author{Oishi, J.S. \altaffilmark{2,}\altaffilmark{3}}
 %\author{Mac Low, M.-M.\altaffilmark{1,}\altaffilmark{2}}
@@ -62,7 +63,7 @@ Wide gap formulation and preliminary results
 \section{Introduction}
 
 The magnetorotational instability (MRI) drives angular momentum transport and turbulence in astrophysical disks. Its discovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}; actually a rediscovery of \citei{Chandrasekhar:1960wh}) was a breakthrough in the longstanding question of how efficient accretion can exist in the universe: that is, how matter collapsing onto a central body is able to coalesce despite the conservation of specific angular momentum. %The ubiquity of disks ...
-The ubiquity of astrophysical disks suggests that systems both experience and overcome this centrifugal barrier, and accretion proceeds even in hydrodynamically stable disks. The MRI is excited by weak magnetic fields in differentially rotating fluids, and since its discovery it has been widely invoked to explain accretion in protoplanetary disks () and disks around black holes (), as well as
+The ubiquity of astrophysical disks suggests that systems both experience and overcome this centrifugal barrier, and accretion proceeds even in hydrodynamically stable disks. The MRI is excited by weak magnetic fields in differentially rotating fluids, and since its discovery it has been widely invoked to explain accretion in protoplanetary disks (see \citei{Armitage:2010} and references therein) and disks around black holes (), as well as
 
 %Magnetic fields were once assumed to have a stabilizing effect 
 
@@ -73,10 +74,10 @@ Despite the challenges inherent in studying the MRI, much progress has been made
 
 
 
-Because of the MRI's complexity, analytical treatments of the MRI use some combination of convenient approximations, such as ideal MHD, linearized equations, expedient boundary conditions, and simplified geometries. In particular, much of the analytical work on MRI saturation has focused on local approximations, often representing a section of a disk by solving the MHD equations in an isolated region subject to shear periodic boundary conditions (the ``shearing box"). While the MRI is a local instability, certain properties of the local problem are not generic to the global problem. In the shearing box, linear evolution is dominated by a class of MRI mode known as channel modes.  %Channel modes, a class of MRI mode that dominates MRI evolution and saturation in the local approximation, are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). 
+Because of the MRI's complexity, analytical treatments of the MRI use some combination of convenient approximations, such as ideal MHD, linearized equations, expedient boundary conditions, and simplified geometries. In particular, much of the analytical work on MRI saturation has focused on local approximations, often representing a section of a disk by solving the MHD equations in an isolated region subject to shear periodic boundary conditions (the ``shearing box"). The shearing box is an inexpensive computational framework, so is used by many numerical MRI studies as well. However, while the MRI is a local instability, certain properties of the local problem are not generic to the global problem. In the shearing box, linear evolution is dominated by a class of MRI mode known as channel modes.  %Channel modes, a class of MRI mode that dominates MRI evolution and saturation in the local approximation, are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). 
 These are linear modes which also happen to be exact solutions to the \textit{nonlinear} local MRI equations. Runaway growth is avoided in this paradigm by the instability of the channel modes themselves, which are destroyed by parasitic (secondary) instabilities (\citei{Goodman:1994ul}, \citei{Pessah:2010ic}). The growth of parasitic modes provides a saturation avenue for channel mode-dominated flows, yet this is unlikely to be the dominant saturation mechanism in laboratory experiments or astrophysical disks, as channel modes are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). 
 
-The theory we develop here employs radial boundary conditions, and so MRI modes are global and channel modes are not present. A number of saturation mechanisms have been proposed for the MRI which do not rely on channel modes dominating the flow. The MRI feeds off of the free energy from differential rotation, and so a modification of the background shear may cause saturation (e.g. \citei{Knobloch:2005ba}, \citei{Umurhan:2007hs}). The MRI may transfer its free energy into the magnetic field, and saturate when the field is too strong to be susceptible to the MRI (e.g. \citei{Ebrahimi:2009ey}). The MRI may saturate differently depending on the particular parameter regime under investigation, and so our challenge in not only in identifying possible saturation mechanisms, but in understanding how and when each applies in different astrophysical environments.
+The theory we develop here employs realistic radial boundary conditions, and so MRI modes are global and channel modes are not present. A number of saturation mechanisms have been proposed for the MRI which do not rely on channel modes dominating the flow. The MRI feeds off of the free energy from differential rotation, and so a modification of the background shear may cause saturation (e.g. \citei{Knobloch:2005ba}, \citei{Umurhan:2007hs}). The MRI may transfer its free energy into the magnetic field, and saturate when the field is too strong to be susceptible to the MRI (e.g. \citei{Ebrahimi:2009ey}). The MRI may saturate differently depending on the particular parameter regime under investigation, and so our challenge is not only in identifying possible saturation mechanisms, but in understanding how and when each applies in different astrophysical environments.
 
 Our investigation is astrophysically motivated, but we also intend our theory to be relevant to laboratory experiments. Several experimental efforts are attempting to observe the MRI in the laboratory, which would allow the study of a crucial astrophysical phenomenon in a controlled setting. Unfortunately, detection of the MRI has so far proven elusive. \citei{Sisan:2004ig} claimed to detect the MRI in a spherical Couette flow, but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}, \citei{Gissinger:2011td}). Most relevant to our work is the Princeton Plasma Physics Laboratory (PPPL) MRI Experiment, a liquid gallium Taylor-Couette flow exposed to an axial magnetic field (\citei{Ji:2001kd}). Some theoretical work designed to complement the Princeton MRI experiment involves direct simulation of the experimental conditions, much of it focused on the specific challenges in identifying MRI signatures despite apparatus-driven spurious flows (e.g. \citei{Gissinger:2012gc}). In particular, the vertical endcaps on a laboratory MRI apparatus drives meridional flows which both inhibit the excitement of MRI and obscure its detection. The Princeton MRI experiment employs split, independently rotating endcaps to mitigate these flows (\citei{Schartman:2009df}). Our work here assumes an infinite vertical domain, an idealization that is theoretically expedient but experimentally impractical. However, our setup is designed to be an accurate treatment of the radial dimension of the flow in a Taylor Couette apparatus like the one used in the Princeton MRI experiment. 
 
@@ -252,6 +253,12 @@ where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices d
 \mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \xi \widetilde{\mathcal{H}} \mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2\nonumber \\ 
 &+ \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \\\label{eq:ordere3}
 \end{align}
+
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{../figures/widegap_rey_max_tot_stresses.png}
+\caption{Reynolds, Maxwell, and total stress for the fiducial standard MRI case. }
+\end{figure*}
 
 \begin{figure}
 \centering
@@ -451,6 +458,9 @@ N_3^B & = - \frac{1}{r} J\left(A_1, u_2\right) - \frac{1}{r} J\left(A_2, u_1\rig
 
 \bibitem[{Aranson \& Kramer(2002)}]{Aranson:2002}
 Aranson, I.S. \& Kramer, L., 2002, Rev. Mod. Phys. 74, 99
+
+\bibitem[{Armitage(2010)}]{Armitage:2010}
+Armitage, P. 2010, ARA\&A, 49, 195
 
 \bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
 Balbus, S A and Hawley, J F, 1991, The Astrophysical Journal, 376, 214
