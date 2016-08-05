@@ -24,7 +24,7 @@ A = Omega1 - B/R1**2
 r0 = (R1 + R2)/2.
 Omega0 = A + B/r0**2
 Rmc = (Omega0 * r0**2)/eta #3e5*Pm
-beta = (Omega0**2 * r0**2 *rho)/B0**2
+beta = (Omega0**2 * r0**2 *4*np.pi*rho)/B0**2
 # solve EVP
 gridnum = 256
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
@@ -58,9 +58,9 @@ ax = fig.add_subplot(121)
 ax.plot(r_g,scale_factor*v['g'],'k',ls='--')
 ax.plot(r_g,scale_factor*u['g']/3.,'k',ls='dotted')
 ax.plot(r_g,scale_factor*w['g']*0.07,'k',ls='-.')
-ax.plot(r_g,scale_factor*Br['g']/np.sqrt(4*np.pi*rho),'k')
-ax.plot(r_g,scale_factor*Bphi['g']/np.sqrt(4*np.pi*rho)*5,'b',dashes=[2,4,8,4])
-ax.plot(r_g,scale_factor*Bz['g']/np.sqrt(4*np.pi*rho),'k',dashes=[4,4])
+ax.plot(r_g,scale_factor*Br['g'],'k')
+ax.plot(r_g,scale_factor*Bphi['g']*5,'b',dashes=[2,4,8,4])
+ax.plot(r_g,scale_factor*Bz['g'],'k',dashes=[4,4])
 ax.set_xlabel('r', fontsize=18)
 ax.set_ylabel('f', fontsize=18)
 ax.axvspan(4, 5, alpha=0.5, color='red')
@@ -70,12 +70,12 @@ ax.set_xlim(4,16)
 #ax.set_ylim(-0.4,0.4)
 
 ax2 = fig.add_subplot(122)
-ax2.plot(r_g,scale_factor*v['g'],'b',ls='--')
+ax2.plot(r_g,scale_factor*v['g'],'k',ls='--')
 ax2.plot(r_g,scale_factor*u['g']/3,'k',ls='dotted')
 ax2.plot(r_g,scale_factor*w['g']*0.07,'k',ls='-.')
-ax2.plot(r_g,scale_factor*Br['g']/np.sqrt(4*np.pi*rho),'k')
-ax2.plot(r_g,scale_factor*Bphi['g']/np.sqrt(4*np.pi*rho)*5,'b',dashes=[2,4,8,4])
-ax2.plot(r_g,scale_factor*Bz['g']/np.sqrt(4*np.pi*rho),'k',dashes=[4,4])
+ax2.plot(r_g,scale_factor*Br['g'],'k')
+ax2.plot(r_g,scale_factor*Bphi['g']*5,'b',dashes=[2,4,8,4])
+ax2.plot(r_g,scale_factor*Bz['g'],'k',dashes=[4,4])
 ax2.set_xlabel('r', fontsize=18)
 ax2.set_ylabel('f', fontsize=18)
 ax2.axvspan(4.8, 5, alpha=0.5, color='red')
