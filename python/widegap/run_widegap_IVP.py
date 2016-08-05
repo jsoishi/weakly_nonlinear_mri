@@ -48,7 +48,7 @@ Omega2 = Omega1*mu_omega
 
 # data created in run_widegap_amplitude.py
 fn_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
-fn = "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_intnormu".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
+fn = "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_Anorm".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
 coeff_fn = fn_root + fn + ".h5"
 
 # For IVP
@@ -64,19 +64,18 @@ coeff = Coefficients(coeff_fn)
 #coeff.c = coeff.c.real
 #coeff.h = coeff.h.real
 
-print("HACK: setting new coeffs")
-coeff.a = 1+2.1485568148251073e-26j
-coeff.b = 0.045368169457467356+2.4922212429290374e-13j#0.0007066860686026265+8.853530842684617e-15j
-coeff.c = 0.24796998124059338+2.259874552160415e-12j
-coeff.h = 2.7433491997827075+1.2795201244316272e-09j
-
+#print("HACK: setting new coeffs")
+#coeff.a = 1+2.1485568148251073e-26j
+#coeff.b = 0.045368169457467356+2.4922212429290374e-13j#0.0007066860686026265+8.853530842684617e-15j
+#coeff.c = 0.24796998124059338+2.259874552160415e-12j
+#coeff.h = 2.7433491997827075+1.2795201244316272e-09j
 
 print("ac = {}, bc = {}, hc = {}".format(coeff.a/coeff.c, coeff.b/coeff.c, coeff.h/coeff.c)) 
 print("saturation amplitude = {}".format(np.sqrt(coeff.b/coeff.c)))
 
 # Actually solve the IVP
                    
-num_critical_wavelengths = 2#0
+num_critical_wavelengths = 20
 Z_basis = de.Fourier('Z', gridnum, interval=(-(num_critical_wavelengths/2)*lambda_crit, (num_critical_wavelengths/2)*lambda_crit), dealias=3/2)
 Zdomain = de.Domain([Z_basis], grid_dtype=np.complex128)
 problem = de.IVP(Zdomain, variables=['alpha', 'alphaZ'], ncc_cutoff=1e-10)
@@ -96,7 +95,8 @@ ts = de.timesteppers.RK443
 IVP = problem.build_solver(ts)
 IVP.stop_sim_time = np.inf#15.*period
 IVP.stop_wall_time = np.inf
-IVP.stop_iteration = 50000#0#0#0
+tlen = 50000
+IVP.stop_iteration = tlen
 
 # reference local grid and state fields
 Z = Zdomain.grid(0)
@@ -106,7 +106,7 @@ alphaZ = IVP.state['alphaZ']
 # initial conditions ... plus noise!
 noiselvl = 1E-3#15
 noise = np.array([random.uniform(-noiselvl, noiselvl) for _ in range(len(Z))])
-mean_init = 0#0.1
+mean_init = 1#0#0.1
 alpha['g'] = mean_init + noise#1.0E-5 + noise
 alpha['c'][gridnum/2:] = 0 
 
@@ -137,7 +137,7 @@ saturation_amplitude = alpha_array[-1, 0]
 print(saturation_amplitude)
 
 out_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
-f = h5py.File(out_root + "IVP_" + fn + "mean_init_{:.1e}_noiselvl_{:.1e}.h5".format(mean_init, noiselvl), "w")
+f = h5py.File(out_root + "IVP_" + fn + "_mean_init_{:.1e}_noiselvl_{:.1e}_tlen_{}.h5".format(mean_init, noiselvl, tlen), "w")
 alpharr = f.create_dataset("alpha_array", data=alpha_array)
 tarr = f.create_dataset("t_array", data=t_array)
 f.attrs["Q"] = Q

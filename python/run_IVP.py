@@ -76,7 +76,8 @@ ts = de.timesteppers.RK443
 IVP = problem.build_solver(ts)
 IVP.stop_sim_time = np.inf#15.*period
 IVP.stop_wall_time = np.inf
-IVP.stop_iteration = 5000#0
+tlen = 5000
+IVP.stop_iteration = tlen
 
 # reference local grid and state fields
 Z = Zdomain.grid(0)
