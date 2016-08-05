@@ -57,22 +57,22 @@
 
 
 \begin{abstract}
-Wide gap formulation and preliminary results
+We conduct a formal weakly nonlinear analysis of the magnetorotational instability (MRI) in a Taylor Couette flow. This is a multiscale perturbative treatment of the nonideal, axisymmetric MRI near threshold, subject to realistic radial boundary conditions. We analyze both the standard MRI, initialized by a constant vertical background magnetic field, and the helical MRI, in which the base magnetic field contains an azimuthal component. We find that the evolution of the weakly nonlinear perturbation amplitude of the standard MRI is described by a real Ginzburg-Landau equation (GLE), while the amplitude of the helical MRI takes the form of a complex GLE.
 \end{abstract}
 
 \section{Introduction}
 
 The magnetorotational instability (MRI) drives angular momentum transport and turbulence in astrophysical disks. Its discovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}; actually a rediscovery of \citei{Chandrasekhar:1960wh}) was a breakthrough in the longstanding question of how efficient accretion can exist in the universe: that is, how matter collapsing onto a central body is able to coalesce despite the conservation of specific angular momentum. %The ubiquity of disks ...
-The ubiquity of astrophysical disks suggests that systems both experience and overcome this centrifugal barrier, and accretion proceeds even in hydrodynamically stable disks. The MRI is excited by weak magnetic fields in differentially rotating fluids, and since its discovery it has been widely invoked to explain accretion in protoplanetary disks (see \citei{Armitage:2010} and references therein) and disks around black holes (), as well as
+The ubiquity of astrophysical disks suggests that systems both experience and overcome this centrifugal barrier, and accretion proceeds even in hydrodynamically stable disks. The MRI is excited by weak magnetic fields in differentially rotating fluids, and since its discovery it has been widely invoked to explain accretion in protoplanetary disks (see \citei{Armitage:2010} and references therein), binary systems (), and disks around black holes (), as well as jet and wind launching (\citei{Lesur:2013}), dynamos, etc (cite these)
 
 %Magnetic fields were once assumed to have a stabilizing effect 
 
 %The MRI is fundamental to our understanding of star formation, but its 
 %- people make a number of simplifications, incl thin gap, shearing box, etc
 
-Despite the challenges inherent in studying the MRI, much progress has been made nu
+%Despite the challenges inherent in studying the MRI, much progress has been made nu
 
-
+Although the MRI is broadly important to many astrophysical systems, its general properties, and in particular its nonlinear saturation mechanism, remain poorly understood. The diversity of astrophysical systems which may permit the MRI admits an enormous parameter space to be explored. In protoplanetary disks, for example, the behavior and evolution of the MRI may change drastically depending on the properties of the magnetic field, the disk composition, disk geometry, etc. Numerical simulation of realistic disk physics is currently an area of intense focus, and is enabling the study of nonideal MHD effects, disk stratification, nonequilibrium chemistry, and other complex physics that does not lend itself easily to analytic study. Still, computational costs inevitably constrain numerical approaches. MRI saturation is a complicated nonlinear problem which may depend on the assumptions and approximations adopted by simulations in nonobvious ways. Analytic methods can play a powerful role   
 
 Because of the MRI's complexity, analytical treatments of the MRI use some combination of convenient approximations, such as ideal MHD, linearized equations, expedient boundary conditions, and simplified geometries. In particular, much of the analytical work on MRI saturation has focused on local approximations, often representing a section of a disk by solving the MHD equations in an isolated region subject to shear periodic boundary conditions (the ``shearing box"). The shearing box is an inexpensive computational framework, so is used by many numerical MRI studies as well. However, while the MRI is a local instability, certain properties of the local problem are not generic to the global problem. In the shearing box, linear evolution is dominated by a class of MRI mode known as channel modes.  %Channel modes, a class of MRI mode that dominates MRI evolution and saturation in the local approximation, are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). 
 These are linear modes which also happen to be exact solutions to the \textit{nonlinear} local MRI equations. Runaway growth is avoided in this paradigm by the instability of the channel modes themselves, which are destroyed by parasitic (secondary) instabilities (\citei{Goodman:1994ul}, \citei{Pessah:2010ic}). The growth of parasitic modes provides a saturation avenue for channel mode-dominated flows, yet this is unlikely to be the dominant saturation mechanism in laboratory experiments or astrophysical disks, as channel modes are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). 
@@ -257,7 +257,7 @@ where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices d
 \begin{figure*}
 \centering
 \includegraphics[width=\textwidth]{../figures/widegap_rey_max_tot_stresses.png}
-\caption{Reynolds, Maxwell, and total stress for the fiducial standard MRI case. }
+\caption{Reynolds ($\mathbb{T}_{R} = u_r u_\phi$), Maxwell ($\mathbb{T}_{M} = -\frac{2}{\beta} B_r B_\phi$), and total stress ($\mathbb{T} = \mathbb{T}_{R} + \mathbb{T}_{M}$) for the fiducial standard MRI case. }
 \end{figure*}
 
 \begin{figure}
@@ -506,6 +506,9 @@ Knobloch, E, Julien K, 2005, Physics of Fluids, 17, 094106
 
 \bibitem[{Latter et al.(2015)}]{Latter:2015}
 Latter, H.N., Fromang, S., \& Faure, J., 2015, MNRAS 453, 3257
+
+\bibitem[{Lesur et al.(2013)}]{Lesur:2013}
+Lesur, G., Ferreira, J., \& Ogilvie, G. I. 2013, A\&A 550, A61
 
 \bibitem[{Liu et al.(2006)}]{Liu:2006}
 Liu, W, Goodman, J, Herron, I, and Ji, H, 2006, Phys. Rev. E 74, 056302
