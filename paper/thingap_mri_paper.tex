@@ -53,11 +53,14 @@ The magnetorotational instability (MRI) is a fundamental process of accretion di
 
 \section{Introduction}
 
-(general MRI intro)
+For matter to accrete from a disk onto a central object, angular momentum must be transported radially outward in the disk. The transport mechanism is likely turbulent, as molecular viscosity alone cannot account for the needed angular momentum transfer, and likely magnetic, as this turbulence is excited even in hydrodynamically stable disks (\citei{Shakura:1973wg}). Since its discovery by \citeauthor{Chandrasekhar:1960wh} (\citeyear{Chandrasekhar:1960wh}) and subsequent rediscovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}), the magnetorotational instability (MRI) remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability in its simplest geometry arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field linearly destabilizes the disk gas, driving turbulence and angular momentum transport. The MRI likely plays a role in a diverse host of astrophysical systems, including protoplanetary disks and black hole accretion disks, as well as stellar interiors. Despite its importance, many aspects of the MRI remain poorly understood. In particular, the nonlinear saturation mechanism for the MRI is an open question, and a formidable challenge. MRI saturation has been tackled almost exclusively with simulation, with a few notable exceptions detailed below. In this work we investigate the weakly nonlinear behavior of the MRI.
 
 Weakly nonlinear analysis is a perturbative method used to examine the asymptotic behavior of a system near threshold -- that is, when the system is just barely unstable to its most unstable mode. The analytical technique follows the multiscale evolution of fluid variables in a perturbation expansion, allowing the controlled interaction of modes between orders in a perturbation series (see, e.g., Bender \& Orszag for a full mathematical formalism). Weakly nonlinear analysis can be a powerful technique for analytically examining systems which in their full generality exhibit such complicated nonlinear behavior that their study is relegated primarily to the simulation domain. The MRI is one such phenomenon: while there is a rich literature analytically examining the linear MRI, analytical treatments of the \textit{nonlinear} system are relatively few. The weakly nonlinear treatment of the MRI was pioneered by \citeauthor{Umurhan:2007dz} (\citeyear{Umurhan:2007dz}, \citeyear{Umurhan:2007hs}; hereafter URM07). The authors undertook the first weakly nonlinear analysis of the MRI in a thin-gap Taylor Couette flow, and found that the marginal MRI system approaches saturation in a manner analogous to that of Rayleigh-B\'enard convection. Weakly nonlinear analysis was instrumental in our understanding of Rayleigh-B\'enard convection saturation (\citei{Newell:1969}), and the similarities between convection and the thin-gap MRI are the result of important shared symmetries between the systems. The success of URM07 in modeling the MRI system near threshold merits further consideration, but we are unaware of any other attempts to expand upon their theoretical framework. In this work we rigorously rederive the theory of URM07, and expand upon their findings. We conduct a set of weakly nonlinear simulations and compare these to the analytical predictions. Our focus here is on fully characterizing the narrow gap MRI system, both for independent theoretical interest and to have a robust comparison point for extensions of this theory into more complicated geometries. In a companion paper we derive for the first time the weakly nonlinear theory of the standard and helical MRI in a wide gap Taylor Couette flow (\citei{Clark:2016}). The thin- and wide-gap treatments complement one another theoretically, and both are important regimes for comparison with simulation. 
 
-This work examines Taylor Couette flow in the thin-gap regime, and idealization in which the radial extent of the channel is very small compared to its distance from the center of rotation, i.e. $(r_2 - r_1) \ll \frac{1}{2} (r_1 + r_2)$. The thin-gap approximation eliminates curvature terms, so the domain is Cartesian. These curvature terms have an explicit dependence on $r$, so they make the problem more challenging both analytically and numerically.
+This work examines Taylor Couette flow in the thin-gap regime, and idealization in which the radial extent of the channel is very small compared to its distance from the center of rotation, i.e. $(r_2 - r_1) \ll \frac{1}{2} (r_1 + r_2)$ where $r1$ and $r2$ are the radii of the inner and outer flow boundaries, respectively. The thin-gap approximation eliminates curvature terms, so the domain geometry is Cartesian rather than cylindrical. The excluded curvature terms have an explicit dependence on $r$, so they make the problem more challenging both analytically and numerically. In particular, in the wide-gap geometry (i.e. true Taylor Couette flow) the base angular velocity is a function of $r$, where in the thin-gap approximation the shear flow reduces to a linear profile.
+
+We note several other important analytical studies of MRI saturation. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They find that this saturation proceeds via modification of the background shear. \citeauthor{Knobloch:2005ba} consider a thin-gap regime as well, and so their theory may be considered the strongly nonlinear analogue to the one developed here. \citei{Vasil:2015} examines the weakly nonlinear MRI in a thin-gap regime from a heuristic perspective, finding intriguing similarities between the MRI system and an elastodynamic instability. Several authors have investigated the behavior of the MRI when the boundary conditions are shear periodic, and so the MRI has no mechanism by which to modify the background shear flow profile. In this paradigm linear MRI growth is dominated by channel modes, a type of MRI mode that, for periodic boundary conditions, are exact solutions of both the linear and nonlinear MRI equations (\citei{Goodman:1994ul}). In this regime the MRI saturates via parasitic instabilities, which feed off and destroy the primary MRI modes. Analytical investigation of this case reveals that MRI saturation can be caused by parasitic Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime (\citei{Pessah:2010ic}). The theory of MRI channel mode parasites is relatively robust (see also \citei{Pessah:2009gm}, \citei{Latter:2010iz}, \citei{Rembiasz:2016}), but they are mostly an artifact of the local approximation, and not germane to global analyses like the one presented here (see \citei{Latter:2015} for a detailed analysis of the relation between local and global MRI modes).
+
 
 \section{Equations}
 
@@ -84,7 +87,7 @@ The evolution of a conducting fluid is governed by the momentum and induction eq
 
 where $P$ is the gas pressure, $\nu$ is the kinematic viscosity, $\eta$ is the microscopic diffusivity, $\nabla\Phi$ is the gravitational force per unit mass, and the current density is $\mathbf{J} = \nabla\times\mathbf{B}$.
 %in units where the permittivity of free space is unity. 
-Equations \ref{momentum} and \ref{induction} are subject to the magnetic solenoid and incompressibility constraints,
+Equations \ref{eq:momentum} and \ref{eq:induction} are subject to the magnetic solenoid and incompressibility constraints,
 
 \beq\label{eq:solenoid_constraint}
 \nabla \cdot \mathbf{B} = 0
@@ -219,14 +222,43 @@ We compare the weakly nonlinear theory with simulations of the same system. We u
 \begin{thebibliography}{53}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
+\bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
+Balbus, S A and Hawley, J F, 1991, The Astrophysical Journal, 376, 214
+
 \bibitem[{Boyd(2001)}]{Boyd:2001aa}
 Boyd, J P, 2001, Chebyshev and Fourier Spectral Methods, New York, Dover
 
+\bibitem[{Chandrasekhar(1960)}]{Chandrasekhar:1960wh}
+Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the United States of America, 46, 253
 \bibitem[{Clark \& Oishi(2016b)}]{Clark:2016}
 Clark, S.E. and Oishi, J.S., 2016, in prep
 
+\bibitem[Goodman \& Xu(1994)]{Goodman:1994ul}
+Goodman, J, Xu, G, 1994, ApJ, 432, 213
+
+\bibitem[{Knobloch \& Julien(2005)}]{Knobloch:2005ba}
+Knobloch, E, Julien K, 2005, Physics of Fluids, 17, 094106
+
+\bibitem[{Latter et al.(2015)}]{Latter:2015}
+Latter, H.N., Fromang, S., \& Faure, J., 2015, MNRAS 453, 3257
+
+\bibitem[{Latter et al.(2010)}]{Latter:2010iz}
+Latter, H.N., Fromang, S., \& Gressel, O., 2010, MNRAS 406, 848
+
 \bibitem[{Newell \& Whitehead(1969)}]{Newell:1969}
 Newell, A.C. \& Whitehead, J.A. 1969, JFM 38, 279N
+
+\bibitem[{Pessah(2010)}]{Pessah:2010ic}
+Pessah, M. E., 2010, ApJ, 716, 1012
+
+\bibitem[{Pessah \& Goodman(2009)}]{Pessah:2009gm}
+Pessah, M. E., \& Goodman, J., 2009, ApJ 698, L72 
+
+\bibitem[{Rembiasz et al.(2016)}]{Rembiasz:2016}
+Rembiasz, T., Obergaulinger, M., Cerd\'a-Dur\'an, P., M\"uller, E., \& Aloy, M.A., 2016, MNRAS 456, 3782
+
+\bibitem[{Shakura \& Sunyaev(1973)}]{Shakura:1973wg}
+Shakura, N I and Sunyaev, R A, Astronomy \& Astrophysics, 1973, 24, 337
 
 \bibitem[{Umurhan et al.(2007a)}]{Umurhan:2007dz}
 Umurhan, O M, Regev, O, Menou, K, 2007, Phys. Rev. Letters, 98, 034501
@@ -234,6 +266,8 @@ Umurhan, O M, Regev, O, Menou, K, 2007, Phys. Rev. Letters, 98, 034501
 \bibitem[{Umurhan et al.(2007b)}]{Umurhan:2007hs}
 Umurhan, O M, Regev, O, Menou, K, 2007, Phys. Rev. E, 76, 036310
 
+\bibitem[{Vasil(2015)}]{Vasil:2015}
+Vasil, G. M. 2015, RSPSA 471, 20140699
 
 \end{thebibliography}
 
