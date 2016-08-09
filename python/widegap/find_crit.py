@@ -136,7 +136,7 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
             if magnetic_bcs == "conducting":
                 gridname = '../../data/hmri_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
             elif magnetic_bcs == "insulating":
-                gridname = '../../data/hmri_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}_Omega2{7:5.02e}_R1_{}_R2_{}_insulating'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k, Omega2, R1, R2)
+                gridname = '../../data/hmri_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}_Omega1_{7:5.02e}_Omega2_{7:5.02e}_R1_{}_R2_{}_insulating'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k, Omega1, Omega2, R1, R2)
         
         cf.save_grid(gridname)
 

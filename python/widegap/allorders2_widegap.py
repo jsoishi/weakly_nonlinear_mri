@@ -63,6 +63,16 @@ class MRI():
         self.c1 = (self.Omega2*self.R2**2 - self.Omega1*self.R1**2)/(self.R2**2 - self.R1**2)
         self.c2 = (self.R1**2*self.R2**2*(self.Omega1 - self.Omega2))/(self.R2**2 - self.R1**2)
         
+        print("traditional constants are c1 = {}, c2 = {}".format(self.c1, self.c2))
+        
+        self.mu_omega = self.Omega2/self.Omega1
+        self.eta_r = self.R1/self.R2
+        
+        self.c1_new = ((self.mu_omega - self.eta_r**2)/(1 - self.eta_r**2))*self.Omega1
+        self.c2_new = ((1 - self.mu_omega)/(1 - self.eta_r**2))*self.R1**2*self.Omega1
+        
+        print("new constants are c1 = {}, c2 = {}".format(self.c1_new, self.c2_new))
+        
         self.zeta_mean = 2*(self.R2**2*self.Omega2 - self.R1**2*self.Omega1)/((self.R2**2 - self.R1**2)*np.sqrt(self.Omega1*self.Omega2))
         self.R0 = (self.R1 + self.R2)/2.0
         self.q_R0 = 2*self.c2/(self.R0**2*self.c1 + self.c2)
