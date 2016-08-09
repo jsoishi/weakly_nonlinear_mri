@@ -3,6 +3,7 @@ from mpi4py import MPI
 import dedalus.public as de
 from eigentools import Eigenproblem
 import random
+from scipy import special
 
 #import logging
 #logger = logging.getLogger(__name__)
@@ -29,7 +30,7 @@ class MRI():
     critical Rm =    0.84043
     """
 
-    def __init__(self, domain, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
+    def __init__(self, domain, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, conducting = True):
 
         self.domain = domain
         self.Q = Q
@@ -41,6 +42,7 @@ class MRI():
         self.xi = xi
         self.norm = norm
         self.B0 = 1
+        self.conducting = conducting
         
         # Inverse magnetic reynolds number
         self.iRm = 1.0/self.Rm
@@ -81,12 +83,22 @@ class MRI():
         problem.add_bc('right(u) = 0')
         problem.add_bc('left(psi) = 0')
         problem.add_bc('right(psi) = 0')
-        problem.add_bc('left(A) = 0')
-        problem.add_bc('right(A) = 0')
         problem.add_bc('left(psir) = 0')
         problem.add_bc('right(psir) = 0')
-        problem.add_bc('left(B + r*Br) = 0')
-        problem.add_bc('right(B + r*Br) = 0') # axial component of current = 0
+        
+        if conducting is True:
+            problem.add_bc('left(A) = 0')
+            problem.add_bc('right(A) = 0')
+            problem.add_bc('left(B + r*Br) = 0')
+            problem.add_bc('right(B + r*Br) = 0') # axial component of current = 0
+        else:
+            # Insulating boundary conditions
+            problem.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
+            problem.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
+            problem.add_bc('left(dr(r*dz*A) - k*r*bessel1*dz*A) = 0')
+            problem.add_bc('right(dr(r*dz*A) + k*r*bessel2*dz*A) = 0')
+            problem.add_bc('left(B) = 0')
+            problem.add_bc('right(B) = 0')
         
         return problem
 
@@ -256,15 +268,15 @@ class AdjointHomogenous(MRI):
     Returns V^dagger
     """
 
-    def __init__(self, domain, o1 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, finalize=True):
+    def __init__(self, domain, o1 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, finalize=True, conducting = True):
         
         logger.info("initializing Adjoint Homogenous")
         
         if o1 == None:
-            self.o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
-            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            self.o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
         else:
-            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm, conducting = o1.conducting)
       
         # Set up problem object
         lv1 = de.EVP(self.domain,
@@ -278,6 +290,7 @@ class AdjointHomogenous(MRI):
         lv1.parameters['c1'] = self.c1
         lv1.parameters['c2'] = self.c2
         lv1.parameters['B0'] = self.B0
+        lv1.parameters['dz'] = 1j*self.Q
         
         lv1.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
@@ -299,7 +312,7 @@ class AdjointHomogenous(MRI):
         lv1.add_equation("dr(B) - Br = 0")
 
         # Set boundary conditions for MRI problem
-        self.lv1 = self.set_boundary_conditions(lv1)
+        self.lv1 = self.set_boundary_conditions(lv1, conducting = conducting)
         self.EP = Eigenproblem(self.lv1)
 
         if finalize:
@@ -347,11 +360,11 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, domain, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, finalize=True):
+    def __init__(self, domain, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, finalize=True, conducting = True):
         
         logger.info("initializing Order E")
         
-        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
         
         lv1 = de.EVP(self.domain,
                      ['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
@@ -364,6 +377,7 @@ class OrderE(MRI):
         lv1.parameters['c1'] = self.c1
         lv1.parameters['c2'] = self.c2
         lv1.parameters['B0'] = self.B0
+        lv1.parameters['dz'] = 1j*self.Q
         
         lv1.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
@@ -392,7 +406,7 @@ class OrderE(MRI):
         lv1.add_equation("dr(A) - Ar = 0")
         lv1.add_equation("dr(B) - Br = 0")
 
-        self.lv1 = self.set_boundary_conditions(lv1)
+        self.lv1 = self.set_boundary_conditions(lv1, conducting = conducting)
         self.EP = Eigenproblem(self.lv1)
         if finalize:
             self.finalize()
@@ -468,15 +482,15 @@ class N2(MRI):
     
     """
     
-    def __init__(self, domain, o1 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
+    def __init__(self, domain, o1 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, conducting = True):
     
         logger.info("initializing N2")
     
         if o1 is None:
-            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
-            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
         else:
-            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm, conducting = o1.conducting)
     
         rfield = domain.new_field()
         rfield['g'] = o1.r
@@ -656,17 +670,17 @@ class OrderE2(MRI):
     
     """
     
-    def __init__(self, domain, o1 = None, ah = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
+    def __init__(self, domain, o1 = None, ah = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, conducting = True):
     
         logger.info("initializing Order E2")
         
         if o1 is None:
-            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
-            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
-            n2 = N2(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
+            n2 = N2(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
         else:
-            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
-            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm, conducting = o1.conducting)
+            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm, conducting = o1.conducting)
         
         self.o1 = o1
         self.n2 = n2
@@ -721,6 +735,7 @@ class OrderE2(MRI):
         bv20.parameters['rhs_B20'] = self.rhs_B20
         bv20.parameters['iR'] = self.iR
         bv20.parameters['iRm'] = self.iRm
+        bv20.parameters['dz'] = 0 + 0j
         
         bv20.add_equation("-iR*(r**3*dr(psirrr) - r**2*2*psirrr + r*3*psirr - 3*psir) = rhs_psi20")
         bv20.add_equation("-iR*(r**2*dr(ur) + r*ur - u) = rhs_u20")
@@ -734,7 +749,7 @@ class OrderE2(MRI):
         bv20.add_equation("dr(A) - Ar = 0")
         bv20.add_equation("dr(B) - Br = 0")
         
-        bv20 = self.set_boundary_conditions(bv20)
+        bv20 = self.set_boundary_conditions(bv20, conducting = conducting)
         self.BVP20 = self.solve_BVP(bv20)
         
         self.psi20 = self.BVP20.state['psi']
@@ -823,6 +838,7 @@ class OrderE2(MRI):
         bv21.parameters['c2'] = self.c2
         bv21.parameters['xi'] = self.xi
         bv21.parameters['B0'] = self.B0
+        bv21.parameters['dz'] = 1j*self.Q
         
         bv21.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         bv21.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
@@ -845,7 +861,7 @@ class OrderE2(MRI):
         bv21.add_equation("dr(B) - Br = 0")
 
         # boundary conditions
-        bv21 = self.set_boundary_conditions(bv21)
+        bv21 = self.set_boundary_conditions(bv21, conducting = conducting)
 
         self.BVP21 = self.solve_BVP(bv21)
         self.psi21 = self.BVP21.state['psi']
@@ -881,6 +897,7 @@ class OrderE2(MRI):
         bv22.parameters['xi'] = self.xi
         bv22.parameters['c1'] = self.c1
         bv22.parameters['c2'] = self.c2
+        bv22.parameters['dz'] = 2*1j*self.Q
         
         bv22.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         bv22.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
@@ -900,7 +917,7 @@ class OrderE2(MRI):
         bv22.add_equation("dr(B) - Br = 0")
         
         # boundary conditions
-        bv22 = self.set_boundary_conditions(bv22)
+        bv22 = self.set_boundary_conditions(bv22, conducting = conducting)
         
         self.BVP22 = self.solve_BVP(bv22)
         self.psi22 = self.BVP22.state['psi']
@@ -986,22 +1003,22 @@ class N3(MRI):
     
     """
     
-    def __init__(self, domain, o1 = None, o2 = None, ah = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
+    def __init__(self, domain, o1 = None, o2 = None, ah = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, conducting = conducting):
         
         logger.info("initializing N3")
         
         if o1 == None:
-            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
-            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
             
         else:
-            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm, conducting = o1.conducting)
             
         if ah == None:
-            ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
+            ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm, conducting = self.conducting)
 
         if o2 == None:
-            o2 = OrderE2(domain, o1 = o1, ah = ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
+            o2 = OrderE2(domain, o1 = o1, ah = ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm, conducting = self.conducting)
         
         rfield = self.domain.new_field()
         rfield['g'] = o1.r
@@ -1222,23 +1239,23 @@ class AmplitudeAlpha(MRI):
     
     """
     
-    def __init__(self, domain, o1 = None, o2 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True):
+    def __init__(self, domain, o1 = None, o2 = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, conducting = True):
         
         logger.info("initializing Amplitude Alpha")
       
         if o1 == None:
-            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
-            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
-            n2 = N2(domain, o1 = o1, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm)
+            o1 = OrderE(domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
+            MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
+            n2 = N2(domain, o1 = o1, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
         else:
-            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
-            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm)
+            MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm, conducting = o1.conducting)
+            n2 = N2(domain, o1 = o1, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm, conducting = o1.conducting)
 
-        ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
+        ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm, conducting = self.conducting)
         if o2 == None:
-            o2 = OrderE2(domain, o1 = o1, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
+            o2 = OrderE2(domain, o1 = o1, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm, conducting = self.conducting)
         
-        n3 = N3(domain, o1 = o1, o2 = o2, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
+        n3 = N3(domain, o1 = o1, o2 = o2, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm, conducting = self.conducting)
             
         rfield = self.domain.new_field()
         rfield['g'] = o1.r
