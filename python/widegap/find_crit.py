@@ -126,7 +126,7 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
 
     # generating the grid is the longest part
     start = time.time()
-    cf.grid_generator(Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, complex=True) 
+    cf.grid_generator(Rm_min, Rm_max, k_min, k_max, n_Rm, n_k) 
     end = time.time()
     if comm.rank == 0:
         print("grid generation time: {:10.5f} sec".format(end-start))
