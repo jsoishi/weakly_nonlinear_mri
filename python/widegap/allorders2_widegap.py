@@ -1003,7 +1003,7 @@ class N3(MRI):
     
     """
     
-    def __init__(self, domain, o1 = None, o2 = None, ah = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, conducting = conducting):
+    def __init__(self, domain, o1 = None, o2 = None, ah = None, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, conducting = True):
         
         logger.info("initializing N3")
         
