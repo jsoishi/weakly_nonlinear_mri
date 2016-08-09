@@ -95,8 +95,8 @@ class MRI():
             # Insulating boundary conditions
             problem.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
             problem.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
-            problem.add_bc('left(dr(r*dz*A) - k*r*bessel1*dz*A) = 0')
-            problem.add_bc('right(dr(r*dz*A) + k*r*bessel2*dz*A) = 0')
+            problem.add_bc('left(dr(r*dz*A) - Q*r*bessel1*dz*A) = 0')
+            problem.add_bc('right(dr(r*dz*A) + Q*r*bessel2*dz*A) = 0')
             problem.add_bc('left(B) = 0')
             problem.add_bc('right(B) = 0')
         
