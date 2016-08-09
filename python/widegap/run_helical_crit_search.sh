@@ -3,7 +3,7 @@
 #PBS -l select=20:ncpus=24:mpiprocs=24:model=has
 #PBS -l walltime=02:00:00
 #PBS -j oe
-#PBS -q normal
+#PBS -q devel
 
 dedalus_script=find_widegap_crit
 

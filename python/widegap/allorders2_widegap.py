@@ -67,7 +67,7 @@ class MRI():
         self.R0 = (self.R1 + self.R2)/2.0
         self.q_R0 = 2*self.c2/(self.R0**2*self.c1 + self.c2)
         
-        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; beta = {}; norm = {}, Re = {}".format(self.Q, self.Rm, self.Pm, self.beta, norm, self.R))
+        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; beta = {}; norm = {}, Re = {}, xi = {}".format(self.Q, self.Rm, self.Pm, self.beta, norm, self.R, self.xi))
         logger.info("Effective shear parameter q(R0) = {}".format(self.q_R0))
         
         if self.xi != 0:
@@ -93,8 +93,6 @@ class MRI():
             problem.add_bc('right(B + r*Br) = 0') # axial component of current = 0
         else:
             # Insulating boundary conditions
-            problem.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
-            problem.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
             problem.add_bc('left(dr(r*dz*A) - Q*r*bessel1*dz*A) = 0')
             problem.add_bc('right(dr(r*dz*A) + Q*r*bessel2*dz*A) = 0')
             problem.add_bc('left(B) = 0')
@@ -291,6 +289,9 @@ class AdjointHomogenous(MRI):
         lv1.parameters['c2'] = self.c2
         lv1.parameters['B0'] = self.B0
         lv1.parameters['dz'] = 1j*self.Q
+        if conducting is False:
+            lv1.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
+            lv1.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
         
         lv1.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
@@ -378,6 +379,9 @@ class OrderE(MRI):
         lv1.parameters['c2'] = self.c2
         lv1.parameters['B0'] = self.B0
         lv1.parameters['dz'] = 1j*self.Q
+        if conducting is False:
+            lv1.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
+            lv1.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
         
         lv1.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
@@ -736,6 +740,11 @@ class OrderE2(MRI):
         bv20.parameters['iR'] = self.iR
         bv20.parameters['iRm'] = self.iRm
         bv20.parameters['dz'] = 0 + 0j
+        bv20.parameters['Q'] = self.Q
+        if conducting is False:
+            bv20.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
+            bv20.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
+        
         
         bv20.add_equation("-iR*(r**3*dr(psirrr) - r**2*2*psirrr + r*3*psirr - 3*psir) = rhs_psi20")
         bv20.add_equation("-iR*(r**2*dr(ur) + r*ur - u) = rhs_u20")
@@ -839,6 +848,10 @@ class OrderE2(MRI):
         bv21.parameters['xi'] = self.xi
         bv21.parameters['B0'] = self.B0
         bv21.parameters['dz'] = 1j*self.Q
+        if conducting is False:
+            bv21.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
+            bv21.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
+        
         
         bv21.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         bv21.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
@@ -898,11 +911,15 @@ class OrderE2(MRI):
         bv22.parameters['c1'] = self.c1
         bv22.parameters['c2'] = self.c2
         bv22.parameters['dz'] = 2*1j*self.Q
+        if conducting is False:
+            bv22.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
+            bv22.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
+        
         
         bv22.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         bv22.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
         bv22.substitutions['twooverbeta'] = '(2.0/beta)'
-        bv22.substitutions['dz'] = '(1j*2*Q)'
+        #bv22.substitutions['dz'] = '(1j*2*Q)'
         
         bv22.add_equation("-r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi + twooverbeta*r**2*2*xi*(2*1j*Q)*B = rhs_psi22")
         bv22.add_equation("rrdu0*dz*psi + ru0*dz*psi - r**3*twooverbeta*dz*B - r**3*iR*dr(ur) - r**2*iR*ur - r**3*iR*dz**2*u + r*iR*u = rhs_u22")
