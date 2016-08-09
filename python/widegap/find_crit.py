@@ -117,9 +117,10 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
 
     # create a shim function to translate (x, y) to the parameters for the eigenvalue problem:
     def shim(x,y):
-        gr, indx = EP.growth_rate({"k":x,"Rm":y})
-        #return gr
-        return EP.evalues[indx] #return complex eigenval
+        # Adapted for complex eigenvalue
+        gr, indx, freq = EP.growth_rate({"alpha":x,"Re":y})
+        ret = gr+1j*freq
+        return ret
 
     cf = CriticalFinder(shim, comm)
 
@@ -140,9 +141,11 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
         cf.save_grid(gridname)
 
     cf.root_finder()
-    crit = cf.crit_finder()
+    crit = cf.crit_finder(find_freq = True)
 
     if comm.rank == 0:
+        print("crit = {}".format(crit))
+        print("critical omega = {:10.5f}".format(crit[2]))
         print("critical wavenumber k = {:10.5f}".format(crit[0]))
         print("critical Rm = {:10.5f}".format(crit[1]))
         if xi == 0:

@@ -72,12 +72,12 @@ The ubiquity of astrophysical disks suggests that systems both experience and ov
 
 %Despite the challenges inherent in studying the MRI, much progress has been made nu
 
-Although the MRI is broadly important to many astrophysical systems, many of its general properties, and in particular its nonlinear saturation mechanism, remain poorly understood. The diversity of astrophysical systems which may permit the MRI admits an enormous parameter space to be explored. In protoplanetary disks, for example, the behavior and evolution of the MRI may change drastically depending on the properties of the magnetic field, the disk composition, disk geometry, etc. Numerical simulation of realistic disk physics is currently an area of intense focus, and is enabling the study of nonideal MHD effects, disk stratification, nonequilibrium chemistry, and other complex physics that does not lend itself easily to analytic study. Still, computational costs inevitably constrain numerical approaches. MRI saturation is a complicated nonlinear problem which may depend on the assumptions and approximations adopted by simulations in nonobvious ways. Analytic methods can play a powerful role in elucidating the mechanisms responsible for MRI saturation. For instance, analytical approaches have revealed the mechanism that likely governs saturation in the ``shearing box" approximation. The shearing box is an oft-invoked local approximation in which a section of a disk is represented by solving the MHD equations in an isolated region subject to shear periodic boundary conditions. The shearing box is an inexpensive computational framework, and has been widely used to study many aspects of the MRI (). However, while the MRI is a local instability, certain properties of the local problem are not generic to the global problem. In the shearing box, linear evolution is dominated by a class of MRI mode known as channel modes. These are linear modes which also happen to be exact solutions to the \textit{nonlinear} local MRI equations. Runaway growth is avoided in this paradigm by the instability of the channel modes themselves, which are destroyed by parasitic (secondary) instabilities (\citei{Goodman:1994ul}, \citei{Pessah:2010ic}). The growth of parasitic modes provides a saturation avenue for channel mode-dominated flows, yet this is unlikely to be the dominant saturation mechanism in laboratory experiments or astrophysical disks, as channel modes are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). Thus while the shearing box may accurately approximate many features of the global MRI, the saturation mechanism is not among them. 
+Although the MRI is broadly important to many astrophysical systems, many of its general properties, and in particular its nonlinear saturation mechanism, remain poorly understood. The diversity of astrophysical systems which may permit the MRI admits an enormous parameter space to be explored. In protoplanetary disks, for example, the behavior and evolution of the MRI may change drastically depending on the properties of the magnetic field, the disk composition, disk geometry, and so forth. Numerical simulation of realistic disk physics is currently an area of intense focus, and is enabling the study of nonideal MHD effects, disk stratification, nonequilibrium chemistry, and other complex physics that does not lend itself easily to analytic study (\citei{Fleming:2003fs}, \citei{Bai:2011cm}, \citei{Flock:2013}, \citei{Suzuki:2014vh}, to name only a few). Still, computational costs inevitably constrain numerical approaches. MRI saturation is a complicated nonlinear problem which may depend on the assumptions and approximations adopted by simulations in nonobvious ways. Analytic methods can play a powerful role in elucidating the mechanisms responsible for MRI saturation. For instance, analytical approaches have revealed the mechanism that likely governs saturation in the ``shearing box" approximation. The shearing box is an oft-invoked local approximation in which a section of a disk is represented by solving the MHD equations in an isolated region subject to shear periodic boundary conditions. The shearing box is an inexpensive computational framework, and has been widely used to study many aspects of the MRI (). However, while the MRI is a local instability, certain properties of the local problem are not generic to the global problem. In the shearing box, linear evolution is dominated by a class of MRI mode known as channel modes. These are linear modes which also happen to be exact solutions to the \textit{nonlinear} local MRI equations. Runaway growth is avoided in this paradigm by the instability of the channel modes themselves, which are destroyed by parasitic (secondary) instabilities (\citei{Goodman:1994ul}, \citei{Pessah:2010ic}). The growth of parasitic modes provides a saturation avenue for channel mode-dominated flows, yet this is unlikely to be the dominant saturation mechanism in laboratory experiments or astrophysical disks, as channel modes are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). Thus while the shearing box may accurately approximate many features of the global MRI, the saturation mechanism is not among them. 
 
 %Because of the MRI's complexity, analytical treatments of the MRI use some combination of convenient approximations, such as ideal MHD, linearized equations, expedient boundary conditions, and simplified geometries. In particular, much of the analytical work on MRI saturation has focused on local approximations, often representing a section of a disk by solving the MHD equations in an isolated region subject to shear periodic boundary conditions (the ``shearing box"). The shearing box is an inexpensive computational framework, so is used by many numerical MRI studies as well. However, while the MRI is a local instability, certain properties of the local problem are not generic to the global problem. In the shearing box, linear evolution is dominated by a class of MRI mode known as channel modes.  %Channel modes, a class of MRI mode that dominates MRI evolution and saturation in the local approximation, are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). 
 %These are linear modes which also happen to be exact solutions to the \textit{nonlinear} local MRI equations. Runaway growth is avoided in this paradigm by the instability of the channel modes themselves, which are destroyed by parasitic (secondary) instabilities (\citei{Goodman:1994ul}, \citei{Pessah:2010ic}). The growth of parasitic modes provides a saturation avenue for channel mode-dominated flows, yet this is unlikely to be the dominant saturation mechanism in laboratory experiments or astrophysical disks, as channel modes are artificially over-prominent in the shearing box (e.g. \citei{Latter:2015}). 
 
-The theory we develop here employs realistic radial boundary conditions, and so MRI modes are global and channel modes (at least in their purest, radially independent are not present. A number of saturation mechanisms have been proposed for the MRI which do not rely on channel modes dominating the flow. The MRI feeds off of the free energy from differential rotation, and so a modification of the background shear may cause saturation (e.g. \citei{Knobloch:2005ba}, \citei{Umurhan:2007hs}). The MRI may transfer its free energy into the magnetic field, and saturate when the field is too strong to be susceptible to the MRI (e.g. \citei{Ebrahimi:2009ey}). The MRI may saturate differently depending on the particular parameter regime under investigation, and so our challenge is not only in identifying possible saturation mechanisms, but in understanding how and when each applies in different astrophysical environments.
+The theory we develop here employs realistic radial boundary conditions, and so MRI modes are global and channel modes are not present. A number of saturation mechanisms have been proposed for the MRI which do not rely on channel modes dominating the flow. The MRI feeds off of the free energy from differential rotation, and so a modification of the background shear may cause saturation (e.g. \citei{Knobloch:2005ba}, \citei{Umurhan:2007hs}). The MRI may transfer its free energy into the magnetic field, and saturate when the field is too strong to be susceptible to the MRI (e.g. \citei{Ebrahimi:2009ey}). The MRI may saturate differently depending on the particular parameter regime under investigation, and so our challenge is not only in identifying possible saturation mechanisms, but in understanding how and when each applies in different astrophysical environments.
 
 Our investigation is astrophysically motivated, but we also intend our theory to be relevant to laboratory experiments. Several experimental efforts are attempting to observe the MRI in the laboratory, which would allow the study of a crucial astrophysical phenomenon in a controlled setting. Unfortunately, detection of the MRI has so far proven elusive. \citei{Sisan:2004ig} claimed to detect the MRI in a spherical Couette flow, but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}, \citei{Gissinger:2011td}). Most relevant to our work is the Princeton Plasma Physics Laboratory (PPPL) MRI Experiment, a liquid gallium Taylor-Couette flow exposed to an axial magnetic field (\citei{Ji:2001kd}). Some theoretical work designed to complement the Princeton MRI experiment involves direct simulation of the experimental conditions, much of it focused on the specific challenges in identifying MRI signatures despite apparatus-driven spurious flows (e.g. \citei{Gissinger:2012gc}). In particular, the vertical endcaps on a laboratory MRI apparatus drives meridional flows which both inhibit the excitement of MRI and obscure its detection. The Princeton MRI experiment employs split, independently rotating endcaps to mitigate these flows (\citei{Schartman:2009df}). Our work here assumes an infinite vertical domain, an idealization that is theoretically expedient but experimentally impractical. However, our setup is designed to be an accurate treatment of the radial dimension of the flow in a Taylor Couette apparatus like the one used in the Princeton MRI experiment. 
 
@@ -254,18 +254,6 @@ where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices d
 &+ \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \\\label{eq:ordere3}
 \end{align}
 
-\begin{figure*}
-\centering
-\includegraphics[width=\textwidth]{../figures/widegap_rey_max_tot_stresses.png}
-\caption{Reynolds ($\mathbb{T}_{R} = u_r u_\phi$), Maxwell ($\mathbb{T}_{M} = -\frac{2}{\beta} B_r B_\phi$), and total stress ($\mathbb{T} = \mathbb{T}_{R} + \mathbb{T}_{M}$) for the fiducial standard MRI case. }
-\end{figure*}
-
-\begin{figure}
-\centering
-\includegraphics[width=\columnwidth]{../figures/widegap_3D_vel_screenshot.png}
-\caption{Visualization of the velocity perturbation field in the fiducial SMRI case. The three dimensional path of twenty randomly placed tracer particles is plotted, where the particle velocity is defined as the total (first + second order) velocity perturbation. This is meant to be a visualization only of the velocity field, so the particle motion feels no contribution from the magnetic field.}
-\end{figure}
-
 See Appendix \ref{app:basic_equations} for the definition of matrices and nonlinear vectors, and a thorough derivation. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the narrow gap case, although the matrices (which contain all radial derivatives) are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution $\mathbf{V}_1 = \alpha(Z, T) \mathbb{V}_{11}(r) e^{i k_z z} + c.c.$, where the radial variation is contained in $\mathbb{V}_{11}$. 
 
 We solve the equations at each order using Dedalus, an open source pseudospectral code (Burns et al. in prep). Because our domain is bounded only radially and not vertically, we solve the radial dimension on a basis of Chebyshev polynomials, and the vertical dimension on a Fourier series basis. We solve Equation \ref{eq:ordere} as a linear eigenvalue problem, and Equations \ref{eq:ordere2} and \ref{eq:ordere3} as linear boundary value problems. %should i mention spurious eigenvals? 
@@ -285,6 +273,22 @@ a Ginzburg-Landau equation (GLE). The GLE governs the weakly nonlinear amplitude
 %For the standard MRI we derive a real GLE, and for the helical MRI we derive a complex GLE. 
  %This complex GLE is a natural form for the HMRI, as it is a traveling wave instability.
 
+\section{Results and Discussion}
+
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{../figures/widegap_rey_max_tot_stresses.png}
+\caption{Reynolds ($\mathbb{T}_{R} = u_r u_\phi$), Maxwell ($\mathbb{T}_{M} = -\frac{2}{\beta} B_r B_\phi$), and total stress ($\mathbb{T} = \mathbb{T}_{R} + \mathbb{T}_{M}$) for the fiducial standard MRI case. }
+\end{figure*}
+
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{../figures/widegap_3D_vel_screenshot.png}
+\caption{Visualization of the velocity perturbation field in the fiducial SMRI case. The three dimensional path of twenty randomly placed tracer particles is plotted, where the particle velocity is defined as the total (first + second order) velocity perturbation. This is meant to be a visualization only of the velocity field, so the particle motion feels no contribution from the magnetic field.}
+\end{figure}
+
+\subsection{Standard MRI}
+
 For the standard MRI we derive a real GLE. Here we note a departure from the behavior of the narrow gap system. The purely conducting boundary condition states that the axial component of the current ($\mathbf{J}_z = [\nabla \times \mathbf{B}]_z)$ must be zero at the walls. In the thin gap geometry, the purely conducting boundary condition on the azimuthal magnetic field is $\partial_x(B_y) = 0$ for axisymmetric perturbations. A spatially constant azimuthal field satisfies both the thin-gap MRI equations and this boundary condition. This neutral mode is formally included in the analysis of \citei{Umurhan:2007hs} and yields a second amplitude equation in the form of a simple diffusion equation. This amplitude equation decouples from the GLE because of the translational symmetry of the thin-gap geometry. Because that symmetry is not preserved in the wide-gap case, \citeauthor{Umurhan:2007hs} postulate that slow variation in the wide-gap geometry will be governed by two coupled amplitude equations. %However, the wide-gap conducting boundary condition $J_z = \frac{1}{r} \partial_r (r B_\phi) = 0$, together with the purely geometric term in Equation \ref{eq:Bphi_perturbed}, conspire to prevent the wide-gap geometry from sustaining a neutral mode. 
 However, the purely geometric term in Equation \ref{eq:Bphi_perturbed} prevents the wide-gap geometry from sustaining a neutral mode. We note that a neutral mode of the form $B_\phi(r) \propto \frac{1}{r}$ would exist in a resistance-free approximation.
 
@@ -300,8 +304,13 @@ The nonlinear terms, detailed in Appendix \ref{app:nonlinear_terms}, represent a
 
 We examine the behavior of the wide gap MRI system as a function of $Pm$. Figure \ref{fig:coefficients} shows the critical parameters $k_c$ and $\reym$ as a function of $Pm$, as well as the coefficients $b$, $c$, and $d$. The GLE coefficients are remarkably insensitive to $Pm$. From Equation \ref{eq:gle} it is readily apparent that the asymptotic saturation amplitude is $\alpha_{s} = \pm \sqrt{b/c}$, so we conclude that the saturation amplitude of the MRI is only very weakly dependent on $Pm$. Note that because $\reym$ is essentially constant as a function of $Pm$, the saturation amplitude is equivalently insensitive to $\reye^{-1}$. This is in stark contrast to the narrow gap behavior of the system. For these same boundary conditions, \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}) find that the narrow gap saturation amplitude scales as $Pm^{-4/3}$. They find that this amplitude dependence is driven by the $Pm^{1/3}$ dependence of the linear boundary layer. Boundary layer analysis similarly reveals a $\nu^{1/3}$ dependence for the radial extent of the boundary layer (\citei{Goodman:2002ix}). Why does the $Pm$ scaling of the boundary layer width not translate to a stronger $Pm$ scaling for the saturation amplitude in the wide gap case? The boundary layer in the wide gap case is strongly localized at the walls, i.e. $r_1$ and $r_2$. Figure \ref{fig:wide_narrow_N31B} shows the structure of the third-order nonlinear term $N_{31}^{(B)}$ as a function of $Pm$ for both the narrow and wide gap standard MRI. $N_{31}$ is the vector that determines the GLE coefficient $c$ (see Appendix \ref{app:basic_equations} for the wide gap case, and \citei{Umurhan:2007hs}, \citei{Clark:2016} for the narrow gap equations). Clearly, the boundary layers scale with $Pm$ in both the wide and narrow gap MRI. However, in the narrow gap case this scaling extends prominently into the center of the channel, whereas for the wide gap case the bulk of the flow is relatively unaffected by the boundary layer scaling. 
 
-\section{Channel Modes}
-Channel modes are radially independent linear MRI modes which are, under certain conditions, exact nonlinear solutions to the MRI equations. 
+%\section{Channel Modes}
+%Channel modes are radially independent linear MRI modes which are, under certain conditions, exact nonlinear solutions to the MRI equations. 
+
+\subsection{Helical MRI}
+
+When $\xi$ in Equation \ref{eq:unperturbed_matrix_eqns} is not equal to zero, the helical MRI arises. We examine a single fiducial helical MRI case, for the parameters listed in Table \ref{table:parameters}. At the conclusion of the weakly nonlinear analysis, we find that the coefficients of Equation \ref{eq:gle} are $b = $, $d = $, and $c = $, i.e. complex. The marginal helical MRI is thus described by a complex GLE. 
+
 
 \clearpage
 \appendix
@@ -462,6 +471,9 @@ Aranson, I.S. \& Kramer, L., 2002, Rev. Mod. Phys. 74, 99
 \bibitem[{Armitage(2010)}]{Armitage:2010}
 Armitage, P. 2010, ARA\&A, 49, 195
 
+\bibitem[{Bai(2011)}]{Bai:2011cm}
+Bai, X. 2011, ApJ 739, 50
+
 \bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
 Balbus, S A and Hawley, J F, 1991, The Astrophysical Journal, 376, 214
 
@@ -476,6 +488,12 @@ Cross, M. C., \& Hohenberg, P. C., 1993, Rev. Mod. Phys. 65, 851
 
 \bibitem[{Ebrahimi et al.(2009)}]{Ebrahimi:2009ey}
 Ebrahimi, F., Prager, S.C., Schnack, D.D
+
+\bibitem[{Fleming \& Stone(2003)}]{Fleming:2003fs}
+Fleming, T. \& Stone, J. 2003, ApJ 585, 908
+
+\bibitem[{Flock et al.(2013)}]{Flock:2013}
+Flock, M., Fromang, S., Gonz\'alez, M., Commer\c{c}on, B. A\&A 560, A43
 
 \bibitem[{Gissinger et al.(2011)}]{Gissinger:2011td}
 Gissinger, C, Ji, H, Goodman, J, 2011, Phys. Rev. E 84, 026308
@@ -533,6 +551,9 @@ Stefani, F, Gundrum, T, Gerbeth, G, R\"udiger, G, Schultz, M, Szklarski, J, Holl
 
 \bibitem[{Stefani et al.(2009)}]{Stefani:2009hp}
 Stefani, F, Gerbeth, G, Gundrum, T, Hollerbach, R, Priede, J, R\"udiger, G, and Szklarski, J, Phys Rev E, 80, 066303
+
+\bibitem[{Suzuki \& Inutsuka(2014)}]{Suzuki:2014vh}
+Suzuki, T.K. \& Inutsuka, S. 2014, ApJ 784, 121
 
 \bibitem[{Umurhan et al.(2007a)}]{Umurhan:2007dz}
 Umurhan, O.M., Regev, O., Menou, K., 2007, Phys. Rev. Letters, 98, 034501
