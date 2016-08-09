@@ -203,7 +203,7 @@ class MRI():
         # Menou (2007) using WebPlotDigitizer. I estimate the error to
         # be +0.03/-0.04.
         Amax = 1#0.535
-        norm = A.interpolate(r = 10)['g'][0]/Amax
+        norm = A.interpolate(r = (self.R1 + self.R2)/2.0)['g'][0]/Amax
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
@@ -443,9 +443,8 @@ class OrderE(MRI):
             self.A = (self.A*scale).evaluate()
             self.B = (self.B*scale).evaluate()
             
-        self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
-        
-        self.normpsi = self.psi
+        if self.norm is True:
+            self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
             
         self.psi.name = "psi"
         self.u.name = "u"
