@@ -6,15 +6,17 @@ import h5py
 
 R1=1 
 R2=2
-Omega1=313.55 
-Omega2=87.794 
+#Omega1=313.55 
+#Omega2=87.794 
+Omega1 = 1.0 # nondimensionalized by inner cylinder values
+Omega2 = 0.27
 Pm=1.0E-6 
 beta=0.0174 
 xi=4.0 
 #critical wavenumber k =    3.93540
 #critical Rm =    0.02165
-Q = 3.93540
-Rm = 0.02165
+Q = 2.33
+Rm = 0.001521
 conducting=False
 
 gridnum = 128
