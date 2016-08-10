@@ -63,7 +63,7 @@ class MRI():
         self.c1 = (self.Omega2*self.R2**2 - self.Omega1*self.R1**2)/(self.R2**2 - self.R1**2)
         self.c2 = (self.R1**2*self.R2**2*(self.Omega1 - self.Omega2))/(self.R2**2 - self.R1**2)
         
-        print("traditional constants are c1 = {}, c2 = {}".format(self.c1, self.c2))
+        #print("traditional constants are c1 = {}, c2 = {}".format(self.c1, self.c2))
         
         self.mu_omega = self.Omega2/self.Omega1
         self.eta_r = self.R1/self.R2
@@ -71,7 +71,7 @@ class MRI():
         self.c1_new = ((self.mu_omega - self.eta_r**2)/(1 - self.eta_r**2))*self.Omega1
         self.c2_new = ((1 - self.mu_omega)/(1 - self.eta_r**2))*self.R1**2*self.Omega1
         
-        print("new constants are c1 = {}, c2 = {}".format(self.c1_new, self.c2_new))
+        #print("new constants are c1 = {}, c2 = {}".format(self.c1_new, self.c2_new))
         
         self.zeta_mean = 2*(self.R2**2*self.Omega2 - self.R1**2*self.Omega1)/((self.R2**2 - self.R1**2)*np.sqrt(self.Omega1*self.Omega2))
         self.R0 = (self.R1 + self.R2)/2.0
@@ -257,6 +257,7 @@ class MRI():
         ip = self.domain.new_field()
         ip.name = "inner product"
         ip['g'] = inner_product
+        print('inner product pre integration', ip['g'])
         ip = ip.integrate('r')
         ip = ip['g'][0] 
         
@@ -572,12 +573,13 @@ class N2(MRI):
         self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
         """
         # hack this to be zero because it's < 1E-15
-        print("setting N20_psi to zero because N20_psi + N20_psi* = 0")
-        allzeros = np.zeros(len(rfield['g']), np.complex)
-        all_zeros_field = domain.new_field()
-        all_zeros_field['g'] = allzeros 
-        self.N20_psi_r4_rederived = all_zeros_field
-        self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
+        if self.xi == 0: # only for standard MRI
+            print("setting N20_psi to zero because N20_psi + N20_psi* = 0")
+            allzeros = np.zeros(len(rfield['g']), np.complex)
+            all_zeros_field = domain.new_field()
+            all_zeros_field['g'] = allzeros 
+            self.N20_psi_r4_rederived = all_zeros_field
+            self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
         
         # Note: doesn't matter which of (psi1, psi1) is chosen to be psi1_star -- here i am using opposite from above
         N20_psi_r4 = (((-1j*Q*o1.psi_star)*(-2*rfield*o1.psi_rr + rfield**2*o1.psi_rrr - 2*rfield*(1j*Q)**2*o1.psi + rfield**2*(1j*Q)**2*o1.psi_r - 3*o1.psi_r + rfield*o1.psi_r + 6*o1.psi_r - 2*rfield*o1.psi_r)
@@ -673,9 +675,10 @@ class N2(MRI):
         """
         
         # hack this to be zero because it's < 1E-15
-        print("setting N20_B to zero because N20_B + N20_B* = 0")
-        self.N20_B_r2_rederived = all_zeros_field
-        self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
+        if self.xi == 0:
+            print("setting N20_B to zero because N20_B + N20_B* = 0")
+            self.N20_B_r2_rederived = all_zeros_field
+            self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
         
 class OrderE2(MRI):
 
