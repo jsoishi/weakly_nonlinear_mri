@@ -103,8 +103,10 @@ class MRI():
             problem.add_bc('right(B + r*Br) = 0') # axial component of current = 0
         else:
             # Insulating boundary conditions
-            problem.add_bc('left(dr(r*dz*A) - Q*r*bessel1*dz*A) = 0')
-            problem.add_bc('right(dr(r*dz*A) + Q*r*bessel2*dz*A) = 0')
+            #problem.add_bc('left(dr(r*dz*A) - Q*r*bessel1*dz*A) = 0')
+            #problem.add_bc('right(dr(r*dz*A) + Q*r*bessel2*dz*A) = 0')
+            problem.add_bc('left(dr(r*A) - Q*r*bessel1*A) = 0')
+            problem.add_bc('right(dr(r*A) + Q*r*bessel2*A) = 0') # dz is just a constant so divide it out! (problematic for V20)
             problem.add_bc('left(B) = 0')
             problem.add_bc('right(B) = 0')
         
