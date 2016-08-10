@@ -546,32 +546,32 @@ class N2(MRI):
         self.N20_psi = (N20_psi_jacobians + N20_psi_advectives).evaluate()
         self.N20_psi.name = "N20_psi"
         
-        """
-        # explicitly include (psi1, psi1star) and (psi1star, psi1)
-        N20_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(-1j*Q)*o1.psi_star + rfield**2*(1j*Q)*o1.psi*(-1*Q)**2*o1.psi_star_r
-                               - rfield**2*o1.psi_r*(-1j*Q)**3*o1.psi_star + 3*(1j*Q)*o1.psi*o1.psi_star_r
-                               + rfield*(-1j*Q)*o1.psi_r*o1.psi_star_r - 3*rfield*(1j*Q)*o1.psi*o1.psi_star_rr
-                               + rfield**2*(1j*Q)*o1.psi*o1.psi_star_rrr - rfield**2*o1.psi_r*(-1j*Q)*o1.psi_star_rr
-                               + 2*rfield**3*1j*Q*o1.u*o1.u_star
-                               - 2*rfield*(-1j*Q)**2*o1.psi_star*(1j*Q)*o1.psi + rfield**2*(-1j*Q)*o1.psi_star*(1j*Q)**2*o1.psi_r
-                               - rfield**2*o1.psi_star_r*(1j*Q)**3*o1.psi + 3*(-1j*Q)*o1.psi_star*o1.psi_r
-                               + rfield*(-1j*Q)*o1.psi_star_r*o1.psi_r - 3*rfield*(-1j*Q)*o1.psi_star*o1.psi_rr
-                               + rfield**2*(-1j*Q)*o1.psi_star*o1.psi_rrr - rfield**2*o1.psi_star_r*(1j*Q)*o1.psi_rr
-                               - 2*rfield**3*1j*Q*o1.u*o1.u_star)
-                   - (2/beta)*(-2*rfield*(1j*Q)**2*o1.A*(-1j*Q)*o1.A_star + rfield**2*(1j*Q)*o1.A*(-1*Q)**2*o1.A_star_r
-                               - rfield**2*o1.A_star_r*(-1j*Q)**3*o1.A_star + 3*(1j*Q)*o1.A*o1.A_star_r
-                               + rfield*(-1j*Q)*o1.A_r*o1.A_star_r - 3*rfield*(1j*Q)*o1.A*o1.A_star_rr
-                               + rfield**2*(1j*Q)*o1.A*o1.A_star_rrr - rfield**2*o1.A_r*(-1j*Q)*o1.A_star_rr
-                               + 2*rfield**3*1j*Q*o1.B*o1.B_star
-                               - 2*rfield*(-1j*Q)**2*o1.A_star*(1j*Q)*o1.A + rfield**2*(-1j*Q)*o1.A_star*(1j*Q)**2*o1.A_r
-                               - rfield**2*o1.A_star_r*(1j*Q)**3*o1.A + 3*(-1j*Q)*o1.A_star*o1.A_r
-                               + rfield*(-1j*Q)*o1.A_star_r*o1.A_r - 3*rfield*(-1j*Q)*o1.A_star*o1.A_rr
-                               + rfield**2*(-1j*Q)*o1.A_star*o1.A_rrr - rfield**2*o1.A_star_r*(1j*Q)*o1.A_rr
-                               - 2*rfield**3*1j*Q*o1.B*o1.B_star))
+        if self.xi != 0:
+            # explicitly include (psi1, psi1star) and (psi1star, psi1)
+            N20_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(-1j*Q)*o1.psi_star + rfield**2*(1j*Q)*o1.psi*(-1*Q)**2*o1.psi_star_r
+                                   - rfield**2*o1.psi_r*(-1j*Q)**3*o1.psi_star + 3*(1j*Q)*o1.psi*o1.psi_star_r
+                                   + rfield*(-1j*Q)*o1.psi_r*o1.psi_star_r - 3*rfield*(1j*Q)*o1.psi*o1.psi_star_rr
+                                   + rfield**2*(1j*Q)*o1.psi*o1.psi_star_rrr - rfield**2*o1.psi_r*(-1j*Q)*o1.psi_star_rr
+                                   + 2*rfield**3*1j*Q*o1.u*o1.u_star
+                                   - 2*rfield*(-1j*Q)**2*o1.psi_star*(1j*Q)*o1.psi + rfield**2*(-1j*Q)*o1.psi_star*(1j*Q)**2*o1.psi_r
+                                   - rfield**2*o1.psi_star_r*(1j*Q)**3*o1.psi + 3*(-1j*Q)*o1.psi_star*o1.psi_r
+                                   + rfield*(-1j*Q)*o1.psi_star_r*o1.psi_r - 3*rfield*(-1j*Q)*o1.psi_star*o1.psi_rr
+                                   + rfield**2*(-1j*Q)*o1.psi_star*o1.psi_rrr - rfield**2*o1.psi_star_r*(1j*Q)*o1.psi_rr
+                                   - 2*rfield**3*1j*Q*o1.u*o1.u_star)
+                       - (2/beta)*(-2*rfield*(1j*Q)**2*o1.A*(-1j*Q)*o1.A_star + rfield**2*(1j*Q)*o1.A*(-1*Q)**2*o1.A_star_r
+                                   - rfield**2*o1.A_star_r*(-1j*Q)**3*o1.A_star + 3*(1j*Q)*o1.A*o1.A_star_r
+                                   + rfield*(-1j*Q)*o1.A_r*o1.A_star_r - 3*rfield*(1j*Q)*o1.A*o1.A_star_rr
+                                   + rfield**2*(1j*Q)*o1.A*o1.A_star_rrr - rfield**2*o1.A_r*(-1j*Q)*o1.A_star_rr
+                                   + 2*rfield**3*1j*Q*o1.B*o1.B_star
+                                   - 2*rfield*(-1j*Q)**2*o1.A_star*(1j*Q)*o1.A + rfield**2*(-1j*Q)*o1.A_star*(1j*Q)**2*o1.A_r
+                                   - rfield**2*o1.A_star_r*(1j*Q)**3*o1.A + 3*(-1j*Q)*o1.A_star*o1.A_r
+                                   + rfield*(-1j*Q)*o1.A_star_r*o1.A_r - 3*rfield*(-1j*Q)*o1.A_star*o1.A_rr
+                                   + rfield**2*(-1j*Q)*o1.A_star*o1.A_rrr - rfield**2*o1.A_star_r*(1j*Q)*o1.A_rr
+                                   - 2*rfield**3*1j*Q*o1.B*o1.B_star))
                                
-        self.N20_psi_r4_rederived = N20_psi_r4_rederived.evaluate()
-        self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
-        """
+            self.N20_psi_r4_rederived = N20_psi_r4_rederived.evaluate()
+            self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
+        
         # hack this to be zero because it's < 1E-15
         if self.xi == 0: # only for standard MRI
             print("setting N20_psi to zero because N20_psi + N20_psi* = 0")
@@ -665,14 +665,14 @@ class N2(MRI):
         self.N20_B_r2_rederived = N20_B_r2_rederived.evaluate()
         self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
         """
-        """
-        N20_B_r2_rederived = (rfield*(1j*Q)*o1.psi*o1.B_star_r - rfield*o1.psi_r*(-1j*Q)*o1.B_star + o1.u*(-1j*Q)*o1.A_star - rfield*(1j*Q)*o1.A*o1.u_star_r
-                               + rfield*o1.A_r*(-1j*Q)*o1.u_star - o1.B*(-1j*Q)*o1.psi_star
-                               + rfield*(-1j*Q)*o1.psi_star*o1.B_r - rfield*o1.psi_star_r*(1j*Q)*o1.B + o1.u_star*(1j*Q)*o1.A - rfield*(-1j*Q)*o1.A_star*o1.u_r
-                               + rfield*o1.A_star_r*(1j*Q)*o1.u - o1.B_star*(1j*Q)*o1.psi)
-        self.N20_B_r2_rederived = N20_B_r2_rederived.evaluate()
-        self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
-        """
+        if self.xi != 0:
+            N20_B_r2_rederived = (rfield*(1j*Q)*o1.psi*o1.B_star_r - rfield*o1.psi_r*(-1j*Q)*o1.B_star + o1.u*(-1j*Q)*o1.A_star - rfield*(1j*Q)*o1.A*o1.u_star_r
+                                   + rfield*o1.A_r*(-1j*Q)*o1.u_star - o1.B*(-1j*Q)*o1.psi_star
+                                   + rfield*(-1j*Q)*o1.psi_star*o1.B_r - rfield*o1.psi_star_r*(1j*Q)*o1.B + o1.u_star*(1j*Q)*o1.A - rfield*(-1j*Q)*o1.A_star*o1.u_r
+                                   + rfield*o1.A_star_r*(1j*Q)*o1.u - o1.B_star*(1j*Q)*o1.psi)
+            self.N20_B_r2_rederived = N20_B_r2_rederived.evaluate()
+            self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
+        
         
         # hack this to be zero because it's < 1E-15
         if self.xi == 0:
