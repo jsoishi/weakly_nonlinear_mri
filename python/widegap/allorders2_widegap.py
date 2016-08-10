@@ -117,7 +117,7 @@ class MRI():
         self.largest_eval_indx = largest_eval_indx
         self.EP.solver.set_state(largest_eval_indx)
         
-        print("Fastest mode has growth rate {}".format(gr))
+        logger.info("Fastest mode has growth rate {}".format(gr))
     
     def solve_BVP(self, BVP):
     
@@ -213,7 +213,7 @@ class MRI():
         B['g'] = B['g']/norm
         
         testu = u.integrate('r')
-        print("new integrated u is {}".format(testu['g'][0]))
+        logger.info("new integrated u is {}".format(testu['g'][0]))
         
         
         return psi, u, A, B
@@ -257,7 +257,7 @@ class MRI():
         ip = self.domain.new_field()
         ip.name = "inner product"
         ip['g'] = inner_product
-        print('inner product pre integration', ip['g'])
+        #logger.info('inner product pre integration', ip['g'])
         ip = ip.integrate('r')
         ip = ip['g'][0] 
         
@@ -547,7 +547,7 @@ class N2(MRI):
         self.N20_psi.name = "N20_psi"
         
         if self.xi != 0:
-            print("N20 psi r4 term")
+            logger.info("N20 psi r4 term")
             # explicitly include (psi1, psi1star) and (psi1star, psi1)
             N20_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(-1j*Q)*o1.psi_star + rfield**2*(1j*Q)*o1.psi*(-1*Q)**2*o1.psi_star_r
                                    - rfield**2*o1.psi_r*(-1j*Q)**3*o1.psi_star + 3*(1j*Q)*o1.psi*o1.psi_star_r
@@ -575,7 +575,7 @@ class N2(MRI):
         
         # hack this to be zero because it's < 1E-15
         if self.xi == 0: # only for standard MRI
-            print("setting N20_psi to zero because N20_psi + N20_psi* = 0")
+            logger.info("setting N20_psi to zero because N20_psi + N20_psi* = 0")
             allzeros = np.zeros(len(rfield['g']), np.complex)
             all_zeros_field = domain.new_field()
             all_zeros_field['g'] = allzeros 
@@ -591,8 +591,8 @@ class N2(MRI):
         self.N20_psi_r4 = N20_psi_r4.evaluate()
         self.N20_psi_r4.name = "N20_psi_r4"
         
-        print("N20 psi r4 + cc:", self.N20_psi_r4['g'] + self.N20_psi_r4['g'].conj())
-        print("rederived:", self.N20_psi_r4_rederived['g'])
+        logger.info("N20 psi r4 + cc:", self.N20_psi_r4['g'] + self.N20_psi_r4['g'].conj())
+        logger.info("rederived:", self.N20_psi_r4_rederived['g'])
         
         N22_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_r - (1j*Q*o1.u)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_r - (1j*Q*o1.B)*o1.A_r)))
         N22_u_advectives = ((1/rfield**2)*o1.u*1j*Q*o1.psi - (2/beta)*(1/rfield**2)*o1.B*1j*Q*o1.A)
@@ -677,7 +677,7 @@ class N2(MRI):
         
         # hack this to be zero because it's < 1E-15
         if self.xi == 0:
-            print("setting N20_B to zero because N20_B + N20_B* = 0")
+            logger.info("setting N20_B to zero because N20_B + N20_B* = 0")
             self.N20_B_r2_rederived = all_zeros_field
             self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
         
@@ -1359,15 +1359,16 @@ class AmplitudeAlpha(MRI):
         h_B_rhs = (-h_B_rhs).evaluate()
         
         # Normalize s.t. a = 1
-        if norm is True:
-            logger.info("Normalizing V^dagger s.t. a = 1")
-            ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
+        #if norm is True:
+        logger.info("Normalizing V^dagger s.t. a = 1")
+        ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
         # a = <va . D V11*>
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
         
         # c = <va . N31*>
         self.c = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
+        logger.info("self.c = {}".format(self.c))
         
         # b = < va . (Gtwiddle v11 - xi*dz*H v11)* > 
         self.b = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
