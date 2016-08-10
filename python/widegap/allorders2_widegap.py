@@ -547,6 +547,7 @@ class N2(MRI):
         self.N20_psi.name = "N20_psi"
         
         if self.xi != 0:
+            print("N20 psi r4 term")
             # explicitly include (psi1, psi1star) and (psi1star, psi1)
             N20_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(-1j*Q)*o1.psi_star + rfield**2*(1j*Q)*o1.psi*(-1*Q)**2*o1.psi_star_r
                                    - rfield**2*o1.psi_r*(-1j*Q)**3*o1.psi_star + 3*(1j*Q)*o1.psi*o1.psi_star_r
@@ -590,8 +591,8 @@ class N2(MRI):
         self.N20_psi_r4 = N20_psi_r4.evaluate()
         self.N20_psi_r4.name = "N20_psi_r4"
         
-        #print("N20 psi r4 + cc:", self.N20_psi_r4['g'] + self.N20_psi_r4['g'].conj())
-        #print("rederived:", self.N20_psi_r4_rederived['g'])
+        print("N20 psi r4 + cc:", self.N20_psi_r4['g'] + self.N20_psi_r4['g'].conj())
+        print("rederived:", self.N20_psi_r4_rederived['g'])
         
         N22_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_r - (1j*Q*o1.u)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_r - (1j*Q*o1.B)*o1.A_r)))
         N22_u_advectives = ((1/rfield**2)*o1.u*1j*Q*o1.psi - (2/beta)*(1/rfield**2)*o1.B*1j*Q*o1.A)
