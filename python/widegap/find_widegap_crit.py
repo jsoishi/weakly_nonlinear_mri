@@ -9,7 +9,7 @@ which will launch a CriticalFinder instance and collectively find the
 critical parameters for that Pm.
 
 Usage:
-    find_widegap_crit.py [--R1=<R1> --R2=<R2> --Omega1=<Omega1> --Omega2=<Omega2> --n_Pm=<n_Pm>  --Pm_min=<Pm_min> --Pm_max=<Pm_max> --beta=<beta> --xi=<xi> --Rm_min=<Rm_min> --Rm_max=<Rm_max> --k_min=<k_min> --k_max=<k_max> --n_Rm=<n_Rm> --n_k=<n_k> --n_r=<n_r> --insulate=<insulate> --log]
+    find_widegap_crit.py [--R1=<R1> --R2=<R2> --Omega1=<Omega1> --Omega2=<Omega2> --n_Pm=<n_Pm>  --Pm_min=<Pm_min> --Pm_max=<Pm_max> --beta=<beta> --xi=<xi> --Rm_min=<Rm_min> --Rm_max=<Rm_max> --k_min=<k_min> --k_max=<k_max> --n_Rm=<n_Rm> --n_k=<n_k> --n_r=<n_r> --insulate --log]
 
 Options:
 
@@ -30,7 +30,7 @@ Options:
     --n_k=<n_k>                number of points on k grid [default: 20]
     --n_r=<n_r>                number of points on Chebyshev r grid for eigenvalue solution [default: 100]
     --log                      if true, interpret Pm_min, Pm_max as log values (e.g. -3 for 10^-3)
-    --insulate=<insulate>      if 1, insulating boundary conditions [default: 0]
+    --insulate                 if true, insulating boundary conditions
 """
 import numpy as np
 from mpi4py import MPI
@@ -63,7 +63,7 @@ n_Rm = int(args['--n_Rm'])
 n_k = int(args['--n_k'])
 n_r = int(args['--n_r'])
 log = args['--log']
-insulate = int(args['--insulate'])
+insulate = args['--insulate']
 
 if log:
     global_Pm = np.logspace(Pm_min,Pm_max,n_Pm,endpoint=False)

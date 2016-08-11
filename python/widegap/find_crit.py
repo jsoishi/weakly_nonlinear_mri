@@ -48,7 +48,7 @@ def find_crit(comm, R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min,
     if comm.rank == 0:
         print("mean zeta is {}, meaning q = 2 - zeta = {}".format(zeta_mean, 2 - zeta_mean))
         
-    if insulate == 1:
+    if insulate:
         magnetic_bcs = "insulating"
     else:
         magnetic_bcs = "conducting"
