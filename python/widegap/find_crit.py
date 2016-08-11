@@ -97,8 +97,8 @@ def find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_m
 
     # create a shim function to translate (x, y) to the parameters for the eigenvalue problem:
     def shim(x,y):
-        gr, indx = EP.growth_rate({"k":x,"Rm":y})
-        return gr
+        gr, indx,freq = EP.growth_rate({"k":x,"Rm":y})
+        return gr+1j*freq
 
     cf = CriticalFinder(shim, comm)
 
@@ -108,14 +108,16 @@ def find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_m
     end = time.time()
     if comm.rank == 0:
         print("grid generation time: {:10.5f} sec".format(end-start))
-        cf.save_grid('../../data/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k))
+        cf.save_grid('../../data/widegap_growth_rates_res{0:d}_Pm{1:5.02e}_Rmmin{2:5.02e}_Rmmax{3:5.02e}_kmin{4:5.02e}_kmax{5:5.02e}_nRm{6:5.02e}_nk{7:5.02e}'.format(nr,Pm, Rm_min,Rm_max, k_min, k_max, n_Rm, n_k))
 
     cf.root_finder()
     crit = cf.crit_finder()
 
-    if comm.rank == 0:
-        print("critical wavenumber k = {:10.5f}".format(crit[0]))
-        print("critical Rm = {:10.5f}".format(crit[1]))
-        title_str = '../../figs/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
-        cf.plot_crit(title = title_str, xlabel = r"$k_z$", ylabel = r"$\mathrm{Rm}$")
-
+    # if comm.rank == 0:
+    #     print("critical wavenumber k = {:10.5f}".format(crit[0]))
+    #     print("critical Rm = {:10.5f}".format(crit[1]))
+    #     title_str = '../../figs/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+    #     cf.plot_crit(title = title_str, xlabel = r"$k_z$", ylabel = r"$\mathrm{Rm}$")
+    Q  = crit[0]
+    Rmc = crit[1]
+    return Q, Rmc

@@ -44,4 +44,8 @@ n_Rm = int(args['--n_Rm'])
 n_k = int(args['--n_k'])
 n_r = int(args['--n_r'])
 
-find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, n_r)
+Q, Rmc = find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, n_r)
+
+if comm.rank == 0:
+    print("Q = {:10.5e}".format(Q))
+    print("Rmc = {:10.5e}".format(Rmc))
