@@ -83,6 +83,31 @@ class MRI():
         if self.xi != 0:
             logger.info("A nonzero xi means this is the HMRI")
         
+    def set_adjoint_boundary_conditions(self, problem, conducting = True):
+        
+        """
+        Adds MRI problem boundary conditions to a ParsedProblem object.
+        Adjoint HMRI problem has b.c.'s
+        u = psi = psir = A = B = 0
+        These correctly reproduce the adjoint spectrum iff the Order(e) eqn is subject to insulating b.c.'s
+        """
+        
+        if conducting is True:
+            logger.warn("setting adjoint b.c.'s that only work in insulating case")
+        
+        problem.add_bc('left(u) = 0')
+        problem.add_bc('right(u) = 0')
+        problem.add_bc('left(psi) = 0')
+        problem.add_bc('right(psi) = 0')
+        problem.add_bc('left(psir) = 0')
+        problem.add_bc('right(psir) = 0')
+        problem.add_bc('left(A) = 0')
+        problem.add_bc('right(A) = 0')
+        problem.add_bc('left(B) = 0')
+        problem.add_bc('right(B) = 0')
+        
+        return problem
+
     def set_boundary_conditions(self, problem, conducting = True):
         
         """
@@ -290,44 +315,44 @@ class AdjointHomogenous(MRI):
             MRI.__init__(self, domain, Q = o1.Q, Rm = o1.Rm, Pm = o1.Pm, beta = o1.beta, Omega1 = o1.Omega1, Omega2 = o1.Omega2, xi = o1.xi, norm = o1.norm, conducting = o1.conducting)
       
         # Set up problem object
-        lv1 = de.EVP(self.domain,
+        adj = de.EVP(self.domain,
                      ['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
 
-        lv1.parameters['Q'] = self.Q
-        lv1.parameters['iR'] = self.iR
-        lv1.parameters['iRm'] = self.iRm
-        lv1.parameters['xi'] = self.xi
-        lv1.parameters['beta'] = self.beta
-        lv1.parameters['c1'] = self.c1
-        lv1.parameters['c2'] = self.c2
-        lv1.parameters['B0'] = self.B0
-        lv1.parameters['dz'] = 1j*self.Q
+        adj.parameters['Q'] = self.Q
+        adj.parameters['iR'] = self.iR
+        adj.parameters['iRm'] = self.iRm
+        adj.parameters['xi'] = self.xi
+        adj.parameters['beta'] = self.beta
+        adj.parameters['c1'] = self.c1
+        adj.parameters['c2'] = self.c2
+        adj.parameters['B0'] = self.B0
+        adj.parameters['dz'] = 1j*self.Q
         if conducting is False:
-            lv1.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
-            lv1.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
+            adj.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
+            adj.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
         
-        lv1.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
-        lv1.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
-        lv1.substitutions['twooverbeta'] = '(2.0/beta)'
+        adj.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
+        adj.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
+        adj.substitutions['twooverbeta'] = '(2.0/beta)'
         
         # multiply by [r^4, r^2, r^3, r^2]
-        lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*rrdu0*u - r*ru0*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
+        adj.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r*1j*Q*rrdu0*u - r*ru0*1j*Q*u + r**4*1j*Q*A - iR*r**3*Q**4*psi + iR*r**3*2*Q**2*psirr - iR*r**2*2*Q**2*psir - iR*r**3*dr(psirrr) + iR*r**2*2*psirrr - iR*r*3*psirr + iR*3*psir + r*2*1j*Q*B0*xi*B = 0")
         #lv1.add_equation("sigma*r**3*u + r*2*1j*Q*ru0*psi + r**3*1j*Q*B + iR*r**3*Q**2*u - iR*r**3*dr(ur) - iR*r**2*ur + iR*r*u = 0") 
-        lv1.add_equation("sigma*r**2*u + 1j*Q*r**2*B + 2*1j*Q*ru0*psi + iR*Q**2*r**2*u - iR*r**2*dr(ur) -iR*r*ur + iR*u = 0")
+        adj.add_equation("sigma*r**2*u + 1j*Q*r**2*B + 2*1j*Q*ru0*psi + iR*Q**2*r**2*u - iR*r**2*dr(ur) -iR*r*ur + iR*u = 0")
         #lv1.add_equation("sigma*r*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*Q*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
-        lv1.add_equation("sigma*r**3*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*Q*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
-        lv1.add_equation("sigma*r**2*B + r**2*twooverbeta*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - twooverbeta*2*1j*Q*B0*xi*psi = 0") 
+        adj.add_equation("sigma*r**3*A + rrdu0*1j*Q*B - ru0*1j*Q*B - twooverbeta*r**2*1j*Q**3*psi + twooverbeta*r**2*1j*Q*psirr - twooverbeta*r*1j*Q*psir + iRm*r**3*Q**2*A - iRm*r**3*dr(Ar) + iRm*r**2*Ar = 0")
+        adj.add_equation("sigma*r**2*B + r**2*twooverbeta*1j*Q*u + r**2*iRm*Q**2*B - r**2*iRm*dr(Br) - iRm*r*Br + iRm*B - twooverbeta*2*1j*Q*B0*xi*psi = 0") 
 
-        lv1.add_equation("dr(psi) - psir = 0")
-        lv1.add_equation("dr(psir) - psirr = 0")
-        lv1.add_equation("dr(psirr) - psirrr = 0")
-        lv1.add_equation("dr(u) - ur = 0")
-        lv1.add_equation("dr(A) - Ar = 0")
-        lv1.add_equation("dr(B) - Br = 0")
+        adj.add_equation("dr(psi) - psir = 0")
+        adj.add_equation("dr(psir) - psirr = 0")
+        adj.add_equation("dr(psirr) - psirrr = 0")
+        adj.add_equation("dr(u) - ur = 0")
+        adj.add_equation("dr(A) - Ar = 0")
+        adj.add_equation("dr(B) - Br = 0")
 
         # Set boundary conditions for MRI problem
-        self.lv1 = self.set_boundary_conditions(lv1, conducting = conducting)
-        self.EP = Eigenproblem(self.lv1)
+        self.adj = self.set_adjoint_boundary_conditions(adj, conducting = conducting)
+        self.EP = Eigenproblem(self.adj)
 
         if finalize:
             self.finalize()
@@ -591,8 +616,8 @@ class N2(MRI):
         self.N20_psi_r4 = N20_psi_r4.evaluate()
         self.N20_psi_r4.name = "N20_psi_r4"
         
-        logger.info("N20 psi r4 + cc:", self.N20_psi_r4['g'] + self.N20_psi_r4['g'].conj())
-        logger.info("rederived:", self.N20_psi_r4_rederived['g'])
+        #logger.info("N20 psi r4 + cc:", self.N20_psi_r4['g'] + self.N20_psi_r4['g'].conj())
+        #logger.info("rederived:", self.N20_psi_r4_rederived['g'])
         
         N22_u_jacobians = ((1/rfield)*((1j*Q*o1.psi)*o1.u_r - (1j*Q*o1.u)*o1.psi_r) - ((1/rfield)*(2/beta)*((1j*Q*o1.A)*o1.B_r - (1j*Q*o1.B)*o1.A_r)))
         N22_u_advectives = ((1/rfield**2)*o1.u*1j*Q*o1.psi - (2/beta)*(1/rfield**2)*o1.B*1j*Q*o1.A)
