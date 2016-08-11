@@ -9,7 +9,7 @@ which will launch a CriticalFinder instance and collectively find the
 critical parameters for that Pm.
 
 Usage:
-    find_widegap_crit.py [--R1=<R1> --R2=<R2> --Omega1=<Omega1> --Omega2=<Omega2> --n_Pm=<n_Pm>  --Pm_min=<Pm_min> --Pm_max=<Pm_max> --beta=<beta> --Rm_min=<Rm_min> --Rm_max=<Rm_max> --k_min=<k_min> --k_max=<k_max> --n_Rm=<n_Rm> --n_k=<n_k> --n_r=<n_r> --log]
+    find_widegap_crit.py [--R1=<R1> --R2=<R2> --Omega1=<Omega1> --Omega2=<Omega2> --n_Pm=<n_Pm>  --Pm_min=<Pm_min> --Pm_max=<Pm_max> --beta=<beta> --xi=<xi> --Rm_min=<Rm_min> --Rm_max=<Rm_max> --k_min=<k_min> --k_max=<k_max> --n_Rm=<n_Rm> --n_k=<n_k> --n_r=<n_r> --insulate=<insulate> --log]
 
 Options:
 
@@ -21,6 +21,7 @@ Options:
     --Pm_min=<Rm_min>          minimum magnetic Prandtl number [default: 1e-4]
     --Pm_max=<Rm_max>          maximum magnetic Prandtl number [default: 3e-3]
     --beta=<beta>              plasma beta [default: 25.]
+    --xi=<xi>                  helical base field strength for HMRI [default: 0.]
     --Rm_min=<Rm_min>          minimum magnetic Reynolds number [default: 0.5]
     --Rm_max=<Rm_max>          maximum magnetic Reynolds number [default: 2.0]
     --k_min=<k_min>            minimum z wavenumber [default: 0.001]
@@ -29,7 +30,7 @@ Options:
     --n_k=<n_k>                number of points on k grid [default: 20]
     --n_r=<n_r>                number of points on Chebyshev r grid for eigenvalue solution [default: 100]
     --log                      if true, interpret Pm_min, Pm_max as log values (e.g. -3 for 10^-3)
-
+    --insulate=<insulate>      if 1, insulating boundary conditions [default: 0]
 """
 import numpy as np
 from mpi4py import MPI
@@ -53,6 +54,7 @@ Pm_min = float(args['--Pm_min'])
 Pm_max = float(args['--Pm_max'])
 n_Pm = int(args['--n_Pm'])
 beta = float(args['--beta'])
+xi = float(args['--xi'])
 Rm_min = float(args['--Rm_min'])
 Rm_max = float(args['--Rm_max'])
 k_min = float(args['--k_min'])
@@ -61,6 +63,7 @@ n_Rm = int(args['--n_Rm'])
 n_k = int(args['--n_k'])
 n_r = int(args['--n_r'])
 log = args['--log']
+insulate = int(args['--insulate'])
 
 if log:
     global_Pm = np.logspace(Pm_min,Pm_max,n_Pm,endpoint=False)
@@ -85,7 +88,7 @@ local_Qc = np.empty(len(local_Pm))
 local_Rmc = np.empty(len(local_Pm))
 
 for i, Pm in enumerate(local_Pm):
-    Q_c, Rm_c = find_crit(crit_finder_comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, n_r)
+    Q_c, Rm_c, gamma = find_crit(crit_finder_comm, R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, n_r, insulate)
     local_Qc[i] = Q_c
     local_Rmc[i] = Rm_c
 
@@ -108,4 +111,3 @@ if comm.rank == 0:
     outfile.create_dataset('Q_c',data=global_Qc)
     outfile.create_dataset('Rm_c',data=global_Rmc)
     outfile.close()
-

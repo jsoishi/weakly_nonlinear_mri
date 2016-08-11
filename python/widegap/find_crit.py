@@ -8,6 +8,7 @@ import time
 import dedalus.public as de
 import numpy as np
 import matplotlib.pylab as plt
+from scipy import special
 
 # Reasonable parameters
 
@@ -34,7 +35,7 @@ import matplotlib.pylab as plt
 #Rm = 4.052
 
 
-def find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr):
+def find_crit(comm, R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr, insulate):
     Rm = Rm_min
     k = k_min
     R = Rm/Pm
@@ -46,6 +47,11 @@ def find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_m
     zeta_mean = 2*(R2**2*Omega2 - R1**2*Omega1)/((R2**2 - R1**2)*np.sqrt(Omega1*Omega2))
     if comm.rank == 0:
         print("mean zeta is {}, meaning q = 2 - zeta = {}".format(zeta_mean, 2 - zeta_mean))
+        
+    if insulate == 1:
+        magnetic_bcs = "insulating"
+    else:
+        magnetic_bcs = "conducting"
 
     r = de.Chebyshev('r', nr, interval = (R1, R2))
     d = de.Domain([r],comm=MPI.COMM_SELF)
@@ -59,7 +65,10 @@ def find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_m
     widegap.parameters['c2'] = c2
     widegap.parameters['beta'] = beta
     widegap.parameters['B0'] = 1
-    widegap.parameters['xi'] = 0
+    widegap.parameters['xi'] = xi
+    if magnetic_bcs == "insulating":
+        widegap.parameters['bessel1'] = special.iv(0, k*R1)/special.iv(1, k*R1)
+        widegap.parameters['bessel2'] = special.kn(0, k*R2)/special.kn(1, k*R2)
 
     widegap.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
     widegap.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
@@ -85,12 +94,20 @@ def find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_m
     widegap.add_bc('right(u) = 0')
     widegap.add_bc('left(psi) = 0')
     widegap.add_bc('right(psi) = 0')
-    widegap.add_bc('left(A) = 0')
-    widegap.add_bc('right(A) = 0')
     widegap.add_bc('left(psir) = 0')
     widegap.add_bc('right(psir) = 0')
-    widegap.add_bc('left(B + r*Br) = 0')
-    widegap.add_bc('right(B + r*Br) = 0') # axial component of current = 0
+    
+    if magnetic_bcs == "conducting":
+        widegap.add_bc('left(A) = 0')
+        widegap.add_bc('right(A) = 0')
+        widegap.add_bc('left(B + r*Br) = 0')
+        widegap.add_bc('right(B + r*Br) = 0') # axial component of current = 0
+
+    if magnetic_bcs == "insulating":
+        widegap.add_bc('left(dr(r*1j*k*A) - k*r*bessel1*1j*k*A) = 0')
+        widegap.add_bc('right(dr(r*1j*k*A) + k*r*bessel2*1j*k*A) = 0')
+        widegap.add_bc('left(B) = 0')
+        widegap.add_bc('right(B) = 0')
 
     # create an Eigenproblem object
     EP = Eigenproblem(widegap)
@@ -108,16 +125,31 @@ def find_crit(comm, R1, R2, Omega1, Omega2, beta, Pm, Rm_min, Rm_max, k_min, k_m
     end = time.time()
     if comm.rank == 0:
         print("grid generation time: {:10.5f} sec".format(end-start))
-        cf.save_grid('../../data/widegap_growth_rates_res{0:d}_Pm{1:5.02e}_Rmmin{2:5.02e}_Rmmax{3:5.02e}_kmin{4:5.02e}_kmax{5:5.02e}_nRm{6:5.02e}_nk{7:5.02e}'.format(nr,Pm, Rm_min,Rm_max, k_min, k_max, n_Rm, n_k))
+        if xi == 0:
+            gridname = '../../data/widegap_growth_rates_res{0:d}_Pm{1:5.02e}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+        else:
+            if magnetic_bcs == "conducting":
+                gridname = '../../data/hmri_growth_rates_res{0:d}_Pm{1:5.02e}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+            elif magnetic_bcs == "insulating":
+                gridname = '../../data/hmri_growth_rates_res{0:d}_Pm{1:5.02e}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}_Omega1_{7:5.02e}_Omega2_{7:5.02e}_R1_{}_R2_{}_insulating'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k, Omega1, Omega2, R1, R2)
+        
+        cf.save_grid(gridname)
 
     cf.root_finder()
-    crit = cf.crit_finder()
+    crit = cf.crit_finder(find_freq = True)
 
-    # if comm.rank == 0:
-    #     print("critical wavenumber k = {:10.5f}".format(crit[0]))
-    #     print("critical Rm = {:10.5f}".format(crit[1]))
-    #     title_str = '../../figs/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
-    #     cf.plot_crit(title = title_str, xlabel = r"$k_z$", ylabel = r"$\mathrm{Rm}$")
+    if comm.rank == 0:
+        print("crit = {}".format(crit))
+        print("critical omega = {:10.5f}".format(crit[2]))
+        print("critical wavenumber k = {:10.5f}".format(crit[0]))
+        print("critical Rm = {:10.5f}".format(crit[1]))
+        if xi == 0:
+            title_str = '../../figs/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+        else:
+            title_str = '../../figs/helical_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+        cf.plot_crit(title = title_str, xlabel = r"$k_z$", ylabel = r"$\mathrm{Rm}$")
     Q  = crit[0]
     Rmc = crit[1]
-    return Q, Rmc
+    omega = crit[2]
+    return Q, Rmc, omega
+

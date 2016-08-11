@@ -64,7 +64,9 @@ Most previous works on MRI saturation have studied the problem in simulation. In
 %examples of simulations papers
 %more mention of other analytic works
 
-This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime. The present work adds to this foundation both in subject, with our additional analysis of the helical MRI, as well as in scope, with a detailed analysis of MRI saturation properties across parameter space and the comparison of weakly nonlinear analytic work to strongly nonlinear simulation. In particular, we attempt to elucidate the role of boundary layers in the saturation of the MRI, as this is of fundamental importance to laboratory MRI work.
+In this work we investigate the MRI in the weakly nonlinear regime, where the initial linear growth phase of the instability begins to give way to nonlinear saturation. Weakly nonlinear analysis is a perturbative method for examining a system at marginality. Weakly nonlinear analysis was instrumental in understanding the saturated state of Rayleigh-B\'enard convection (\citei{Newell:1969wr}).
+
+%This work builds on the investigations of \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}; see also \citei{Umurhan:2007dz}), who first conducted an analytic analysis of the MRI in the weakly nonlinear regime. The present work adds to this foundation both in subject, with our additional analysis of the helical MRI, as well as in scope, with a detailed analysis of MRI saturation properties across parameter space and the comparison of weakly nonlinear analytic work to strongly nonlinear simulation. In particular, we attempt to elucidate the role of boundary layers in the saturation of the MRI, as this is of fundamental importance to laboratory MRI work.
 
 We develop this investigation with the goal of providing a rigorous analytical framework that will be used to make predictions for laboratory MRI experiments. Observing MRI in a laboratory setting would open a new avenue for studying MRI dynamics and saturation. In recent years much experimental progress has been made, although no experiment has yet yielded a confirmed detection. Of most immediate interest to this work is the Princeton Plasma Physics Laboratory (PPPL) MRI experiment, which has a design roughly analogous to the set-up investigated here (see \S\ref{sec:setup} for further details). The Madison plasma dynamo experiment is a multi-purpose plasma device which may be a vehicle for MRI studies in the near future (\citei{Cooper:2013to}). The helical MRI, an instability related to the standard MRI but easier to excite in the laboratory, is the focus of the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE) in Dresden. PROMISE has already detected helical MRI in the laboratory (e.g. \citei{Stefani:2006iv}), and we discuss possible applications of our framework to the helical MRI in \S\ref{discussion}. A spherical Couette experiment claimed to have detected MRI in 2004 (\citeauthor{Sisan:2004ig}), but most likely detected unrelated MHD instabilities instead (\citei{Hollerbach:2009ig}; \citei{Gissinger:2011td}).
 
@@ -353,14 +355,14 @@ and
 
 \begin{figure*}[h!]
 \centering
-\includegraphics[trim=0cm 1cm 0cm 5cm, scale=0.45]{allorders_velocity.eps}
-\caption{First order (left) and second order (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. The colorbar represents azimuthal velocity.}\label{allorders_velocity}
+\includegraphics[width=\textwidth]{../figures/thingap_streamfuncs_velocity.png}%{allorders_velocity.eps}
+\caption{First order (left), second order (center), and total (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. Colorbar represents azimuthal velocity.}\label{allorders_velocity}
 \end{figure*}
 
 \begin{figure*}[h!]
 \centering
-\includegraphics[scale=0.45]{allorders_Bfield.eps}
-\caption{First order (left) and second order (right) magnetic field perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to higher magnetic field strengths. The colorbar represents azimuthal magnetic field strength.}\label{allorders_Bfield}
+\includegraphics[width=\textwidth]{../figures/thingap_streamfuncs_Bfield.png}
+\caption{First order (left), second order (center), and total (right) magnetic field perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to higher magnetic field strengths. Colorbar represents azimuthal magnetic field strength.}\label{allorders_Bfield}
 \end{figure*}
 
 % perturbation expansion
@@ -532,112 +534,23 @@ From the behavior of the second order velocity perturbations (Figure \ref{stress
 \begin{figure*}
 \centering
 \includegraphics[trim=6cm 4cm 6cm 3cm, scale=0.5]{stress_uy_cuts.pdf}
-\caption{(Placeholder) The total stress (left) and vertical cuts of the azimuthal velocity perturbations (right). The $u_y$ perturbations shown are first order (purple), second order (orange), and total (black). The blue shaded area represents the region where the second order and total perturbations are opposing the background shear because they are negative, and the red shaded region indicates where the second order and total perturbations are opposing the background shear because they are positive.}\label{allorders_velocity}
+\caption{(Placeholder) The total stress (left) and vertical cuts of the azimuthal velocity perturbations (right). The $u_y$ perturbations shown are first order (purple), second order (orange), and total (black). The blue shaded area represents the region where the second order and total perturbations are opposing the background shear because they are negative, and the red shaded region indicates where the second order and total perturbations are opposing the background shear because they are positive.}
 \label{stress_uy_cuts}
 \end{figure*}
 
 \section{Parameter Space}\label{sec:pspace}
 
-We conduct a full study of the MRI parameter space, focussed on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. Because we solve spectrally in only one dimension, rather than in two or three, our analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of $10^{-6}$ or lower.
+We conduct a full study of the MRI parameter space, focused on the behavior with changing magnetic Prandtl number ($\mathrm{Pm} \equiv \frac{\mathrm{Rm}}{\mathrm{Re}} \equiv \frac{\nu}{\eta}$). In protoplanetary disks, as well as in liquid metal MRI experiments, the magnetic Prandtl number can be very small ($\mathrm{Pm} \sim 10^{-6}$). The scale separations caused by these large ratios of diffusivity to viscosity render the small Prandtl number regime inaccessible to simulations. Because we solve spectrally in only one dimension, rather than in two or three, our analytic formulation allows us to explore the behavior down to magnetic Prandtl numbers of $10^{-6}$ or lower.
 
 \section{Simulations}
 
 We compute the solutions to our derived equations pseudospectrally, using Dedalus. One advantage to using Dedalus for these computations is that the code can compute the evolution of the fully nonlinear MRI system on the same Fourier/Chebyshev grid. This allows us to directly compare simulation and theory. 
 
-% Jeff's sims!!!!!
-
-\section{Helical MRI}
-
-The configuration investigated thus far, that of magnetized Taylor Couette flow with a purely axial magnetic field, constitutes the standard MRI. The helical MRI (HMRI) is a related, but separate, MHD instability, first identified by Hollerbach and R\"udiger (\citeyear{Hollerbach:2005tr}). It arises in the presence of combined axial and azimuthal fields. 
-
-We initialize the helical MRI by adding a constant background toroidal field to Equation \ref{backgroundfield1}, such that our initial magnetic field structure becomes
-
-\beq
-\mathbf{B} = B_0 \hat{z} + \xi B_0 \hat{y},
-\eeq 
-
-where $\xi$ is a dimensionless parameter representing the relative strength of the axial field and the vertical field.
-
-This addition leaves Equations \ref{eqset2} - \ref{eqset4} unchanged, but Equation \ref{eqset1} gains a term to become
-
-\begin{multline}
-\label{eqset1_hmri}
-\partial_t \nabla^2 \Psi \, = \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, + \, 2 \partial_z u_{y} \, - \xi B_0 \partial_x \partial_z B_{y}\\
-- \, J\left(\Psi, \nabla^2 \Psi\right) \, + \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi,
-\end{multline}
-
-in other words, the $\Psi$ equation picks up a linear $B_y$ term.
-
-Following the same prescription for weakly nonlinear tuning, multiscale expansion, and perturbation expansion, we find the equations for the HMRI up to order $\epsilon^3$.
-
-To $\mathcal{O}(\epsilon)$, we find 
-
-\beq
-\mathcal{L} \mathbf{V_1} + \xi B_0 \mathcal{H} \partial_z \mathbf{V_1} = 0
-\eeq
-
-To $\mathcal{O}(\epsilon^2)$,
-
-\beq
-\mathcal{L}\mathbf{V_2} = \mathbf{N_2} - \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1} + \xi \mathcal{H} \partial_z \mathbf{V_2} - \xi \mathcal{H}\partial_Z \mathbf{V_1}
-\eeq
-
-To $\mathcal{O}(\epsilon^3)$,
-
-\begin{multline}
-\mathcal{D}\partial_T \mathbf{V_1} \, + \, \mathbf{N_3} \, = \, \mathcal{L} \mathbf{V_3} \, + \, \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} \, \\
-- \partial_z\mathcal{X}\mathbf{V_1} \, - \partial_z^3\mathcal{L}_3\mathbf{V_1} + \xi \mathcal{H} \partial_z \mathbf{V_3} - \xi \mathcal{H} \partial_Z \mathbf{V_2} + \xi \mathcal{H} \partial_z \mathbf{V_1}.
-\end{multline}
-
-In the above,
-
-\beq
-\mathcal{H} = \left[\begin{matrix}
-0 & 0 & 0 & \partial_x \\
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 \\ \end{matrix} \right].
-\eeq
-
-The first amplitude equation (\ref{ampeq1}) therefore becomes
-
-\begin{multline}
-\label{ampeq1_hmri}
-a \partial_T \alpha \, = - \, c \alpha \left|\alpha^2\right| \, - \, \widetilde{c} \alpha \partial_Z \beta \,  - b i k_c \alpha \, + \, h \partial_Z^2 \alpha \, \\
-+ \, g i k_c^3 \alpha \, + \, q \xi \partial_Z^2 \alpha \, + \, w i k_c \xi \alpha,
-\end{multline}
-
-where
-
-\beq
-q = \left< \mathbb{V}^\dagger \cdot \left(\mathcal{H} \mathbb{V}_{21}\right)^* \right>,
-\eeq
-
-and
-
-\beq
-w = \left< \mathbb{V}^\dagger \cdot \left(\mathcal{H} \mathbb{V}_{11}\right)^*\right>.
-\eeq
-
-The second amplitude equation (\ref{ampeq2}) becomes
-
-\beq\label{ampeq2_hmri}
-\partial_T \beta = - m \partial_Z^2 \beta + \frac{1}{\reym} \partial_Z^2 \beta \, - \, s \xi 2 \left|\alpha\right|\partial_Z \alpha \, - \, f\xi\partial_Z^2 \beta,
-\eeq
-
-where
-
-\beq
-s = \left<\mathbb{U}_{11} \cdot \left(\mathcal{H}\mathbb{V}_{20}\right)^*\right>
-\eeq
-
-and
-
-\beq
-f = \left< \mathbb{U}_{11} \cdot \left(\mathcal{H}\mathbb{U}_{20}\right)^*\right>.
-\eeq
-
-If $s = 0$, as it is for the standard MRI, the two amplitude equations will again decouple.
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{../figures/final_slice_MRI_run_Rm5_00e+01_eps0_00e+00_Pm1_00e-03_beta2_50e+01_Q7_50e-01_qsh1_50e+00_Omega1_00e+00_nx256_nz256_Lz10_CFL.pdf}
+\caption{The final timestamp of each simulation.}\label{fig:final_slices}
+\end{figure*}
 
 
 \section{Discussion}\label{discussion}

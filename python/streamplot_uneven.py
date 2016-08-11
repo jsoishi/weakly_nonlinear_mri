@@ -1,6 +1,5 @@
 """
 Streamline plotting for 2D vector fields.
-
 """
 from __future__ import division
 import numpy as np
@@ -18,7 +17,6 @@ def streamplot(axes, x, y, u, v, density=1, linewidth=None, color=None,
                cmap=None, norm=None, arrowsize=1, arrowstyle='-|>',
                minlength=0.1, transform=None):
     """Draws streamlines of a vector flow.
-
     *x*, *y* : 1d arrays
         defines the grid.
     *u*, *v* : 2d arrays
@@ -47,22 +45,16 @@ def streamplot(axes, x, y, u, v, density=1, linewidth=None, color=None,
         See :class:`~matplotlib.patches.FancyArrowPatch`.
     *minlength* : float
         Minimum length of streamline in axes coordinates.
-
     Returns:
-
         *stream_container* : StreamplotSet
             Container object with attributes
-
                 - lines: `matplotlib.collections.LineCollection` of streamlines
-
                 - arrows: collection of `matplotlib.patches.FancyArrowPatch`
                   objects representing arrows half-way along stream
                   lines.
-
             This container will probably change in the future to allow changes
             to the colormap, alpha, etc. for both lines and arrows, but these
             changes should be backward compatible.
-
     """
     grid = Grid(x, y)
     # Handle decreasing x and y by changing sign. The sign is changed
@@ -85,8 +77,7 @@ def streamplot(axes, x, y, u, v, density=1, linewidth=None, color=None,
         transform = axes.transData
 
     if color is None:
-        #color = axes._get_lines.color_cycle.next()
-        color = next(axes._get_lines.color_cycle)
+        color = axes._get_lines.color_cycle.next()
 
     if linewidth is None:
         linewidth = matplotlib.rcParams['lines.linewidth']
@@ -206,14 +197,11 @@ class StreamplotSet(object):
 
 class DomainMap(object):
     """Map representing different coordinate systems.
-
     Coordinate definitions:
-
     * axes-coordinates goes from 0 to 1 in the domain.
     * data-coordinates are specified by the input x-y coordinates.
     * mask-coordinates goes from 0 to N and 0 to M for an N x M mask,
       where N and M are user-specified to control the density of streamlines.
-
     This class also has methods for adding trajectories to the StreamMask.
     Before adding a trajectory, run `start_trajectory` to keep track of regions
     crossed by a given trajectory. Later, if you decide the trajectory is bad
@@ -297,7 +285,6 @@ class Grid(object):
 
 class StreamMask(object):
     """Mask to keep track of discrete regions crossed by streamlines.
-
     The resolution of this grid determines the approximate spacing between
     trajectories. Streamlines are only allowed to pass through zeroed cells:
     When a streamline enters a cell, that cell is set to 1, and no new
@@ -332,7 +319,6 @@ class StreamMask(object):
 
     def _update_trajectory(self, xm, ym):
         """Update current trajectory position in mask.
-
         If the new position has already been filled, raise `InvalidIndexError`.
         """
         if self._current_xy != (xm, ym):
@@ -390,10 +376,8 @@ def get_integrator(x, y, u, v, dmap, minlength):
 
     def integrate(x0, y0):
         """Return x, y grid-coordinates of trajectory based on starting point.
-
         Integrate both forward and backward in time from starting point in
         grid coordinates.
-
         Integration is terminated when a trajectory reaches a domain boundary
         or when it crosses into an already occupied cell in the StreamMask. The
         resulting trajectory is None if it is shorter than `minlength`.
@@ -419,10 +403,8 @@ def get_integrator(x, y, u, v, dmap, minlength):
 
 def _integrate_rk12(x0, y0, dmap, f):
     """2nd-order Runge-Kutta algorithm with adaptive step size.
-
     This method is also referred to as the improved Euler's method, or Heun's
     method. This method is favored over higher-order methods because:
-
     1. To get decent looking trajectories and to sample every mask cell
        on the trajectory we need a small timestep, so a lower order
        solver doesn't hurt us unless the data is *very* high resolution.
@@ -430,12 +412,10 @@ def _integrate_rk12(x0, y0, dmap, f):
        data smaller or of similar grid size to the mask grid, the higher
        order corrections are negligible because of the very fast linear
        interpolation used in `interpgrid`.
-
     2. For high resolution input data (i.e. beyond the mask
        resolution), we must reduce the timestep. Therefore, an adaptive
        timestep is more suited to the problem as this would be very hard
        to judge automatically otherwise.
-
     This integrator is about 1.5 - 2x as fast as both the RK4 and RK45
     solvers in most setups on my machine. I would recommend removing the
     other two to keep things simple.
@@ -534,10 +514,8 @@ def _euler_step(xf_traj, yf_traj, dmap, f):
 #========================
 def interpgrid(a, i_x, dx, i_y, dy):
     """Fast 2D, linear interpolation on an integer grid.
-
     i_x, i_y are integer indices of array a corresponding to the cell of
            the array in which the point lies.
-
     dx, dy are the fractional indices corresponding to the location
            within the cell. These are typically between 0 and 1 (not
            required.)                      
@@ -572,7 +550,6 @@ def interparray(grid, a, x, y):
 
 def _gen_starting_points(shape):
     """Yield starting points for streamlines.
-
     Trying points on the boundary first gives higher quality streamlines.
     This algorithm starts with a point on the mask corner and spirals inward.
     This algorithm is inefficient, but fast compared to rest of streamplot.
@@ -585,9 +562,8 @@ def _gen_starting_points(shape):
     x, y = 0, 0
     i = 0
     direction = 'right'
-    #for i in xrange(nx * ny):
-    for i in range(nx * ny):
-    
+    for i in xrange(nx * ny):
+
         yield x, y
 
         if direction == 'right':

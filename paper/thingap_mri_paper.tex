@@ -1,0 +1,274 @@
+\documentclass{emulateapj}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\hyd}    {{\rm H}}
+\newcommand{\vobs}{v_{\rm obs}}
+\newcommand{\hi}{H{\sc i}~}
+\newcommand{\hii}{H{\sc ii}~}
+\newcommand{\hia}{H{\sc i}}
+\newcommand{\hiia}{H{\sc ii}}
+
+\usepackage[colorlinks,urlcolor=blue,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{gensymb}
+\usepackage{amsmath}
+\usepackage{color}
+%\usepackage{appendix}
+\usepackage[titletoc,title]{appendix}
+\usepackage{cleveref}
+
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt}
+\setlength{\@fpsep}{0pt}
+\makeatother
+
+\newcommand{\citei}[1]{\citeauthor{#1} \citeyear{#1}}
+\newcommand{\unit}[1]{\textrm{ #1}}
+\newcommand{\kms}{km ${\rm s^{-1}}$}
+\newcommand{\kmsa}{km ${\rm s^{-1}}$}
+\newcommand{\citeia}[2]{\citeauthor{#1}~(\citeyear{#1};~#2)}
+
+\newcommand\reye{\mathrm{Re}}
+\newcommand\reym{\mathrm{Rm}}
+
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+
+\begin{document}
+
+\title{The Weakly Nonlinear Magnetorotational Instability in a thin-gap Taylor Couette flow}
+\author{Clark, S.E.\altaffilmark{1}}
+\author{Oishi, J.S. \altaffilmark{2,}\altaffilmark{3}}
+%\author{Mac Low, M.-M.\altaffilmark{1,}\altaffilmark{2}}
+\altaffiltext{1}{Department of Astronomy, Columbia University, New York, NY} 
+\altaffiltext{2}{Department of Astrophysics, American Museum of Natural History, New York, NY}
+\altaffiltext{3}{Department of Physics, SUNY Farmingdale}
+
+
+\begin{abstract}
+The magnetorotational instability (MRI) is a fundamental process of accretion disk physics, but its saturation mechanism remains poorly understood. We present an analytic analysis of the nonideal MRI in the weakly nonlinear regime -- that is, when the MRI system is just unstable to its most unstable mode. 
+\end{abstract}
+
+\section{Introduction}
+
+For matter to accrete from a disk onto a central object, angular momentum must be transported radially outward in the disk. The transport mechanism is likely turbulent, as molecular viscosity alone cannot account for the needed angular momentum transfer, and likely magnetic, as this turbulence is excited even in hydrodynamically stable disks (\citei{Shakura:1973wg}). Since its discovery by \citeauthor{Chandrasekhar:1960wh} (\citeyear{Chandrasekhar:1960wh}) and subsequent rediscovery by \citeauthor{Balbus:1991vs} (\citeyear{Balbus:1991vs}), the magnetorotational instability (MRI) remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability in its simplest geometry arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field linearly destabilizes the disk gas, driving turbulence and angular momentum transport. The MRI likely plays a role in a diverse host of astrophysical systems, including protoplanetary disks and black hole accretion disks, as well as stellar interiors. Despite its importance, many aspects of the MRI remain poorly understood. In particular, the nonlinear saturation mechanism for the MRI is an open question, and a formidable challenge. MRI saturation has been tackled almost exclusively with simulation, with a few notable exceptions detailed below. In this work we investigate the weakly nonlinear behavior of the MRI.
+
+Weakly nonlinear analysis is a perturbative method used to examine the asymptotic behavior of a system near threshold -- that is, when the system is just barely unstable to its most unstable mode. The analytical technique follows the multiscale evolution of fluid variables in a perturbation expansion, allowing the controlled interaction of modes between orders in a perturbation series (see, e.g., Bender \& Orszag for a full mathematical formalism). Weakly nonlinear analysis can be a powerful technique for analytically examining systems which in their full generality exhibit such complicated nonlinear behavior that their study is relegated primarily to the simulation domain. The MRI is one such phenomenon: while there is a rich literature analytically examining the linear MRI, analytical treatments of the \textit{nonlinear} system are relatively few. The weakly nonlinear treatment of the MRI was pioneered by \citeauthor{Umurhan:2007dz} (\citeyear{Umurhan:2007dz}, \citeyear{Umurhan:2007hs}; hereafter URM07). The authors undertook the first weakly nonlinear analysis of the MRI in a thin-gap Taylor Couette flow, and found that the marginal MRI system approaches saturation in a manner analogous to that of Rayleigh-B\'enard convection. Weakly nonlinear analysis was instrumental in our understanding of Rayleigh-B\'enard convection saturation (\citei{Newell:1969}), and the similarities between convection and the thin-gap MRI are the result of important shared symmetries between the systems. The success of URM07 in modeling the MRI system near threshold merits further consideration, but we are unaware of any other attempts to expand upon their theoretical framework. In this work we rigorously rederive the theory of URM07, and expand upon their findings. We conduct a set of weakly nonlinear simulations and compare these to the analytical predictions. Our focus here is on fully characterizing the narrow gap MRI system, both for independent theoretical interest and to have a robust comparison point for extensions of this theory into more complicated geometries. In a companion paper we derive for the first time the weakly nonlinear theory of the standard and helical MRI in a wide gap Taylor Couette flow (\citei{Clark:2016}). The thin- and wide-gap treatments complement one another theoretically, and both are important regimes for comparison with simulation. 
+
+This work examines Taylor Couette flow in the thin-gap regime, and idealization in which the radial extent of the channel is very small compared to its distance from the center of rotation, i.e. $(r_2 - r_1) \ll \frac{1}{2} (r_1 + r_2)$ where $r1$ and $r2$ are the radii of the inner and outer flow boundaries, respectively. The thin-gap approximation eliminates curvature terms, so the domain geometry is Cartesian rather than cylindrical. The excluded curvature terms have an explicit dependence on $r$, so they make the problem more challenging both analytically and numerically. In particular, in the wide-gap geometry (i.e. true Taylor Couette flow) the base angular velocity is a function of $r$, where in the thin-gap approximation the shear flow reduces to a linear profile.
+
+We note several other important analytical studies of MRI saturation. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They find that this saturation proceeds via modification of the background shear. \citeauthor{Knobloch:2005ba} consider a thin-gap regime as well, and so their theory may be considered the strongly nonlinear analogue to the one developed here. \citei{Vasil:2015} examines the weakly nonlinear MRI in a thin-gap regime from a heuristic perspective, finding deep mathematical similarities between the MRI system and an elastodynamic instability. Several authors have investigated the behavior of the MRI when the boundary conditions are shear periodic, and so the MRI has no mechanism by which to modify the background shear flow profile. In this approximation linear MRI growth is dominated by channel modes, a type of MRI mode that, for periodic boundary conditions, are exact solutions of both the linear and nonlinear MRI equations (\citei{Goodman:1994ul}). In this regime the MRI saturates via parasitic instabilities, which feed off and destroy the primary MRI modes. Analytical investigation of this case reveals that MRI saturation can be caused by parasitic Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime (\citei{Pessah:2010ic}). The theory of MRI channel mode parasites is relatively robust (see also \citei{Pessah:2009gm}, \citei{Latter:2010iz}, \citei{Rembiasz:2016}), but they are mostly an artifact of the local approximation, and not germane to global analyses like the one presented here (see \citei{Latter:2015} for a detailed analysis of the relation between local and global MRI modes).
+
+
+\section{Equations}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[trim=5cm 0cm 0cm 0cm, scale=.35]{setup_diagram.eps}
+\caption{Schematic diagram of our set-up, an axisymmetric thin-gap Taylor Couette flow. We investigate a 2D slice of the X-Z (radial-vertical) plane. Our domain is represented by the bolded black box, of width L. The radial dimension is solved with a basis of Chebyshev polynomials, and the vertical dimension is solved on a Fourier basis. }\label{fig:setup}
+\end{figure}
+
+%We solve the equations of non-ideal, axisymmetric, incompressible magnetized Taylor Couette flow. 
+
+The evolution of a conducting fluid is governed by the momentum and induction equations,
+
+\beq\label{eq:momentum}
+\begin{split}
+& \partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = \, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, \\
+& + \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right), \\
+\end{split}
+\eeq
+
+\beq\label{eq:induction}
+\partial_t \mathbf{B} = \nabla \times \left(\mathbf{u} \times \mathbf{B}\right) + \eta\nabla^2\mathbf{B},
+\eeq
+
+where $P$ is the gas pressure, $\nu$ is the kinematic viscosity, $\eta$ is the microscopic diffusivity, $\nabla\Phi$ is the gravitational force per unit mass, and the current density is $\mathbf{J} = \nabla\times\mathbf{B}$.
+%in units where the permittivity of free space is unity. 
+Equations \ref{eq:momentum} and \ref{eq:induction} are subject to the magnetic solenoid and incompressibility constraints,
+
+\beq\label{eq:solenoid_constraint}
+\nabla \cdot \mathbf{B} = 0
+\eeq
+
+\beq\label{eq:incompressibility_constraint}
+\nabla \cdot \mathbf{u} = 0.
+\eeq
+
+We axisymmetrically perturb all three vector components of each of the fluid quantities. We nondimensionalize the equations, with lengths nondimensionalized by $L$, velocities by $\Omega_0 L$, magnetic fields by $B_0$, and pressure by $\Omega_0^2 L^2 \rho_0$, where $L$ is the channel width, $\Omega_0$ is the rotation rate at the center of the channel, and $\rho_0$ is the constant pressure in the base state (see Figure \ref{fig:setup}). We define the Reynolds number, $\reye \equiv {\Omega_0 L^2}/{\nu}$, magnetic Reynolds number, $\reym \equiv {\Omega_0 L^2}/{\eta}$, and a plasma beta parameter, $\beta \equiv {\Omega_0^2r_0^2}/{v_A^2}$, where the Alfv\'en sped $v_A$ is $v_A^2 = {B_0^2}/{\rho_0}$. The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the nondimensional, perturbed quantities.
+
+We define the flux function $A$ and streamfunction $\Psi$, where $A$ is the familiar two-dimensional vector potential. $A$ and $\Psi$ are scalar fields. The curl of $A$ and the curl of $\Psi$ are defined as the magnetic field and velocity, respectively, and so $A$ and $\Psi$ automatically satisfy our constraints (Equations \ref{eq:solenoid_constraint} and \ref{eq:incompressibility_constraint}).
+
+$A$ is thus related to the magnetic field as
+
+\beq
+\mathbf{B} \, = \, \left[\begin{matrix}
+\partial_zA \\
+B_{y} \\
+-\partial_xA \\
+\end{matrix}\right],\eeq \\
+
+and $\mathbf{\Psi}$ is defined analogously.
+
+Our final equation set is
+
+\begin{multline}
+\label{eqset1}
+\partial_t \nabla^2 \Psi \, + \, J\left(\Psi, \nabla^2 \Psi\right) \, - \, 2 \partial_z u_{y} \, = \\
+\, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, + \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, + \, \frac{1}{\reye}\nabla^4 \Psi
+\end{multline}
+
+\begin{multline}
+\label{eqset2}
+\partial_t u_{1y} \, + \, J\left(\Psi, u_{y}\right) \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, = \\
+\, \frac{2}{\beta}B_0\partial_z B_{y} \, + \, \frac{2}{\beta} J\left(A, B_{y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{y}
+\end{multline}
+
+\begin{multline}
+\label{eqset3}
+\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, \frac{1}{\reym} \nabla^2 A
+\end{multline}
+
+\begin{multline}
+\label{eqset4}
+\partial_t B_{y} \, = \, B_0 \partial_z u_{y} \, + \, J\left(A, u_{y}\right) \, - \, J\left(\Psi, B_{y}\right) \, \\
++ \, \frac{1}{\reym} \nabla^2 B_{y}  \, - \, q \Omega_0 \partial_z A,
+\end{multline}
+
+where $J$ is the Jacobian operator, 
+\beq
+J\left(f, g\right) \equiv \partial_z f\partial_x g - \partial_x f \partial_z g.
+\eeq  
+
+Note that working in terms of the flux function raises the order of the first momentum equation.
+
+The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where the most unstable linear MRI mode neither grows nor decays, for a given set of dimensionless parameters. 
+
+$B_0$ appears in Equations \ref{eqset1} - \ref{eqset4} because it is the nondimensionalized background field strength. Because we nondimensionalize $B$ by the magnitude of the background field strength, $B_0 \equiv 1$. In order to study our system in the weakly nonlinear regime, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting $B = B_0\left(1 - \epsilon^2\right)$. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ weakening of the background magnetic field destabilizes a band of wave modes with width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly.
+
+The destabilizing substitution is made, and Equations \ref{eqset1} - \ref{eqset4} are rewritten such that the fluid variables are contained in a state vector $\mathbf{V} = \left[\Psi, u_y, A, B_y\right]^\mathrm{T}$. This yields the system of equations
+
+\beq
+ \mathcal{D}\partial_t \mathbf{V} +  \mathcal{L} \mathbf{V} + \epsilon^2\widetilde{\mathcal{G}} = \mathbf{N},
+\eeq
+
+where we leave the definition of the matrices $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ to Appendix \ref{app:matrices}, and the detailed form of the nonlinear vector $\mathbf{N}$ to Appendix \ref{app:nonlinear_terms}. We solve this system subject to no-slip, perfectly conducting radial boundary conditions, defined as
+
+\beq
+\Psi = \partial_x \Psi = u_y = A = \partial_x B_y = 0.
+\eeq
+
+
+\section{Weakly Nonlinear Analysis}
+
+We conduct a formal multiple scales analysis of this system. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on two scales. The relative scalings of the fast and slow scales are determined as follows. When our four equations are linearized for axisymmetric perturbations of the form $e^{\sigma t + i k_x x + i k_z z}$, we can derive the linear dispersion relation, which is fourth order in $\sigma$ (Appendix \ref{app:dispersion}). The fast and slow variables are then defined such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation. The scalings are
+
+\beq\label{scalings}
+X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t.
+\eeq
+
+%See Figure \ref{figscalings}. 
+Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic Taylor Couette flow. Our $x$ dimension, the direction of angular momentum transport, is analogous to the direction of temperature transport in the convection problem. In analogy to these problems, we posit slow variation in both $Z$ and $T$. Each operator is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
+
+The multiple scale dependencies of our solution are encoded into an ansatz for the linear MRI solution at marginality,
+
+\beq
+\label{V1_ansatz}
+\mathbf{V_1} = \alpha(T, Z) \mathbb{V}_{11}(x) e^{i k_c z} + c.c. + \beta(T, Z)\mathbb{U}_{11}(x)\\
+\eeq
+
+where $\alpha$ is a slowly-varying amplitude equation and $c.c.$ denotes the complex conjugate. The $x$ dependence is contained in $\mathbb{V}_{11} = (\Psi_{11}, u_{11}, A_{11}, B_{11})^\mathbf{T}$, and must be solved subject to the radial boundary conditions. The periodic vertical boundary conditions allow us to posit the $z$ dependence, where $k_c$ is the value of the vertical wavenumber at marginality. As noted by URM07, there exists a spatially constant neutral mode solution to the $B_y$ equation, with $\mathbb{U}_{11} = (0, 0, 0, 1)^\mathbf{T}$. The amplitude $\beta(T, Z)$ encodes the slow evolution of this mode.
+
+The state vector is expanded in a perturbation series in orders of $\epsilon$,
+
+\beq
+\label{eq:pert_exp}
+\mathbf{V} = \epsilon\mathbf{V_1} + \epsilon^2\mathbf{V_2} + \epsilon^3\mathbf{V_3} + h.o.t.
+\eeq
+
+And our perturbed system is then expressed order by order as
+
+\begin{align}
+\mathcal{O}(\epsilon)&: \mathcal{L}\mathbf{V_1} + \mathcal{D}\partial_t \mathbf{V_1} = 0. \\ \label{eq:ordere}
+\mathcal{O}(\epsilon^2)&: \mathcal{L}\mathbf{V_2} + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1} = \mathbf{N_2}\\
+\mathcal{O}(\epsilon^3)&: \mathcal{L} \mathbf{V_3} + \mathcal{D}\partial_T \mathbf{V_1}  + \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} + \widetilde{\mathcal{G}}\mathbf{V_1} = \mathbf{N_3} \, \\ \label{eq:ordere3}
+\end{align}
+
+The partial differential equations that comprise Equations \ref{eq:ordere} to \ref{eq:ordere3} are solved in succession. The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even small-scale structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). The nonuniform spacing of the Chebyshev grid allows us to resolve the boundary layers well on a 128-point grid.
+
+\section{Simulations}
+
+We compare the weakly nonlinear theory with simulations of the same system. We use the pseudospectral code Dedalus to evolve Equations \ref{eq:momentum} and \ref{eq:induction} in time. To analyze the weakly nonlinear regime in simulation, we raise $\reym$ slightly to tune the system just out of marginality. We initialize a domain of vertical extent $20 \lambda_c$, where $\lambda_c = 2 \pi / k_c$ is the critical vertical wavelength. The radial domain is identical to the analytical domain, and the equations are solved on a hybrid Fourier-Chebyshev domain (Figure \ref{fig:setup}). 
+
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[width=\textwidth]{../figures/thingap_streamfuncs_velocity_Pm_1E-3.png}%{allorders_velocity.eps}
+\caption{First order (left), second order (center), and total (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. Colorbar represents azimuthal velocity.}\label{allorders_velocity}
+\end{figure*}
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[width=\textwidth]{../figures/thingap_streamfuncs_Bfield_Pm_1E-3.png}
+\caption{First order (left), second order (center), and total (right) magnetic field perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to higher magnetic field strengths. Colorbar represents azimuthal magnetic field strength.}\label{allorders_Bfield}
+\end{figure*}
+
+
+
+\bibliographystyle{plain}
+
+\begin{thebibliography}{53}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
+Balbus, S A and Hawley, J F, 1991, The Astrophysical Journal, 376, 214
+
+\bibitem[{Boyd(2001)}]{Boyd:2001aa}
+Boyd, J P, 2001, Chebyshev and Fourier Spectral Methods, New York, Dover
+
+\bibitem[{Chandrasekhar(1960)}]{Chandrasekhar:1960wh}
+Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the United States of America, 46, 253
+\bibitem[{Clark \& Oishi(2016b)}]{Clark:2016}
+Clark, S.E. and Oishi, J.S., 2016, in prep
+
+\bibitem[Goodman \& Xu(1994)]{Goodman:1994ul}
+Goodman, J, Xu, G, 1994, ApJ, 432, 213
+
+\bibitem[{Knobloch \& Julien(2005)}]{Knobloch:2005ba}
+Knobloch, E, Julien K, 2005, Physics of Fluids, 17, 094106
+
+\bibitem[{Latter et al.(2015)}]{Latter:2015}
+Latter, H.N., Fromang, S., \& Faure, J., 2015, MNRAS 453, 3257
+
+\bibitem[{Latter et al.(2010)}]{Latter:2010iz}
+Latter, H.N., Fromang, S., \& Gressel, O., 2010, MNRAS 406, 848
+
+\bibitem[{Newell \& Whitehead(1969)}]{Newell:1969}
+Newell, A.C. \& Whitehead, J.A. 1969, JFM 38, 279N
+
+\bibitem[{Pessah(2010)}]{Pessah:2010ic}
+Pessah, M. E., 2010, ApJ, 716, 1012
+
+\bibitem[{Pessah \& Goodman(2009)}]{Pessah:2009gm}
+Pessah, M. E., \& Goodman, J., 2009, ApJ 698, L72 
+
+\bibitem[{Rembiasz et al.(2016)}]{Rembiasz:2016}
+Rembiasz, T., Obergaulinger, M., Cerd\'a-Dur\'an, P., M\"uller, E., \& Aloy, M.A., 2016, MNRAS 456, 3782
+
+\bibitem[{Shakura \& Sunyaev(1973)}]{Shakura:1973wg}
+Shakura, N I and Sunyaev, R A, Astronomy \& Astrophysics, 1973, 24, 337
+
+\bibitem[{Umurhan et al.(2007a)}]{Umurhan:2007dz}
+Umurhan, O M, Regev, O, Menou, K, 2007, Phys. Rev. Letters, 98, 034501
+
+\bibitem[{Umurhan et al.(2007b)}]{Umurhan:2007hs}
+Umurhan, O M, Regev, O, Menou, K, 2007, Phys. Rev. E, 76, 036310
+
+\bibitem[{Vasil(2015)}]{Vasil:2015}
+Vasil, G. M. 2015, RSPSA 471, 20140699
+
+\end{thebibliography}
+
+\end{document}
