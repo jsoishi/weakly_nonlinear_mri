@@ -10,9 +10,6 @@ import numpy as np
 import matplotlib.pylab as plt
 from scipy import special
 
-comm = MPI.COMM_WORLD
-
-
 # Reasonable parameters
 
 # URM07-like
@@ -38,7 +35,7 @@ comm = MPI.COMM_WORLD
 #Rm = 4.052
 
 
-def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr, insulate):
+def find_crit(comm, R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr, insulate):
     Rm = Rm_min
     k = k_min
     R = Rm/Pm
@@ -51,7 +48,7 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
     if comm.rank == 0:
         print("mean zeta is {}, meaning q = 2 - zeta = {}".format(zeta_mean, 2 - zeta_mean))
         
-    if insulate == 1:
+    if insulate:
         magnetic_bcs = "insulating"
     else:
         magnetic_bcs = "conducting"
@@ -117,10 +114,8 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
 
     # create a shim function to translate (x, y) to the parameters for the eigenvalue problem:
     def shim(x,y):
-        # Adapted for complex eigenvalue
-        gr, indx, freq = EP.growth_rate({"k":x,"Rm":y})
-        ret = gr+1j*freq
-        return ret
+        gr, indx,freq = EP.growth_rate({"k":x,"Rm":y})
+        return gr+1j*freq
 
     cf = CriticalFinder(shim, comm)
 
@@ -131,12 +126,12 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
     if comm.rank == 0:
         print("grid generation time: {:10.5f} sec".format(end-start))
         if xi == 0:
-            gridname = '../../data/widegap_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+            gridname = '../../data/widegap_growth_rates_res{0:d}_Pm{1:5.02e}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
         else:
             if magnetic_bcs == "conducting":
-                gridname = '../../data/hmri_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
+                gridname = '../../data/hmri_growth_rates_res{0:d}_Pm{1:5.02e}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
             elif magnetic_bcs == "insulating":
-                gridname = '../../data/hmri_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}_Omega1_{7:5.02e}_Omega2_{7:5.02e}_R1_{}_R2_{}_insulating'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k, Omega1, Omega2, R1, R2)
+                gridname = '../../data/hmri_growth_rates_res{0:d}_Pm{1:5.02e}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}_Omega1_{7:5.02e}_Omega2_{7:5.02e}_R1_{}_R2_{}_insulating'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k, Omega1, Omega2, R1, R2)
         
         cf.save_grid(gridname)
 
@@ -153,4 +148,8 @@ def find_crit(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max
         else:
             title_str = '../../figs/helical_growth_rates_res{0:d}_Rmmin{1:5.02e}_Rmmax{2:5.02e}_kmin{3:5.02e}_kmax{4:5.02e}_nRm{5:5.02e}_nk{6:5.02e}'.format(nr,Rm_min,Rm_max, k_min, k_max, n_Rm, n_k)
         cf.plot_crit(title = title_str, xlabel = r"$k_z$", ylabel = r"$\mathrm{Rm}$")
+    Q  = crit[0]
+    Rmc = crit[1]
+    omega = crit[2]
+    return Q, Rmc, omega
 

@@ -5,7 +5,7 @@
 #PBS -j oe
 #PBS -q devel
 
-dedalus_script=find_widegap_crit
+dedalus_script=find_single_widegap_crit
 
 cd $PBS_O_WORKDIR
 
