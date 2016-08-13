@@ -1343,23 +1343,23 @@ class AmplitudeAlpha(MRI):
         a_psi_rhs = a_psi_rhs.evaluate()
         
         # b is the *opposite sign* as thin gap. .... but then they flip the sign. so same sign. 
-        # let's do the exact same thing...
+        # let's do the exact same thing... #actually let's not
         # Gtwiddle . V11 - xi dz H . V11
         b_psi_rhs = -(2/self.beta)*invr*1j*self.Q**3*o1.A + (2/self.beta)*invr*1j*self.Q*o1.A_rr - (2/self.beta)*invr**2*1j*self.Q*o1.A_r - (2/self.beta)*invr**2*2*1j*self.Q*self.xi*o1.B
         #b_psi_rhs = b_psi_rhs.evaluate()
-        b_psi_rhs = (-b_psi_rhs).evaluate()
+        b_psi_rhs = b_psi_rhs.evaluate()
        
         b_u_rhs = (2/self.beta)*1j*self.Q*o1.B
         #b_u_rhs = b_u_rhs.evaluate()
-        b_u_rhs = (-b_u_rhs).evaluate()
+        b_u_rhs = b_u_rhs.evaluate()
         
         b_A_rhs = 1j*self.Q*o1.psi
         #b_A_rhs = b_A_rhs.evaluate()
-        b_A_rhs = (-b_A_rhs).evaluate()
+        b_A_rhs = b_A_rhs.evaluate()
         
         b_B_rhs = 1j*self.Q*o1.u + invr**3*2*1j*self.Q*self.xi*o1.psi
         #b_B_rhs = b_B_rhs.evaluate()
-        b_B_rhs = (-b_B_rhs).evaluate()
+        b_B_rhs = b_B_rhs.evaluate()
         
         # (L1twiddle V21 + L2twiddle V11 + xi H V21)
         h_psi_rhs = (self.iR*invr*4*1j*self.Q**3*o2.psi21 + (2/self.beta)*invr*3*self.Q**2*o2.A21 + self.iR*invr*6*self.Q**2*o1.psi - (2/self.beta)*invr*3*1j*self.Q*o1.A
@@ -1388,10 +1388,14 @@ class AmplitudeAlpha(MRI):
         #h_B_rhs = h_B_rhs.evaluate()
         
         #doing same thing as thin gap
-        h_psi_rhs = (-h_psi_rhs).evaluate()
-        h_u_rhs = (-h_u_rhs).evaluate()
-        h_A_rhs = (-h_A_rhs).evaluate()
-        h_B_rhs = (-h_B_rhs).evaluate()
+        #h_psi_rhs = (-h_psi_rhs).evaluate()
+        #h_u_rhs = (-h_u_rhs).evaluate()
+        #h_A_rhs = (-h_A_rhs).evaluate()
+        #h_B_rhs = (-h_B_rhs).evaluate()
+        h_psi_rhs = h_psi_rhs.evaluate()
+        h_u_rhs = h_u_rhs.evaluate()
+        h_A_rhs = h_A_rhs.evaluate()
+        h_B_rhs = h_B_rhs.evaluate()
         
         # Normalize s.t. a = 1
         #if norm is True:
@@ -1402,11 +1406,13 @@ class AmplitudeAlpha(MRI):
         self.a = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
         
         # c = <va . N31*>
-        self.c = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
+        #self.c = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
+        self.c = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
         logger.info("self.c = {}".format(self.c))
         
         # b = < va . (Gtwiddle v11 - xi*dz*H v11)* > 
-        self.b = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
+        #self.b = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
+        self.b = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
   
         # h = < va . ( L1twiddle V21 + L2twiddle V11 + xi H V21)* > 
         self.h = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
