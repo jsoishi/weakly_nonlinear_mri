@@ -225,24 +225,24 @@ class MRI():
         """
         Normalize total state vector.
         """
-        #logger.warn("Normalizing according to norm(psi)")
+        #logger.warn("Normalizing according to norm(psi)") # don't use this - varies w/ resolution
         #norm = np.linalg.norm(psi['g'])
         
         #logger.warn("Normalizing according to integral(psi)")
         #intpsi = psi.integrate('r')
         #norm = intpsi['g'][0]
         
-        #logger.warn("Normalizing according to integral(u)")
-        #intu = u.integrate('r')
-        #norm = intu['g'][0]
-        #logger.warn("Normalizing by {}".format(norm))
+        logger.warn("Normalizing according to integral(u)")
+        intu = u.integrate('r')
+        norm = intu['g'][0]
+        logger.warn("Normalizing by {}".format(norm))
         
-        logger.warn("norm hack: Using max(A) from URM07")
+        #logger.warn("norm hack: Using max(A) from URM07")
         # this value read from A(x = 0) figure 2c of Umurhan, Regev, &
         # Menou (2007) using WebPlotDigitizer. I estimate the error to
         # be +0.03/-0.04.
-        Amax = 1#0.535
-        norm = A.interpolate(r = (self.R1 + self.R2)/2.0)['g'][0]/Amax
+        #Amax = 1#0.535
+        #norm = A.interpolate(r = (self.R1 + self.R2)/2.0)['g'][0]/Amax
         
         psi['g'] = psi['g']/norm
         u['g'] = u['g']/norm
