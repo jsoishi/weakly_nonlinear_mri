@@ -94,16 +94,16 @@ class MRI():
         
         if conducting is True:
             logger.warn("setting adjoint b.c.'s that only work in conducting case")
-            adjnew.add_bc('left(u) = 0')
-            adjnew.add_bc('right(u) = 0')
-            adjnew.add_bc('left(psi) = 0')
-            adjnew.add_bc('right(psi) = 0')
-            adjnew.add_bc('left(psir) = 0')
-            adjnew.add_bc('right(psir) = 0')
-            adjnew.add_bc('left(A) = 0')
-            adjnew.add_bc('right(A) = 0')
-            adjnew.add_bc('left(Br) = 0') # Note: B conditions differ from non-adjoint b.c.'s. Found using integration by parts
-            adjnew.add_bc('right(Br) = 0')
+            problem.add_bc('left(u) = 0')
+            problem.add_bc('right(u) = 0')
+            problem.add_bc('left(psi) = 0')
+            problem.add_bc('right(psi) = 0')
+            problem.add_bc('left(psir) = 0')
+            problem.add_bc('right(psir) = 0')
+            problem.add_bc('left(A) = 0')
+            problem.add_bc('right(A) = 0')
+            problem.add_bc('left(Br) = 0') # Note: B conditions differ from non-adjoint b.c.'s. Found using integration by parts
+            problem.add_bc('right(Br) = 0')
         
         if conducting is False:
             logger.warn("setting adjoint b.c.'s that only work in insulating case")
