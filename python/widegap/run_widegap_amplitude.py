@@ -60,12 +60,12 @@ r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)
 
-aa = AmplitudeAlpha(domain, Q = Q, Rm = Rm, Pm = Pm, xi = xi, Omega1 = Omega1, Omega2 = Omega2, beta = beta)
+aa = AmplitudeAlpha(domain, Q = Q, Rm = Rm, Pm = Pm, xi = xi, Omega1 = Omega1, Omega2 = Omega2, beta = beta, norm=False)
 aa.print_coeffs()
 
 #fn_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 fn_root = "../../data/"
-fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_intunorm_noN20_noallreal.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
+fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_normFalse.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
 with h5py.File(fn,'w') as f:
     r = f.create_dataset("r", data=aa.r)
     o1psi = f.create_dataset("psi11", data=aa.o1.psi['g'])
