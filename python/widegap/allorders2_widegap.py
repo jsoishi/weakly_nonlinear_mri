@@ -375,13 +375,13 @@ class AdjointHomogenous(MRI):
         self.A = self.EP.solver.state['A']
         self.B = self.EP.solver.state['B']
                
-        if self.norm == True:
-            scale = self.normalize_all_real_or_imag(self.EP.solver)
-            
-            self.psi = (self.psi*scale).evaluate()
-            self.u = (self.u*scale).evaluate()
-            self.A = (self.A*scale).evaluate()
-            self.B = (self.B*scale).evaluate()
+        #if self.norm == True:
+        #    scale = self.normalize_all_real_or_imag(self.EP.solver)
+        #    
+        #    self.psi = (self.psi*scale).evaluate()
+        #    self.u = (self.u*scale).evaluate()
+        #    self.A = (self.A*scale).evaluate()
+        #    self.B = (self.B*scale).evaluate()
             
         self.psi.name = "psi"
         self.u.name = "u"
@@ -473,13 +473,13 @@ class OrderE(MRI):
            
         self.prenormpsi = self.psi
         
-        if self.norm == True:
-            scale = self.normalize_all_real_or_imag(self.EP.solver)
-            
-            self.psi = (self.psi*scale).evaluate()
-            self.u = (self.u*scale).evaluate()
-            self.A = (self.A*scale).evaluate()
-            self.B = (self.B*scale).evaluate()
+        #if self.norm == True:
+        #    scale = self.normalize_all_real_or_imag(self.EP.solver)
+        #    
+        #    self.psi = (self.psi*scale).evaluate()
+        #    self.u = (self.u*scale).evaluate()
+        #    self.A = (self.A*scale).evaluate()
+        #    self.B = (self.B*scale).evaluate()
             
         if self.norm is True:
             self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
