@@ -609,13 +609,13 @@ class N2(MRI):
         self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
     
         # hack this to be zero because it's < 1E-15
-        #if self.xi == 0: # only for standard MRI
-        #    logger.info("setting N20_psi to zero because N20_psi + N20_psi* = 0") # doesn't appear to be true w/ new params?
-        #    allzeros = np.zeros(len(rfield['g']), np.complex)
-        #    all_zeros_field = domain.new_field()
-        #    all_zeros_field['g'] = allzeros 
-        #    self.N20_psi_r4_rederived = all_zeros_field
-        #    self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
+        if self.xi == 0: # only for standard MRI
+            logger.info("setting N20_psi to zero because N20_psi + N20_psi* = 0") # doesn't appear to be true w/ new params?
+            allzeros = np.zeros(len(rfield['g']), np.complex)
+            all_zeros_field = domain.new_field()
+            all_zeros_field['g'] = allzeros 
+            self.N20_psi_r4_rederived = all_zeros_field
+            self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
         
         # Note: doesn't matter which of (psi1, psi1) is chosen to be psi1_star -- here i am using opposite from above
         N20_psi_r4 = (((-1j*Q*o1.psi_star)*(-2*rfield*o1.psi_rr + rfield**2*o1.psi_rrr - 2*rfield*(1j*Q)**2*o1.psi + rfield**2*(1j*Q)**2*o1.psi_r - 3*o1.psi_r + rfield*o1.psi_r + 6*o1.psi_r - 2*rfield*o1.psi_r)
@@ -711,10 +711,10 @@ class N2(MRI):
         
         
         # hack this to be zero because it's < 1E-15
-        #if self.xi == 0:
-        #    logger.info("setting N20_B to zero because N20_B + N20_B* = 0")
-        #    self.N20_B_r2_rederived = all_zeros_field
-        #    self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
+        if self.xi == 0:
+            logger.info("setting N20_B to zero because N20_B + N20_B* = 0")
+            self.N20_B_r2_rederived = all_zeros_field
+            self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
         
 class OrderE2(MRI):
 
