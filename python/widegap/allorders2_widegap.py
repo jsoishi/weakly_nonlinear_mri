@@ -584,7 +584,7 @@ class N2(MRI):
         #if self.xi != 0:
         logger.info("N20 psi r4 term")
         # explicitly include (psi1, psi1star) and (psi1star, psi1)
-        N20_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(-1j*Q)*o1.psi_star + rfield**2*(1j*Q)*o1.psi*(-1*Q)**2*o1.psi_star_r
+        N20_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(-1j*Q)*o1.psi_star + rfield**2*(1j*Q)*o1.psi*(-1j*Q)**2*o1.psi_star_r
                                - rfield**2*o1.psi_r*(-1j*Q)**3*o1.psi_star + 3*(1j*Q)*o1.psi*o1.psi_star_r
                                + rfield*(-1j*Q)*o1.psi_r*o1.psi_star_r - 3*rfield*(1j*Q)*o1.psi*o1.psi_star_rr
                                + rfield**2*(1j*Q)*o1.psi*o1.psi_star_rrr - rfield**2*o1.psi_r*(-1j*Q)*o1.psi_star_rr
@@ -594,8 +594,8 @@ class N2(MRI):
                                + rfield*(-1j*Q)*o1.psi_star_r*o1.psi_r - 3*rfield*(-1j*Q)*o1.psi_star*o1.psi_rr
                                + rfield**2*(-1j*Q)*o1.psi_star*o1.psi_rrr - rfield**2*o1.psi_star_r*(1j*Q)*o1.psi_rr
                                - 2*rfield**3*1j*Q*o1.u*o1.u_star)
-                   - (2/beta)*(-2*rfield*(1j*Q)**2*o1.A*(-1j*Q)*o1.A_star + rfield**2*(1j*Q)*o1.A*(-1*Q)**2*o1.A_star_r
-                               - rfield**2*o1.A_star_r*(-1j*Q)**3*o1.A_star + 3*(1j*Q)*o1.A*o1.A_star_r
+                   - (2/beta)*(-2*rfield*(1j*Q)**2*o1.A*(-1j*Q)*o1.A_star + rfield**2*(1j*Q)*o1.A*(-1j*Q)**2*o1.A_star_r
+                               - rfield**2*o1.A_r*(-1j*Q)**3*o1.A_star + 3*(1j*Q)*o1.A*o1.A_star_r
                                + rfield*(-1j*Q)*o1.A_r*o1.A_star_r - 3*rfield*(1j*Q)*o1.A*o1.A_star_rr
                                + rfield**2*(1j*Q)*o1.A*o1.A_star_rrr - rfield**2*o1.A_r*(-1j*Q)*o1.A_star_rr
                                + 2*rfield**3*1j*Q*o1.B*o1.B_star
@@ -1401,6 +1401,7 @@ class AmplitudeAlpha(MRI):
         
         # Normalize s.t. a = 1
         #if norm is True:
+        """
         logger.info("Normalizing V^dagger s.t. a = 1")
         ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
@@ -1424,13 +1425,57 @@ class AmplitudeAlpha(MRI):
     
 
         self.sat_amp_coeffs = np.sqrt(self.b/self.c) #np.sqrt((-1j*self.Q*self.b + 1j*self.Q**3*self.g)/self.c)
-        
+        """
         # For interactive diagnostic purposes only
         self.o1 = o1
         self.o2 = o2
         self.n3 = n3
         self.ah = ah
         self.n2 = n2
+        
+        logger.info("NOT normalizing V^dagger s.t. a = 1")
+        logger.info("solving for form a dT alpha + c alpha|alpha|^2 = h dZ^2 alpha + b alpha")
+        
+        a_psi_rhs = invr*o1.psi_rr + invr*(1j*self.Q)**2*o1.psi - invr**2*o1.psi_r 
+        a_psi_rhs = a_psi_rhs.evaluate()
+        
+        b_psi_rhs = (2/self.beta)*invr*1j*self.Q**3*o1.A - (2/self.beta)*invr*1j*self.Q*o1.A_rr + (2/self.beta)*invr**2*1j*self.Q*o1.A_r + (2/self.beta)*invr**2*2*1j*self.Q*self.xi*o1.B
+        b_u_rhs = -(2/self.beta)*1j*self.Q*o1.B
+        b_A_rhs = -1j*self.Q*o1.psi
+        b_B_rhs = -1j*self.Q*o1.u - invr**3*2*1j*self.Q*self.xi*o1.psi
+        
+        b_psi_rhs = b_psi_rhs.evaluate()
+        b_u_rhs = b_u_rhs.evaluate()
+        b_A_rhs = b_A_rhs.evaluate()
+        b_B_rhs = b_B_rhs.evaluate()
+        
+        h_psi_rhs = (-4*self.iR*1j*self.Q**3*invr*o2.psi21 - (2/self.beta)*3*invr*self.Q**2*o2.A21 - 6*self.iR*self.Q**2*invr*o1.psi + (2/self.beta)*3*invr*1j*Q*o1.A
+                    + 4*self.iR*1j*self.Q*o2.psi21_rr - self.iR*4*1j*Q*invr**2*o2.psi21_r + 2*invr*u0*o2.u21 + (2/self.beta)*invr*o2.A21_rr 
+                    - (2/self.beta)*invr**2*o2.A21_r - (2/self.beta)*2*self.xi*invr**2*o2.B21 + self.iR*2*invr*o1.psi_rr - self.iR*2*invr**2*o1.psi_r)
+        h_u_rhs = 2*self.iR*1j*Q*o2.u21 - invr*du0*o2.psi21 - u0*invr**2*o2.psi21 + (2/self.beta)*o2.B21 + self.iR*o1.u
+        h_A_rhs = self.iRm*2*1j*self.Q*o2.A21 + o2.psi21 + self.iRm*o1.A
+        h_B_rhs = self.iRm*2*1j*self.Q*o2.B21 + invr*du0*o2.A21 + o2.u21 - invr**2*u0*o2.A21 + invr**3*2*self.xi*o2.psi21 + self.iRm*o1.B
+        
+        h_psi_rhs = h_psi_rhs.evaluate()
+        h_u_rhs = h_u_rhs.evaluate()
+        h_A_rhs = h_A_rhs.evaluate()
+        h_B_rhs = h_B_rhs.evaluate()
+        
+        a_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
+        c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
+        b_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
+        h_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
+        
+        logger.info("a_new = {}, b_new = {}, c_new = {}, h_new = {}".format(a_new, b_new, c_new, h_new))
+        
+        self.a = a_new/a_new
+        self.c = c_new/a_new
+        self.b = b_new/a_new
+        self.h = h_new/a_new
+        
+        logger.info("a = {}; b = {}; c = {}; h = {}".format(self.a, self.b, self.c, self.h))
+        
+        self.sat_amp_coeffs = np.sqrt(self.b/self.c)
 
     def print_coeffs(self):
         logger.info("sat_amp_coeffs = b/c")
