@@ -55,7 +55,7 @@ Omega1 = 313.55
 Omega2 = Omega1*mu_omega
 """
 
-gridnum = 128
+gridnum = 256
 
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)
