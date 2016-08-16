@@ -456,7 +456,7 @@ where
 
 The adjoint boundary conditions are selected to satisfy Equation \ref{eq:inner_product_def}, and differ depending on the boundary conditions enforced on the original system. For the conducting boundary conditions we apply to the standard MRI, the adjoint equation 
 
-\beq
+\beq\label{eq:adjoint}
 (\mathcal{L}^\dagger + \xi \widetilde{\mathcal{H}}^\dagger)\mathbf{V}^\dagger = 0
 \eeq
 
@@ -466,7 +466,17 @@ must be solved subject to the boundary conditions
 \Psi^\dagger = \partial_r \Psi^\dagger = u^\dagger = A^\dagger = \partial_r B^\dagger = 0.
 \eeq
 
-Note that the condition on $B^\dagger$ differs from that on $B$. We take the inner product of the adjoint homogenous solution with Equation \ref{eq:ordere3} to find 
+Note that the condition on $B^\dagger$ differs from that on $B$. For the insulating boundary conditions we apply to the helical MRI, the magnetic boundary conditions applied to Equation \ref{eq:adjoint} are 
+
+\beq
+B^\dagger = (- k \frac{I_0 (k r)}{I_1 (k r)} + \frac{1}{r} + \partial_r ) A^\dagger = 0 \, \, \mathrm{at} \, \, r = r_1
+\eeq
+
+\beq
+B^\dagger = (k \frac{K_0 (k r)}{K_1 (k r)} + \frac{1}{r} + \partial_r ) A^\dagger = 0 \, \, \mathrm{at} \, \, r = r_2
+\eeq
+
+We take the inner product of the adjoint homogenous solution with Equation \ref{eq:ordere3} to find 
 
 \beq
 \mathcal{L}\mathbf{V}_3 + \xi \widetilde{\mathcal{H}} \mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2\nonumber 
