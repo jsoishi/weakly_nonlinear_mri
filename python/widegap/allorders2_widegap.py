@@ -610,6 +610,9 @@ class N2(MRI):
                            
         self.N20_psi_r4_rederived = N20_psi_r4_rederived.evaluate()
         self.N20_psi_r4_rederived.name = "N20_psi_r4_rederived"
+        
+        self.N20_psi_r4_rederived_diagnostic = N20_psi_r4_rederived.evaluate()
+        self.N20_psi_r4_rederived_diagnostic.name = "N20_psi_r4_rederived_diagnostic"
     
         # hack this to be zero because it's < 1E-15
         if self.xi == 0: # only for standard MRI
@@ -712,6 +715,8 @@ class N2(MRI):
         self.N20_B_r2_rederived = N20_B_r2_rederived.evaluate()
         self.N20_B_r2_rederived.name = "N20_B_r2_rederived"
         
+        self.N20_B_r2_rederived_diagnostic = N20_B_r2_rederived.evaluate()
+        self.N20_B_r2_rederived_diagnostic.name = "N20_B_r2_rederived_diagnostic"
         
         # hack this to be zero because it's < 1E-15
         if self.xi == 0:
@@ -1108,7 +1113,7 @@ class N3(MRI):
         
         # J(psi1, (-2/r^3) dr psi2)
         Jacobian1_part2 = ((1j*k*o1.psi)*(6*invr**4*o2.psi20_r - 2*invr**3*o2.psi20_rr) + (1j*k*o1.psi)*(6*invr**4*o2.psi20_star_r - 2*invr**3*o2.psi20_star_rr)
-                        + (-1j*k*o1.psi_star)*(6*invr**4*o2.psi22_r - 2*invr**3*o2.psi22_rr) - (o1.psi_star_r)*(2*1j*k*(-2)*invr**2*o2.psi22_r))
+                        + (-1j*k*o1.psi_star)*(6*invr**4*o2.psi22_r - 2*invr**3*o2.psi22_rr) - (o1.psi_star_r)*(2*1j*k*(-2)*invr**3*o2.psi22_r)) #fixed invr**2 -> invr**3 in last term 8/16/16
         
         # -(2/beta)J(A1, (1/r^2)del^2 A2)
         Jacobian2_part1 = (-2/self.beta)*((1j*k*o1.A)*(-2*invr**3*o2.A20_rr + invr**2*o2.A20_rrr - 3*invr**4*o2.A20_r + invr**3*o2.A20_rr)
