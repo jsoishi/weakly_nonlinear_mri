@@ -5,16 +5,20 @@ from allorders2_widegap import AmplitudeAlpha
 import h5py
 
 # Goodman & Ji 2002 parameters
-Rm =3.32
-Q = 0.840
+#Pm = 1.6e-6
+#Rm =3.32
+#Q = 0.840
 R1 = 1
 R2 = 3
 Omega1 = 1
 Omega2 = 0.12087
 beta = 41.2
-Pm = 1.6e-6
 xi=0
 norm = False
+
+Pm=1.6E-5
+Q = 9.07269e-01
+Rm = 3.38289e+00
 
 # UMR07-like parameters
 #Q = 0.01269
@@ -55,7 +59,7 @@ Omega1 = 313.55
 Omega2 = Omega1*mu_omega
 """
 
-gridnum = 256
+gridnum = 128
 
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)

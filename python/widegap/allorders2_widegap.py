@@ -1129,12 +1129,12 @@ class N3(MRI):
         Jacobian3_part1 = (-o2.psi20_r*(1j*k)*(invr**2*o1.psi_rr + invr**2*(1j*k)**2*o1.psi + invr**3*o1.psi_r)
                           -o2.psi20_star_r*(1j*k)*(invr**2*o1.psi_rr + invr**2*(1j*k)**2*o1.psi + invr**3*o1.psi_r)
                           + (1j*2*k)*o2.psi22*(-2*invr**3*o1.psi_star_rr + invr**2*o1.psi_star_rrr + (-1j*k)**2*(-2*invr**3*o1.psi_star + invr**2*o1.psi_star_r) - 3*invr**4*o1.psi_star_r + invr**3*o1.psi_star_rr) # added missing derivative 7/14/16
-                          - o2.psi22_r*(-1j*k)*(invr**2*o1.psi_star_rr + invr**2*(-1j*k)**2*o1.psi_star + invr**3*o1.psi_star_r))
+                          - o2.psi22_r*(-1j*k)*(invr**2*o1.psi_star_rr + invr**2*(-1j*k)**2*o1.psi_star + invr**3*o1.psi_star_r)) ##correct 8/16/16
         
         # J(psi2, -(2/r^3) dr psi1)
         Jacobian3_part2 = (-o2.psi20_r*(1j*k)*(-2*invr**3*o1.psi_r) - o2.psi20_star_r*(1j*k)*(-2*invr**3*o1.psi_r)
                           + (1j*2*k)*o2.psi22*(6*invr**4*o1.psi_star_r - 2*invr**3*o1.psi_star_rr)
-                          - o2.psi22_r*(-1j*k)*(-2*invr**3*o1.psi_star_r)) # added missing negative sign 7/14/15
+                          - o2.psi22_r*(-1j*k)*(-2*invr**3*o1.psi_star_r)) # added missing negative sign 7/14/16
         
         # -(2/beta) J(A2, (1/r^2) del^2 A1)                  
         Jacobian4_part1 = (-2/self.beta)*(-o2.A20_r*(1j*k)*(invr**2*o1.A_rr + invr**2*(1j*k)**2*o1.A + invr**3*o1.A_r)
@@ -1145,7 +1145,7 @@ class N3(MRI):
         # -(2/beta) J(A2, -(2/r^3) dr A1)
         Jacobian4_part2 = (-2/self.beta)*(-o2.A20_r*(1j*k)*(-2*invr**3*o1.A_r) - o2.A20_star_r*(1j*k)*(-2*invr**3*o1.A_r)
                           + (1j*2*k)*o2.A22*(6*invr**4*o1.A_star_r - 2*invr**3*o1.A_star_rr)
-                          - o2.A22_r*(-1j*k)*(-2*invr**3*o1.A_star_r)) # added missing negative sign 7/14/15
+                          - o2.A22_r*(-1j*k)*(-2*invr**3*o1.A_star_r)) # added missing negative sign 7/14/16
         
         # -(2/r) u1 dz u2 
         advective1 = -2*invr*o1.u_star*2*1j*k*o2.u22
@@ -1178,7 +1178,7 @@ class N3(MRI):
                        
         self.N31_psi_noadvective = (Jacobian1_part1 + Jacobian1_part2 + Jacobian2_part1 + Jacobian2_part2 + Jacobian3_part1 + Jacobian3_part2 
                        + Jacobian4_part1 + Jacobian4_part2).evaluate()
-                       
+        """               
         # re-derivation, N31_psi
         # u dot del u
         n31_psi_psi11_dot_psi20 = (3*invr**4*(1j*Q)*o1.psi*o2.psi20_r + invr**3*(1j*Q)*o1.psi_r*o2.psi20_r - 3*invr**3*(1j*Q)*o1.psi*o2.psi20_rr
@@ -1218,8 +1218,8 @@ class N3(MRI):
                 + n31_psi_psi20_dot_psi11 + n31_psi_psi20_star_dot_psi11 + n31_psi_psi22_dot_psi11_star
                 -(2/beta)*(n31_psi_A11_dot_A20 + n31_psi_A11_dot_A20_star + n31_psi_A11_star_dot_A22
                 + n31_psi_A20_dot_A11 + n31_psi_A20_star_dot_A11 + n31_psi_A22_dot_A11_star)).evaluate()
-        
-        
+        """
+        #******************** N31^(u) *********************#
         # (1/r) J(psi1, u2)               
         Jacobian1 = invr*(1j*k*o1.psi*(o2.u20_r + o2.u20_star_r) + (-1j*k)*o1.psi_star*o2.u22_r - o1.psi_star_r*(2*1j*k)*o2.u22)
         
@@ -1442,7 +1442,8 @@ class AmplitudeAlpha(MRI):
         self.n2 = n2
         
         logger.info("NOT normalizing V^dagger s.t. a = 1")
-        logger.info("solving for form a dT alpha + c alpha|alpha|^2 = h dZ^2 alpha + b alpha")
+        #logger.info("solving for form a dT alpha + c alpha|alpha|^2 = h dZ^2 alpha + b alpha")
+        logger.info("solving for form a dT alpha = h dZ^2 alpha + b alpha - c alpha|alpha|^2")
         
         a_psi_rhs = invr*o1.psi_rr + invr*(1j*self.Q)**2*o1.psi - invr**2*o1.psi_r 
         a_psi_rhs = a_psi_rhs.evaluate()
@@ -1470,7 +1471,7 @@ class AmplitudeAlpha(MRI):
         h_B_rhs = h_B_rhs.evaluate()
         
         a_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
-        c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
+        c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [(-n3.N31_psi).evaluate(), (-n3.N31_u).evaluate(), (-n3.N31_A).evaluate(), (-n3.N31_B).evaluate()])
         b_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
         h_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
         
