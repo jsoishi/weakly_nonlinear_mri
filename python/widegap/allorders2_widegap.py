@@ -113,8 +113,8 @@ class MRI():
             problem.add_bc('right(psi) = 0')
             problem.add_bc('left(psir) = 0')
             problem.add_bc('right(psir) = 0')
-            problem.add_bc('left(A) = 0')
-            problem.add_bc('right(A) = 0')
+            problem.add_bc('left(-Q*bessel1*A + Ar + A/r) = 0')
+            problem.add_bc('right(Q*bessel2*A + Ar + A/r) = 0')
             problem.add_bc('left(B) = 0')
             problem.add_bc('right(B) = 0')
         
@@ -142,8 +142,11 @@ class MRI():
             # Insulating boundary conditions
             #problem.add_bc('left(dr(r*dz*A) - Q*r*bessel1*dz*A) = 0')
             #problem.add_bc('right(dr(r*dz*A) + Q*r*bessel2*dz*A) = 0')
-            problem.add_bc('left(dr(r*A) - Q*r*bessel1*A) = 0')
-            problem.add_bc('right(dr(r*A) + Q*r*bessel2*A) = 0') # dz is just a constant so divide it out! (problematic for V20)
+            #problem.add_bc('left(dr(r*A) - Q*r*bessel1*A) = 0')
+            #problem.add_bc('right(dr(r*A) + Q*r*bessel2*A) = 0') # dz is just a constant so divide it out! (problematic for V20)
+            
+            problem.add_bc('left(dr(A) - Q*bessel1*A) = 0')
+            problem.add_bc('right(dr(A) + Q*bessel2*A) = 0')
             problem.add_bc('left(B) = 0')
             problem.add_bc('right(B) = 0')
         
