@@ -77,7 +77,7 @@ class MRI():
         self.R0 = (self.R1 + self.R2)/2.0
         self.q_R0 = 2*self.c2/(self.R0**2*self.c1 + self.c2)
         
-        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; beta = {}; norm = {}, Re = {}, xi = {}".format(self.Q, self.Rm, self.Pm, self.beta, norm, self.R, self.xi))
+        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; beta = {}; norm = {}, Re = {}, xi = {}, norm = {}, conducting = {}".format(self.Q, self.Rm, self.Pm, self.beta, norm, self.R, self.xi, self.norm, self.conducting))
         logger.info("Effective shear parameter q(R0) = {}".format(self.q_R0))
         
         if self.xi != 0:
@@ -134,6 +134,7 @@ class MRI():
         problem.add_bc('right(psir) = 0')
         
         if conducting is True:
+            logger.warn("Using conducting boundary conditions")
             problem.add_bc('left(A) = 0')
             problem.add_bc('right(A) = 0')
             problem.add_bc('left(B + r*Br) = 0')
@@ -145,6 +146,7 @@ class MRI():
             #problem.add_bc('left(dr(r*A) - Q*r*bessel1*A) = 0')
             #problem.add_bc('right(dr(r*A) + Q*r*bessel2*A) = 0') # dz is just a constant so divide it out! (problematic for V20)
             
+            logger.warn("Using insulating boundary conditions")
             problem.add_bc('left(dr(A) - Q*bessel1*A) = 0')
             problem.add_bc('right(dr(A) + Q*bessel2*A) = 0')
             problem.add_bc('left(B) = 0')
@@ -364,7 +366,7 @@ class AdjointHomogenous(MRI):
         adj.add_equation("dr(B) - Br = 0")
 
         # Set boundary conditions for MRI problem
-        self.adj = self.set_adjoint_boundary_conditions(adj, conducting = conducting)
+        self.adj = self.set_adjoint_boundary_conditions(adj, conducting = self.conducting)
         self.EP = Eigenproblem(self.adj)
 
         if finalize:
@@ -803,7 +805,6 @@ class OrderE2(MRI):
             bv20.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
             bv20.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
         
-        
         bv20.add_equation("-iR*(r**3*dr(psirrr) - r**2*2*psirrr + r*3*psirr - 3*psir) = rhs_psi20")
         bv20.add_equation("-iR*(r**2*dr(ur) + r*ur - u) = rhs_u20")
         bv20.add_equation("-iRm*(r*dr(Ar) - Ar) = rhs_A20")
@@ -816,7 +817,7 @@ class OrderE2(MRI):
         bv20.add_equation("dr(A) - Ar = 0")
         bv20.add_equation("dr(B) - Br = 0")
         
-        bv20 = self.set_boundary_conditions(bv20, conducting = conducting)
+        bv20 = self.set_boundary_conditions(bv20, conducting = self.conducting)
         self.BVP20 = self.solve_BVP(bv20)
         
         self.psi20 = self.BVP20.state['psi']
@@ -869,7 +870,7 @@ class OrderE2(MRI):
         
         # These RHS terms must satisfy the solvability condition <V^dagger | RHS> = 0. Test that:
         if ah == None:
-            self.ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm)
+            self.ah = AdjointHomogenous(domain, o1 = o1, Q = self.Q, Rm = self.Rm, Pm = self.Pm, beta = self.beta, Omega1 = self.Omega1, Omega2 = self.Omega2, xi = self.xi, norm = self.norm, conducting = self.conducting)
             ah = self.ah
         else:
             self.ah = ah

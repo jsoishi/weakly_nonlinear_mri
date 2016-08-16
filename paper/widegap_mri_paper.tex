@@ -232,7 +232,7 @@ at $r = r_1, r_2$. To the helical MRI system we apply insulating boundary condit
 \partial_r A = - k \frac{K_0 (k r)}{K_1 (k r)} A \, \, \mathrm{at} \, \, r = r_2
 \eeq
 
-and $B = 0$ at $r = r_1, r_2$. Here, $I_n$, $K_n$ are the modified Bessel functions of the first and second kind, respectively.
+and $B = 0$ at $r = r_1, r_2$ (see \citei{Willis:2002bh}). Here, $I_n$, $K_n$ are the modified Bessel functions of the first and second kind, respectively.
 
 We note that Equations \ref{eq:Psi_perturbed} - \ref{eq:Bphi_perturbed} are written in a nonstandard form, with the nonlinear terms on the righthand side. This choice has a practical motivation. As detailed in \S\ref{sec:wnl_analysis}, we expand these equations in a perturbation series and solve them order by order using a pseudospectral code. The code solves partial differential equations of the form $\mathrm{M} \partial_t \mathbf{V} + \mathrm{L} \mathbf{V} = \mathbf{F}$, where $\mathrm{M}$ and $\mathrm{L}$ are matrices and $\mathbf{F}$ is a vector containing any inhomogenous terms. The nonlinear terms in our perturbation analysis become inhomogenous term inputs to the solver.
 
@@ -320,8 +320,12 @@ We examine the behavior of the wide gap MRI system as a function of $Pm$. Figure
 
 \subsection{Helical MRI}
 
-When $\xi$ in Equation \ref{eq:unperturbed_matrix_eqns} is not equal to zero, the helical MRI arises. We examine a single fiducial helical MRI case, for the parameters listed in Table \ref{table:parameters}. At the conclusion of the weakly nonlinear analysis, we find that the coefficients of Equation \ref{eq:gle} are $b = $, $d = $, and $c = $, i.e. complex. The marginal helical MRI is thus described by a complex GLE. This difference in character between the amplitude equations that modulate the weakly nonlinear standard and helical MRI is a consequence of the same property that makes the helical MRI an overstability. 
+When $\xi$ in Equation \ref{eq:unperturbed_matrix_eqns} is not equal to zero, the helical MRI arises. We examine a single fiducial helical MRI case, for the parameters listed in Table \ref{table:parameters}. At the conclusion of the weakly nonlinear analysis, we find that the coefficients of Equation \ref{eq:gle} are $b = $, $d = $, and $c = $, i.e. complex. The marginal helical MRI is thus described by a complex GLE. This difference in character between the amplitude equations that modulate the weakly nonlinear standard and helical MRI is a consequence of the same property that makes the helical MRI an overstability. With the introduction of an azimuthal component, the background magnetic field acquires a handedness that is not present in a purely axial field.
 
+
+
+
+%************* APPENDICES ************************%
 
 \clearpage
 \appendix
@@ -642,6 +646,8 @@ Umurhan, O.M., Regev, O., Menou, K., 2007, Phys. Rev. Letters, 98, 034501
 \bibitem[{Umurhan et al.(2007b)}]{Umurhan:2007hs}
 Umurhan, O.M., Regev, O., Menou, K., 2007, Phys. Rev. E, 76, 036310
 
+\bibitem[{Willis \& Barenghi(2002)}]{Willis:2002bh}
+Willis, A.P. \& Barenghi, C.F. 2002, JFM 463, 361
 
 \end{thebibliography}
 

@@ -16,47 +16,21 @@ class Coefficients():
         self.c = coeffs.attrs['c']
         self.h = coeffs.attrs['h']
 
-# UMR07-like parameters
-
-Q = 0.01269
-#Rm = 0.67355
-Rm = 0.8403
-Pm = 1.0e-3
-beta = 25.0
-Omega1 = 313.55
-Omega2 = 56.43
-xi = 0
-R1 = 5
-R2 = 15
-gridnum = 128
-
-# Hollerbach & Rudiger
-"""
-Pm = 1.0E-6
-Re = 1521
-Rm = Pm*Re
-xi = 4
-Q = 2.33
-Ha = 16.3
-beta = (2*Re*Rm)/(Ha**2)
-R1 = 1.
-R2 = 2.
-mu_omega = 0.27
-Omega1 = 313.55
-Omega2 = Omega1*mu_omega
-"""
-
+        self.Q = coeffs.attrs['Q']
+         
 # data created in run_widegap_amplitude.py
 fn_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
-fn = "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_Anorm".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
+#fn = "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_Anorm".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum)
+fn = "widegap_amplitude_parameters_Q_2.33_Rm_0.0015_Pm_1.00e-06_Omega1_01.00_Omega2_00.27_beta_0.02_xi_4.00_gridnum_128_conducting_False_norm_False"
 coeff_fn = fn_root + fn + ".h5"
-
-# For IVP
-gridnum = 128
-lambda_crit = 2*np.pi/Q
 
 # Read coefficients from file
 coeff = Coefficients(coeff_fn)
+
+# For IVP
+Q = coeff.Q
+gridnum = 512
+lambda_crit = 2*np.pi/Q
 
 #print("HACK: all coeffs -> real")
 #coeff.a = coeff.a.real
@@ -69,6 +43,12 @@ coeff = Coefficients(coeff_fn)
 #coeff.b = 0.045368169457467356+2.4922212429290374e-13j#0.0007066860686026265+8.853530842684617e-15j
 #coeff.c = 0.24796998124059338+2.259874552160415e-12j
 #coeff.h = 2.7433491997827075+1.2795201244316272e-09j
+
+print("HACK: testing coeffs from http://pauli.uni-muenster.de/tp/fileadmin/lehre/NumMethoden/SoSe10/Skript/GLE.pdf")
+coeff.a = 1.0 + 0j
+coeff.b = 1.0 + 0j
+coeff.c = 1.0 - 1.0j
+coeff.h = 1.0 + 2.0j
 
 print("ac = {}, bc = {}, hc = {}".format(coeff.a/coeff.c, coeff.b/coeff.c, coeff.h/coeff.c)) 
 print("saturation amplitude = {}".format(np.sqrt(coeff.b/coeff.c)))
@@ -95,7 +75,7 @@ ts = de.timesteppers.RK443
 IVP = problem.build_solver(ts)
 IVP.stop_sim_time = np.inf#15.*period
 IVP.stop_wall_time = np.inf
-tlen = 50000
+tlen = 5000#0
 IVP.stop_iteration = tlen
 
 # reference local grid and state fields
@@ -104,7 +84,7 @@ alpha = IVP.state['alpha']
 alphaZ = IVP.state['alphaZ']
 
 # initial conditions ... plus noise!
-noiselvl = 1E-3#15
+noiselvl = 1.0E-1#1E-3#15
 noise = np.array([random.uniform(-noiselvl, noiselvl) for _ in range(len(Z))])
 mean_init = 1#0#0.1
 alpha['g'] = mean_init + noise#1.0E-5 + noise
@@ -122,7 +102,7 @@ alpha_list = [np.copy(alpha['g'])]
 t_list = [IVP.sim_time]
 
 # Main loop
-dt = 2e-2#2e-3
+dt = 5e-2#2e-3
 while IVP.ok:
     IVP.step(dt)
     if IVP.iteration % 20 == 0:
