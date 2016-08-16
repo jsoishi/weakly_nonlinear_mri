@@ -5,9 +5,9 @@ from allorders2_widegap import AmplitudeAlpha
 import h5py
 
 # Goodman & Ji 2002 parameters
-#Pm = 1.6e-6
-#Rm =3.32
-#Q = 0.840
+#Pm=1.6E-6
+#Q = 0.901
+#Rm = 3.30
 R1 = 1
 R2 = 3
 Omega1 = 1
@@ -21,9 +21,10 @@ norm = False
 #Rm_c = [3.30,3.31,3.34,3.54]
 #Q = [0.901,0.903,0.905,0.913]
 
-Pm=1.6E-6
-Q = 0.901
-Rm = 3.30
+Pm=1.6E-5
+Q = 0.903
+Rm = 3.31
+
 
 # UMR07-like parameters
 #Q = 0.01269
