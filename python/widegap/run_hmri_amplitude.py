@@ -20,7 +20,7 @@ Rm = 0.001521
 conducting=False
 norm=False
 
-gridnum = 128
+gridnum = 256
 
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)
