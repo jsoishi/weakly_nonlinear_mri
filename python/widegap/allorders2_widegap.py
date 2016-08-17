@@ -30,8 +30,7 @@ class MRI():
     critical Rm =    0.84043
     """
 
-    def __init__(self, domain, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, conducting = True):
-
+    def __init__(self, domain, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, B0 = 1., norm = True, conducting = True):
         self.domain = domain
         self.Q = Q
         self.Rm = Rm
@@ -41,7 +40,7 @@ class MRI():
         self.Omega2 = Omega2
         self.xi = xi
         self.norm = norm
-        self.B0 = 1
+        self.B0 = B0
         self.conducting = conducting
         
         # Inverse magnetic reynolds number
@@ -77,7 +76,7 @@ class MRI():
         self.R0 = (self.R1 + self.R2)/2.0
         self.q_R0 = 2*self.c2/(self.R0**2*self.c1 + self.c2)
         
-        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; beta = {}; norm = {}, Re = {}, xi = {}, norm = {}, conducting = {}".format(self.Q, self.Rm, self.Pm, self.beta, norm, self.R, self.xi, self.norm, self.conducting))
+        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; beta = {}; norm = {}, Re = {}, zeta_mean = {}, xi = {}, norm = {}, conducting = {}".format(self.Q, self.Rm, self.Pm, self.beta, norm, self.R,self.zeta_mean, self.xi, self.norm, self.conducting))
         logger.info("Effective shear parameter q(R0) = {}".format(self.q_R0))
         
         if self.xi != 0:
@@ -132,7 +131,6 @@ class MRI():
         problem.add_bc('right(psi) = 0')
         problem.add_bc('left(psir) = 0')
         problem.add_bc('right(psir) = 0')
-        
         if conducting is True:
             logger.warn("Using conducting boundary conditions")
             problem.add_bc('left(A) = 0')
@@ -414,11 +412,11 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, domain, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, norm = True, finalize=True, conducting = True):
+    def __init__(self, domain, Q = 0.01795, Rm = 0.84043, Pm = 0.001, beta = 25.0, Omega1 = 313.55, Omega2 = 67.0631, xi = 0, B0 = 1, norm = True, finalize=True, conducting = True):
         
         logger.info("initializing Order E")
         
-        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, norm = norm, conducting = conducting)
+        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, beta = beta, Omega1 = Omega1, Omega2 = Omega2, xi = xi, B0 = B0, norm = norm, conducting = conducting)
         
         lv1 = de.EVP(self.domain,
                      ['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'],'sigma')
@@ -476,7 +474,6 @@ class OrderE(MRI):
         self.A = self.EP.solver.state['A']
         self.B = self.EP.solver.state['B']
            
-        self.prenormpsi = self.psi
         
         #if self.norm == True:
         #    scale = self.normalize_all_real_or_imag(self.EP.solver)
@@ -489,10 +486,10 @@ class OrderE(MRI):
         if self.norm is True:
             self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
             
-        self.psi.name = "psi"
-        self.u.name = "u"
-        self.A.name = "A"
-        self.B.name = "B"
+            self.psi.name = "psi"
+            self.u.name = "u"
+            self.A.name = "A"
+            self.B.name = "B"
             
         # Take all relevant derivates for use with higher order terms
         self.psi_r = self.get_derivative(self.psi)
