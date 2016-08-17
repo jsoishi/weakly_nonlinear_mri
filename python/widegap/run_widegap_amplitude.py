@@ -46,7 +46,7 @@ R2 = 15
 
 crit_params = h5py.File('../../data/widegap_crit_Rm_Q.h5', 'r')
 #for indx in range(len(crit_params['Q_c'].value)):
-indx = 10
+indx = 0
 Q = crit_params['Q_c'].value[indx]
 Rm = crit_params['Rm_c'].value[indx]
 Pm = crit_params['Pm'].value[indx]
