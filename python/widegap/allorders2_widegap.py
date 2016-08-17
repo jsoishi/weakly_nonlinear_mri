@@ -622,7 +622,9 @@ class N2(MRI):
                                + 3*(-1j*Q)*o1.A_star*o1.A_r + rfield*(1j*Q)*o1.A_r*o1.A_star_r - 3*rfield*(-1j*Q)*o1.A_star*o1.A_rr 
                                + rfield**2*(-1j*Q)*o1.A_star*o1.A_rrr - rfield**2*o1.A_star_r*(1j*Q)*o1.A_rr #correct 8/17
                                - 2*rfield**3*o1.B_star*(1j*Q)*o1.B)) #correct 8/17
-                               
+        self.N20_psi_r4 = N20_psi_r4.evaluate()
+        self.N20_psi_r4.name = "N20_psi_r4"
+        
         # divide by r^4 to get N20_psi (need for plotting, etc)
         self.N20_psi = ((1/rfield**4)*self.N20_psi_r4).evaluate()
         self.N20_psi.name = "N20_psi"
