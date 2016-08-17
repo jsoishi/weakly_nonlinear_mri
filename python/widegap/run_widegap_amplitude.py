@@ -14,7 +14,7 @@ Omega1 = 1
 Omega2 = 0.12087
 beta = 41.2
 xi=0
-norm = True
+norm = False
 
 # from Jeff's email "better critical params 8/16/16"
 #Pm = [  1.60000000e-06,   1.60000000e-05,   1.60000000e-04, 1.60000000e-03]
@@ -65,7 +65,7 @@ Omega1 = 313.55
 Omega2 = Omega1*mu_omega
 """
 
-gridnum = 128
+gridnum = 256
 
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)
