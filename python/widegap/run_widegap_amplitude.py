@@ -21,9 +21,12 @@ norm = False
 #Rm_c = [3.30,3.31,3.34,3.54]
 #Q = [0.901,0.903,0.905,0.913]
 
-Pm=1.60E-6
-Q = 0.901
-Rm = 3.30
+#Pm=1.60E-6
+#Q = 0.901
+#Rm = 3.30
+Pm = 1.60000000e-04
+Rm=3.34
+Q=0.905
 
 
 # UMR07-like parameters
@@ -65,7 +68,7 @@ Omega1 = 313.55
 Omega2 = Omega1*mu_omega
 """
 
-gridnum = 512#256
+gridnum = 256
 
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)
