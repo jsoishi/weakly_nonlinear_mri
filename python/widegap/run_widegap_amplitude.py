@@ -14,16 +14,16 @@ Omega1 = 1
 Omega2 = 0.12087
 beta = 41.2
 xi=0
-norm = False
+norm = True
 
 # from Jeff's email "better critical params 8/16/16"
 #Pm = [  1.60000000e-06,   1.60000000e-05,   1.60000000e-04, 1.60000000e-03]
 #Rm_c = [3.30,3.31,3.34,3.54]
 #Q = [0.901,0.903,0.905,0.913]
 
-Pm=1.6E-3
-Q = 0.913
-Rm = 3.54
+Pm=1.60E-6
+Q = 0.901
+Rm = 3.30
 
 
 # UMR07-like parameters

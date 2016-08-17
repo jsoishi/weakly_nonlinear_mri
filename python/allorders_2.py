@@ -63,7 +63,7 @@ class MRI():
         return problem
 
     def fastest_growing(self):
-        gr, largest_eval_indx  = self.EP.growth_rate({})
+        gr, largest_eval_indx,freq  = self.EP.growth_rate({})
         self.largest_eval_indx = largest_eval_indx
         self.EP.solver.set_state(largest_eval_indx)
     
@@ -350,9 +350,9 @@ class OrderE(MRI):
             self.A = (self.A*scale).evaluate()
             self.B = (self.B*scale).evaluate()
             
-        self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
+            self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
         
-        self.normpsi = self.psi
+            self.normpsi = self.psi
             
         self.psi.name = "psi"
         self.u.name = "u"

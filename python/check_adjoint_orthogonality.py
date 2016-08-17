@@ -3,9 +3,14 @@ import dedalus.public as de
 
 from allorders_2 import AdjointHomogenous
 
-AH = AdjointHomogenous()
+gridnum = 50
+x_basis = de.Chebyshev('x',gridnum)
+domain = de.Domain([x_basis], np.complex128)#, comm=MPI.COMM_SELF)
+print("running at gridnum", gridnum)
+
+AH = AdjointHomogenous(domain, norm=False)
 O1 = AH.o1
-scale = (0.18+3/11.*0.02)/AH.B['g'][0].imag
+#scale = (0.18+3/11.*0.02)/AH.B['g'][0].imag
 Q = AH.Q
 x = AH.EP.solver.domain.grid(0)
 
