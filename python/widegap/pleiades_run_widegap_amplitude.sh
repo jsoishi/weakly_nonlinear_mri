@@ -1,5 +1,5 @@
 #PBS -S /bin/bash
-#PBS -N WidegapRmBump
+#PBS -N WidegapRmBumpAHnorm
 #PBS -l select=2:ncpus=10:mpiprocs=10:model=has
 #PBS -l walltime=00:10:00
 #PBS -j oe

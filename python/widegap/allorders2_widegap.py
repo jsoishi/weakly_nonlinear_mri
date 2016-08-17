@@ -1442,10 +1442,10 @@ class AmplitudeAlpha(MRI):
         self.ah = ah
         self.n2 = n2
         
-        logger.info("NOT normalizing V^dagger s.t. a = 1")
+        #logger.info("NOT normalizing V^dagger s.t. a = 1")
         #logger.info("solving for form a dT alpha + c alpha|alpha|^2 = h dZ^2 alpha + b alpha")
         logger.info("solving for form a dT alpha = h dZ^2 alpha + b alpha - c alpha|alpha|^2")
-        
+    
         a_psi_rhs = invr*o1.psi_rr + invr*(1j*self.Q)**2*o1.psi - invr**2*o1.psi_r 
         a_psi_rhs = a_psi_rhs.evaluate()
         
@@ -1470,6 +1470,9 @@ class AmplitudeAlpha(MRI):
         h_u_rhs = h_u_rhs.evaluate()
         h_A_rhs = h_A_rhs.evaluate()
         h_B_rhs = h_B_rhs.evaluate()
+        
+        logger.info("Normalizing V^dagger s.t. a = 1")
+        ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
         a_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
         c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [(-n3.N31_psi).evaluate(), (-n3.N31_u).evaluate(), (-n3.N31_A).evaluate(), (-n3.N31_B).evaluate()])
