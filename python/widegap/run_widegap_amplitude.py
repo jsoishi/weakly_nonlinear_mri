@@ -196,10 +196,10 @@ with h5py.File(fn,'w') as f:
     N20_B = f.create_dataset("N20_B", data=aa.n2.N20_B['g'])
 
     # additional diagnostics
-    N20_psi_r4 = f.create_dataset("N20_psi_r4", data=aa.n2.N20_psi_r4_rederived['g'])
-    N20_u_r2 = f.create_dataset("N20_u_r2", data=aa.n2.N20_u_r2_rederived['g'])
-    N20_A_r = f.create_dataset("N20_A_r", data=aa.n2.N20_A_r_rederived['g'])
-    N20_B_r2 = f.create_dataset("N20_B_r2", data=aa.n2.N20_B_r2_rederived['g'])
+    N20_psi_r4 = f.create_dataset("N20_psi_r4", data=aa.n2.N20_psi_r4['g'])
+    N20_u_r2 = f.create_dataset("N20_u_r2", data=aa.n2.N20_u_r2['g'])
+    N20_A_r = f.create_dataset("N20_A_r", data=aa.n2.N20_A_r['g'])
+    N20_B_r2 = f.create_dataset("N20_B_r2", data=aa.n2.N20_B_r2['g'])
 
     N22_psi = f.create_dataset("N22_psi", data=aa.n2.N22_psi['g'])
     N22_u = f.create_dataset("N22_u", data=aa.n2.N22_u['g'])
