@@ -567,7 +567,7 @@ class N2(MRI):
         #self.N22_psi_r4 = N22_psi_r4.evaluate()
         #self.N22_psi_r4.name = "N22_psi_r4"
         
-        N22_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(1j*Q)*o1.psi + rfield**2*(1j*Q)*o1.psi*(1j*Q)**2*o1.psi_r - rfield**2*o1.psi_r*(1j*Q)**3*o1.psi
+        N22_psi_r4 = ((-2*rfield*(1j*Q)**2*o1.psi*(1j*Q)*o1.psi + rfield**2*(1j*Q)*o1.psi*(1j*Q)**2*o1.psi_r - rfield**2*o1.psi_r*(1j*Q)**3*o1.psi
                                + 3*(1j*Q)*o1.psi*o1.psi_r + rfield*(1j*Q)*o1.psi_r*o1.psi_r - 3*rfield*(1j*Q)*o1.psi*o1.psi_rr 
                                + rfield**2*(1j*Q)*o1.psi*o1.psi_rrr - rfield**2*o1.psi_r*(1j*Q)*o1.psi_rr #correct 8/17
                                - 2*rfield**3*o1.u*(1j*Q)*o1.u) #correct 8/17
@@ -575,11 +575,11 @@ class N2(MRI):
                                + 3*(1j*Q)*o1.A*o1.A_r + rfield*(1j*Q)*o1.A_r*o1.A_r - 3*rfield*(1j*Q)*o1.A*o1.A_rr 
                                + rfield**2*(1j*Q)*o1.A*o1.A_rrr - rfield**2*o1.A_r*(1j*Q)*o1.A_rr #correct 8/17
                                - 2*rfield**3*o1.B*(1j*Q)*o1.B)) #correct 8/17
-        self.N22_psi_r4_rederived = N22_psi_r4_rederived.evaluate()
-        self.N22_psi_r4_rederived.name = "N22_psi_r4_rederived"
+        self.N22_psi_r4 = N22_psi_r4.evaluate()
+        self.N22_psi_r4.name = "N22_psi_r4"
         
         # divide by r^4 to get N22_psi (need for plotting, etc)
-        self.N22_psi = ((1/rfield**4)*self.N22_psi_r4_rederived).evaluate()
+        self.N22_psi = ((1/rfield**4)*self.N22_psi_r4).evaluate()
         self.N22_psi.name = "N22_psi"
                                
         #N20_psi_jacobians = ((1j*Q*o1.psi)*((1/rfield**2)*((-1j*Q)**2)*o1.psi_star_r - (3/rfield**3)*o1.psi_star_rr + (1/rfield**2)*o1.psi_star_rrr - (2/rfield**3)*((-1j*Q)**2)*o1.psi_star + (3/rfield**4)*o1.psi_star_r)
@@ -614,7 +614,7 @@ class N2(MRI):
         #                       + rfield**2*(-1j*Q)*o1.A_star*o1.A_rrr - rfield**2*o1.A_star_r*(1j*Q)*o1.A_rr
         #                       - 2*rfield**3*1j*Q*o1.B*o1.B_star))
         
-        N20_psi_r4_rederived = ((-2*rfield*(1j*Q)**2*o1.psi*(-1j*Q)*o1.psi_star + rfield**2*(-1j*Q)*o1.psi_star*(1j*Q)**2*o1.psi_r - rfield**2*o1.psi_star_r*(1j*Q)**3*o1.psi
+        N20_psi_r4 = ((-2*rfield*(1j*Q)**2*o1.psi*(-1j*Q)*o1.psi_star + rfield**2*(-1j*Q)*o1.psi_star*(1j*Q)**2*o1.psi_r - rfield**2*o1.psi_star_r*(1j*Q)**3*o1.psi
                                + 3*(-1j*Q)*o1.psi_star*o1.psi_r + rfield*(1j*Q)*o1.psi_r*o1.psi_star_r - 3*rfield*(-1j*Q)*o1.psi_star*o1.psi_rr 
                                + rfield**2*(-1j*Q)*o1.psi_star*o1.psi_rrr - rfield**2*o1.psi_star_r*(1j*Q)*o1.psi_rr #correct 8/17
                                - 2*rfield**3*o1.u_star*(1j*Q)*o1.u) #correct 8/17
@@ -624,7 +624,7 @@ class N2(MRI):
                                - 2*rfield**3*o1.B_star*(1j*Q)*o1.B)) #correct 8/17
                                
         # divide by r^4 to get N20_psi (need for plotting, etc)
-        self.N20_psi = ((1/rfield**4)*self.N20_psi_r4_rederived).evaluate()
+        self.N20_psi = ((1/rfield**4)*self.N20_psi_r4).evaluate()
         self.N20_psi.name = "N20_psi"
                                
         #self.N22_psi_r4_rederived = N22_psi_r4_rederived.evaluate()
@@ -793,14 +793,14 @@ class OrderE2(MRI):
         # righthand side for the 20 terms (e^0)
         # need N20 + N20* on RHS
         # LV20 = -N20 - N20*
-        N20_psi_cc = self.domain.new_field()
-        N20_psi_cc['g'] = n2.N20_psi['g'].conj()
-        N20_u_cc = self.domain.new_field()
-        N20_u_cc['g'] = n2.N20_u['g'].conj()
-        N20_A_cc = self.domain.new_field()
-        N20_A_cc['g'] = n2.N20_A['g'].conj()
-        N20_B_cc = self.domain.new_field()
-        N20_B_cc['g'] = n2.N20_B['g'].conj()
+        #N20_psi_cc = self.domain.new_field()
+        #N20_psi_cc['g'] = n2.N20_psi['g'].conj()
+        #N20_u_cc = self.domain.new_field()
+        #N20_u_cc['g'] = n2.N20_u['g'].conj()
+        #N20_A_cc = self.domain.new_field()
+        #N20_A_cc['g'] = n2.N20_A['g'].conj()
+        #N20_B_cc = self.domain.new_field()
+        #N20_B_cc['g'] = n2.N20_B['g'].conj()
         
         # multiplied by multiples of r
         N20_psi_r4_cc = self.domain.new_field()
@@ -817,15 +817,15 @@ class OrderE2(MRI):
         #self.rhs_A20 = ((-n2.N20_A - N20_A_cc)*rfield).evaluate()
         #self.rhs_B20 = ((-n2.N20_B - N20_B_cc)*rfield**2).evaluate()
     
-        #self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
-        #self.rhs_u20 = (-n2.N20_u_r2 - N20_u_r2_cc).evaluate()
-        #self.rhs_A20 = (-n2.N20_A_r - N20_A_r_cc).evaluate()
-        #self.rhs_B20 = (-n2.N20_B_r2 - N20_B_r2_cc).evaluate()
+        self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
+        self.rhs_u20 = (-n2.N20_u_r2 - N20_u_r2_cc).evaluate()
+        self.rhs_A20 = (-n2.N20_A_r - N20_A_r_cc).evaluate()
+        self.rhs_B20 = (-n2.N20_B_r2 - N20_B_r2_cc).evaluate()
         
-        self.rhs_psi20 = (-n2.N20_psi_r4_rederived).evaluate() # trying explicit "cc" term included 
-        self.rhs_u20 = (-n2.N20_u_r2_rederived).evaluate()
-        self.rhs_A20 = (-n2.N20_A_r_rederived).evaluate()
-        self.rhs_B20 = (-n2.N20_B_r2_rederived).evaluate()
+        #self.rhs_psi20 = (-n2.N20_psi_r4_rederived).evaluate() 
+        #self.rhs_u20 = (-n2.N20_u_r2_rederived).evaluate()
+        #self.rhs_A20 = (-n2.N20_A_r_rederived).evaluate()
+        #self.rhs_B20 = (-n2.N20_B_r2_rederived).evaluate()
     
     
         # V20 equations are separable because dz terms -> 0, but we'll solve them coupled anyway.
@@ -837,7 +837,6 @@ class OrderE2(MRI):
         bv20.parameters['rhs_B20'] = self.rhs_B20
         bv20.parameters['iR'] = self.iR
         bv20.parameters['iRm'] = self.iRm
-        bv20.parameters['dz'] = 0 + 0j
         bv20.parameters['Q'] = self.Q
         if conducting is False:
             bv20.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)

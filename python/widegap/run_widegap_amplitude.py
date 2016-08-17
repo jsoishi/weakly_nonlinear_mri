@@ -5,7 +5,7 @@ from allorders2_widegap import AmplitudeAlpha
 import h5py
 
 # Goodman & Ji 2002 parameters
-"""
+
 #Pm=1.6E-6
 #Q = 0.901
 #Rm = 3.30
@@ -30,10 +30,11 @@ Rm = 3.30
 #Q=0.905
 
 # bump up Rm by 10%
-Rm = Rm + 0.1*Rm
-"""
+#Rm = Rm + 0.1*Rm
+
 
 # UMR07-like parameters
+"""
 #Q = 0.01269
 #Rm = 0.67355
 #Pm = 1.0e-3
@@ -51,7 +52,7 @@ Q = crit_params['Q_c'].value[indx]
 Rm = crit_params['Rm_c'].value[indx]
 Pm = crit_params['Pm'].value[indx]
 norm = False
-
+"""
 # Pm=1E-5 critical parameters from Jeff
 #Pm = 1.0E-5
 #Q = 1.26801e-02
