@@ -666,7 +666,7 @@ class OrderE2(MRI):
         N20_B_r2_cc['g'] = n2.N20_B_r2['g'].conj()
         
         allzeros = self.domain.new_field()
-        allzeros['g'] = np.zeros(len(rfield['g'], np.complex128)
+        allzeros['g'] = np.zeros(len(rfield['g']), np.complex128)
     
         #self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
         self.rhs_psi20 = allzeros
@@ -866,7 +866,6 @@ class OrderE2(MRI):
         bv22.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         bv22.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
         bv22.substitutions['twooverbeta'] = '(2.0/beta)'
-        #bv22.substitutions['dz'] = '(1j*2*Q)'
         
         bv22.add_equation("-r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi + twooverbeta*r**2*2*xi*(2*1j*Q)*B = rhs_psi22")
         bv22.add_equation("rrdu0*dz*psi + ru0*dz*psi - r**3*twooverbeta*dz*B - r**3*iR*dr(ur) - r**2*iR*ur - r**3*iR*dz**2*u + r*iR*u = rhs_u22")
