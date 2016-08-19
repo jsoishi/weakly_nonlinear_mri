@@ -452,6 +452,7 @@ class OrderE(MRI):
         lv1.add_equation("sigma*r**3*u + 1j*Q*ru0*psi + 1j*Q*rrdu0*psi - 1j*Q*r**3*twooverbeta*B0*B - iR*uvisc = 0") 
         lv1.add_equation("sigma*r*A - r*B0*1j*Q*psi - iRm*Avisc = 0")
         lv1.add_equation("sigma*r**3*B + ru0*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*rrdu0*A - iRm*Bvisc - 2*xi*1j*Q*psi = 0") 
+
         
         # Substitutions (temporarily?) not working with EP
         #lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r**2*2*(r*r*c1 + c2)*1j*Q*u + r**3*(2.0/beta)*B0*1j*Q**3*A + (2.0/beta)*B0*r**2*1j*Q*Ar - (2.0/beta)*r**3*B0*1j*Q*dr(Ar) - iR*(2*r**2*Q**2*psir - 2*r**3*Q**2*psirr + r**3*Q**4*psi + r**3*dr(psirrr) - 3*psir + 3*r*psirr - 2*r**2*psirrr) + (2.0/beta)*r**2*2*xi*1j*Q*B = 0") #corrected on whiteboard 5/6
@@ -496,6 +497,8 @@ class OrderE(MRI):
         self.u.name = "u"
         self.A.name = "A"
         self.B.name = "B"
+        
+        logger.info("o1 test. o1[10] = {}".format(self.psi['g'][10])
             
         # Take all relevant derivates for use with higher order terms
         self.psi_r = self.get_derivative(self.psi)
@@ -553,6 +556,8 @@ class N2(MRI):
     
         rfield = domain.new_field()
         rfield['g'] = o1.r
+        
+        logger.info("o1 test. o1[10] = {}".format(o1['g'][10])
         
         N22_psi_r4 = ((-2*rfield*(1j*Q)**2*o1.psi*(1j*Q)*o1.psi + rfield**2*(1j*Q)*o1.psi*(1j*Q)**2*o1.psi_r - rfield**2*o1.psi_r*(1j*Q)**3*o1.psi
                                + 3*(1j*Q)*o1.psi*o1.psi_r + rfield*(1j*Q)*o1.psi_r*o1.psi_r - 3*rfield*(1j*Q)*o1.psi*o1.psi_rr 
@@ -657,6 +662,8 @@ class OrderE2(MRI):
         
         rfield = self.domain.new_field()
         rfield['g'] = o1.r
+        
+        logger.info("o1 test. o1[10] = {}".format(o1['g'][10])
         
         # multiplied by multiples of r
         N20_psi_r4_cc = self.domain.new_field()
@@ -991,6 +998,8 @@ class N3(MRI):
         
         k = self.Q
         
+        logger.info("o1 test. o1[10] = {}".format(o1['g'][10])
+        
         # J(psi1, (1/r^2)(del^2 psi2 - (2/r)dr psi2)) # solve all at once 8/17/16
         Jacobian1 = ((1j*Q*o1.psi)*(invr**2*o2.psi20_rrr + 3*invr**4*o2.psi20_r - 3*invr**3*o2.psi20_rr) # dz psi1 dr psi20
                     + (1j*Q*o1.psi)*(invr**2*o2.psi20_star_rrr + 3*invr**4*o2.psi20_star_r - 3*invr**3*o2.psi20_star_rr) # dz psi1 dr psi20*
@@ -1209,6 +1218,8 @@ class AmplitudeAlpha(MRI):
         du0 = self.domain.new_field()
         du0['g'] = self.c1 - self.c2*(1/rfield['g']**2)
         
+        logger.info("o1 test. o1[10] = {}".format(o1['g'][10])
+        
         # a is the same sign as thin gap.
         # D . V11
         a_psi_rhs = invr*o1.psi_rr - invr**2*o1.psi_r - invr*self.Q**2*o1.psi
@@ -1333,12 +1344,17 @@ class AmplitudeAlpha(MRI):
         h_B_rhs = h_B_rhs.evaluate()
         
         logger.info("Normalizing V^dagger s.t. a = 1")
-        ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
+        ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(a_psi_rhs, o1.u, o1.A, o1.B, ah.psi, ah.u, ah.A, ah.B)
         
-        a_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
-        c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
-        b_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
-        h_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
+        #a_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
+        #c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
+        #b_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
+        #h_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
+        a_new = self.take_inner_product([a_psi_rhs, o1.u, o1.A, o1.B], [ah.psi, ah.u, ah.A, ah.B])
+        c_new = self.take_inner_product([n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B], [ah.psi, ah.u, ah.A, ah.B])
+        b_new = self.take_inner_product([b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs], [ah.psi, ah.u, ah.A, ah.B])
+        h_new = self.take_inner_product([h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs], [ah.psi, ah.u, ah.A, ah.B])
+        
         
         logger.info("a_new = {}, b_new = {}, c_new = {}, h_new = {}".format(a_new, b_new, c_new, h_new))
         
