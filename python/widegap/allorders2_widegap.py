@@ -102,8 +102,8 @@ class MRI():
             problem.add_bc('right(psir) = 0')
             problem.add_bc('left(A) = 0')
             problem.add_bc('right(A) = 0')
-            problem.add_bc('left(Br) = 0') # Note: B conditions differ from non-adjoint b.c.'s. Found using integration by parts
-            problem.add_bc('right(Br) = 0')
+            problem.add_bc('left(B + r*Br) = 0')
+            problem.add_bc('right(B + r*Br) = 0')
         
         if conducting is False:
             logger.warn("setting adjoint b.c.'s that only work in insulating case")
@@ -352,11 +352,11 @@ class AdjointHomogenous(MRI):
         adj.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
         adj.substitutions['twooverbeta'] = '(2.0/beta)'
         
-        # multiply by [r^4, r^2, r^3, r^2] -- see notebook "testing widegap adjoint.ipynb"
-        adj.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - Q**4*r**3*iR*psi + iR*2*Q**2*r**3*psirr - iR*2*Q**2*r**2*psir - 1j*Q*r*rrdu0*u + 1j*Q*r**4*A - 1j*Q*r*ru0*u + xi*2*1j*Q*r*B - iR*r**3*dr(psirrr) + iR*2*r**2*psirrr - iR*3*r*psirr + iR*3*psir = 0")
-        adj.add_equation("sigma*r**2*u + Q**2*r**2*iR*u + 1j*Q*r**2*B + 2*1j*Q*ru0*psi - iR*r**2*dr(ur) + iR*r*ur = 0")
-        adj.add_equation("sigma*r**3*A - twooverbeta*1j*Q**3*r**2*psi + iRm*Q**2*r**3*A + 1j*Q*rrdu0*B - 1j*Q*ru0*B + twooverbeta*1j*Q*r**2*psirr - twooverbeta*1j*Q*r*psir - iRm*r**3*dr(Ar) - iRm*r**2*Ar + iRm*r*A = 0")
-        adj.add_equation("sigma*r**2*B + iRm*Q**2*r**2*B + twooverbeta*1j*Q*r**2*u - xi*twooverbeta*2*1j*Q*psi - iRm*r**2*dr(Br) + iRm*r*Br = 0") 
+        # multiply by [r^5, r^2, r^3, r^2] -- see notebook "testing widegap adjoint.ipynb"
+        adj.add_equation("sigma*(-Q**2*r**4*psi + r**4*psirr + r**3*psir - r**2*psi) - iR*Q**4*r**4*psi + iR*2*Q**2*r**4*psirr + iR*2*Q**2*r**3*psir - iR*2*Q**2*r**2*psi - 1j*Q*rrdu0*r**2*u + 1j*Q*r**5*A - 1j*Q*r**2*ru0*u + xi*2*1j*Q*r**2*B - iR*r**4*dr(psirrr) - 2*iR*r**3*psirrr + iR*3*r**2*psirr - iR*3*r*psir + iR*3*psi = 0")
+        adj.add_equation("sigma*r**2*u + iR*Q**2*r**2*u + 1j*Q*r**2*B + 2*1j*Q*ru0*psi - iR*r**2*dr(ur) - iR*r*ur + iR*u = 0")
+        adj.add_equation("sigma*r**3*A - (2/beta)*1j*Q**3*r**2*psi + iRm*Q**2*r**3*A + 1j*Q*rrdu0*B - 1j*Q*ru0*B + (2/beta)*1j*Q*r**2*psirr + (2/beta)*1j*Q*r*psir - (2/beta)*1j*Q*psi - iRm*r**3*dr(Ar) - iRm*3*r**2*Ar = 0")
+        adj.add_equation("sigma*r**2*B + iRm*Q**2*r**2*B + (2/beta)*1j*Q*r**2*u - xi*(2/beta)*2*1j*Q*psi - iRm*r**2*dr(Br) - iRm*r*Br + iRm*B = 0")
 
         adj.add_equation("dr(psi) - psir = 0")
         adj.add_equation("dr(psir) - psirr = 0")
