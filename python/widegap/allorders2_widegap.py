@@ -498,7 +498,7 @@ class OrderE(MRI):
         self.A.name = "A"
         self.B.name = "B"
         
-        logger.info("o1 test. o1[10] = {}".format(self.psi['g'][10])
+        logger.info("o1 test. o1[10] = {}".format(self.psi['g'][10]))
             
         # Take all relevant derivates for use with higher order terms
         self.psi_r = self.get_derivative(self.psi)
@@ -557,7 +557,7 @@ class N2(MRI):
         rfield = domain.new_field()
         rfield['g'] = o1.r
         
-        logger.info("o1 test. o1[10] = {}".format(o1['g'][10])
+        logger.info("o1 test. o1[10] = {}".format(o1['g'][10]))
         
         N22_psi_r4 = ((-2*rfield*(1j*Q)**2*o1.psi*(1j*Q)*o1.psi + rfield**2*(1j*Q)*o1.psi*(1j*Q)**2*o1.psi_r - rfield**2*o1.psi_r*(1j*Q)**3*o1.psi
                                + 3*(1j*Q)*o1.psi*o1.psi_r + rfield*(1j*Q)*o1.psi_r*o1.psi_r - 3*rfield*(1j*Q)*o1.psi*o1.psi_rr 
@@ -663,7 +663,7 @@ class OrderE2(MRI):
         rfield = self.domain.new_field()
         rfield['g'] = o1.r
         
-        logger.info("o1 test. o1[10] = {}".format(o1['g'][10])
+        logger.info("o1 test. o1[10] = {}".format(o1['g'][10]))
         
         # multiplied by multiples of r
         N20_psi_r4_cc = self.domain.new_field()
@@ -998,7 +998,7 @@ class N3(MRI):
         
         k = self.Q
         
-        logger.info("o1 test. o1[10] = {}".format(o1['g'][10])
+        logger.info("o1 test. o1[10] = {}".format(o1['g'][10]))
         
         # J(psi1, (1/r^2)(del^2 psi2 - (2/r)dr psi2)) # solve all at once 8/17/16
         Jacobian1 = ((1j*Q*o1.psi)*(invr**2*o2.psi20_rrr + 3*invr**4*o2.psi20_r - 3*invr**3*o2.psi20_rr) # dz psi1 dr psi20
@@ -1218,7 +1218,7 @@ class AmplitudeAlpha(MRI):
         du0 = self.domain.new_field()
         du0['g'] = self.c1 - self.c2*(1/rfield['g']**2)
         
-        logger.info("o1 test. o1[10] = {}".format(o1['g'][10])
+        logger.info("o1 test. o1[10] = {}".format(o1['g'][10]))
         
         # a is the same sign as thin gap.
         # D . V11
