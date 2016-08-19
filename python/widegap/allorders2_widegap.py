@@ -295,7 +295,7 @@ class MRI():
         """
         
         rfield = self.domain.new_field()
-        rfield['g'] = o1.r
+        rfield['g'] = self.r
         
         inner_product = vector1[0]['g']*vector2[0]['g'].conj() + vector1[1]['g']*vector2[1]['g'].conj() + vector1[2]['g']*vector2[2]['g'].conj() + vector1[3]['g']*vector2[3]['g'].conj()
         
