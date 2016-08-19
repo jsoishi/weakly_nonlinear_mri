@@ -1336,7 +1336,7 @@ class AmplitudeAlpha(MRI):
         ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
         a_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
-        c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [(-n3.N31_psi).evaluate(), (-n3.N31_u).evaluate(), (-n3.N31_A).evaluate(), (-n3.N31_B).evaluate()])
+        c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi.evaluate(), n3.N31_u.evaluate(), n3.N31_A.evaluate(), n3.N31_B.evaluate()])
         b_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
         h_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
         
