@@ -1220,6 +1220,7 @@ class AmplitudeAlpha(MRI):
         
         logger.info("o1 test. o1[10] = {}".format(o1.psi['g'][10]))
         
+        """
         # a is the same sign as thin gap.
         # D . V11
         a_psi_rhs = invr*o1.psi_rr - invr**2*o1.psi_r - invr*self.Q**2*o1.psi
@@ -1283,6 +1284,7 @@ class AmplitudeAlpha(MRI):
         # Normalize s.t. a = 1
         #if norm is True:
         """
+        """
         logger.info("Normalizing V^dagger s.t. a = 1")
         ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
@@ -1315,36 +1317,38 @@ class AmplitudeAlpha(MRI):
         self.n2 = n2
         
         #logger.info("NOT normalizing V^dagger s.t. a = 1")
-        #logger.info("solving for form a dT alpha + c alpha|alpha|^2 = h dZ^2 alpha + b alpha")
-        logger.info("solving for form a dT alpha = h dZ^2 alpha + b alpha - c alpha|alpha|^2")
+        logger.info("solving for form a dT alpha + c alpha|alpha|^2 + h dZ^2 alpha + b alpha =  0")
+        #logger.info("solving for form a dT alpha = h dZ^2 alpha + b alpha - c alpha|alpha|^2")
     
+        # D V11
         a_psi_rhs = invr*o1.psi_rr + invr*(1j*self.Q)**2*o1.psi - invr**2*o1.psi_r 
         a_psi_rhs = a_psi_rhs.evaluate()
         
-        b_psi_rhs = (2/self.beta)*invr*1j*self.Q**3*o1.A - (2/self.beta)*invr*1j*self.Q*o1.A_rr + (2/self.beta)*invr**2*1j*self.Q*o1.A_r + (2/self.beta)*invr**2*2*1j*self.Q*self.xi*o1.B
-        b_u_rhs = -(2/self.beta)*1j*self.Q*o1.B
-        b_A_rhs = -1j*self.Q*o1.psi
-        b_B_rhs = -1j*self.Q*o1.u - invr**3*2*1j*self.Q*self.xi*o1.psi
+        # Gtwiddle V11
+        b_psi_rhs = -(2/self.beta)*invr*1j*self.Q**3*o1.A + (2/self.beta)*invr*1j*self.Q*o1.A_rr - (2/self.beta)*invr**2*1j*self.Q*o1.A_r - (2/self.beta)*invr**2*2*1j*self.Q*self.xi*o1.B
+        b_u_rhs = (2/self.beta)*1j*self.Q*o1.B
+        b_A_rhs = 1j*self.Q*o1.psi
+        b_B_rhs = 1j*self.Q*o1.u + invr**3*2*1j*self.Q*self.xi*o1.psi
         
         b_psi_rhs = b_psi_rhs.evaluate()
         b_u_rhs = b_u_rhs.evaluate()
         b_A_rhs = b_A_rhs.evaluate()
         b_B_rhs = b_B_rhs.evaluate()
         
-        h_psi_rhs = (-4*self.iR*1j*self.Q**3*invr*o2.psi21 - (2/self.beta)*3*invr*self.Q**2*o2.A21 - 6*self.iR*self.Q**2*invr*o1.psi + (2/self.beta)*3*invr*1j*Q*o1.A
-                    + 4*self.iR*1j*self.Q*o2.psi21_rr - self.iR*4*1j*Q*invr**2*o2.psi21_r + 2*invr*u0*o2.u21 + (2/self.beta)*invr*o2.A21_rr 
-                    - (2/self.beta)*invr**2*o2.A21_r - (2/self.beta)*2*self.xi*invr**2*o2.B21 + self.iR*2*invr*o1.psi_rr - self.iR*2*invr**2*o1.psi_r)
-        h_u_rhs = 2*self.iR*1j*Q*o2.u21 - invr*du0*o2.psi21 - u0*invr**2*o2.psi21 + (2/self.beta)*o2.B21 + self.iR*o1.u
-        h_A_rhs = self.iRm*2*1j*self.Q*o2.A21 + o2.psi21 + self.iRm*o1.A
-        h_B_rhs = self.iRm*2*1j*self.Q*o2.B21 + invr*du0*o2.A21 + o2.u21 - invr**2*u0*o2.A21 + invr**3*2*self.xi*o2.psi21 + self.iRm*o1.B
+        h_psi_rhs = (4*self.iR*1j*self.Q**3*invr*o2.psi21 + (2/self.beta)*3*invr*self.Q**2*o2.A21 + 6*self.iR*self.Q**2*invr*o1.psi - (2/self.beta)*3*invr*1j*Q*o1.A
+                    - 4*self.iR*1j*self.Q*invr*o2.psi21_rr + self.iR*4*1j*Q*invr**2*o2.psi21_r - 2*invr*u0*o2.u21 - (2/self.beta)*invr*o2.A21_rr 
+                    + (2/self.beta)*invr**2*o2.A21_r + (2/self.beta)*2*self.xi*invr**2*o2.B21 - self.iR*2*invr*o1.psi_rr + self.iR*2*invr**2*o1.psi_r)
+        h_u_rhs = -2*self.iR*1j*Q*o2.u21 + invr*du0*o2.psi21 + u0*invr**2*o2.psi21 - (2/self.beta)*o2.B21 - self.iR*o1.u
+        h_A_rhs = -self.iRm*2*1j*self.Q*o2.A21 - o2.psi21 - self.iRm*o1.A
+        h_B_rhs = -self.iRm*2*1j*self.Q*o2.B21 - invr*du0*o2.A21 - o2.u21 + invr**2*u0*o2.A21 - invr**3*2*self.xi*o2.psi21 - self.iRm*o1.B
         
         h_psi_rhs = h_psi_rhs.evaluate()
         h_u_rhs = h_u_rhs.evaluate()
         h_A_rhs = h_A_rhs.evaluate()
         h_B_rhs = h_B_rhs.evaluate()
         
-        logger.info("Normalizing V^dagger s.t. a = 1")
-        ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
+        #logger.info("Normalizing V^dagger s.t. a = 1")
+        #ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
         a_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
         c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
