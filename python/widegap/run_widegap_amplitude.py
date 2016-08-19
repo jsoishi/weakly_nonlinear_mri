@@ -25,9 +25,14 @@ norm = False
 #Pm=1.60E-6
 #Q = 0.901
 #Rm = 3.30
-Pm = 1.60000000e-04
-Rm=3.34
-Q=0.905
+#Pm = 1.60000000e-04
+#Rm=3.34
+#Q=0.905
+
+# my newly derived params
+Pm = 1.6E-4
+Q = 0.90498707034113368
+Rm = 3.33105476634
 
 # bump up Rm by 10%
 #Rm = Rm + 0.1*Rm
