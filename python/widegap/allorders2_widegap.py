@@ -291,15 +291,18 @@ class MRI():
         
         """
         Take inner product < vector2 | vector1 > 
-        Defined as integral of (vector2.conj * vector1)
+        Defined as integral of (vector2.conj * vector1) r dr (cylindrical coords)
         """
+        
+        rfield = self.domain.new_field()
+        rfield['g'] = o1.r
         
         inner_product = vector1[0]['g']*vector2[0]['g'].conj() + vector1[1]['g']*vector2[1]['g'].conj() + vector1[2]['g']*vector2[2]['g'].conj() + vector1[3]['g']*vector2[3]['g'].conj()
         
         ip = self.domain.new_field()
         ip.name = "inner product"
-        ip['g'] = inner_product
-        #logger.info('inner product pre integration', ip['g'])
+        ip['g'] = inner_product*rfield['g'] # * r dr 
+
         ip = ip.integrate('r')
         ip = ip['g'][0] 
         
