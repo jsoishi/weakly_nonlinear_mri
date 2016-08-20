@@ -623,7 +623,7 @@ class N2(MRI):
     
         
         N22_B_r3 = rfield**2*(1j*Q*o1.u*o1.A_r - 1j*Q*o1.A*o1.u_r) - rfield**2*(1j*Q*o1.B*o1.psi_r - 1j*Q*o1.psi*o1.B_r) + rfield*o1.u*1j*Q*o1.A - rfield*o1.B*1j*Q*o1.psi
-        self.N22_B_r3 = N22_B_r3.evaluate() #correct 8/17
+        self.N22_B_r3 = N22_B_r3.evaluate() #correct 8/17 # checked against thingap.
         self.N22_B_r3.name = "N22_B_r3"
         
         self.N22_B = ((1/rfield**3)*self.N22_B_r3).evaluate()
@@ -635,7 +635,7 @@ class N2(MRI):
         
         self.N20_B = ((1/rfield**2)*self.N20_B_r2).evaluate()
         self.N20_B.name = "N20_B"
-        
+       
         
 class OrderE2(MRI):
 
@@ -679,10 +679,10 @@ class OrderE2(MRI):
         allzeros['g'] = np.zeros(len(rfield['g']), np.complex128)
     
         #self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
-        self.rhs_psi20 = allzeros
+        #self.rhs_psi20 = allzeros
         self.rhs_u20 = (-n2.N20_u_r2 - N20_u_r2_cc).evaluate()
         self.rhs_A20 = (-n2.N20_A_r - N20_A_r_cc).evaluate()
-        self.rhs_B20 = allzeros
+        #self.rhs_B20 = allzeros
         #self.rhs_B20 = (-n2.N20_B_r2 - N20_B_r2_cc).evaluate()
     
     
@@ -720,6 +720,7 @@ class OrderE2(MRI):
         self.u20 = self.BVP20.state['u']
         self.A20 = self.BVP20.state['A']
         self.B20 = self.BVP20.state['B']
+        self.B20['g'] = 0.
         
         #print('B20', self.B20['g'])
         #print('N20_B rhs', self.rhs_B20['g'])
