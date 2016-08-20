@@ -678,12 +678,12 @@ class OrderE2(MRI):
         allzeros = self.domain.new_field()
         allzeros['g'] = np.zeros(len(rfield['g']), np.complex128)
     
-        #self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
+        self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
         #self.rhs_psi20 = allzeros
         self.rhs_u20 = (-n2.N20_u_r2 - N20_u_r2_cc).evaluate()
         self.rhs_A20 = (-n2.N20_A_r - N20_A_r_cc).evaluate()
         #self.rhs_B20 = allzeros
-        #self.rhs_B20 = (-n2.N20_B_r2 - N20_B_r2_cc).evaluate()
+        self.rhs_B20 = (-n2.N20_B_r2 - N20_B_r2_cc).evaluate()
     
     
         # V20 equations are separable because dz terms -> 0, but we'll solve them coupled anyway.
