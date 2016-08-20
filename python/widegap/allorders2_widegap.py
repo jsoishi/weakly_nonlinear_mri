@@ -720,7 +720,7 @@ class OrderE2(MRI):
         self.u20 = self.BVP20.state['u']
         self.A20 = self.BVP20.state['A']
         self.B20 = self.BVP20.state['B']
-        self.B20['g'] = 0.
+        #self.B20['g'] = 0.
         
         #print('B20', self.B20['g'])
         #print('N20_B rhs', self.rhs_B20['g'])
