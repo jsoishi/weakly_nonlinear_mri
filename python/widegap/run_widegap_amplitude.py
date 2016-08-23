@@ -15,7 +15,7 @@ Omega1 = 1
 Omega2 = 0.12087
 beta = 41.2
 xi=0
-norm = False
+norm = True
 
 # from Jeff's email "better critical params 8/16/16"
 #Pm = [  1.60000000e-06,   1.60000000e-05,   1.60000000e-04, 1.60000000e-03]
