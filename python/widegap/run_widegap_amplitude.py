@@ -98,7 +98,7 @@ aa.print_coeffs()
 
 #fn_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 fn_root = "../../data/"
-fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_norm_{}_no0.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum, norm)
+fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_norm_{}_intu.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum, norm)
 with h5py.File(fn,'w') as f:
     r = f.create_dataset("r", data=aa.r)
     o1psi = f.create_dataset("psi11", data=aa.o1.psi['g'])
@@ -135,8 +135,10 @@ with h5py.File(fn,'w') as f:
     ahpsi_r = f.create_dataset("ah_psi_r", data=aa.ah.psi_r['g'])
     ahpsi_rr = f.create_dataset("ah_psi_rr", data=aa.ah.psi_rr['g'])
     ahpsi_rrr = f.create_dataset("ah_psi_rrr", data=aa.ah.psi_rrr['g'])
+    
     ahu = f.create_dataset("ah_u", data=aa.ah.u['g'])
     ahu_r = f.create_dataset("ah_u_r", data=aa.ah.u_r['g'])
+    
     ahA = f.create_dataset("ah_A", data=aa.ah.A['g'])
     ahA_r = f.create_dataset("ah_A_r", data=aa.ah.A_r['g'])
     ahA_rr = f.create_dataset("ah_A_rr", data=aa.ah.A_rr['g'])

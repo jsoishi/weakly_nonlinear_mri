@@ -238,7 +238,9 @@ class MRI():
         #norm = intpsi['g'][0]
         
         logger.warn("Normalizing according to integral(u)")
-        intu = u.integrate('r')
+        integrand = self.domain.new_field()
+        integrand['g'] = u['g']*self.r
+        intu = integrand.integrate('r')
         norm = intu['g'][0]
         logger.warn("Normalizing by {}".format(norm))
         
@@ -720,6 +722,7 @@ class OrderE2(MRI):
         self.u20 = self.BVP20.state['u']
         self.A20 = self.BVP20.state['A']
         self.B20 = self.BVP20.state['B']
+        logger.info("B20:", self.B20['g'])
         #self.B20['g'] = 0.
         
         #print('B20', self.B20['g'])
