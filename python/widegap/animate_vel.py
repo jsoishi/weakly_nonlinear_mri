@@ -88,7 +88,7 @@ plt.show()
 """
 
 
-N_trajectories = 5
+N_trajectories = 15
 
 widegap = True
 
@@ -105,11 +105,11 @@ if widegap is True:
     eps = 0.5
 
     # saturation amplitude -- for now just constant, coefficient-determined
-    satamp = np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
+    satamp = 1#np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
 
     # create z grid
     nz = obj.attrs['gridnum']
-    Lz = 2*np.pi/Q
+    Lz = 5*np.pi/Q # controls height 
     zgrid = np.linspace(0, Lz, nz, endpoint=False)
     zz = zgrid.reshape(nz, 1)
 
@@ -148,7 +148,7 @@ if widegap is True:
     
     #Vboth_u = Vboth_u + norm_base_flow
 
-    Vboth_uz1 = eps*((1/rgrid)*satamp*obj['psi11_r'].value*eiqz) + eps**2*(-satamp**2*(1/rgrid)*ei2qz*obj['psi22_r'].value - (np.abs(satamp))**2*(1/rgrid)*obj['psi20_r'].value*ei0qz)
+    Vboth_uz1 = -eps*((1/rgrid)*satamp*obj['psi11_r'].value*eiqz) + eps**2*(-satamp**2*(1/rgrid)*ei2qz*obj['psi22_r'].value - (np.abs(satamp))**2*(1/rgrid)*obj['psi20_r'].value*ei0qz)
     Vboth_ur1 = eps*((1/rgrid)*satamp*obj['psi11'].value*eiqz_z) + eps**2*(satamp**2*ei2qz_z*obj['psi22'].value)
 
     #Vboth_Bz1 = eps*((1/r)*satamp*obj['A11_r'].value*eiqz) + eps**2*(-satamp**2*(1/r)*ei2qz*obj['A22_r'].value - (np.abs(satamp))**2*(1/r)*obj['A20_r'].value*ei0qz)
@@ -226,11 +226,11 @@ x0[:, 1] = 2*np.pi * np.random.random(N_trajectories)
 x0[:, 2] = np.max(zgrid) * np.random.random(N_trajectories) #np.max(zgrid)/2.0 + 0.1 * np.random.random(N_trajectories)
 
 # change trajectories to known values
-print("caution: non-random initial points for trajectories")
-for i in range(N_trajectories):
-    x0[i, 0] = 5.0 #+ i*(10.0/N_trajectories)
-    x0[i, 1] = 0.0 #+ i*(2*np.pi/N_trajectories)
-    x0[i, 2] = 0.0 + i*(np.max(zgrid)/N_trajectories)
+#print("caution: non-random initial points for trajectories")
+#for i in range(N_trajectories):
+#    x0[i, 0] = 5.0 #+ i*(10.0/N_trajectories)
+#    x0[i, 1] = 0.0 #+ i*(2*np.pi/N_trajectories)
+#    x0[i, 2] = 0.0 + i*(np.max(zgrid)/N_trajectories)
 
 # set one last starting point to something known
 x0special = np.zeros((1, 3), np.float_)
@@ -248,13 +248,13 @@ x0special[0, 2] = 0
 
 
 # Solve for the trajectories
-t = np.linspace(0, 100000, 10000)
+t = np.linspace(0, 500, 1000)#10000)
 x_t = np.asarray([integrate.odeint(vel_deriv, x0i, t)
                   for x0i in x0])
                   
-tspecial = np.linspace(0, 1000000, 10000)
-x_tspecial = np.asarray([integrate.odeint(vel_deriv, x0i, t)
-                  for x0i in x0special])
+#tspecial = np.linspace(0, 1000000, 10000)
+#x_tspecial = np.asarray([integrate.odeint(vel_deriv, x0i, t)
+#                  for x0i in x0special])
 
 #print("t:", t)
 #print("x_t:", x_t)
@@ -314,13 +314,7 @@ def animate(i):
     ax.view_init(30, 0.3 * i)
     fig.canvas.draw()
     return lines + pts
-"""
-# try all at once
-for line, pt, xi in zip(lines, pts, x_t):
-    x, y, z = xi.T
-    line.set_data(x, y)
-    line.set_3d_properties(z)
-"""
+
 
 fig = plt.figure(facecolor="white", figsize=(8, 8))
 ax1 = fig.add_subplot(111, projection='3d')
@@ -330,21 +324,39 @@ ax1.set_rasterized(True)
 # set point-of-view: specified by (altitude degrees, azimuth degrees)
 #ax2.view_init(90, 0)
 
-for i in range(N_trajectories):
-    # Convert to cartesian for plotting
-    plot_r = x_t[i, :, 0]
-    plot_phi = x_t[i, :, 1]
-    plot_z = x_t[i, :, 2]
+plotlastfirst = False
+if plotlastfirst is True:
+    for i in range(N_trajectories):
+        # Convert to cartesian for plotting
+        plot_r = x_t[i, :, 0]
+        plot_phi = x_t[i, :, 1]
+        plot_z = x_t[i, :, 2]
 
-    plot_x = plot_r*np.cos(plot_phi)
-    plot_y = plot_r*np.sin(plot_phi)
+        plot_x = plot_r*np.cos(plot_phi)
+        plot_y = plot_r*np.sin(plot_phi)
     
-    ax1.plot(plot_x, plot_y, plot_z, alpha=0.2, lw=2.0, c=colors[i])
+        #ax1.plot(plot_x, plot_y, plot_z, alpha=0.2, lw=2.0, c=colors[i])
+    
+        #xpair = (x for x in plot_x)
+        #ypair = (x for x in plot_y)
+        #zpair = (x for x in plot_z)
+    
+        for xx, yy, zz in zip(zip(plot_x, plot_x[1:]), zip(plot_y, plot_y[1:]), zip(plot_z, plot_z[1:])):
+            ax1.plot(xx, yy, zz, alpha=0.2, c=colors[i], ls='solid')
     
 
-plot_x_special = x_tspecial[0, :, 0]*np.cos(x_tspecial[0, :, 1])
-plot_y_special = x_tspecial[0, :, 0]*np.sin(x_tspecial[0, :, 1])
-plot_z_special = x_tspecial[0, :, 2]
+    
+#for i in xrange(len(plot_x) - 1):
+#    ax1.plot(plot_x[i:i+1], plot_y[i:i+1], plot_z[i:i+1], alpha=0.2) 
+
+    #for xx, yy, zz in zip(plot_x, plot_y, plot_z):
+    #    print(xx, yy, zz)
+    #    ax1.plot(xx, yy, zz, alpha=0.2)#, c=colors[i]);
+
+
+#plot_x_special = x_tspecial[0, :, 0]*np.cos(x_tspecial[0, :, 1])
+#plot_y_special = x_tspecial[0, :, 0]*np.sin(x_tspecial[0, :, 1])
+#plot_z_special = x_tspecial[0, :, 2]
 
 #ax2.plot(plot_x_special, plot_y_special, plot_z_special, alpha=0.5, lw=1.2, c="black")
     
@@ -353,6 +365,66 @@ plot_z_special = x_tspecial[0, :, 2]
 
 ax1.axis('off')
 #ax2.axis('off')
+ax1.set_rasterized(True)
+plt.savefig("/Users/susanclark/weakly_nonlinear_mri/python/widegap/frames/3Dvel/final_widegapvel.png", bbox_inches='tight')
+
+
+# build argument list
+#call_list = []
+#for xends,yends in zip(xpairs,ypairs):
+#    call_list.append(xends)
+#    call_list.append(yends)
+#    call_list.append('-b')
+#
+#pp.plot(*call_list,alpha=0.1)
+
+
+
+tstep = 2#10
+#tol = 0.1
+
+for tt in range(len(x_t[0, :, 0])):
+    fig = plt.figure(facecolor="white", figsize=(6, 10))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_xlim((-15, 15))
+    ax.set_ylim((-15, 15))
+    ax.set_zlim((0, Lz))
+    ax.set_rasterized(True)
+    ax.axis('off')
+
+    for i in range(N_trajectories):
+        # Convert to cartesian for plotting
+        plot_r = x_t[i, :tt*tstep, 0]
+        plot_phi = x_t[i, :tt*tstep, 1]
+        plot_z = x_t[i, :tt*tstep, 2]
+
+        plot_x = plot_r*np.cos(plot_phi)
+        plot_y = plot_r*np.sin(plot_phi)
+        
+        if tt > 1:
+            allspeed = np.sqrt((plot_x[1:] - plot_x[:-1])**2 + (plot_y[1:] - plot_y[:-1])**2 + (plot_z[1:] - plot_z[:-1])**2)
+            maxspeed = np.nanmax(allspeed)
+            minspeed = np.nanmin(allspeed)
+            #print(maxspeed)    
+        #ax.plot(plot_x, plot_y, plot_z, lw=2.0, c=colors[i])
+        
+        for xx, yy, zz in zip(zip(plot_x, plot_x[1:]), zip(plot_y, plot_y[1:]), zip(plot_z, plot_z[1:])):
+            ax.plot(xx, yy, zz, alpha=0.2, ls='solid', c='black') #c=colors[i])
+            
+            #if i <10:
+            #    print(xx, yy, zz)
+        
+        if tt > 1:
+            #ax.scatter(plot_x[-1], plot_y[-1], plot_z[-1], '.', c='orangered', edgecolors='orangered', alpha=0.9)##c=colors[i])
+            for i in np.arange(.1,1.01,.1):
+                relspeed = np.sqrt((plot_x[-1] - plot_x[-2])**2 + (plot_y[-1] - plot_y[-2])**2 + (plot_z[-1] - plot_z[-2])**2)
+                #print("relspeed/maxspeed", relspeed/maxspeed)
+                ax.scatter(plot_x[-1], plot_y[-1], plot_z[-1], s=(50*i*(((relspeed - minspeed)/maxspeed)*.3+.1))**2, color=(1,0.307,0,.5/i/10))
+        
+        
+    plt.savefig("/Users/susanclark/weakly_nonlinear_mri/python/widegap/frames/3Dvel/tallcolumn/widegapvel_{:03d}.png".format(tt))
+    
+    plt.close()
 
 
 # instantiate the animator.
