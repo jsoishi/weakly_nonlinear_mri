@@ -685,12 +685,13 @@ class OrderE2(MRI):
         allzeros['g'] = np.zeros(len(rfield['g']), np.complex128)
     
         self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
-        #self.rhs_psi20 = allzeros
+        self.rhs_psi20['g'] = 0.
+        logger.warn('Setting N20psi + N20psi* = 0')
         self.rhs_u20 = (-n2.N20_u_r2 - N20_u_r2_cc).evaluate()
         self.rhs_A20 = (-n2.N20_A_r - N20_A_r_cc).evaluate()
         self.rhs_B20 = (-n2.N20_B_r2 - N20_B_r2_cc).evaluate()
         self.rhs_B20['g'] = 0.
-        logger.warn('Setting N20 + N20* = 0')
+        logger.warn('Setting N20B + N20B* = 0')
     
     
         # V20 equations are separable because dz terms -> 0, but we'll solve them coupled anyway.
@@ -727,7 +728,7 @@ class OrderE2(MRI):
         self.u20 = self.BVP20.state['u']
         self.A20 = self.BVP20.state['A']
         self.B20 = self.BVP20.state['B']
-        logger.info("B20:", self.B20['g'])
+        #logger.info("B20:", self.B20['g'])
         #self.B20['g'] = 0.
         
         #print('B20', self.B20['g'])
@@ -849,10 +850,10 @@ class OrderE2(MRI):
         bv22 = de.LBVP(self.domain,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
         
         # LV22 = -N22
-        self.rhs_psi22 = -n2.N22_psi
-        self.rhs_u22 = -n2.N22_u
-        self.rhs_A22 = -n2.N22_A
-        self.rhs_B22 = -n2.N22_B
+        #self.rhs_psi22 = -n2.N22_psi
+        #self.rhs_u22 = -n2.N22_u
+        #self.rhs_A22 = -n2.N22_A
+        #self.rhs_B22 = -n2.N22_B
         
         #bv22.parameters['rhs_psi22'] = (self.rhs_psi22*rfield**4).evaluate()
         #bv22.parameters['rhs_u22'] = (self.rhs_u22*rfield**3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
@@ -877,7 +878,6 @@ class OrderE2(MRI):
         if conducting is False:
             bv22.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
             bv22.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
-        
         
         bv22.substitutions['ru0'] = '(r*r*c1 + c2)' # u0 = r Omega(r) = Ar + B/r
         bv22.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
