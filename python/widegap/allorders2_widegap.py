@@ -384,6 +384,10 @@ class AdjointHomogenous(MRI):
         self.u = self.EP.solver.state['u']
         self.A = self.EP.solver.state['A']
         self.B = self.EP.solver.state['B']
+        
+        if self.norm is True:
+            logger.info("Normalizing AH in the same manner as Order epsilon")
+            self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
                
         #if self.norm == True:
         #    scale = self.normalize_all_real_or_imag(self.EP.solver)
