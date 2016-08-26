@@ -30,17 +30,17 @@ norm = True
 #Q=0.905
 
 # my newly derived params
-#Pm = 1.6E-4
-#Q = 0.90498707034113368
-#Rm = 3.33105476634
+Pm = 1.6E-4
+Q = 0.90498707034113368
+Rm = 3.33105476634
 
 #Pm = 1.6E-5
 #Rm = 3.31309067365
 #Q = 0.90440118783008172
 
-Pm = 1.6E-6
-Rm = 3.31127944845
-Q = 0.90446408516198418
+#Pm = 1.6E-6
+#Rm = 3.31127944845
+#Q = 0.90446408516198418
 
 # bump up Rm by 10%
 #Rm = Rm + 0.1*Rm
@@ -225,6 +225,11 @@ with h5py.File(fn,'w') as f:
     N31_u = f.create_dataset("N31_u", data=aa.n3.N31_u['g'])
     N31_A = f.create_dataset("N31_A", data=aa.n3.N31_A['g'])
     N31_B = f.create_dataset("N31_B", data=aa.n3.N31_B['g'])
+    
+    rhs_psi21 = f.create_dataset("rhs_psi21", data=aa.o2.rhs_psi21['g'])
+    rhs_u21 = f.create_dataset("rhs_u21", data=aa.o2.rhs_u21['g'])
+    rhs_A21 = f.create_dataset("rhs_A21", data=aa.o2.rhs_A21['g'])
+    rhs_B21 = f.create_dataset("rhs_B21", data=aa.o2.rhs_B21['g'])
 
     f.attrs["Pm"] = aa.Pm
     f.attrs["Q"] = aa.Q
