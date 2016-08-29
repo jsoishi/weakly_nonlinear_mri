@@ -880,7 +880,7 @@ class OrderE2(MRI):
         
         
         bv21test.substitutions['u0'] = '(r*c1 + c2/r)' # u0 = r Omega(r) = Ar + B/r
-        bv21test.substitutions['rrdu0'] = '(c1 - c2/r**2)' # du0/dr = A - B/r^2
+        bv21test.substitutions['du0'] = '(c1 - c2/r**2)' # du0/dr = A - B/r^2
         bv21test.substitutions['twooverbeta'] = '(2.0/beta)'
         bv21test.add_equation("-iR*Q**4*psi/r + twooverbeta*1j*Q**3*A/r + iR*2*Q**2*psirr/r - iR*2*Q**2*psir/r**2 - 2*1j*Q*u0*u/r - twooverbeta*1j*Q*dr(Ar)/r + twooverbeta*1j*Q*Ar/r**2 - iR*dr(psirrr)/r + 2*iR*psirrr/r**2 - iR*3*psirr/r**3 + 3*iR*psir/r**4 = rhs_psi21") 
         bv21test.add_equation("iR*Q**2*u + 1j*Q*du0*psi/r + 1j*Q*u0*psi/r**2 - twooverbeta*1j*Q*B - iR*dr(ur) - iR*ur/r + iR*u/r**2 = rhs_u21") 
