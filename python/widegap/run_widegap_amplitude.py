@@ -22,9 +22,9 @@ norm = True
 #Rm_c = [3.30,3.31,3.34,3.54]
 #Q = [0.901,0.903,0.905,0.913]
 
-#Pm=1.60E-6
-#Q = 0.901
-#Rm = 3.30
+Pm=1.60E-6
+Q = 0.901
+Rm = 3.30
 #Pm = 1.60000000e-04
 #Rm=3.34
 #Q=0.905
@@ -38,9 +38,9 @@ norm = True
 #Rm = 3.31309067365
 #Q = 0.90440118783008172
 
-Pm = 1.6E-6
-Rm = 3.31127944845
-Q = 0.90446408516198418
+#Pm = 1.6E-6
+#Rm = 3.31127944845
+#Q = 0.90446408516198418
 
 #Pm = 1.6E-3
 #Rm = 3.50646903246
@@ -91,7 +91,7 @@ Omega1 = 313.55
 Omega2 = Omega1*mu_omega
 """
 
-gridnum = 512#256#128
+gridnum = 128
 
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)
@@ -102,7 +102,7 @@ aa.print_coeffs()
 
 #fn_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 fn_root = "../../data/"
-fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_norm_{}_intu_N20Bpsi0_normAH.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum, norm)
+fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_norm_{}_intu_new.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum, norm)
 with h5py.File(fn,'w') as f:
     r = f.create_dataset("r", data=aa.r)
     o1psi = f.create_dataset("psi11", data=aa.o1.psi['g'])
