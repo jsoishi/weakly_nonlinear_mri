@@ -852,20 +852,64 @@ class OrderE2(MRI):
         self.A21 = self.BVP21.state['A']
         self.B21 = self.BVP21.state['B']
         
+        
+        
+        #******* TEST testing nonconstant coeffs
+        # define problem using righthand side as nonconstant coefficients
+        bv21test = de.LBVP(self.domain,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
+              
+        # righthand side for the 21 terms (e^iQz dependence)
+        bv21test.parameters['rhs_psi21'] = self.rhs_psi21_nor
+        bv21test.parameters['rhs_u21'] = self.rhs_u21_nor
+        bv21test.parameters['rhs_A21'] = self.rhs_A21_nor
+        bv21test.parameters['rhs_B21'] = self.rhs_B21_nor
+              
+        # parameters
+        bv21test.parameters['Q'] = self.Q
+        bv21test.parameters['iR'] = self.iR
+        bv21test.parameters['iRm'] = self.iRm
+        bv21test.parameters['beta'] = self.beta
+        bv21test.parameters['c1'] = self.c1
+        bv21test.parameters['c2'] = self.c2
+        bv21test.parameters['xi'] = self.xi
+        bv21test.parameters['B0'] = self.B0
+        bv21test.parameters['dz'] = 1j*self.Q
+        if conducting is False:
+            bv21test.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
+            bv21test.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
+        
+        
+        bv21test.substitutions['u0'] = '(r*c1 + c2/r)' # u0 = r Omega(r) = Ar + B/r
+        bv21test.substitutions['rrdu0'] = '(c1 - c2/r**2)' # du0/dr = A - B/r^2
+        bv21test.substitutions['twooverbeta'] = '(2.0/beta)'
+        bv21test.add_equation("-iR*Q**4*psi/r + twooverbeta*1j*Q**3*A/r + iR*2*Q**2*psirr/r - iR*2*Q**2*psir/r**2 - 2*1j*Q*u0*u/r - twooverbeta*1j*Q*dr(Ar)/r + twooverbeta*1j*Q*Ar/r**2 - iR*dr(psirrr)/r + 2*iR*psirrr/r**2 - iR*3*psirr/r**3 + 3*iR*psir/r**4 = rhs_psi21") 
+        bv21test.add_equation("iR*Q**2*u + 1j*Q*du0*psi/r + 1j*Q*u0*psi/r**2 - twooverbeta*1j*Q*B - iR*dr(ur) - iR*ur/r + iR*u/r**2 = rhs_u21") 
+        bv21test.add_equation("iRm*Q**2*A - 1j*Q*psi - iRm*dr(Ar) + iRm*Ar/r = rhs_A21") # r*B0*1j*Q*psi term should be negative!! SEC 8/2/16
+        bv21test.add_equation("iRm*Q**2*B - 1j*Q*du0*A/r - 1j*Q*u + 1j*Q*u0*A/r**2 - iRm*dr(Br) - iRm*Br/r + iRm*B/r**2 = rhs_B21") 
+
+        bv21test.add_equation("dr(psi) - psir = 0")
+        bv21test.add_equation("dr(psir) - psirr = 0")
+        bv21test.add_equation("dr(psirr) - psirrr = 0")
+        bv21test.add_equation("dr(u) - ur = 0")
+        bv21test.add_equation("dr(A) - Ar = 0")
+        bv21test.add_equation("dr(B) - Br = 0")
+
+        # boundary conditions
+        bv21test = self.set_boundary_conditions(bv21test, conducting = conducting)
+
+        self.BVP21 = self.solve_BVP(bv21test)
+        self.psi21 = self.BVP21.state['psi']
+        self.u21 = self.BVP21.state['u']
+        self.A21 = self.BVP21.state['A']
+        self.B21 = self.BVP21.state['B']
+        
+        #******* END TEST
+        
+        
+        
         # define problem using righthand side as nonconstant coefficients
         bv22 = de.LBVP(self.domain,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
-        
-        # LV22 = -N22
-        #self.rhs_psi22 = -n2.N22_psi
-        #self.rhs_u22 = -n2.N22_u
-        #self.rhs_A22 = -n2.N22_A
-        #self.rhs_B22 = -n2.N22_B
-        
-        #bv22.parameters['rhs_psi22'] = (self.rhs_psi22*rfield**4).evaluate()
-        #bv22.parameters['rhs_u22'] = (self.rhs_u22*rfield**3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
-        #bv22.parameters['rhs_A22'] = (self.rhs_A22*rfield).evaluate()
-        #bv22.parameters['rhs_B22'] = (self.rhs_B22*rfield**3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
-        
+    
         # multiples of r
         bv22.parameters['rhs_psi22'] = (-n2.N22_psi_r4).evaluate()
         bv22.parameters['rhs_u22'] = (-n2.N22_u_r3).evaluate() # multiplied by r^3 because of (1/r)*dr(u0) term
