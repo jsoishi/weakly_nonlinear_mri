@@ -42,6 +42,10 @@ Pm = 1.6E-6
 Rm = 3.31127944845
 Q = 0.90446408516198418
 
+#Pm = 1.6E-3
+#Rm = 3.50646903246
+#Q = 0.9129896598482321
+
 # bump up Rm by 10%
 #Rm = Rm + 0.1*Rm
 
@@ -87,7 +91,7 @@ Omega1 = 313.55
 Omega2 = Omega1*mu_omega
 """
 
-gridnum = 256#128
+gridnum = 512#256#128
 
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)
