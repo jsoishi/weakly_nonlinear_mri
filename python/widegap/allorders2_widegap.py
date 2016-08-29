@@ -798,7 +798,8 @@ class OrderE2(MRI):
         
         rfield = self.domain.new_field()
         rfield['g'] = o1.r
-                
+        
+        """        
         # define problem using righthand side as nonconstant coefficients
         bv21 = de.LBVP(self.domain,['psi','u', 'A', 'B', 'psir', 'psirr', 'psirrr', 'ur', 'Ar', 'Br'])
               
@@ -851,7 +852,7 @@ class OrderE2(MRI):
         self.u21 = self.BVP21.state['u']
         self.A21 = self.BVP21.state['A']
         self.B21 = self.BVP21.state['B']
-        
+        """
         
         
         #******* TEST testing nonconstant coeffs
