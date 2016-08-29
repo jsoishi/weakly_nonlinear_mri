@@ -10,8 +10,8 @@ from scipy import special
 
 import logging
 root = logging.root
-#for h in root.handlers:
-#    h.setLevel("DEBUG")
+for h in root.handlers:
+    h.setLevel("DEBUG")
     
 logger = logging.getLogger(__name__)
 
