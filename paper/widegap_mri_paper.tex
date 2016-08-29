@@ -426,32 +426,32 @@ and the constituent matrices are defined as
 To find a bounded solution at $\mathcal{O}(\epsilon^3)$ we must eliminate secular terms: terms which are resonant with the solution to the homogenous equation $(\mathcal{L} + \xi \widetilde{\mathcal{H}}) \mathbf{V} = 0$ and cause the solution to grow without bound. To eliminate these terms we enforce a solvability condition, which arises as a consequence of the Fredholm alternative. This solvability condition is the requirement that the inner product of the equation with its adjoint homogenous solution is zero. We define the adjoint operator $\mathcal{L}^\dagger$ and solution $\mathbf{V}^\dagger$ as 
 
 \beq
-\langle \mathbf{V^\dagger} | (\mathcal{L} + \xi \widetilde{\mathcal{H}}) \mathbf{V} \rangle = \langle (\mathcal{L}^\dagger + \mathcal{H}^\dagger) \mathbf{V}^\dagger | \mathbf{V} \rangle,
+\langle \mathbf{V^\dagger} | (\mathcal{L} + \xi \widetilde{\mathcal{H}}) \mathbf{V} \rangle = \langle (\mathcal{L}^\dagger + \xi \mathcal{H}^\dagger) \mathbf{V}^\dagger | \mathbf{V} \rangle,
 \eeq
 
 where the inner product is defined as 
 
 \beq\label{eq:inner_product_def}
-\langle \mathbf{V^\dagger} | \mathcal{L} \mathbf{V} \rangle = \frac{k_c}{2\pi} \int_{-\pi/k_c}^{\pi/k_c} \int_{r_1}^{r_2} \mathbf{V}^{\dagger*} \cdot \mathcal{L} \mathbf{V} \, \mathrm{d} r \mathrm{d} z
+\langle \mathbf{V^\dagger} | \mathcal{L} \mathbf{V} \rangle = \frac{k_c}{2\pi} \int_{-\pi/k_c}^{\pi/k_c} \int_{r_1}^{r_2} \mathbf{V}^{\dagger*} \cdot \mathcal{L} \mathbf{V} \, r \mathrm{d} r \mathrm{d} z
 \eeq
 
-We find that 
+We derive the adjoint operator by successive integration by parts, to find 
 
 \beq
-\mathcal{L}^\dagger = \mathcal{L}_0^\dagger - \partial_z \mathcal{L}_1^\mathrm{T} + d_z^2 \mathcal{L}_2^\mathrm{T} - \partial_z^3 \mathcal{L}_3^\mathrm{T} + \partial_z^4 L_4^\mathrm{T},
+\mathcal{L}^\dagger = \mathcal{L}_0^\dagger - \partial_z \mathcal{L}_1^\dagger + d_z^2 \mathcal{L}_2^\dagger - \partial_z^3 \mathcal{L}_3^\dagger + \partial_z^4 L_4^\dagger
 \eeq
 
 and 
 
 \beq
-\mathcal{H}^\dagger = - d_z \mathcal{H}^\mathrm{T}
+\mathcal{H}^\dagger = - d_z \mathcal{H}^\mathrm{T},
 \eeq
 
 where 
 
 \beq
 \mathcal{L}_0^\dagger = \left[\begin{matrix}
--\frac{1}{\reye} (-\frac{3}{r^4} \partial_r + \frac{3}{r^3}\partial_r^2 - \frac{2}{r^2}\partial_r^3 + \frac{1}{r}\partial_r^4) & 0 & 0 & 0 \\
+-\frac{1}{\reye} (-\frac{3}{r^5} + \frac{3}{r^4}\partial_r - \frac{3}{r^3} \partial_r^2 + \frac{2}{r^2}\partial_r^3 + \frac{1}{r}\partial_r^4 ) & 0 & 0 & 0 \\
 0 & -\frac{1}{\reym} (\partial_r^2 - \frac{1}{r} \partial_r) & 0 & 0 \\
 0 & 0 &-\frac{1}{\reye} (\partial_r^2 + \frac{1}{r}\partial_r - \frac{1}{r^2}) & 0 \\
 0 & 0 & 0 & -\frac{1}{\reym} (\partial_r^2 - \frac{1}{r} \partial_r) \\
