@@ -454,6 +454,7 @@ class OrderE(MRI):
         lv1.substitutions['Avisc'] = '(r*dr(Ar) - r*Q**2*A - Ar)' 
         lv1.substitutions['Bvisc'] = '(-r**3*Q**2*B + r**3*dr(Br) + r**2*Br - r*B)'
     
+        # multiplied by [r^4, r^3, r, r^3]
         lv1.add_equation("sigma*(-r**3*Q**2*psi + r**3*psirr - r**2*psir) - r**2*2*ru0*1j*Q*u + r**3*twooverbeta*B0*1j*Q**3*A + twooverbeta*B0*r**2*1j*Q*Ar - twooverbeta*r**3*B0*1j*Q*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*Q*B = 0") #corrected on whiteboard 5/6
         lv1.add_equation("sigma*r**3*u + 1j*Q*ru0*psi + 1j*Q*rrdu0*psi - 1j*Q*r**3*twooverbeta*B0*B - iR*uvisc = 0") 
         lv1.add_equation("sigma*r*A - r*B0*1j*Q*psi - iRm*Avisc = 0")
