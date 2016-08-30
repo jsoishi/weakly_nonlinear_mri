@@ -693,15 +693,19 @@ class OrderE2(MRI):
         allzeros['g'] = np.zeros(len(rfield['g']), np.complex128)
     
         self.rhs_psi20 = (-n2.N20_psi_r4 - N20_psi_r4_cc).evaluate()
-        print("rhs psi20", self.rhs_psi20['g'])
-        #self.rhs_psi20['g'] = 0.
-        #logger.warn('Setting N20psi + N20psi* = 0')
+        if self.xi == 0:
+            self.rhs_psi20['g'] = 0.
+            logger.warn('Setting N20psi + N20psi* = 0')
+        else:
+            print("rhs psi20", self.rhs_psi20['g'])
         self.rhs_u20 = (-n2.N20_u_r2 - N20_u_r2_cc).evaluate()
         self.rhs_A20 = (-n2.N20_A_r - N20_A_r_cc).evaluate()
         self.rhs_B20 = (-n2.N20_B_r2 - N20_B_r2_cc).evaluate()
-        print("rhs B20", self.rhs_B20['g'])
-        #self.rhs_B20['g'] = 0.
-        #logger.warn('Setting N20B + N20B* = 0')
+        if self.xi == 0:
+            self.rhs_B20['g'] = 0.
+            logger.warn('Setting N20B + N20B* = 0')
+        else:
+            print("rhs B20", self.rhs_B20['g'])
     
     
         # V20 equations are separable because dz terms -> 0, but we'll solve them coupled anyway.
@@ -1416,9 +1420,9 @@ class AmplitudeAlpha(MRI):
         ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
         a_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
-        c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
-        b_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
-        h_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
+        c_new = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
+        b_new = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [b_psi_rhs, b_u_rhs, b_A_rhs, b_B_rhs])
+        h_new = -self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [h_psi_rhs, h_u_rhs, h_A_rhs, h_B_rhs])
         
         
         logger.info("a_new = {}, b_new = {}, c_new = {}, h_new = {}".format(a_new, b_new, c_new, h_new))
