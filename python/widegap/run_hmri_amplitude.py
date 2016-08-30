@@ -68,8 +68,10 @@ with h5py.File(fn,'w') as f:
     ahpsi_r = f.create_dataset("ah_psi_r", data=aa.ah.psi_r['g'])
     ahpsi_rr = f.create_dataset("ah_psi_rr", data=aa.ah.psi_rr['g'])
     ahpsi_rrr = f.create_dataset("ah_psi_rrr", data=aa.ah.psi_rrr['g'])
+    
     ahu = f.create_dataset("ah_u", data=aa.ah.u['g'])
     ahu_r = f.create_dataset("ah_u_r", data=aa.ah.u_r['g'])
+    
     ahA = f.create_dataset("ah_A", data=aa.ah.A['g'])
     ahA_r = f.create_dataset("ah_A_r", data=aa.ah.A_r['g'])
     ahA_rr = f.create_dataset("ah_A_rr", data=aa.ah.A_rr['g'])
@@ -118,6 +120,11 @@ with h5py.File(fn,'w') as f:
 
     B21 = f.create_dataset("B21", data=aa.o2.B21['g'])
 
+    psi21test = f.create_dataset("psi21test", data=aa.o2.psi21test['g'])
+    u21test = f.create_dataset("u21test", data=aa.o2.u21test['g'])
+    A21test = f.create_dataset("A21test", data=aa.o2.A21test['g'])
+    B21test = f.create_dataset("B21test", data=aa.o2.B21test['g'])
+
     psi22 = f.create_dataset("psi22", data=aa.o2.psi22['g'])
     psi22_r = f.create_dataset("psi22_r", data=aa.o2.psi22_r['g'])
     psi22_rr = f.create_dataset("psi22_rr", data=aa.o2.psi22_rr['g'])
@@ -142,10 +149,10 @@ with h5py.File(fn,'w') as f:
     N20_B = f.create_dataset("N20_B", data=aa.n2.N20_B['g'])
 
     # additional diagnostics
-    N20_psi_r4 = f.create_dataset("N20_psi_r4", data=aa.n2.N20_psi_r4_rederived['g'])
-    N20_u_r2 = f.create_dataset("N20_u_r2", data=aa.n2.N20_u_r2_rederived['g'])
-    N20_A_r = f.create_dataset("N20_A_r", data=aa.n2.N20_A_r_rederived['g'])
-    N20_B_r2 = f.create_dataset("N20_B_r2", data=aa.n2.N20_B_r2_rederived['g'])
+    N20_psi_r4 = f.create_dataset("N20_psi_r4", data=aa.n2.N20_psi_r4['g'])
+    N20_u_r2 = f.create_dataset("N20_u_r2", data=aa.n2.N20_u_r2['g'])
+    N20_A_r = f.create_dataset("N20_A_r", data=aa.n2.N20_A_r['g'])
+    N20_B_r2 = f.create_dataset("N20_B_r2", data=aa.n2.N20_B_r2['g'])
 
     N22_psi = f.create_dataset("N22_psi", data=aa.n2.N22_psi['g'])
     N22_u = f.create_dataset("N22_u", data=aa.n2.N22_u['g'])
@@ -156,6 +163,11 @@ with h5py.File(fn,'w') as f:
     N31_u = f.create_dataset("N31_u", data=aa.n3.N31_u['g'])
     N31_A = f.create_dataset("N31_A", data=aa.n3.N31_A['g'])
     N31_B = f.create_dataset("N31_B", data=aa.n3.N31_B['g'])
+    
+    rhs_psi21 = f.create_dataset("rhs_psi21", data=aa.o2.rhs_psi21['g'])
+    rhs_u21 = f.create_dataset("rhs_u21", data=aa.o2.rhs_u21['g'])
+    rhs_A21 = f.create_dataset("rhs_A21", data=aa.o2.rhs_A21['g'])
+    rhs_B21 = f.create_dataset("rhs_B21", data=aa.o2.rhs_B21['g'])
 
     f.attrs["Pm"] = aa.Pm
     f.attrs["Q"] = aa.Q
@@ -168,10 +180,10 @@ with h5py.File(fn,'w') as f:
     f.attrs["R2"] = aa.R2
     f.attrs["gridnum"] = aa.gridnum
     f.attrs["q_R0"] = aa.q_R0
+    f.attrs["conducting"] = aa.conducting
+    f.attrs["norm"] = aa.norm
 
     f.attrs["a"] = aa.a
     f.attrs["b"] = aa.b
     f.attrs["c"] = aa.c
     f.attrs["h"] = aa.h
-
-
