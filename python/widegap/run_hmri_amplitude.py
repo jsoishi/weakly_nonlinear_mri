@@ -18,7 +18,7 @@ xi=4.0
 Q = 2.33
 Rm = 0.001521
 conducting=False
-norm=False
+norm=True
 
 gridnum = 128#256
 
