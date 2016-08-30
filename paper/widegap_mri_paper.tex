@@ -426,7 +426,7 @@ and the constituent matrices are defined as
 To find a bounded solution at $\mathcal{O}(\epsilon^3)$ we must eliminate secular terms: terms which are resonant with the solution to the homogenous equation $(\mathcal{L} + \xi \widetilde{\mathcal{H}}) \mathbf{V} = 0$ and cause the solution to grow without bound. To eliminate these terms we enforce a solvability condition, which arises as a consequence of the Fredholm alternative. This solvability condition is the requirement that the inner product of the equation with its adjoint homogenous solution is zero. We define the adjoint operator $\mathcal{L}^\dagger$ and solution $\mathbf{V}^\dagger$ as 
 
 \beq
-\langle \mathbf{V^\dagger} | (\mathcal{L} + \xi \widetilde{\mathcal{H}}) \mathbf{V} \rangle = \langle (\mathcal{L}^\dagger + \xi \mathcal{H}^\dagger) \mathbf{V}^\dagger | \mathbf{V} \rangle,
+\langle \mathbf{V^\dagger} | (\mathcal{L} + \xi \widetilde{\mathcal{H}}) \mathbf{V} \rangle = \langle (\mathcal{L}^\dagger + \xi \widetilde{\mathcal{H}}^\dagger) \mathbf{V}^\dagger | \mathbf{V} \rangle,
 \eeq
 
 where the inner product is defined as 
@@ -452,13 +452,31 @@ where
 \beq
 \mathcal{L}_0^\dagger = \left[\begin{matrix}
 -\frac{1}{\reye} (-\frac{3}{r^5} + \frac{3}{r^4}\partial_r - \frac{3}{r^3} \partial_r^2 + \frac{2}{r^2}\partial_r^3 + \frac{1}{r}\partial_r^4 ) & 0 & 0 & 0 \\
-0 & -\frac{1}{\reym} (\partial_r^2 - \frac{1}{r} \partial_r) & 0 & 0 \\
-0 & 0 &-\frac{1}{\reye} (\partial_r^2 + \frac{1}{r}\partial_r - \frac{1}{r^2}) & 0 \\
-0 & 0 & 0 & -\frac{1}{\reym} (\partial_r^2 - \frac{1}{r} \partial_r) \\
-\end{matrix}\right].
+0 & -\frac{1}{\reye} (\frac{1}{r}\partial_r + \partial_r^2 - \frac{1}{r^2}) & 0 & 0 \\
+0 & 0 &-\frac{1}{\reym} (\frac{3}{r}\partial_r + \partial_r^2) & 0 \\
+0 & 0 & 0 & -\frac{1}{\reym} (\frac{1}{r}\partial_r + \partial_r^2 - \frac{1}{r^2}) \\
+\end{matrix}\right],
 \eeq
 
-The adjoint boundary conditions are selected to satisfy Equation \ref{eq:inner_product_def}, and differ depending on the boundary conditions enforced on the original system. For the conducting boundary conditions we apply to the standard MRI, the adjoint equation 
+\beq
+\mathcal{L}_1^\dagger = \left[\begin{matrix}
+0 & \frac{1}{r^2} u_0 + \frac{1}{r}\partial_r u_0 & -1 & 0 \\
+-\frac{2}{r}u_0 & 0 & 0 & -1 \\
+\frac{2}{\beta}(\frac{1}{r^3} - \frac{1}{r^2}\partial_r - \frac{1}{r}\partial_r^2) & 0 & 0 & \frac{1}{r^2}u_0 - \frac{1}{r}\partial_r u_0 \\
+0 & -\frac{2}{\beta} & 0 & 0 \\
+\end{matrix}\right],
+\eeq
+
+\beq
+\mathcal{L}_2^\dagger = \left[\begin{matrix}
+-\frac{1}{\reye}(-\frac{2}{r^3} + \frac{2}{r^2}\partial_r + \frac{2}{r}\partial_r^2) & 0 & 0 & 0 \\
+0 & -\frac{1}{\reye} & 0 & 0 \\
+0 & 0 & -\frac{1}{\reym} & 0 \\
+0 & 0 & 0 & -\frac{1}{\reym} \\
+\end{matrix}\right],
+\eeq
+
+and $\mathcal{L}_3^\dagger = \mathcal{L}_3^\mathrm{T}$, $\mathcal{L}_4^\dagger = \mathcal{L}_4^\mathrm{T}$. The adjoint boundary conditions are selected to satisfy Equation \ref{eq:inner_product_def}, and differ depending on the boundary conditions enforced on the homogenous system. For the conducting boundary conditions we apply to the standard MRI, the adjoint equation 
 
 \beq\label{eq:adjoint}
 (\mathcal{L}^\dagger + \xi \widetilde{\mathcal{H}}^\dagger)\mathbf{V}^\dagger = 0
@@ -467,20 +485,10 @@ The adjoint boundary conditions are selected to satisfy Equation \ref{eq:inner_p
 must be solved subject to the boundary conditions
 
 \beq
-\Psi^\dagger = \partial_r \Psi^\dagger = u^\dagger = A^\dagger = \partial_r B^\dagger = 0.
+\Psi^\dagger = \partial_r \Psi^\dagger = u^\dagger = A^\dagger = \partial_r (r B^\dagger) = 0.
 \eeq
 
-Note that the condition on $B^\dagger$ differs from that on $B$. For the insulating boundary conditions we apply to the helical MRI, the magnetic boundary conditions applied to Equation \ref{eq:adjoint} are 
-
-\beq
-B^\dagger = (- k \frac{I_0 (k r)}{I_1 (k r)} + \frac{1}{r} + \partial_r ) A^\dagger = 0 \, \, \mathrm{at} \, \, r = r_1
-\eeq
-
-\beq
-B^\dagger = (k \frac{K_0 (k r)}{K_1 (k r)} + \frac{1}{r} + \partial_r ) A^\dagger = 0 \, \, \mathrm{at} \, \, r = r_2
-\eeq
-
-We take the inner product of the adjoint homogenous solution with Equation \ref{eq:ordere3} to find 
+We similarly define appropriate boundary conditions for the insulating case. We take the inner product of the adjoint homogenous solution with Equation \ref{eq:ordere3} to find 
 
 \beq
 \mathcal{L}\mathbf{V}_3 + \xi \widetilde{\mathcal{H}} \mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2\nonumber 
