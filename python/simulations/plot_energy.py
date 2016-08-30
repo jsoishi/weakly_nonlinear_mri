@@ -64,11 +64,14 @@ if __name__ == "__main__":
         u_rms = ts['/tasks/vx_rms'][:,0,0]
         gamma, f0 = compute_growth(u_rms, t, t_orb, start, stop)
         plt.subplot(211)
+        TE = ts['/tasks/BE'][:,0,0] + ts['/tasks/KE'][:,0,0]
         plt.semilogy(t/t_orb,ts['/tasks/KE'][:,0,0],linestyle='-', label='kinetic')
         plt.semilogy(t/t_orb,ts['/tasks/BE'][:,0,0],linestyle='--', label='magnetic')
+        plt.semilogy(t/t_orb,TE,linestyle='-.', label='Total')
         plt.legend(loc='lower right')
         plt.ylabel("Energy")
         #plt.xlabel("time (orbits)")
+        plt.ylim(1e-10,0.1)
         plt.title("Pm = {:5.2e}".format(float(params["Pm"])))
 
         plt.subplot(212)
