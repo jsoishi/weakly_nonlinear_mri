@@ -113,8 +113,10 @@ class MRI():
             problem.add_bc('right(psi) = 0')
             problem.add_bc('left(psir) = 0')
             problem.add_bc('right(psir) = 0')
-            problem.add_bc('left(-Q*bessel1*A + Ar + A/r) = 0')
-            problem.add_bc('right(Q*bessel2*A + Ar + A/r) = 0')
+            #problem.add_bc('left(-Q*bessel1*A + Ar + A/r) = 0')
+            #problem.add_bc('right(Q*bessel2*A + Ar + A/r) = 0')
+            problem.add_bc('left(Q*bessel1*r*A - 2*A - r*Ar) = 0')
+            problem.add_bc('right(-Q*bessel2*r*A - 2*A - r*Ar) = 0')
             problem.add_bc('left(B) = 0')
             problem.add_bc('right(B) = 0')
         

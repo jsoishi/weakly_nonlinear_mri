@@ -109,6 +109,12 @@ In this work we explore the behavior of the viscous, dissipative MRI in a cylind
 \caption{Growth rates in the ($\reym, k_z$) plane. Color map shows growth rate found by solving the linear eigenvalue problem for each ($\reym, k_z$) in the grid. The eigenvalue problem was solved for the widegap parameters listed in Table \ref{table:parameters}. Overlaid contours show growth rates at [ -8E-4, -1.3E-4, 1.3E-4, 8E-4, 1.5E-3], where dashed contours represent negative values. The gray dotted line shows the interpolated marginal stability curve. The critical parameters $\reym_c = 3.31$ and $k_c = 0.902$ correspond to the smallest parameter values that yield a zero growth rate.}\label{fig:growth_rates}
 \end{figure}
 
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{../python/widegap/figures/orders_1_2_widegap_fiducial_eigenfunctions.pdf}
+\caption{Eigenfunctions of the first order equations, first order adjoint homogenous equations, and second order equations. We use our fiducial parameters for the standard MRI ($\xi = 0$). First-order eigenfunctions are normalized such that they are either purely real or purely imaginary, and such that $\int \Psi_{11} \mathrm{d}r = 1$. Adjoint homogenous eigenfunctions are normalized such that $\left< V_{11}^\dagger \cdot \mathcal{D} V_{11} \right> = 1$.}\label{fig:linear_eigenfunctions}
+\end{figure*}
+
 \section{Wide Gap Equations}
 
 The basic equations solved are the momentum and induction equations,
@@ -150,7 +156,19 @@ We perturb these equations axisymmetrically in a cylindrical $(r, \phi, z)$ geom
 \end{matrix}\right],
 \eeq
 
-and define the magnetic vector potential $A$ analogously. These definitions automatically satisfy Equations \ref{eq:incompressibility} and \ref{eq:solenoid} for axisymmetric disturbances. We note that in the linearized equations, streamfunctions of the form $u_x = \partial_z \Psi$, $u_z = -(\partial_r + \frac{1}{r}) \Psi$, and the corresponding definitions of the magnetic vector potential, are convenient choices, but we make a different choice for this nonlinear investigation because of the incommutability of $\partial_r$ and $\partial_r + \frac{1}{r}$. 
+and the magnetic vector potential $A$ is
+
+\beq
+  \label{eq:fluxfunc}
+  \mathbf{B_1} \, = \, \left[\begin{matrix}
+\frac{1}{r} \partial_z A\ \rhat\\
+B_{\phi} \ \phihat\\
+-\frac{1}{r} \partial_r A\ \zhat\\
+\end{matrix}\right].
+\eeq
+
+%and define the magnetic vector potential $A$ analogously. 
+These definitions automatically satisfy Equations \ref{eq:incompressibility} and \ref{eq:solenoid} for axisymmetric disturbances. We note that in the linearized equations, streamfunctions of the form $u_x = \partial_z \Psi$, $u_z = -(\partial_r + \frac{1}{r}) \Psi$, and the corresponding definitions of the magnetic vector potential, are convenient choices, but we define Equations \ref{eq:stokes} and \ref{eq:fluxfunc} for this nonlinear investigation because of the incommutability of $\partial_r$ and $\partial_r + \frac{1}{r}$. 
 
 The astrophysical magnetorotational instability operates in accretion disks and in stellar interiors, environments where fluid rotation is strongly regulated by gravity. In accretion disks, differential rotation is imposed gravitationally by a central body, so the rotation profile is forced to be Keplerian. Clearly a gravitationally enforced Keplerian flow is inaccessible to laboratory study, so differential rotation is created by rotating an inner cylinder faster than an outer cylinder (a Taylor-Couette setup). For a nonideal fluid subject to no-slip boundary conditions, the base flow is
 
@@ -163,12 +181,6 @@ where $c_1 = (\Omega_2 r^2_2 - \Omega_1 r^2_1)/(r^2_2 - r^2_1)$, $c_2 = r^2_1 r^
   \label{eq:couette_q}
   q(r) \equiv -\frac{d \ln \Omega}{d \ln r} = \frac{2 c_2}{c_1 r^2 + c_2}.
 \end{equation}
-
-\begin{figure*}
-\centering
-\includegraphics[width=\textwidth]{../python/widegap/figures/orders_1_2_widegap_fiducial_eigenfunctions.pdf}
-\caption{Eigenfunctions of the first order equations, first order adjoint homogenous equations, and second order equations. We use our fiducial parameters for the standard MRI ($\xi = 0$). First-order eigenfunctions are normalized such that they are either purely real or purely imaginary, and such that $\int \Psi_{11} \mathrm{d}r = 1$. Adjoint homogenous eigenfunctions are normalized such that $\left< V_{11}^\dagger \cdot \mathcal{D} V_{11} \right> = 1$.}\label{fig:linear_eigenfunctions}
-\end{figure*}
 
 \begin{figure*}
 \centering
@@ -192,7 +204,7 @@ We initialize a magnetic field
 
 so that the base magnetic field is axial when $\xi = 0$ and otherwise helical. 
 
-In this work we will focus our findings on two fiducial parameter sets, one for the standard MRI (hereafter SMRI) where $\xi = 0$ and one for the helical MRI (hereafter HMRI). We choose the SMRI parameters to be comparable to the case considered in \citei{Goodman:2002ix}. The HMRI parameters were chosen to be comparable to \citei{Hollerbach:2005tr}. Our fiducial parameters are described in Table \ref{table:parameters}.
+In this work we will focus our findings on two fiducial parameter sets, one for the standard MRI where $\xi = 0$ and one for the helical MRI. We choose the SMRI parameters to be comparable to the case considered in \citei{Goodman:2002ix}. The HMRI parameters were chosen to be comparable to \citei{Hollerbach:2005tr}. Our fiducial parameters are described in Table \ref{table:parameters}.
 
 \begin{widetext}
 Our perturbed system is 
@@ -228,7 +240,7 @@ N^{(B)} = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi) + \frac{1}{r^2} 
 \eeq
 \end{widetext}
 
-where J is the Jacobian $J(f, g) \equiv \partial_z f \partial_r g - \partial_r f \partial_z g$. Note that in the above, $\nabla^2 f \equiv \partial_r^2 f + \partial_z^2 f + \frac{1}{r} \partial_r f$. Equations \ref{eq:Psi_perturbed} - \ref{eq:nonlinear_B} are nondimensionalized by inner cylinder quantities: lengths have been scaled by $r_1$, velocities by $r_1 \Omega_1$, and densities by $\rho_0$, where $\rho_0$ is the constant density. Magnetic fields are scaled by $B_0$, the constant strength of the initial background field; where $B_0$ appears in the above it is formally unity. $\Omega_1 = \Omega(r_1)$ is the rotation rate of the inner cylinder. We introduce the Reynolds number $\reye = \Omega_1 r_1^2/\nu$, the magnetic Reynolds number $\reym = \Omega_1 r_1^2 / \eta$, and a plasma beta parameter $\beta = \Omega_1^2 r_1^2 \rho_0/B_0^2$. If we define the dimensional cylindrical coordinate $r = r_1(1 + \delta x)$, the narrow gap equations are recovered in the limit $\delta \rightarrow 0$.
+where J is the Jacobian $J(f, g) \equiv \partial_z f \partial_r g - \partial_r f \partial_z g$. Note that in the above, $\nabla^2 f \equiv \partial_r^2 f + \partial_z^2 f + \frac{1}{r} \partial_r f$. Equations \ref{eq:Psi_perturbed} - \ref{eq:nonlinear_B} are nondimensionalized by inner cylinder quantities: lengths have been scaled by $r_1$, velocities by $r_1 \Omega_1$, and densities by $\rho_0$, where $\rho_0$ is the constant density. Magnetic fields are scaled by $B_0$, the constant strength of the initial background field; where $B_0$ appears in the above it is formally unity. $\Omega_1 = \Omega(r_1)$ is the rotation rate of the inner cylinder. We introduce the Reynolds number $\reye = \Omega_1 r_1^2/\nu$, the magnetic Reynolds number $\reym = \Omega_1 r_1^2 / \eta$, and a plasma beta parameter $\beta = \Omega_1^2 r_1^2 \rho_0/B_0^2$. Note that if we define the dimensional cylindrical coordinate $r = r_1(1 + \delta x)$, we recover the narrow gap approximation of the system in the limit $\delta \rightarrow 0$.
 
 We solve the standard MRI system subject to periodic vertical boundary conditions and no-slip, perfectly conducting radial boundary conditions, namely
 
