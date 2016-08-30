@@ -10,8 +10,8 @@ from scipy import special
 
 import logging
 root = logging.root
-for h in root.handlers:
-    h.setLevel("DEBUG")
+#for h in root.handlers:
+#    h.setLevel("DEBUG")
     
 logger = logging.getLogger(__name__)
 
@@ -1408,8 +1408,8 @@ class AmplitudeAlpha(MRI):
         h_A_rhs = h_A_rhs.evaluate()
         h_B_rhs = h_B_rhs.evaluate()
         
-        #logger.info("Normalizing V^dagger s.t. a = 1")
-        #ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
+        logger.info("Normalizing V^dagger s.t. a = 1")
+            ah.psi, ah.u, ah.A, ah.B = self.normalize_inner_product_eq_1(ah.psi, ah.u, ah.A, ah.B, a_psi_rhs, o1.u, o1.A, o1.B)
         
         a_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [a_psi_rhs, o1.u, o1.A, o1.B])
         c_new = self.take_inner_product([ah.psi, ah.u, ah.A, ah.B], [n3.N31_psi, n3.N31_u, n3.N31_A, n3.N31_B])
