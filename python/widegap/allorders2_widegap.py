@@ -848,10 +848,10 @@ class OrderE2(MRI):
         bv21 = self.set_boundary_conditions(bv21, conducting = conducting)
 
         self.BVP21 = self.solve_BVP(bv21)
-        self.psi21m = self.BVP21.state['psi']
-        self.u21m = self.BVP21.state['u']
-        self.A21m = self.BVP21.state['A']
-        self.B21m = self.BVP21.state['B']
+        self.psi21 = self.BVP21.state['psi']
+        self.u21 = self.BVP21.state['u']
+        self.A21 = self.BVP21.state['A']
+        self.B21 = self.BVP21.state['B']
         
         
         
@@ -899,11 +899,11 @@ class OrderE2(MRI):
         # boundary conditions
         bv21test = self.set_boundary_conditions(bv21test, conducting = conducting)
 
-        self.BVP21 = self.solve_BVP(bv21test)
-        self.psi21 = self.BVP21.state['psi']
-        self.u21 = self.BVP21.state['u']
-        self.A21 = self.BVP21.state['A']
-        self.B21 = self.BVP21.state['B']
+        self.BVP21test = self.solve_BVP(bv21test)
+        self.psi21test = self.BVP21test.state['psi']
+        self.u21test = self.BVP21test.state['u']
+        self.A21test = self.BVP21test.state['A']
+        self.B21test = self.BVP21test.state['B']
         
         #******* END TEST
         

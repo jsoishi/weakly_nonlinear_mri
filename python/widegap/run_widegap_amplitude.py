@@ -28,9 +28,17 @@ norm = True
 #Pm = 1.60000000e-04
 #Rm=3.34
 #Q=0.905
-Pm = 1.60000000e-05
-Rm = 3.31
-Q = 0.903
+#Pm = 1.60000000e-05
+#Rm = 3.31
+#Q = 0.903
+
+Pm = 1.6e-4
+Rmc = 3.33#371
+Q = 0.905#152
+
+#Pm = 1.6e-5
+#Rmc = 3.31292
+#Q = 0.903172
 
 # my newly derived params
 #Pm = 1.6E-4
@@ -94,7 +102,7 @@ Omega1 = 313.55
 Omega2 = Omega1*mu_omega
 """
 
-gridnum = 128
+gridnum = 256
 
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)
@@ -105,7 +113,7 @@ aa.print_coeffs()
 
 #fn_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 fn_root = "../../data/"
-fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_norm_{}_Amidnorm_testncc.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum, norm)
+fn = fn_root + "widegap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_Omega1_{:05.2f}_Omega2_{:05.2f}_beta_{:.2f}_xi_{:.2f}_gridnum_{}_norm_{}_Amidnorm_final.h5".format(Q, Rm, Pm, Omega1, Omega2, beta, xi, gridnum, norm)
 with h5py.File(fn,'w') as f:
     r = f.create_dataset("r", data=aa.r)
     o1psi = f.create_dataset("psi11", data=aa.o1.psi['g'])
@@ -193,6 +201,11 @@ with h5py.File(fn,'w') as f:
     A21_rr = f.create_dataset("A21_rr", data=aa.o2.A21_rr['g'])
 
     B21 = f.create_dataset("B21", data=aa.o2.B21['g'])
+
+    psi21test = f.create_dataset("psi21test", data=aa.o2.psi21test['g'])
+    u21test = f.create_dataset("u21test", data=aa.o2.u21test['g'])
+    A21test = f.create_dataset("A21test", data=aa.o2.A21test['g'])
+    B21test = f.create_dataset("B21test", data=aa.o2.B21test['g'])
 
     psi22 = f.create_dataset("psi22", data=aa.o2.psi22['g'])
     psi22_r = f.create_dataset("psi22_r", data=aa.o2.psi22_r['g'])
