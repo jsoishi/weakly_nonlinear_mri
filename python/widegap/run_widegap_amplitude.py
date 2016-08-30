@@ -34,13 +34,13 @@ norm = True
 
 # jeff's "better critical params" with full digits ******
 
-#Pm = 1.6e-4
-#Rm = 3.33371
-#Q = 0.905152
+Pm = 1.6e-4
+Rm = 3.33371
+Q = 0.905152
 
-Pm = 1.6e-5
-Rm = 3.31292
-Q = 0.903172
+#Pm = 1.6e-5
+#Rm = 3.31292
+#Q = 0.903172
 
 #Pm = 1.6E-6
 #Rm = 3.30878
