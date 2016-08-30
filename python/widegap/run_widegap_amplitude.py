@@ -34,17 +34,17 @@ norm = True
 
 # jeff's "better critical params" with full digits ******
 
-#Pm = 1.6e-4
-#Rm = 3.33371
-#Q = 0.905152
+Pm = 1.6e-4
+Rm = 3.33371
+Q = 0.905152
 
 #Pm = 1.6e-5
 #Rm = 3.31292
 #Q = 0.903172
 
-Pm = 1.6E-6
-Rm = 3.30878
-Q = 0.902139
+#Pm = 1.6E-6
+#Rm = 3.30878
+#Q = 0.902139
 
 # ********************************************************
 
@@ -110,7 +110,7 @@ Omega1 = 313.55
 Omega2 = Omega1*mu_omega
 """
 
-gridnum = 128
+gridnum = 256
 
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)
