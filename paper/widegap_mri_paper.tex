@@ -360,13 +360,13 @@ When $\xi$ in Equation \ref{eq:unperturbed_matrix_eqns} is not equal to zero, th
 
 \section{Discussion}
 
-Our work should be placed in the broader context of emergent pattern formation in physical systems. The real Ginzburg-Landau equation derived here governs the slow-parameter evolution of the standard MRI close to threshold. The GLE arises in a number of other physical systems, and in each case it is a consequence not of the particular physics at hand, but of the underlying symmetries in the problem. Here we make a brief comparison to two other systems that give rise to a GLE. The first and perhaps most famous is Rayleigh-B\'enard convection, in which a fluid between two plates is heated from below (\citei{Newell:1969wr}). If we take the plane of the fluid to be infinite in the horizontal plane, the system is initially translationally symmetric. %When the system eventually becomes unstable to convective heat transfer it undergoes a symmetry breaking, allowing the 
+Our work should be placed in the broader context of emergent pattern formation in physical systems. The real Ginzburg-Landau equation derived here governs the slow-parameter evolution of the standard MRI close to threshold. The GLE arises in a number of other physical systems, and in each case it is a consequence not of the particular physics at hand, but of the underlying symmetries in the problem. Here we make a phenomenological comparison to two other systems that give rise to a GLE. The first and perhaps most famous is Rayleigh-B\'enard convection, in which a fluid between two plates is heated from below (\citei{Newell:1969wr}). If we take the plane of the fluid to be infinite in the horizontal plane, the system is initially translationally symmetric. %When the system eventually becomes unstable to convective heat transfer it undergoes a symmetry breaking, allowing the 
 At the onset of convection the system undergoes a symmetry breaking, forming rolls, or convection cells, which break the horizontal translational invariance. Analogously, the standard MRI system considered here is initially vertically translationally symmetric, because we idealize the Taylor-Couette device as an infinitely long cylinder. The MRI breaks this symmetry, forming cells along the vertical length of the domain. Just as Rayleigh-B\'enard cells transport heat vertically, the MRI cells transport angular momentum horizontally. The symmetry breaking of each of these systems is described near onset by the real GLE. 
 
 A real GLE has also been found to describe the formation of zonal flows out of magnetized turbulence in a model system (\citei{Parker:2013hy}). Zonal flows are axisymmetric structures, large-scale and long-lived, which form spontaneously out of turbulence. They have recently been observed in some numerical studies of the MRI, and have generated considerable interest for their possible role in planet formation in protoplanetary disks (\citei{Johansen:2009uj}, \citei{Kunz:2013}). The present work is of course an idealized geometry, and we make no attempt to model a realistic protoplanetary disk environment. However, it is worth noting that the GLE we derive implies that axisymmetric, large-scale, long-lived structures are a generic feature of the MRI in the weakly nonlinear regime. This work provides a mathematical description of the MRI as a pattern-forming process, but much remains to be understood, particularly involving the relevance of these insights to realistic astrophysical disks. Our model is most directly relevant to Taylor-Couette flows, and we emphasize that laboratory MRI experiments stand poised to observe the MRI-driven pattern formation predicted here. 
 
 \section{Acknowledgements}
-NASA, NSF. The authors thank Mordecai Mac Low, Jeremy Goodman, etc for useful discussion.
+NASA, NSF. The authors thank Mordecai Mac Low, Jeremy Goodman, John Krommes, etc for useful discussion.
 
 
 %************* APPENDICES ************************%
@@ -473,6 +473,14 @@ We solve the $\mathcal{O}(\epsilon)$ (linear) system, followed by the $\mathcal{
 
 where terms are grouped by z-dependence. See Appendix \ref{app:nonlinear_terms} for the full form of the nonlinear terms. Equation \ref{eq:ordere2} must therefore be solved as three separate systems of equations, one for each possible $z$ resonance: 
 
+\begin{align}
+\mathcal{L}\mathbf{V}_{20} + \xi \partial_z \mathcal{H} \mathbf{V}_{20} & = \mathbf{N}_{20}\\
+\mathcal{L}\mathbf{V}_{21} + \xi \partial_z \mathcal{H} \mathbf{V}_{21} & = - \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_{11} - \xi \partial_Z \mathcal{H} \mathbf{V}_{11} \\
+\mathcal{L}\mathbf{V}_{22} + \xi \partial_z \mathcal{H} \mathbf{V}_{22} & = \mathbf{N}_{22}
+\end{align}
+
+
+
 %The GLE is derived from 
 %Equation \ref{eq:ordere3} is resonant with 
 To find a bounded solution at $\mathcal{O}(\epsilon^3)$ we must eliminate secular terms: terms which are resonant with the solution to the linear homogenous equation $(\mathcal{L} + \xi \widetilde{\mathcal{H}}) \mathbf{V} = 0$ and cause the solution to grow without bound. Secular terms in our system are those that are resonant with the linear ansatz (Equation \ref{eq:ansatz}), i.e. terms with $e^{i k_c z}$ z-dependence. To eliminate these terms we enforce a solvability condition, which arises from a corollary to the Fredholm alternative. The Fredholm alternative states that if we consider a system of equations $\mathcal{L} \mathbf{V} = \mathbf{b}$ and its adjoint homogenous system $\mathcal{L}^\dagger \mathbf{V}^\dagger = 0$, only one of two conditions holds. Either there exists one and only one solution to the inhomogenous system, or the homogenous adjoint equation has a nontrivial solution. The relevant corollary arises as a consequence of the second condition: if $\mathcal{L}^\dagger \mathbf{V}^\dagger = 0$ has a nontrivial solution, then $\mathcal{L} \mathbf{V} = \mathbf{b}$ has a solution if and only if $\langle \mathbf{V}^\dagger | b \rangle = 0$. 
@@ -531,7 +539,7 @@ where
 \end{matrix}\right],
 \eeq
 
-and $\mathcal{L}_3^\dagger = \mathcal{L}_3^\mathrm{T}$, $\mathcal{L}_4^\dagger = \mathcal{L}_4^\mathrm{T}$. The adjoint boundary conditions are selected to satisfy Equation \ref{eq:inner_product_def}, and differ depending on the boundary conditions enforced on the homogenous system. For the conducting boundary conditions we apply to the standard MRI, the adjoint equation 
+and $\mathcal{L}_3^\dagger = \mathcal{L}_3^\mathrm{T}$, $\mathcal{L}_4^\dagger = \mathcal{L}_4^\mathrm{T}$. The adjoint boundary conditions are selected to satisfy Equation \ref{eq:inner_product_def}, and differ depending on the boundary conditions enforced on the homogenous system. Specifically, the boundary conditions arise from the requirement that the integrands in Equation \ref{eq:inner_product_def} are zero at $r_1$ and $r_2$. For the conducting boundary conditions we apply to the standard MRI, the adjoint equation 
 
 \beq\label{eq:adjoint}
 (\mathcal{L}^\dagger + \xi \widetilde{\mathcal{H}}^\dagger)\mathbf{V}^\dagger = 0
