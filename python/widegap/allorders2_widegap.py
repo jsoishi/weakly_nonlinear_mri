@@ -161,8 +161,8 @@ class MRI():
         self.largest_eval_indx = largest_eval_indx
         self.EP.solver.set_state(largest_eval_indx)
         
-        logger.info("Fastest mode has growth rate {} and frequency {}".format(gr, freq))
-        return gr, freq
+        logger.info("Fastest mode has growth rate {} and frequency {}".format(gr, freq[0]))
+        return gr, freq[0]
     
     def solve_BVP(self, BVP):
     
@@ -719,15 +719,16 @@ class OrderE2(MRI):
         bv20.parameters['iR'] = self.iR
         bv20.parameters['iRm'] = self.iRm
         bv20.parameters['Q'] = self.Q
+        bv20.parameters['omega'] = self.o1.freq
         if conducting is False:
             bv20.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
             bv20.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
         
         # these are multiplied by [r^4, r^2, r, r^2]
-        bv20.add_equation("-iR*(r**3*dr(psirrr) - r**2*2*psirrr + r*3*psirr - 3*psir) = rhs_psi20")
-        bv20.add_equation("-iR*(r**2*dr(ur) + r*ur - u) = rhs_u20")
-        bv20.add_equation("-iRm*(r*dr(Ar) - Ar) = rhs_A20")
-        bv20.add_equation("-iRm*(r**2*dr(Br) + r*Br - B) = rhs_B20")
+        bv20.add_equation("1j*omega*r**3*psirr - 1j*omega*r**2*psir - iR*(r**3*dr(psirrr) - r**2*2*psirrr + r*3*psirr - 3*psir) = rhs_psi20")
+        bv20.add_equation("1j*omega*r**2*u - iR*(r**2*dr(ur) + r*ur - u) = rhs_u20")
+        bv20.add_equation("1j*omega*r*A - iRm*(r*dr(Ar) - Ar) = rhs_A20")
+        bv20.add_equation("1j*omega*r**2*B - iRm*(r**2*dr(Br) + r*Br - B) = rhs_B20")
         
         bv20.add_equation("dr(psi) - psir = 0")
         bv20.add_equation("dr(psir) - psirr = 0")
@@ -828,6 +829,8 @@ class OrderE2(MRI):
         bv21.parameters['xi'] = self.xi
         bv21.parameters['B0'] = self.B0
         bv21.parameters['dz'] = 1j*self.Q
+        bv21.parameters['omega'] = self.o1.freq
+        
         if conducting is False:
             bv21.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
             bv21.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
@@ -841,10 +844,11 @@ class OrderE2(MRI):
         bv21.substitutions['Avisc'] = '(r*dr(Ar) - r*Q**2*A - Ar)' 
         bv21.substitutions['Bvisc'] = '(-r**3*Q**2*B + r**3*dr(Br) + r**2*Br - r*B)'
     
-        bv21.add_equation("-r**2*2*ru0*1j*Q*u + r**3*twooverbeta*1j*Q**3*A + twooverbeta*r**2*1j*Q*Ar - twooverbeta*r**3*1j*Q*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*Q*B = rhs_psi21") #corrected on whiteboard 5/6
-        bv21.add_equation("1j*Q*ru0*psi + 1j*Q*rrdu0*psi - 1j*Q*r**3*twooverbeta*B0*B - iR*uvisc = rhs_u21") 
-        bv21.add_equation("-r*B0*1j*Q*psi - iRm*Avisc = rhs_A21") # r*B0*1j*Q*psi term should be negative!! SEC 8/2/16
-        bv21.add_equation("ru0*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*rrdu0*A - iRm*Bvisc - 2*xi*1j*Q*psi = rhs_B21") 
+        # multiplied by [r^4, r^3, r, r^3]^T
+        bv21.add_equation("-1j*Q**2*omega*r**3*psi + 1j*omega*r**3*psirr - 1j*omega*r**2*psir - r**2*2*ru0*1j*Q*u + r**3*twooverbeta*1j*Q**3*A + twooverbeta*r**2*1j*Q*Ar - twooverbeta*r**3*1j*Q*dr(Ar) - iR*psivisc + twooverbeta*r**2*2*xi*1j*Q*B = rhs_psi21") #corrected on whiteboard 5/6
+        bv21.add_equation("1j*omega*r**3*u + 1j*Q*ru0*psi + 1j*Q*rrdu0*psi - 1j*Q*r**3*twooverbeta*B0*B - iR*uvisc = rhs_u21") 
+        bv21.add_equation("1j*omega*r*A - r*B0*1j*Q*psi - iRm*Avisc = rhs_A21") # r*B0*1j*Q*psi term should be negative!! SEC 8/2/16
+        bv21.add_equation("1j*omega*r**3*B + ru0*1j*Q*A - r**3*B0*1j*Q*u - 1j*Q*rrdu0*A - iRm*Bvisc - 2*xi*1j*Q*psi = rhs_B21") 
 
         bv21.add_equation("dr(psi) - psir = 0")
         bv21.add_equation("dr(psir) - psirr = 0")
@@ -936,6 +940,7 @@ class OrderE2(MRI):
         bv22.parameters['c1'] = self.c1
         bv22.parameters['c2'] = self.c2
         bv22.parameters['dz'] = 2*1j*self.Q
+        bv22.parameters['omega'] = self.o1.freq
         if conducting is False:
             bv22.parameters['bessel1'] = special.iv(0, self.Q*self.R1)/special.iv(1, self.Q*self.R1)
             bv22.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
@@ -944,10 +949,11 @@ class OrderE2(MRI):
         bv22.substitutions['rrdu0'] = '(c1*r*r-c2)' # du0/dr = A - B/r^2
         bv22.substitutions['twooverbeta'] = '(2.0/beta)'
         
-        bv22.add_equation("-r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi + twooverbeta*r**2*2*xi*(2*1j*Q)*B = rhs_psi22")
-        bv22.add_equation("rrdu0*dz*psi + ru0*dz*psi - r**3*twooverbeta*dz*B - r**3*iR*dr(ur) - r**2*iR*ur - r**3*iR*dz**2*u + r*iR*u = rhs_u22")
-        bv22.add_equation("-dz*psi*r - r*iRm*dr(Ar) + iRm*Ar - r*iRm*dz**2*A = rhs_A22")
-        bv22.add_equation("-dz*rrdu0*A - dz*r**3*u + ru0*dz*A - iRm*r**3*dr(Br) - r**2*iRm*Br - iRm*r**3*dz**2*B + r*iRm*B - 2*xi*(2*1j*Q)*psi = rhs_B22") #checked 7/14/16 - these are all right
+        # multiplied by [r^4, r^3, r, r^3]^T
+        bv22.add_equation("-4*1j*Q**2*omega*r**3*psi + 1j*omega*r**3*psirr - 1j*omega*r**2*psir - r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi + twooverbeta*r**2*2*xi*(2*1j*Q)*B = rhs_psi22")
+        bv22.add_equation("1j*omega*r**3*u + rrdu0*dz*psi + ru0*dz*psi - r**3*twooverbeta*dz*B - r**3*iR*dr(ur) - r**2*iR*ur - r**3*iR*dz**2*u + r*iR*u = rhs_u22")
+        bv22.add_equation("1j*omega*r*A - dz*psi*r - r*iRm*dr(Ar) + iRm*Ar - r*iRm*dz**2*A = rhs_A22")
+        bv22.add_equation("1j*omega*r**3*B - dz*rrdu0*A - dz*r**3*u + ru0*dz*A - iRm*r**3*dr(Br) - r**2*iRm*Br - iRm*r**3*dz**2*B + r*iRm*B - 2*xi*(2*1j*Q)*psi = rhs_B22") #checked 7/14/16 - these are all right
         
         bv22.add_equation("dr(psi) - psir = 0")
         bv22.add_equation("dr(psir) - psirr = 0")

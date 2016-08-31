@@ -20,7 +20,7 @@ Rm = 0.001521
 conducting=False
 norm=True
 
-gridnum = 256
+gridnum = 128
 
 r_basis = de.Chebyshev('r', gridnum, interval=(R1, R2))
 domain = de.Domain([r_basis], np.complex128, comm=MPI.COMM_SELF)
@@ -182,6 +182,10 @@ with h5py.File(fn,'w') as f:
     f.attrs["q_R0"] = aa.q_R0
     f.attrs["conducting"] = aa.conducting
     f.attrs["norm"] = aa.norm
+    f.attrs["linear_gr"] = aa.o1.gr
+    f.attrs["linear_freq"] = aa.o1.freq
+    f.attrs["adjoint_gr"] = aa.ah.gr
+    f.attrs["adjoint_freq"] = aa.ah.freq
 
     f.attrs["a"] = aa.a
     f.attrs["b"] = aa.b
