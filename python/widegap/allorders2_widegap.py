@@ -157,11 +157,12 @@ class MRI():
         return problem
 
     def fastest_growing(self):
-        gr, largest_eval_indx,freq  = self.EP.growth_rate({})
+        gr, largest_eval_indx, freq  = self.EP.growth_rate({})
         self.largest_eval_indx = largest_eval_indx
         self.EP.solver.set_state(largest_eval_indx)
         
-        logger.info("Fastest mode has growth rate {}".format(gr))
+        logger.info("Fastest mode has growth rate {} and frequency {}".format(gr, freq))
+        return gr, freq
     
     def solve_BVP(self, BVP):
     
@@ -385,7 +386,7 @@ class AdjointHomogenous(MRI):
             self.finalize()
             
     def finalize(self):
-        self.fastest_growing()
+        self.gr, self.freq = self.fastest_growing()
                 
         self.psi = self.EP.solver.state['psi']
         self.u = self.EP.solver.state['u']
@@ -487,7 +488,7 @@ class OrderE(MRI):
             self.finalize()
 
     def finalize(self):
-        self.fastest_growing()        
+        self.gr, self.freq = self.fastest_growing()        
         
         self.psi = self.EP.solver.state['psi']
         self.u = self.EP.solver.state['u']
