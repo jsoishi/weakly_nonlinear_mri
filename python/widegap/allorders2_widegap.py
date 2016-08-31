@@ -772,7 +772,7 @@ class OrderE2(MRI):
         # multiplied by r^4
         rhs_psi21 = (-self.iR*4*1j*self.Q**3*rfield**3*o1.psi - (2/self.beta)*3*rfield**3*self.Q**2*o1.A + self.iR*4*1j*self.Q*rfield**3*o1.psi_rr
                     - self.iR*4*1j*self.Q*rfield**2*o1.psi_r + 2*rfield**2*ru0field*o1.u + (2/self.beta)*rfield**3*o1.A_rr - (2/self.beta)*rfield**2*o1.A_r
-                    - (2/self.beta)*2*xi*rfield**2*o1.B - rfield**3*2*1j*Q*1j*self.freq*o1.psi)
+                    - (2/self.beta)*2*xi*rfield**2*o1.B - rfield**3*2*1j*Q*1j*o1.freq*o1.psi)
         self.rhs_psi21 = rhs_psi21.evaluate()
         
         # multiplied by r^3
