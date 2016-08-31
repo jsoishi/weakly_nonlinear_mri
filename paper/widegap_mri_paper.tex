@@ -288,19 +288,19 @@ where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices d
 
 \begin{align}
 \mathcal{O}(\epsilon)&: \mathcal{L} \mathbf{V}_1 + \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \mathcal{D} \partial_t \mathbf{V}_1 = 0 \label{eq:ordere}\\
-\mathcal{O}(\epsilon^2)&: \mathcal{L} \mathbf{V}_2 + \xi \widetilde{\mathcal{H}} \mathbf{V}_2 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_1 + \xi \mathcal{H} \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \\\label{eq:ordere2}
-\mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \xi \widetilde{\mathcal{H}} \mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2\nonumber \\ 
-&+ \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \\\label{eq:ordere3}
+\mathcal{O}(\epsilon^2)&: \mathcal{L} \mathbf{V}_2 + \xi \widetilde{\mathcal{H}} \mathbf{V}_2 + \mathcal{D} \partial_t \mathbf{V}_2 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_1 + \xi \mathcal{H} \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \label{eq:ordere2}\\
+\mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \xi \widetilde{\mathcal{H}} \mathbf{V}_3 + \mathcal{D} \partial_t \mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2\nonumber \\ 
+&+ \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \label{eq:ordere3}\\
 \end{align}
 
-See Appendix \ref{app:basic_equations} for the definition of matrices and nonlinear vectors, and a thorough derivation. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the narrow gap case, although the matrices, which contain all radial derivatives, are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution 
+See Appendix \ref{app:basic_equations} for the definition of matrices and nonlinear vectors, and a thorough derivation. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the narrow gap case, although the matrices, which contain all radial derivatives, are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. In the standard MRI case, $\sigma = 0$ at marginality and so the $\partial_t$ terms drop out of the equations. For the helical MRI case, however, $\sigma$ has a nonzero imaginary component even at threshold, so we must formally include these terms in our perturbation expansion. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution 
 
 \beq
 \label{eq:ansatz}
-\mathbf{V}_1 = \alpha(Z, T) \mathbb{V}_{11}(r) e^{i k_z z} + c.c.,
+\mathbf{V}_1 = \alpha(Z, T) \mathbb{V}_{11}(r) e^{i k_z z + \sigma t} + c.c.,
 \eeq
 
-where the radial variation is contained in $\mathbb{V}_{11}$. 
+where the radial variation is contained in $\mathbb{V}_{11}$, and $\sigma = \gamma + i\omega$. 
 
 We solve the equations at each order using Dedalus, an open source pseudospectral code (Burns et al. in prep). We solve the radial portion of the eigenvectors on a basis of Chebyshev polynomials subject to our radial boundary conditions. %Because our domain is bounded only radially and not vertically, we solve the radial dimension on a basis of Chebyshev polynomials, and the vertical dimension on a Fourier series basis. 
 We solve Equation \ref{eq:ordere} as a linear eigenvalue problem, and Equation \ref{eq:ordere2} as a linear boundary value problem. %should i mention spurious eigenvals? 

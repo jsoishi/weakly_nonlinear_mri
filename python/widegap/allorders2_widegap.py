@@ -772,7 +772,7 @@ class OrderE2(MRI):
         # multiplied by r^4
         rhs_psi21 = (-self.iR*4*1j*self.Q**3*rfield**3*o1.psi - (2/self.beta)*3*rfield**3*self.Q**2*o1.A + self.iR*4*1j*self.Q*rfield**3*o1.psi_rr
                     - self.iR*4*1j*self.Q*rfield**2*o1.psi_r + 2*rfield**2*ru0field*o1.u + (2/self.beta)*rfield**3*o1.A_rr - (2/self.beta)*rfield**2*o1.A_r
-                    - (2/self.beta)*2*xi*rfield**2*o1.B)
+                    - (2/self.beta)*2*xi*rfield**2*o1.B - rfield**3*2*1j*Q*1j*self.freq*o1.psi)
         self.rhs_psi21 = rhs_psi21.evaluate()
         
         # multiplied by r^3
@@ -1413,7 +1413,8 @@ class AmplitudeAlpha(MRI):
         
         h_psi_rhs = (4*self.iR*1j*self.Q**3*invr*o2.psi21 + (2/self.beta)*3*invr*self.Q**2*o2.A21 + 6*self.iR*self.Q**2*invr*o1.psi - (2/self.beta)*3*invr*1j*Q*o1.A
                     - 4*self.iR*1j*self.Q*invr*o2.psi21_rr + self.iR*4*1j*Q*invr**2*o2.psi21_r - 2*invr*u0*o2.u21 - (2/self.beta)*invr*o2.A21_rr 
-                    + (2/self.beta)*invr**2*o2.A21_r + (2/self.beta)*2*self.xi*invr**2*o2.B21 - self.iR*2*invr*o1.psi_rr + self.iR*2*invr**2*o1.psi_r)
+                    + (2/self.beta)*invr**2*o2.A21_r + (2/self.beta)*2*self.xi*invr**2*o2.B21 - self.iR*2*invr*o1.psi_rr + self.iR*2*invr**2*o1.psi_r
+                    + invr*2*1j*Q*1j*o1.freq*o2.psi21 + invr*1j*o1.freq*o1.psi)
         h_u_rhs = -2*self.iR*1j*Q*o2.u21 + invr*du0*o2.psi21 + u0*invr**2*o2.psi21 - (2/self.beta)*o2.B21 - self.iR*o1.u
         h_A_rhs = -self.iRm*2*1j*self.Q*o2.A21 - o2.psi21 - self.iRm*o1.A
         h_B_rhs = -self.iRm*2*1j*self.Q*o2.B21 - invr*du0*o2.A21 - o2.u21 + invr**2*u0*o2.A21 - invr**3*2*self.xi*o2.psi21 - self.iRm*o1.B
