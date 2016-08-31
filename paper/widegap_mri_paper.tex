@@ -293,7 +293,14 @@ where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices d
 &+ \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \\\label{eq:ordere3}
 \end{align}
 
-See Appendix \ref{app:basic_equations} for the definition of matrices and nonlinear vectors, and a thorough derivation. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the narrow gap case, although the matrices, which contain all radial derivatives, are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution $\mathbf{V}_1 = \alpha(Z, T) \mathbb{V}_{11}(r) e^{i k_z z} + c.c.$, where the radial variation is contained in $\mathbb{V}_{11}$. 
+See Appendix \ref{app:basic_equations} for the definition of matrices and nonlinear vectors, and a thorough derivation. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the narrow gap case, although the matrices, which contain all radial derivatives, are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution 
+
+\beq
+\label{eq:ansatz}
+\mathbf{V}_1 = \alpha(Z, T) \mathbb{V}_{11}(r) e^{i k_z z} + c.c.,
+\eeq
+
+where the radial variation is contained in $\mathbb{V}_{11}$. 
 
 We solve the equations at each order using Dedalus, an open source pseudospectral code (Burns et al. in prep). We solve the radial portion of the eigenvectors on a basis of Chebyshev polynomials subject to our radial boundary conditions. %Because our domain is bounded only radially and not vertically, we solve the radial dimension on a basis of Chebyshev polynomials, and the vertical dimension on a Fourier series basis. 
 We solve Equation \ref{eq:ordere} as a linear eigenvalue problem, and Equation \ref{eq:ordere2} as a linear boundary value problem. %should i mention spurious eigenvals? 
@@ -454,7 +461,10 @@ and the constituent matrices are defined as
 
 %The GLE is derived from 
 %Equation \ref{eq:ordere3} is resonant with 
-To find a bounded solution at $\mathcal{O}(\epsilon^3)$ we must eliminate secular terms: terms which are resonant with the solution to the linear homogenous equation $(\mathcal{L} + \xi \widetilde{\mathcal{H}}) \mathbf{V} = 0$ and cause the solution to grow without bound. To eliminate these terms we enforce a solvability condition, which arises as a consequence of the Fredholm alternative. This solvability condition is the requirement that the inner product of the equation with its adjoint homogenous solution is zero. We define the adjoint operator $\mathcal{L}^\dagger$ and solution $\mathbf{V}^\dagger$ as 
+To find a bounded solution at $\mathcal{O}(\epsilon^3)$ we must eliminate secular terms: terms which are resonant with the solution to the linear homogenous equation $(\mathcal{L} + \xi \widetilde{\mathcal{H}}) \mathbf{V} = 0$ and cause the solution to grow without bound. Secular terms in our system are those that are resonant with the linear ansatz (Equation \ref{eq:ansatz}), i.e. terms with $e^{i k_c z}$ z-dependence. To eliminate these terms we enforce a solvability condition, which arises from a corollary to the Fredholm alternative. The Fredholm alternative states that if we consider a system of equations $\mathcal{L} \mathbf{V} = \mathbf{b}$ and its adjoint homogenous system $\mathcal{L}^\dagger \mathbf{V}^\dagger = 0$, only one of two conditions holds. Either there exists one and only one solution to the inhomogenous system, or the homogenous adjoint equation has a nontrivial solution. The relevant corollary arises as a consequence of the second condition: if $\mathcal{L}^\dagger \mathbf{V}^\dagger = 0$ has a nontrivial solution, then $\mathcal{L} \mathbf{V} = \mathbf{b}$ has a solution if and only if $\langle \mathbf{V}^\dagger | b \rangle = 0$. 
+
+% This solvability condition is the requirement that the inner product of the equation with its adjoint homogenous solution is zero. 
+We define the adjoint operator $\mathcal{L}^\dagger$ and solution $\mathbf{V}^\dagger$ as 
 
 \beq
 \langle \mathbf{V^\dagger} | (\mathcal{L} + \xi \widetilde{\mathcal{H}}) \mathbf{V} \rangle = \langle (\mathcal{L}^\dagger + \xi \widetilde{\mathcal{H}}^\dagger) \mathbf{V}^\dagger | \mathbf{V} \rangle,
@@ -519,7 +529,17 @@ must be solved subject to the boundary conditions
 \Psi^\dagger = \partial_r \Psi^\dagger = u^\dagger = A^\dagger = \partial_r (r B^\dagger) = 0.
 \eeq
 
-We similarly define appropriate boundary conditions for the insulating case. We take the inner product of the adjoint homogenous solution with the terms in Equation \ref{eq:ordere3} that are resonant with $e^{i k_c z}$. This gives us
+For the insulating case, the adjoint boundary conditions are
+
+\beq
+k \frac{I_0 (k r)}{I_1 (k r)} r A^\dagger - 2 A^\dagger - r \partial_r A^\dagger = 0 \, \, \mathrm{at} \, \,   r = r_1
+\eeq
+
+\beq
+- k \frac{K_0 (k r)}{K_1 (k r)} r A^\dagger - 2 A^\dagger - r \partial_r A^\dagger = 0 \, \, \mathrm{at} \, \,   r = r_2
+\eeq
+
+We take the inner product of the adjoint homogenous solution with the terms in Equation \ref{eq:ordere3} that are resonant with $e^{i k_c z}$. This gives us
 
 \beq
 \langle \mathbb{V}^\dagger | \mathcal{D} \mathbb{V}_{11} \rangle \partial_T \alpha + \langle  \mathbb{V}^\dagger | \widetilde{\mathcal{G}} \mathbb{V}_{11} - \xi \widetilde{\mathcal{H}} \mathbb{V}_{11} \rangle \alpha +  \langle \mathbb{V}^\dagger | \widetilde{\mathcal{L}}_1 \mathbb{V}_{21} + \widetilde{\mathcal{L}}_2 \mathbb{V}_{11} + \xi \mathcal{H} \mathbb{V}_{21} \rangle \partial_Z^2 \alpha = \langle \mathbb{V}^\dagger | \mathbf{N}_{31} \rangle \alpha |\alpha|^2,
