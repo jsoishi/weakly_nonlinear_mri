@@ -105,11 +105,11 @@ class Equations():
         self.problem.substitutions['plane_avg(A)'] = 'integ(A, "z")/Lz'
         self.problem.substitutions['vol_avg(A)']   = 'integ(A)/Lz'
         self.problem.substitutions['vx'] = 'dz(psi)'
-        self.problem.substitutions['vz'] = '-psi_x**2'
+        self.problem.substitutions['vz'] = '-psi_x'
         self.problem.substitutions['Bx'] = 'dz(A)'
-        self.problem.substitutions['Bz'] = '-A_x**2'
+        self.problem.substitutions['Bz'] = '-A_x'
         self.problem.substitutions['KE'] = '(vx**2 + vz**2 + u**2)/2'
-        self.problem.substitutions['BE'] = '(Bx**2 + Bz**2 + b**2)/2'
+        self.problem.substitutions['BE'] = '(Bx**2 + Bz**2 + b**2)/beta'
         self.problem.substitutions['vx_rms'] = 'sqrt(vx**2)'
         self.problem.substitutions['vy_rms'] = 'sqrt(u*u)'
         self.problem.substitutions['vz_rms'] = 'sqrt(vz**2)'
@@ -119,7 +119,7 @@ class Equations():
         self.problem.substitutions['psi_rms'] = 'sqrt(psi**2)'
         self.problem.substitutions['A_rms'] = 'sqrt(A**2)'
         self.problem.substitutions['Re_stress'] = 'vx*u'
-        self.problem.substitutions['Max_stress'] = 'Bx*b'
+        self.problem.substitutions['Max_stress'] = '-2/beta * Bx*b'
 
 class MRI_equations(Equations):
     """
