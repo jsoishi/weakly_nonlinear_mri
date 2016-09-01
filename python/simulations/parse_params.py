@@ -1,3 +1,5 @@
+import re
+
 def parse_params(dirname,basename):
     parstr = dirname.split(basename, 1)[1].lstrip("_")
     parstr = parstr.split("_")
