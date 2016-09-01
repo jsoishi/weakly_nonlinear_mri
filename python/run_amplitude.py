@@ -21,12 +21,21 @@ import h5py
 #Pm = tgc['Pm'].value[indx].real
 #Rm = tgc['Rm_c'].value[indx].real
 #Q = tgc['Q_c'].value[indx].real
+
+# parameters like Umurhan+
+"""
 Pm = 1.0E-6
 Rm = 4.87322391646 
 Q = 0.74641163216928608
-
 q = 1.5
 beta = 25.0
+"""
+# parameters like Goodman & Ji (but thingapped)
+q = 1.9149705511835795
+beta = 41.2
+Pm = 1.6E-4
+Rm = 2.10717703478
+Q = 0.66135735868343559
 
 gridnum = 128
 x_basis = de.Chebyshev('x',gridnum)

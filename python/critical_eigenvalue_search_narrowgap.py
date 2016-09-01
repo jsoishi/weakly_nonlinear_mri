@@ -12,12 +12,13 @@ logger = logging.getLogger(__name__)
 
 Q = 0.75
 #Pm = 1e-3
-#q = 1.5
-#beta = 25.0
+q = 1.5
+beta = 25.0
+Pm = 1.0E-5
 
-q = 1.9149705511835795
-beta = 41.2
-Pm = 1.6E-4
+#q = 1.9149705511835795
+#beta = 41.2
+#Pm = 1.6E-4
 
 x = de.Chebyshev('x',100)
 d = de.Domain([x],comm=MPI.COMM_SELF)
