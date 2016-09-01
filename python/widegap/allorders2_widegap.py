@@ -725,10 +725,10 @@ class OrderE2(MRI):
             bv20.parameters['bessel2'] = special.kn(0, self.Q*self.R2)/special.kn(1, self.Q*self.R2)
         
         # these are multiplied by [r^4, r^2, r, r^2]
-        bv20.add_equation("1j*omega*r**3*psirr - 1j*omega*r**2*psir - iR*(r**3*dr(psirrr) - r**2*2*psirrr + r*3*psirr - 3*psir) = rhs_psi20")
-        bv20.add_equation("1j*omega*r**2*u - iR*(r**2*dr(ur) + r*ur - u) = rhs_u20")
-        bv20.add_equation("1j*omega*r*A - iRm*(r*dr(Ar) - Ar) = rhs_A20")
-        bv20.add_equation("1j*omega*r**2*B - iRm*(r**2*dr(Br) + r*Br - B) = rhs_B20")
+        bv20.add_equation("-iR*(r**3*dr(psirrr) - r**2*2*psirrr + r*3*psirr - 3*psir) = rhs_psi20")
+        bv20.add_equation("-iR*(r**2*dr(ur) + r*ur - u) = rhs_u20")
+        bv20.add_equation("-iRm*(r*dr(Ar) - Ar) = rhs_A20")
+        bv20.add_equation("-iRm*(r**2*dr(Br) + r*Br - B) = rhs_B20")
         
         bv20.add_equation("dr(psi) - psir = 0")
         bv20.add_equation("dr(psir) - psirr = 0")
@@ -950,10 +950,10 @@ class OrderE2(MRI):
         bv22.substitutions['twooverbeta'] = '(2.0/beta)'
         
         # multiplied by [r^4, r^3, r, r^3]^T
-        bv22.add_equation("-4*1j*Q**2*omega*r**3*psi + 1j*omega*r**3*psirr - 1j*omega*r**2*psir - r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi + twooverbeta*r**2*2*xi*(2*1j*Q)*B = rhs_psi22")
-        bv22.add_equation("1j*omega*r**3*u + rrdu0*dz*psi + ru0*dz*psi - r**3*twooverbeta*dz*B - r**3*iR*dr(ur) - r**2*iR*ur - r**3*iR*dz**2*u + r*iR*u = rhs_u22")
-        bv22.add_equation("1j*omega*r*A - dz*psi*r - r*iRm*dr(Ar) + iRm*Ar - r*iRm*dz**2*A = rhs_A22")
-        bv22.add_equation("1j*omega*r**3*B - dz*rrdu0*A - dz*r**3*u + ru0*dz*A - iRm*r**3*dr(Br) - r**2*iRm*Br - iRm*r**3*dz**2*B + r*iRm*B - 2*xi*(2*1j*Q)*psi = rhs_B22") #checked 7/14/16 - these are all right
+        bv22.add_equation("-8*1j*Q**2*omega*r**3*psi + 2*1j*omega*r**3*psirr - 2*1j*omega*r**2*psir - r**2*ru0*dz*2*u - twooverbeta*r**3*dz*dr(Ar) + twooverbeta*r**2*dz*Ar - twooverbeta*r**3*dz**3*A - iR*r**3*dr(psirrr) + 2*iR*r**2*psirrr - 2*iR*r**3*dz**2*psirr - 3*iR*r*psirr + 2*iR*r**2*dz**2*psir + 3*iR*psir - iR*r**3*dz**4*psi + twooverbeta*r**2*2*xi*(2*1j*Q)*B = rhs_psi22")
+        bv22.add_equation("2*1j*omega*r**3*u + rrdu0*dz*psi + ru0*dz*psi - r**3*twooverbeta*dz*B - r**3*iR*dr(ur) - r**2*iR*ur - r**3*iR*dz**2*u + r*iR*u = rhs_u22")
+        bv22.add_equation("2*1j*omega*r*A - dz*psi*r - r*iRm*dr(Ar) + iRm*Ar - r*iRm*dz**2*A = rhs_A22")
+        bv22.add_equation("2*1j*omega*r**3*B - dz*rrdu0*A - dz*r**3*u + ru0*dz*A - iRm*r**3*dr(Br) - r**2*iRm*Br - iRm*r**3*dz**2*B + r*iRm*B - 2*xi*(2*1j*Q)*psi = rhs_B22") #checked 7/14/16 - these are all right
         
         bv22.add_equation("dr(psi) - psir = 0")
         bv22.add_equation("dr(psir) - psirr = 0")
