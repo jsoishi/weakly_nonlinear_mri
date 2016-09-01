@@ -69,7 +69,7 @@ def find_crit(domain, Pm, q, beta):
     return q_c, Rm_c
 
 if __name__ == "__main__":
-    Pm = 1e-3
+    Pm = 1e-6
     q = 1.5
     beta = 25.0
 
