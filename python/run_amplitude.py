@@ -37,7 +37,7 @@ Pm = 1.6E-4
 Rm = 2.10717703478
 Q = 0.66135735868343559
 
-gridnum = 128
+gridnum = 256
 x_basis = de.Chebyshev('x',gridnum)
 domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)
