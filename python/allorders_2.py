@@ -141,7 +141,7 @@ class MRI():
         # this value read from A(x = 0) figure 2c of Umurhan, Regev, &
         # Menou (2007) using WebPlotDigitizer. I estimate the error to
         # be +0.03/-0.04.
-        Amax = 0.535#*2
+        Amax = 1.0#0.535#*2
         norm = A.interpolate(x = 0)['g'][0]/Amax
         
         #logger.warn('normalizing by int u instead')
