@@ -3,7 +3,7 @@
 #PBS -l select=2:ncpus=10:mpiprocs=10:model=has
 #PBS -l walltime=02:00:00
 #PBS -j oe
-#PBS -q devel
+#PBS -q normal
 
 dedalus_script=run_amplitude
 
