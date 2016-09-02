@@ -1,9 +1,9 @@
 #PBS -S /bin/bash
 #PBS -N CritEvalSearchbyRm
 #PBS -l select=2:ncpus=10:mpiprocs=10:model=has
-#PBS -l walltime=02:00:00
+#PBS -l walltime=00:30:00
 #PBS -j oe
-#PBS -q normal
+#PBS -q devel
 
 dedalus_script=critical_eigenvalue_search_narrowgap
 

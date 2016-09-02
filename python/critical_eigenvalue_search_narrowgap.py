@@ -18,7 +18,9 @@ Q = 0.75
 
 q = 1.9149705511835795
 beta = 41.2
-Pm = 1.6E-5
+#Pm = 1.6E-5
+
+Pm=1.6E-6
 
 print("MRI params: q = {}, beta = {}, Pm = {}".format(q, beta, Pm))
 
