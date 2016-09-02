@@ -3,7 +3,7 @@
 #PBS -l select=2:ncpus=10:mpiprocs=10:model=has
 #PBS -l walltime=16:00:00
 #PBS -j oe
-#PBS -q devel
+#PBS -q long
 
 dedalus_script=run_hmri_amplitude
 
