@@ -114,7 +114,7 @@ The basic equations solved are the momentum and induction equations,
 
 \beq\label{momentum}
 %\begin{split}
-\partial_t \mathbf{u} + \mathbf{u} \cdot \nabla \mathbf{u} = -\frac{1}{\rho}\nabla P - \nabla\Phi + \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) + \nu\nabla^2 \mathbf{u} 
+\partial_t \mathbf{u} + \mathbf{u} \cdot \nabla \mathbf{u} = -\frac{1}{\rho}\nabla P - \nabla\Phi + \frac{1}{c\rho} \left(\mathbf{J}\times\mathbf{B}\right) + \nu\nabla^2 \mathbf{u} 
 %\end{split}
 \eeq
 
@@ -124,7 +124,7 @@ and
 \partial_t \mathbf{B} = \nabla \times \left(\mathbf{u} \times \mathbf{B}\right) + \eta\nabla^2\mathbf{B},
 \eeq
 
-where $P$ is the gas pressure, $\nu$ is the kinematic viscosity, $\eta$ is the microscopic diffusivity, $\nabla\Phi$ is the gravitational force per unit mass, and the current density is $\mathbf{J} = \nabla\times\mathbf{B}$. We solve these equations subject to the incompressible fluid and solenoidal magnetic field constraints,
+where $P$ is the gas pressure, $\nu$ is the kinematic viscosity, $\eta$ is the microscopic diffusivity, $\nabla\Phi$ is the gravitational force per unit mass, and the current density is $\mathbf{J} = c \nabla\times\mathbf{B}/4\pi$. We solve these equations subject to the incompressible fluid and solenoidal magnetic field constraints,
 
 \beq
 \label{eq:incompressibility}
