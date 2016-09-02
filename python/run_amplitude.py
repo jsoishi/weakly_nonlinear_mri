@@ -33,9 +33,13 @@ beta = 25.0
 # parameters like Goodman & Ji (but thingapped)
 q = 1.9149705511835795
 beta = 41.2
-Pm = 1.6E-4
-Rm = 2.10717703478
-Q = 0.66135735868343559
+#Pm = 1.6E-4
+#Rm = 2.10717703478
+#Q = 0.66135735868343559
+
+Pm = 1.6e-05
+Rm = 2.10561962101
+Q = 0.66065191266056189
 
 gridnum = 256
 x_basis = de.Chebyshev('x',gridnum)
