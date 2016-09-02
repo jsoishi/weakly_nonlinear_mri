@@ -279,7 +279,13 @@ Just as in the weakly nonlinear analyses of \citei{Umurhan:2007hs} and \citei{Cl
 \mathcal{D}\partial_t\mathbf{V} + \mathcal{L}\mathbf{V} + \epsilon^2 \widetilde{\mathcal{G}} \mathbf{V} + \xi \widetilde{\mathcal{H}} \mathbf{V} +  \mathbf{N} = 0,
 \eeq
 
-where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices defined in Appendix \ref{app:basic_equations}, and $\mathbf{N}$ is a vector containing all nonlinear terms defined in Appendix \ref{app:nonlinear_terms}. We expand the variables in a perturbation series $\mathbf{V} = \epsilon \mathbf{V}_1 + \epsilon^2 \mathbf{V}_2 + \epsilon^3 \mathbf{V}_3 + h.o.t.$ The perturbed system can then be expressed at each order by the equations
+where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices defined in Appendix \ref{app:basic_equations}, and $\mathbf{N}$ is a vector containing all nonlinear terms. We expand the variables in a perturbation series 
+
+\beq
+\mathbf{V} = \epsilon \mathbf{V}_1 + \epsilon^2 \mathbf{V}_2 + \epsilon^3 \mathbf{V}_3 + h.o.t.
+\eeq
+
+ The perturbed system can then be expressed at each order by the equations
 
 \begin{align}
 \mathcal{O}(\epsilon)&: \mathcal{L} \mathbf{V}_1 + \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \mathcal{D} \partial_t \mathbf{V}_1 = 0 \label{eq:ordere}\\
@@ -288,7 +294,7 @@ where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices d
 &+ \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \label{eq:ordere3}\\
 \end{align}
 
-See Appendix \ref{app:basic_equations} for the definition of matrices and nonlinear vectors, and a thorough derivation. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the narrow gap case, although the matrices, which contain all radial derivatives, are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. In the standard MRI case, $\sigma = 0$ at marginality and so the $\partial_t$ terms drop out of the equations. For the helical MRI case, however, $\sigma$ has a nonzero imaginary component even at threshold, so we must formally include these terms in our perturbation expansion. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution 
+The nonlinear terms $\mathbf{N}_2$ and $\mathbf{N}_3$ which appear at $\mathcal{O}(\epsilon^2)$ and $\mathcal{O}(\epsilon^3)$, respectively, contain the nonlinear interaction between MRI modes. The system is weakly nonlinear because this mode interaction occurs in a controlled way. At $\mathcal{O}(\epsilon^2)$, the nonlinear terms represent the interaction of linear ($\mathcal{O}(\epsilon)$) MRI modes with themselves and their complex conjugates. At $\mathcal{O}(\epsilon^3)$, the nonlinear terms contain the interaction between first- and second-order MRI modes. See Appendix \ref{app:basic_equations} for the definition of matrices and a thorough derivation, and Appendix \ref{app:nonlinear_terms} for the detailed form of the nonlinear vectors. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the narrow gap case, although the matrices, which contain all radial derivatives, are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. In the standard MRI case, $\sigma = 0$ at marginality and so the $\partial_t$ terms drop out of the equations. For the helical MRI case, however, $\sigma$ has a nonzero imaginary component even at threshold, so we must formally include these terms in our perturbation expansion. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution 
 
 \beq
 \label{eq:ansatz}
@@ -297,8 +303,9 @@ See Appendix \ref{app:basic_equations} for the definition of matrices and nonlin
 
 where the radial variation is contained in $\mathbb{V}_{11}$, and $\sigma = \gamma + i\omega$. 
 
-We solve the equations at each order using Dedalus, an open source pseudospectral code (Burns et al. in prep). We solve the radial portion of the eigenvectors on a basis of Chebyshev polynomials subject to our radial boundary conditions. %Because our domain is bounded only radially and not vertically, we solve the radial dimension on a basis of Chebyshev polynomials, and the vertical dimension on a Fourier series basis. 
-We solve Equation \ref{eq:ordere} as a linear eigenvalue problem, and Equation \ref{eq:ordere2} as a linear boundary value problem. %should i mention spurious eigenvals? 
+We solve the equations at each order using Dedalus, an open source pseudospectral code. We solve the radial portion of the eigenvectors on a basis of Chebyshev polynomials subject to our radial boundary conditions. %Because our domain is bounded only radially and not vertically, we solve the radial dimension on a basis of Chebyshev polynomials, and the vertical dimension on a Fourier series basis. 
+We solve Equation \ref{eq:ordere} as a linear eigenvalue problem, and Equation \ref{eq:ordere2} as a linear boundary value problem. 
+ %should i mention spurious eigenvals? 
 %To analyze the MRI system at marginality, we fix the parameters listed in Table \ref{table:parameters} and determine the critical $\reym$ and $k_z$ by repeatedly solving Equation \ref{eq:ordere} to determine the smallest parameter values for which the fastest growing mode is zero. That is, we solve the linear eigenvalue problem for eigenvalues $\sigma = \gamma + i \omega$. Figure \ref{fig:growth_rates} shows linear MRI growth rates $\gamma$ in the $(\reym, k_z)$ plane. For the fiducial standard MRI parameters in Table \ref{table:parameters} we find critical parameters $\reym_c = 0.84$, $k_c = 0.0127$. 
 
 %We defer full expressions and derivations thereof to the Appendix, and focus here on features of the wide gap system which distinguish it from the narrow gap limit.
@@ -351,8 +358,7 @@ Figure \ref{fig:wide_narrow_N31B} shows the structure of the third-order nonline
 %Channel modes are radially independent linear MRI modes which are, under certain conditions, exact nonlinear solutions to the MRI equations. 
 
 \subsection{Helical MRI}
-\label{sec:HMRI}
-When $\xi$ in Equation \ref{eq:unperturbed_matrix_eqns} is not equal to zero, the helical MRI arises. We examine a single fiducial helical MRI case, for the parameters used by \citei{Hollerbach:2005tr}, listed in Table \ref{table:parameters}. The helical MRI is an overstability, so the ansatz linear eigenvector we consider (Equation \ref{eq:ansatz}) is characterized by a complex temporal eigenvalue $\sigma$. For our fiducial parameters, the marginal mode has a frequency $\omega = 0.153$. This means that the helical MRI modes are traveling waves, moving in the $z$ direction with a phase velocity $\omega/k_c$ = .
+When $\xi$ in Equation \ref{eq:unperturbed_matrix_eqns} is not equal to zero, the helical MRI arises. We examine a single fiducial helical MRI case, for the parameters used by \citei{Hollerbach:2005tr}, listed in Table \ref{table:parameters}. The helical MRI is an overstability, so the ansatz linear eigenvector we consider (Equation \ref{eq:ansatz}) is characterized by a complex temporal eigenvalue $\sigma$. For our fiducial parameters, the marginal mode has a frequency $\omega = 0.153$. This means that the helical MRI modes are traveling waves, moving in the $z$ direction with a phase velocity $\omega/k_c$.
 
 At the conclusion of the weakly nonlinear analysis, we find that the coefficients of Equation \ref{eq:gle} are complex. The marginal helical MRI is thus described by a complex GLE. This difference in character between the amplitude equations that modulate the weakly nonlinear standard and helical MRI is a consequence of the same property that makes the helical MRI an overstability. With the introduction of an azimuthal component, the background magnetic field acquires a handedness that is not present in a purely axial field. The helical MRI eigenvectors are therefore free to be out of phase with one another. In our perturbation series, the helical MRI modes interact within and between orders with modes which carry different phases, leading to complex GLE coefficients.
 
@@ -362,10 +368,14 @@ Although a detailed description of the phase dynamics in the helical MRI is beyo
 
 \section{Discussion}
 \label{sec:discussion}
+In this work we carry out a formal weakly nonlinear multiscale analysis of the MRI in a Taylor Couette flow. We analyze both the standard and helical MRI, which differ only in the geometry of their imposed background magnetic fields. We find that the amplitude function, which governs the behavior of the system on long length- and timescales, obeys a real GLE for the case of the standard MRI, and a complex GLE for the helical MRI. These two systems are thus subject to different large-scale phase dynamics. 
+
 Our work should be placed in the broader context of emergent pattern formation in physical systems. The real Ginzburg-Landau equation derived here governs the slow-parameter evolution of the standard MRI close to threshold. The GLE arises in a number of other physical systems, and in each case it is a consequence not of the particular physics at hand, but of the underlying symmetries in the problem. Here we make a phenomenological comparison to two other systems that give rise to a GLE. The first and perhaps most famous is Rayleigh-B\'enard convection, in which a fluid between two plates is heated from below (\citei{Newell:1969wr}). If we take the plane of the fluid to be infinite in the horizontal plane, the system is initially translationally symmetric. %When the system eventually becomes unstable to convective heat transfer it undergoes a symmetry breaking, allowing the 
 At the onset of convection the system undergoes a symmetry breaking, forming rolls, or convection cells, which break the horizontal translational invariance. Analogously, the standard MRI system considered here is initially vertically translationally symmetric, because we idealize the Taylor-Couette device as an infinitely long cylinder. The MRI breaks this symmetry, forming cells along the vertical length of the domain. Just as Rayleigh-B\'enard cells transport heat vertically, the MRI cells transport angular momentum horizontally. The symmetry breaking of each of these systems is described near onset by the real GLE. 
 
 A real GLE has also been found to describe the formation of zonal flows out of magnetized turbulence in a model system (\citei{Parker:2013hy}). Zonal flows are axisymmetric structures, large-scale and long-lived, which form spontaneously out of turbulence. They have recently been observed in some numerical studies of the MRI, and have generated considerable interest for their possible role in planet formation in protoplanetary disks (\citei{Johansen:2009uj}, \citei{Kunz:2013}). The present work is of course an idealized geometry, and we make no attempt to model a realistic protoplanetary disk environment. However, it is worth noting that the GLE we derive implies that axisymmetric, large-scale, long-lived structures are a generic feature of the MRI in the weakly nonlinear regime. This work provides a mathematical description of the MRI as a pattern-forming process, but much remains to be understood, particularly involving the application of this model system to realistic astrophysical disks. Our model is most directly relevant to Taylor-Couette flows, and we emphasize that laboratory MRI experiments stand poised to observe the MRI-driven pattern formation predicted here. 
+
+This is the first weakly nonlinear analysis of the MRI in a cylindrical geometry, and the theory developed here should be compared to analytic studies of the MRI in local approximations \citep{Umurhan:2007hs,Vasil:2015}. We find that the saturation amplitude of the standard MRI scales somewhat more steeply with $\Pm$ than does this same system system in the narrow gap approximation.
 
 The theory presented here may be extended in several ways. 
 
@@ -757,6 +767,9 @@ Umurhan, O.M., Regev, O., Menou, K., 2007, Phys. Rev. Letters, 98, 034501
 
 \bibitem[{Umurhan et al.(2007b)}]{Umurhan:2007hs}
 Umurhan, O.M., Regev, O., Menou, K., 2007, Phys. Rev. E, 76, 036310
+
+\bibitem[{Vasil(2015)}]{Vasil:2015}
+Vasil, G. M. 2015, RSPSA 471, 20140699
 
 \bibitem[{Willis \& Barenghi(2002)}]{Willis:2002bh}
 Willis, A.P. \& Barenghi, C.F. 2002, JFM 463, 361
