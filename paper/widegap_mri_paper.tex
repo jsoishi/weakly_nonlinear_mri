@@ -92,7 +92,7 @@ Our investigation is astrophysically motivated, but we also intend our theory to
 
 Our radial treatment includes the curvature of the flow in a cylindrical apparatus. Many investigations of the MRI use the ``narrow gap'' approximation (the shearing box is a narrow gap without boundary walls), in which the radial extent of the fluid channel is taken to be much smaller than the radius of curvature. That is, for a center channel radius $r_0$ bounded by inner and outer radii $r_1$ and $r_2$, respectively, the narrow gap approximation applies when $r_0 \gg (r_2 - r_1)$. The narrow gap approximation simplifies the MRI equations by excluding curvature terms, because the flow through a narrow gap can be taken to be approximately linear in $\phi$, i.e. Cartesian. Previous investigations into the weakly nonlinear behavior of the MRI have used this narrow gap approximation (\citei{Umurhan:2007dz}, \citei{Umurhan:2007hs}, \citei{Clark:2016}). In this work we undertake the first (to our knowledge) weakly nonlinear analysis of the MRI in the wide gap regime, where the channel width may be comparable to or larger than its distance from the center of rotation.
 
-Because we include curvature terms, our treatment also allows us to study the helical magnetorotational instability (HMRI). The HMRI is an overstability in which the background magnetic field is helical, $\mathbf{B} = B_0 (\xi r/r_0 \mathbf{\hat{\phi}} + \mathbf{\hat{z}})$ \citet{Hollerbach:2005tr}. The HMRI currently occupies a special place in the MRI puzzle. The HMRI has been proposed as a method of awakening angular momentum transport in the ``dead zones" of protoplanetary disks where the $\Pm$ becomes very small. However the rotation profiles needed to excite HMRI may be steeper than Keplerian, depending on the boundary conditions, and so its role in astrophysical disks is currently a matter of debate \citep{Liu:2006,Rudiger:2007,Kirillov:2013}. Regardless of its astrophysical role, the HMRI is significantly easier to excite in a laboratory setting than the standard MRI, and has already been detected by the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE; \citei{Stefani:2006iv}, \citei{Stefani:2009hp}).
+Because we include curvature terms, our treatment also allows us to study the helical magnetorotational instability. The helical MRI is an overstability in which the background magnetic field is helical, $\mathbf{B} = B_0 (\xi r/r_0 \mathbf{\hat{\phi}} + \mathbf{\hat{z}})$ \citet{Hollerbach:2005tr}. The helical MRI currently occupies a special place in the MRI puzzle. The helical MRI has been proposed as a method of awakening angular momentum transport in the ``dead zones" of protoplanetary disks where the $\Pm$ becomes very small. However the rotation profiles needed to excite helical MRI may be steeper than Keplerian, depending on the boundary conditions, and so its role in astrophysical disks is currently a matter of debate \citep{Liu:2006,Rudiger:2007,Kirillov:2013}. Regardless of its astrophysical role, the helical MRI is significantly easier to excite in a laboratory setting than the standard MRI, and has already been detected by the Potsdam Rossendorf Magnetic Instability Experiment (PROMISE; \citei{Stefani:2006iv}, \citei{Stefani:2009hp}).
 
 In this work we explore the behavior of the viscous, dissipative MRI in a cylindrical geometry close to threshold, making explicit comparisons to the standard MRI behavior in the thin-gap regime. We investigate both the standard MRI, in which the background magnetic field is purely axial, as well as the helical MRI. In section~\ref{sec:wide_gap}, we lay out the basic mathematical framework of the problem. In section~\ref{sec:wnl_analysis}, we introduce the method of multiple scales we use to construct our theory. In section~\ref{sec:results} we describe the basic results, and in section~\ref{sec:discussion} we place them in the context of previous work on other instabilities, discuss their relevance to experiments, and reiterate our final conclusions.
 
@@ -108,7 +108,7 @@ In this work we explore the behavior of the viscous, dissipative MRI in a cylind
 \caption{Eigenfunctions of the first order equations, first order adjoint homogenous equations, and second order equations. We use our fiducial parameters for the standard MRI ($\xi = 0$). Eigenfunctions are solved on a 512-element grid of Chebyshev polynomials. First-order eigenfunctions are normalized such that $A_{11}(r_0) = 1$. Adjoint homogenous eigenfunctions are normalized such that $\langle V_{11}^\dagger \cdot \mathcal{D} V_{11} \rangle = 1$.}\label{fig:linear_eigenfunctions}
 \end{figure*}
 
-\section{Wide Gap Equations}
+\section{Basic Framework}
 \label{sec:wide_gap}
 The basic equations solved are the momentum and induction equations,
 
@@ -197,7 +197,7 @@ We initialize a magnetic field
 
 so that the base magnetic field is axial when $\xi = 0$ and otherwise helical. 
 
-In this work we will focus our findings on two fiducial parameter sets, one for the standard MRI where $\xi = 0$ and one for the helical MRI. We choose the SMRI parameters to be comparable to the case considered in \citei{Goodman:2002ix}. The HMRI parameters were chosen to be comparable to \citei{Hollerbach:2005tr}. Our fiducial parameters are described in Table \ref{table:parameters}.
+In this work we will focus our findings on two fiducial parameter sets, one for the standard MRI where $\xi = 0$ and one for the helical MRI. We choose the SMRI parameters to be comparable to the case considered in \citei{Goodman:2002ix}. The helical MRI parameters were chosen to be comparable to \citei{Hollerbach:2005tr}. Our fiducial parameters are described in Table \ref{table:parameters}.
 
 \begin{widetext}
 Our perturbed system is 
@@ -386,6 +386,8 @@ We detail several avenues for future work, which highlight the application of th
 \item The radial boundary conditions considered here may be expanded to mimic astrophysical disks rather than TC devices.
 \item This theory may be compared to simulations in both the weakly and strongly nonlinear regimes. 
 \end{itemize}
+
+
 
 \section{Acknowledgments}
 S.E.C. was supported by a National Science Foundation Graduate Research Fellowship under grant No. DGE-11-44155. J.S.O. acknowledges support from NASA grant 15-LWS15\_2-0063. The authors thank Mordecai Mac Low, Jeremy Goodman, John Krommes, Geoff Vasil, Ellen Zweibel, etc for useful discussion.
