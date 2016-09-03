@@ -23,16 +23,20 @@ import h5py
 #Q = tgc['Q_c'].value[indx].real
 
 # parameters like Umurhan+
-"""
-Pm = 1.0E-6
-Rm = 4.87322391646 
-Q = 0.74641163216928608
+
+#Pm = 1.0E-6
+#Rm = 4.87322391646 
+#Q = 0.74641163216928608
 q = 1.5
 beta = 25.0
-"""
+
+Pm = 1e-05
+Rm=4.87329607521
+Q=0.74626253853759861
+
 # parameters like Goodman & Ji (but thingapped)
-q = 1.9149705511835795
-beta = 41.2
+#q = 1.9149705511835795
+#beta = 41.2
 #Pm = 1.6E-4
 #Rm = 2.10717703478
 #Q = 0.66135735868343559
@@ -41,11 +45,11 @@ beta = 41.2
 #Rm = 2.10561962101
 #Q = 0.66065191266056189
 
-Pm = 1.6e-06
-Rm=2.10544049314
-Q=0.66049326571719358
+#Pm = 1.6e-06
+#Rm=2.10544049314
+#Q=0.66049326571719358
 
-gridnum = 512
+gridnum = 256
 x_basis = de.Chebyshev('x',gridnum)
 domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)
