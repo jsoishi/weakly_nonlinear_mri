@@ -16,17 +16,18 @@ import h5py
 #Pm = 1E-2#1e-3
 
 # indx = 0 : Pm = 1E-4
-#tgc = h5py.File('../data/pm_sat_coeffs.h5', 'r')
+tgc = h5py.File('../data/pm_sat_coeffs.h5', 'r')
 #for indx in range(len(tgc['Pm'].value)):
-#Pm = tgc['Pm'].value[indx].real
-#Rm = tgc['Rm_c'].value[indx].real
-#Q = tgc['Q_c'].value[indx].real
+indx=0
+Pm = tgc['Pm'].value[indx].real
+Rm = tgc['Rm_c'].value[indx].real
+Q = tgc['Q_c'].value[indx].real
 
 # parameters like Umurhan+
 
-Pm = 1.0E-6
-Rm = 4.87322391646 
-Q = 0.74641163216928608
+#Pm = 1.0E-6
+#Rm = 4.87322391646 
+#Q = 0.74641163216928608
 q = 1.5
 beta = 25.0
 
