@@ -61,7 +61,7 @@ We conduct a formal weakly nonlinear analysis of the magnetorotational instabili
 
 \section{Introduction}
 
-The magnetorotational instability (MRI) is widely belived to drive angular momentum transport in astrophysical disks. The MRI is a local instability excited by weak magnetic fields in differentially rotating fluids, and since its discovery \citet{Balbus:1991vs} it has been widely invoked to explain accretion in protoplanetary disks \citep{Armitage:2010} and disks around black holes \citep{Blaes:2014}, as well as jet and wind launching (\citei{Lesur:2013}) anisotropic turbulence \citep{Murphy:2015tn}, and dynamos \citep{Vishniac:2009il} among other phenomena. 
+The magnetorotational instability (MRI) is widely belived to drive angular momentum transport in astrophysical disks. The MRI is a local instability excited by weak magnetic fields in differentially rotating fluids, and since its discovery \citet{Balbus:1991vs} it has been widely invoked to explain accretion in protoplanetary disks \citep{Armitage:2010} and disks around black holes \citep{Blaes:2014}, as well as jet and wind launching (\citei{Lesur:2013}) anisotropic turbulence \citep{Murphy:2015tn}, and dynamo generation \citep{Vishniac:2009il}. 
 
 
 %\begin{widetext}
@@ -201,12 +201,12 @@ In this work we will focus our findings on two fiducial parameter sets, one for 
 \begin{widetext}
 Our perturbed system is 
 
-\beq
+\begin{align}
 %\begin{split}
-\label{eq:Psi_perturbed}
-\frac{1}{r}\partial_t (\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi) - \frac{2}{\beta} \frac{1}{r}B_0 \partial_z (\nabla^2 A - \frac{2}{r} \partial_r A) - \frac{2}{r}u_0 \partial_z u_\phi + \frac{2}{\beta} \frac{2}{r^2}B_0 \xi \partial_z B_\phi - \frac{1}{\reye} \left[ \nabla^2 (\frac{1}{r} \nabla^2 \Psi) - \frac{1}{r^3} \partial_r^2 \Psi - \frac{1}{r^4}\partial_r\Psi\right] = N^{(\Psi)}
+& \frac{1}{r}\partial_t (\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi) - \frac{2}{\beta} \frac{1}{r}B_0 \partial_z (\nabla^2 A - \frac{2}{r} \partial_r A) - \frac{2}{r}u_0 \partial_z u_\phi + \frac{2}{\beta} \frac{2}{r^2}B_0 \xi \partial_z B_\phi \nonumber\\
+& - \frac{1}{\reye} \left[ \nabla^2 (\frac{1}{r} \nabla^2 \Psi - \frac{2}{r^2}\partial_r\Psi) - \frac{1}{r^3} \nabla^2 \Psi + \frac{2}{r^4}\partial_r\Psi\right] = N^{(\Psi)} \label{eq:Psi_perturbed}
 %\end{split}
-\eeq
+\end{align}
 
 \begin{align}
 & \partial_t \uphi + \frac{1}{r^2} u_0 \partial_z \Psi + \frac{1}{r} \partial_r u_0 \partial_z \Psi - \frac{2}{\beta} B_0 \partial_z B_\phi - \frac{1}{\reye} ( \nabla^2 \uphi - \frac{1}{r^2} \uphi ) = N^{(u)} \label{eq:uphi_perturbed} \\
