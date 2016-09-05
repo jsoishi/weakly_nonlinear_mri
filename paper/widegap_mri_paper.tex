@@ -649,47 +649,48 @@ Here we detail the perturbative expansion of the nonlinear vector $\mathbf{N}$ i
 \eeq
 
 \beq
-N_2^{\Psi}  = J(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1) + J(\Psi_1, -\frac{2}{r^3}\partial_r\Psi_1)
-- \frac{2}{\beta} J (A_1, \frac{1}{r^2} \nabla^2 A_1) - \frac{2}{\beta} J(A_1, -\frac{2}{r^3} \partial_r A_1) - \frac{2}{r} u_1 \partial_z u_1 + \frac{2}{\beta} \frac{2}{r} B_1 \partial_z B_1
+N_2^{\Psi}  = -J(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1) - J(\Psi_1, -\frac{2}{r^3}\partial_r\Psi_1)
++ \frac{2}{\beta} J (A_1, \frac{1}{r^2} \nabla^2 A_1) + \frac{2}{\beta} J(A_1, -\frac{2}{r^3} \partial_r A_1) + \frac{2}{r} u_1 \partial_z u_1 - \frac{2}{\beta} \frac{2}{r} B_1 \partial_z B_1
 \eeq
 
 \beq
 \begin{split}
-N_2^{u} = \frac{1}{r} J\left(\Psi_1, u_1\right) - \frac{1}{r} \frac{2}{\beta} J\left(A_1, B_1\right) + \frac{1}{r^2} u_1 \partial_z \Psi_1 - \frac{2}{\beta}\frac{1}{r^2} B_1 \partial_z A_1
+N_2^{u} = -\frac{1}{r} J\left(\Psi_1, u_1\right) + \frac{1}{r} \frac{2}{\beta} J\left(A_1, B_1\right) - \frac{1}{r^2} u_1 \partial_z \Psi_1 + \frac{2}{\beta}\frac{1}{r^2} B_1 \partial_z A_1
 \end{split}
 \eeq
 
 \beq
-N_2^A = -\frac{1}{r} J\left(A_1, \Psi_1\right)
+N_2^A = \frac{1}{r} J\left(A_1, \Psi_1\right)
 \eeq
 
 \beq
-N_2^B = -\frac{1}{r} J\left(A_1, u_1\right) - \frac{1}{r} J\left(B_1, \Psi_1\right) - \frac{1}{r^2} B_1 \partial_z \Psi_1 + \frac{1}{r^2} u_1 \partial_z A_1
+N_2^B = \frac{1}{r} J\left(A_1, u_1\right) - \frac{1}{r} J\left(\Psi_1, B_1\right) + \frac{1}{r^2} B_1 \partial_z \Psi_1 - \frac{1}{r^2} u_1 \partial_z A_1
 \eeq
 
 \beq
 \begin{split}
-N_3^{\Psi} & = J(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_2) + J(\Psi_2, \frac{1}{r^2} \nabla^2\Psi_1) + 2 J (\Psi_1, \frac{1}{r^2}\partial_Z\partial_z \Psi_1) + J(\Psi_1, -\frac{2}{r^3}\partial_r \Psi_2) + J(\Psi_2, -\frac{2}{r^3}\partial_r \Psi_1) \\
-& + \widetilde{J}(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1) + \widetilde{J} (\Psi_1, -\frac{2}{r^3}\partial_r \Psi_1) - \frac{2}{\beta} J(A_1, \frac{1}{r^2}\nabla^2 A_2) - \frac{2}{\beta} J(A_2, \frac{1}{r^2}\nabla^2 A_1) - \frac{4}{\beta} J(A_1, \frac{1}{r^2}\partial_Z\partial_z A_1) \\ & - \frac{2}{\beta} J(A_1, -\frac{2}{r^3} \partial_r A_2 ) 
- - \frac{2}{\beta} J(A_2, -\frac{2}{r^3} \partial_r A_1) - \frac{2}{\beta} \widetilde{J} (A_1, \frac{1}{r^2} \nabla^2 A_1) - \frac{2}{\beta} \widetilde{J} (A_1, -\frac{2}{r^3} \partial_r A_1) \\
-& - \frac{2}{r} u_1 \partial_z u_2 - \frac{2}{r} u_2 \partial_z u_1 - \frac{2}{r} u_1 \partial_Z u_1 + \frac{2}{\beta}\frac{2}{r} B_1\partial_z B_2 + \frac{2}{\beta}\frac{2}{r} B_2 \partial_z B_1 + \frac{2}{\beta} \frac{2}{r} B_1 \partial_Z B_1
+N_3^{\Psi} & = -J(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_2) - J(\Psi_2, \frac{1}{r^2} \nabla^2\Psi_1) - 2 J (\Psi_1, \frac{1}{r^2}\partial_Z\partial_z \Psi_1) - J(\Psi_1, -\frac{2}{r^3}\partial_r \Psi_2) - J(\Psi_2, -\frac{2}{r^3}\partial_r \Psi_1) \\
+& - \widetilde{J}(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1) - \widetilde{J} (\Psi_1, -\frac{2}{r^3}\partial_r \Psi_1) + \frac{2}{\beta} J(A_1, \frac{1}{r^2}\nabla^2 A_2) + \frac{2}{\beta} J(A_2, \frac{1}{r^2}\nabla^2 A_1) + \frac{4}{\beta} J(A_1, \frac{1}{r^2}\partial_Z\partial_z A_1) \\ 
+& + \frac{2}{\beta} J(A_1, -\frac{2}{r^3} \partial_r A_2 ) + \frac{2}{\beta} J(A_2, -\frac{2}{r^3} \partial_r A_1) + \frac{2}{\beta} \widetilde{J} (A_1, \frac{1}{r^2} \nabla^2 A_1) + \frac{2}{\beta} \widetilde{J} (A_1, -\frac{2}{r^3} \partial_r A_1) \\
+& + \frac{2}{r} u_1 \partial_z u_2 + \frac{2}{r} u_2 \partial_z u_1 + \frac{2}{r} u_1 \partial_Z u_1 - \frac{2}{\beta}\frac{2}{r} B_1\partial_z B_2 - \frac{2}{\beta}\frac{2}{r} B_2 \partial_z B_1 - \frac{2}{\beta} \frac{2}{r} B_1 \partial_Z B_1
 \end{split}
 \eeq
 
 \beq
 \begin{split}
-N_3^u & = \frac{1}{r}J\left(\Psi_1, u_2\right) + \frac{1}{r}J\left(\Psi_2, u_1\right) + \frac{1}{r}\widetilde{J} \left(\Psi_1, u_1\right) - \frac{1}{r}\frac{2}{\beta} J\left(A_1, B_2\right) - \frac{1}{r} \frac{2}{\beta} J\left(A_2, B_1\right) - \frac{1}{r}\frac{2}{\beta}\widetilde{J}\left(A_1, B_1\right) \\
-& + \frac{1}{r^2} u_1\partial_z \Psi_2 + \frac{1}{r^2} u_2 \partial_z \Psi_1 + \frac{1}{r^2} u_1 \partial_Z \Psi_1 - \frac{2}{\beta} \frac{1}{r^2} B_1 \partial_z A_2 - \frac{2}{\beta} \frac{1}{r^2} B_2 \partial_z A_1 - \frac{2}{\beta} \frac{1}{r^2} B_1 \partial_Z A_1
+N_3^u & = -\frac{1}{r}J\left(\Psi_1, u_2\right) - \frac{1}{r}J\left(\Psi_2, u_1\right) - \frac{1}{r}\widetilde{J} \left(\Psi_1, u_1\right) + \frac{1}{r}\frac{2}{\beta} J\left(A_1, B_2\right) + \frac{1}{r} \frac{2}{\beta} J\left(A_2, B_1\right) + \frac{1}{r}\frac{2}{\beta}\widetilde{J}\left(A_1, B_1\right) \\
+& - \frac{1}{r^2} u_1\partial_z \Psi_2 - \frac{1}{r^2} u_2 \partial_z \Psi_1 - \frac{1}{r^2} u_1 \partial_Z \Psi_1 + \frac{2}{\beta} \frac{1}{r^2} B_1 \partial_z A_2 + \frac{2}{\beta} \frac{1}{r^2} B_2 \partial_z A_1 + \frac{2}{\beta} \frac{1}{r^2} B_1 \partial_Z A_1
 \end{split}
 \eeq
 
 \beq
-N_3^A = -\frac{1}{r} J\left(A_1, \Psi_2\right) - \frac{1}{r}J\left(A_2, \Psi_1\right) - \frac{1}{r} \widetilde{J}\left(A_1, \Psi_1\right)
+N_3^A = \frac{1}{r} J\left(A_1, \Psi_2\right) + \frac{1}{r}J\left(A_2, \Psi_1\right) + \frac{1}{r} \widetilde{J}\left(A_1, \Psi_1\right)
 \eeq
 
 \beq
 \begin{split}
-N_3^B & = - \frac{1}{r} J\left(A_1, u_2\right) - \frac{1}{r} J\left(A_2, u_1\right) - \frac{1}{r}\widetilde{J}\left(A_1, u_1\right) - \frac{1}{r} J\left(B_1, \Psi_2\right) - \frac{1}{r} J\left(B_2, \Psi_1\right) - \frac{1}{r} \widetilde{J} \left(B_1, u_1\right) \\ & - \frac{1}{r^2} B_1\partial_z \Psi_2 - \frac{1}{r^2} B_2 \partial_z \Psi_1 - \frac{1}{r^2} B_1 \partial_Z \Psi_1 + \frac{1}{r^2} u_1 \partial_z A_2 + \frac{1}{r^2} u_2 \partial_z A_1 + \frac{1}{r^2} u_1 \partial_Z A_1
+N_3^B & = \frac{1}{r} J\left(A_1, u_2\right) + \frac{1}{r} J\left(A_2, u_1\right) + \frac{1}{r}\widetilde{J}\left(A_1, u_1\right) + \frac{1}{r} J\left(B_1, \Psi_2\right) + \frac{1}{r} J\left(B_2, \Psi_1\right) + \frac{1}{r} \widetilde{J} \left(B_1, u_1\right) \\ 
+& + \frac{1}{r^2} B_1\partial_z \Psi_2 + \frac{1}{r^2} B_2 \partial_z \Psi_1 + \frac{1}{r^2} B_1 \partial_Z \Psi_1 - \frac{1}{r^2} u_1 \partial_z A_2 - \frac{1}{r^2} u_2 \partial_z A_1 - \frac{1}{r^2} u_1 \partial_Z A_1
 \end{split}
 \eeq
 
