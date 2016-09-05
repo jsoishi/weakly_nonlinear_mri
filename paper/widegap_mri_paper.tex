@@ -61,7 +61,7 @@ We conduct a formal weakly nonlinear analysis of the magnetorotational instabili
 
 \section{Introduction}
 
-The magnetorotational instability (MRI) is widely belived to drive angular momentum transport in astrophysical disks. The MRI is a local instability excited by weak magnetic fields in differentially rotating fluids, and since its discovery \citet{Balbus:1991vs} it has been widely invoked to explain accretion in protoplanetary disks (see \citei{Armitage:2010} and references therein), binary systems (), and disks around black holes (), as well as jet and wind launching (\citei{Lesur:2013}), dynamos, etc (cite these). 
+The magnetorotational instability (MRI) is widely belived to drive angular momentum transport in astrophysical disks. The MRI is a local instability excited by weak magnetic fields in differentially rotating fluids, and since its discovery \citet{Balbus:1991vs} it has been widely invoked to explain accretion in protoplanetary disks \citep{Armitage:2010} and disks around black holes \citep{Blaes:2014}, as well as jet and wind launching (\citei{Lesur:2013}) anisotropic turbulence \citep{Murphy:2015tn}, and dynamos \citep{Vishniac:2009il} among other phenomena. 
 
 
 %\begin{widetext}
@@ -110,7 +110,7 @@ In this work we explore the behavior of the viscous, dissipative MRI in a cylind
 \begin{figure*}
 \centering
 \includegraphics[width=\textwidth]{../figures/widegap_n2_n3_Pm16E-7.pdf}
-\caption{Nonlinear terms $N_2$ and $N_3$ for our fiducial standard MRI parameters. These are nonlinear combinations of lower-order eigenfunctions, representing the weakly nonlinear mode interaction. At second order ($N_2$) the most unstable linear MRI mode interacts with itself and its complex conjugate. At third order ($N_3$) the first and second order MRI modes interact with each other.}\label{fig:N2_N3}
+\caption{Nonlinear terms $N_2$ and $N_3$ for our fiducial standard MRI parameters. These are nonlinear combinations of lower-order eigenfunctions. At second order ($N_2$) the most unstable linear MRI mode interacts with itself and its complex conjugate. At third order ($N_3$) the first and second order MRI modes interact with each other.}\label{fig:N2_N3}
 \end{figure*}
 
 \section{Basic Framework}
@@ -254,23 +254,31 @@ and $B = 0$ at $r = r_1, r_2$ (see \citei{Willis:2002bh}). Here, $I_n$ and $K_n$
 
 We note that Equations \ref{eq:Psi_perturbed} - \ref{eq:Bphi_perturbed} are written in a nonstandard form, with the nonlinear terms on the righthand side. This choice has a practical motivation. As detailed in \S\ref{sec:wnl_analysis}, we expand these equations in a perturbation series and solve them order by order using a pseudospectral code. The code solves partial differential equations of the form $\mathrm{M} \partial_t \mathbf{V} + \mathrm{L} \mathbf{V} = \mathbf{F}$, where $\mathrm{M}$ and $\mathrm{L}$ are matrices and $\mathbf{F}$ is a vector containing any inhomogenous terms. The nonlinear terms in our perturbation analysis become inhomogenous term inputs to the solver.
 
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{../figures/widegap_thingap_comparison_zoombox.png}
+\caption{Nonlinear term $N_{31}^{(A)}$ for the wide gap (left) and narrow gap (right) standard MRI, where the wide gap is the TC flow considered in this work. Terms shown span three orders of magnitude in $\Pm$. The wide gap vectors represent runs using the parameters in Table \ref{table:parameters} and $\Pm = 1.6E-4, 1.6E-5, 1.6E-6$. The narrow gap MRI runs use the fiducial parameters in \citet{Umurhan:2007hs}, with $\Pm = 1E-4, 1E-5, 1E-6$. Inlaid plots show zoomed-in views of boundary layers at the inner boundary. The wide gap case displays dramatic boundary layers only at the inner boundary, but boundary layers in the thin gap approximation are symmetric about the origin because MRI modes in the narrow gap approximation are eigenstates of parity.}\label{fig:thin_wide_comparison} 
+\end{figure*}
+
+
 \section{Weakly Nonlinear Perturbation Analysis}\label{sec:wnl_analysis}
 \label{sec:Perturbation}
+
 \begin{figure}
 \centering
 \includegraphics[width=\columnwidth]{../figures/widegap_coeffs_satampscaling_fivepoints.png}
 \caption{Critical parameters $\reym_c$ and $k_c$, and coefficients of the Ginzburg-Landau equation (Equation \ref{eq:gle}) as a function of $\Pm$. Note the very weak dependence of the linear ($b$) and diffusive ($h$) coefficients on $\Pm$. The saturation amplitude $\alpha_{sat} = \sqrt{b/c}$ of the standard MRI system has a power law dependence on $\Pm$ which we measure to be $\alpha_{sat} \sim \Pm^{0.777}$. This scaling is driven by the $\Pm$ dependence of the nonlinear coefficient $c$.}\label{fig:coefficients}
 \end{figure}
 
+We find the marginal system as a function of the dimensionless parameters. The marginal stability curve for our standard MRI system is a hyperplane in $(\reym, \Pm, \beta, \Omega_2/\Omega_1, \mathrm{R}_1/\mathrm{R}_2$), but we hold all of these constant except for $\reym$. To analyze the MRI system at marginality, we fix the parameters listed in Table \ref{table:parameters} and determine the critical $\reym$ and vertical wavenumber $k_z$ by repeatedly solving the linear MRI system to determine the smallest parameter values for which the fastest growing mode has zero growth rate. That is, we solve the linear eigenvalue problem for eigenvalues $\sigma = \gamma + i \omega$ and determine the parameters which yield $\gamma = 0$. Figure \ref{fig:growth_rates} shows linear MRI growth rates $\gamma$ in the $(\reym, k_z)$ plane. For the fiducial standard MRI parameters in Table \ref{table:parameters} we find critical parameters $\reym_c = 3.30$ and $k_c = 0.901$.
+
 \begin{figure*}
 \centering
-\includegraphics[width=\textwidth]{../figures/widegap_thingap_comparison_zoombox.png}
-\caption{Nonlinear term $N_{31}^{(B)}$ for the wide gap (left) and narrow gap (right) standard MRI. Each line represents a run for a different $\Pm$, from $\Pm = 1E-4$ (darkest) to $\Pm \sim 1E-3$ (lightest). Inlaid plot in wide gap case shows a zoomed-in view of the boundary layer at the outer boundary ($r_2$). In the narrow gap case the boundary layer strongly affects the bulk of the flow, while in the wide gap case the flow in the center of the channel is relatively unaffected by width of the boundary layers.}\label{fig:wide_narrow_N31B}
+\includegraphics[width=\textwidth]{../figures/widegap_vel_Bfield_streamfuncs_512_final_wider.png}
+\caption{Perturbation structure for the velocity and magnetic field of the fiducial standard MRI case, including first and second order perturbations. Leftmost panel is a radially zoomed-in section of the velocity perturbation structure, to better show the boundary layer-driven structure at the inner cylinder. Colors are azimuthal velocity and magnetic field perturbations, and streamfunctions show the perturbation structure in the $r, z$ plane. The width of the streamfunctions is proportional to the speed and magnetic field strength in the $r, z$ plane for the velocity and magnetic field, respectively. Vertical domain covers one critical wavelength $\lambda_c = 2\pi / k_c$. We use the constant saturation amplitude $\alpha_{s} = 3.9 \times 10^{-5}$ derived for this case, and a small parameter $\epsilon = 0.5$.}\label{fig:smri_streamfuncs}
 \end{figure*}
 
-We find the marginal system as a function of the dimensionless parameters. The marginal stability curve for our standard MRI system is a hyperplane in $(\reym, \Pm, \beta, \Omega_2/\Omega_1, \mathrm{R}_1/\mathrm{R}_2$), but we hold all of these constant except for $\reym$. To analyze the MRI system at marginality, we fix the parameters listed in Table \ref{table:parameters} and determine the critical $\reym$ and $k_z$ by repeatedly solving the linear MRI system to determine the smallest parameter values for which the fastest growing mode is zero. That is, we solve the linear eigenvalue problem for eigenvalues $\sigma = \gamma + i \omega$. Figure \ref{fig:growth_rates} shows linear MRI growth rates $\gamma$ in the $(\reym, k_z)$ plane. For the fiducial standard MRI parameters in Table \ref{table:parameters} we find critical parameters $\reym_c = 3.30$ and $k_c = 0.901$.
-
-Just as in the weakly nonlinear analyses of \citei{Umurhan:2007hs} and \citei{Clark:2016}, we tune the system away from marginality by taking $B_0 \rightarrow B_0\left(1 - \epsilon^2\right)$, where $\epsilon \ll 1$. We parameterize scale separation as $Z = \epsilon z$ and $T = \epsilon^2 t$, where $Z$ and $T$ are slowly varying spatial and temporal scales, respectively. We group the fluid variables into a state vector $\mathbf{V} = \left[\Psi, u, A, B\right]^{\mathrm{T}}$, such that the full nonlinear system in Equations \ref{eq:Psi_perturbed} - \ref{eq:nonlinear_B} can be expressed as
+Just as in the weakly nonlinear analyses of \citei{Umurhan:2007hs} and \citei{Clark:2016}, we tune the system away from marginality by taking $B_0 \rightarrow B_0\left(1 - \epsilon^2\right)$, where the small parameter $\epsilon \ll 1$. We parameterize scale separation as $Z = \epsilon z$ and $T = \epsilon^2 t$, where $Z$ and $T$ are slowly varying spatial and temporal scales, respectively. We group the fluid variables into a state vector $\mathbf{V} = \left[\Psi, u, A, B\right]^{\mathrm{T}}$, such that the full nonlinear system in Equations \ref{eq:Psi_perturbed} - \ref{eq:nonlinear_B} can be expressed as
 
 \beq\label{eq:unperturbed_matrix_eqns}
 \mathcal{D}\partial_t\mathbf{V} + \mathcal{L}\mathbf{V} + \epsilon^2 \widetilde{\mathcal{G}} \mathbf{V} + \xi \widetilde{\mathcal{H}} \mathbf{V} +  \mathbf{N} = 0,
@@ -286,9 +294,11 @@ where $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ are matrices d
 
 \begin{align}
 \mathcal{O}(\epsilon)&: \mathcal{L} \mathbf{V}_1 + \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \mathcal{D} \partial_t \mathbf{V}_1 = 0 \label{eq:ordere}\\
-\mathcal{O}(\epsilon^2)&: \mathcal{L} \mathbf{V}_2 + \xi \widetilde{\mathcal{H}} \mathbf{V}_2 + \mathcal{D} \partial_t \mathbf{V}_2 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_1 + \xi \mathcal{H} \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \label{eq:ordere2}\\
-\mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \xi \widetilde{\mathcal{H}} \mathbf{V}_3 + \mathcal{D} \partial_t \mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2\nonumber \\ 
-&+ \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0. \label{eq:ordere3}\\
+\mathcal{O}(\epsilon^2)&: \mathcal{L} \mathbf{V}_2 + \xi \widetilde{\mathcal{H}} \mathbf{V}_2 + \mathcal{D} \partial_t \mathbf{V}_2 + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_1 \nonumber\\
+& + \xi \mathcal{H} \partial_Z \mathbf{V}_1 + \mathbf{N}_2 = 0 \label{eq:ordere2}\\
+\mathcal{O}(\epsilon^3)&: \mathcal{L}\mathbf{V}_3 + \xi \widetilde{\mathcal{H}} \mathbf{V}_3 + \mathcal{D} \partial_t \mathbf{V}_3 + \mathcal{D} \partial_T \mathbf{V}_1 \nonumber\\
+&+ \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_2 + \xi \mathcal{H}\partial_Z \mathbf{V}_2 + \widetilde{\mathcal{L}}_2 \partial_Z^2 \mathbf{V}_1 - \xi \widetilde{\mathcal{H}} \mathbf{V}_1 \nonumber\\
+& + \widetilde{\mathcal{G}} \mathbf{V}_1 + \mathbf{N}_3 = 0.\label{eq:ordere3}
 \end{align}
 
 The nonlinear terms $\mathbf{N}_2$ and $\mathbf{N}_3$ which appear at $\mathcal{O}(\epsilon^2)$ and $\mathcal{O}(\epsilon^3)$, respectively, contain the nonlinear interaction between MRI modes. The system is weakly nonlinear because this mode interaction occurs in a controlled way. At $\mathcal{O}(\epsilon^2)$, the nonlinear terms represent the interaction of linear ($\mathcal{O}(\epsilon)$) MRI modes with themselves and their complex conjugates. At $\mathcal{O}(\epsilon^3)$, the nonlinear terms contain the interaction between first- and second-order MRI modes. See Appendix \ref{app:basic_equations} for the definition of matrices and a thorough derivation, and Appendix \ref{app:nonlinear_terms} for the detailed form of the nonlinear vectors. We emphasize that Equations \ref{eq:ordere} - \ref{eq:ordere3} have the same form as these equations in the narrow gap case, although the matrices, which contain all radial derivatives, are significantly different in this wide gap formulation. This is because we do not have slow variation in the radial dimension. In the standard MRI case, $\sigma = 0$ at marginality and so the $\partial_t$ terms drop out of the equations. For the helical MRI case, however, $\sigma$ has a nonzero imaginary component even at threshold, so we must formally include these terms in our perturbation expansion. The slow variation in $Z$ and $T$ are parameterized as an amplitude function $\alpha(Z, T)$ which modulates the flow in these dimensions. This parameterization coupled with the boundary conditions lead us to an ansatz linear solution 
@@ -307,7 +317,7 @@ We solve Equation \ref{eq:ordere} as a linear eigenvalue problem, and Equation \
 
 %We defer full expressions and derivations thereof to the Appendix, and focus here on features of the wide gap system which distinguish it from the narrow gap limit.
 
-The result of the weakly nonlinear analysis is a single amplitude equation for $\alpha$. This amplitude equation is found by enforcing a solvability criterion on Equation \ref{eq:ordere3}. We find
+The result of the weakly nonlinear analysis is a single amplitude equation for $\alpha$. This amplitude equation is found by enforcing a solvability condition on Equation \ref{eq:ordere3}. We find
 
 \beq
  \label{eq:gle}
@@ -331,7 +341,7 @@ a Ginzburg-Landau equation (GLE). The GLE governs the weakly nonlinear amplitude
 \begin{figure}
 \centering
 \includegraphics[width=\columnwidth]{../figures/widegap_totalstress_intstress.png}
-\caption{Reynolds ($\mathbb{T}_{R} = u_r u_\phi$), Maxwell ($\mathbb{T}_{M} = -\frac{2}{\beta} B_r B_\phi$), and total stress ($\mathbb{T} = \mathbb{T}_{R} + \mathbb{T}_{M}$) for the fiducial standard MRI case. }
+\caption{Total stress $\mathrm{T}(r, z) = u_r u_\phi - \frac{2}{\beta} B_r B_\phi$ , i.e. the sum of the Reynolds and Maxwell stresses for the fiducial standard MRI parameters (top panel). Bottom panel shows the vertically integrated stress $\int \mathrm{T}(r, z) \, dz$.}\label{fig:total_stress}
 \end{figure}
 
 
@@ -342,16 +352,10 @@ a Ginzburg-Landau equation (GLE). The GLE governs the weakly nonlinear amplitude
 %\caption{Visualization of the velocity perturbation field in the fiducial SMRI case. The three dimensional path of t%wenty randomly placed tracer particles is plotted, where the particle velocity is defined as the total (first + second %order) velocity perturbation. This is meant to be a visualization only of the velocity field, so the particle motion f%eels no contribution from the magnetic field.}
 %\end{figure}
 
-\begin{figure*}
-\centering
-\includegraphics[width=\textwidth]{../figures/widegap_vel_Bfield_streamfuncs_512_final_wider.png}
-\caption{Perturbation structure for the velocity and magnetic field of the fiducial standard MRI case, including first and second order perturbations. Leftmost panel is a radially zoomed-in section of the velocity perturbation structure, to better show the boundary layer-driven structure at the inner cylinder. Colors are azimuthal velocity and magnetic field perturbations, and streamfunctions show the perturbation structure in the $r, z$ plane. The width of the streamfunctions is proportional to the speed and magnetic field strength in the $r, z$ plane for the velocity and magnetic field, respectively.}
-\end{figure*}
-
 \subsection{Standard MRI}
 \label{sec:SMRI}
 For the standard MRI we derive a real GLE. Here we note a departure from the behavior of the narrow gap system. The purely conducting boundary condition states that the axial component of the current ($\mathbf{J}_z = [\nabla \times \mathbf{B}]_z)$ must be zero at the walls. In the thin gap geometry, the purely conducting boundary condition on the azimuthal magnetic field is $\partial_x(B_y) = 0$ for axisymmetric perturbations. A spatially constant azimuthal field satisfies both the thin-gap MRI equations and this boundary condition. This neutral mode is formally included in the analysis of \citei{Umurhan:2007hs} and yields a second amplitude equation in the form of a simple diffusion equation. This amplitude equation decouples from the GLE because of the translational symmetry of the thin-gap geometry. Because that symmetry is not preserved in the wide-gap case, \citeauthor{Umurhan:2007hs} postulate that slow variation in the wide-gap geometry will be governed by two coupled amplitude equations. %However, the wide-gap conducting boundary condition $J_z = \frac{1}{r} \partial_r (r B_\phi) = 0$, together with the purely geometric term in Equation \ref{eq:Bphi_perturbed}, conspire to prevent the wide-gap geometry from sustaining a neutral mode. 
-However, the purely geometric term in Equation \ref{eq:Bphi_perturbed} prevents the wide-gap geometry from sustaining a neutral mode. We note that a neutral mode of the form $B_\phi(r) \propto \frac{1}{r}$ would exist in a resistance-free approximation.
+However, the purely geometric term in Equation \ref{eq:Bphi_perturbed} prevents the wide-gap geometry from sustaining a neutral mode. We note that a neutral mode of the form $B_\phi(r) \propto \frac{1}{r}$ would exist in a resistance-free approximation. Here, however, this mode does not exist and we derive a single real GLE as the amplitude equation of the standard MRI.
 
 The preservation of symmetries in the thin-gap geometry is worth a closer look, as its absence in the wide gap case is the source of many differences in the systems. \citei{Latter:2015} point out that in the ideal limit ($\nu, \eta \rightarrow 0$), the linearized system described by the lefthand side of Equations \ref{eq:Psi_perturbed} - \ref{eq:Bphi_perturbed} can be expressed as a Schr{\"o}dinger equation for the radial velocity. Similarly combining equations to obtain a single expression for $\Psi$, we find that the thin-gap limit linear ideal MRI can be expressed as
 
@@ -359,29 +363,32 @@ The preservation of symmetries in the thin-gap geometry is worth a closer look, 
 \partial_x^2 \Psi + k_z^2 \mathrm{U}(x) \Psi = 0
 \eeq 
 
-where $\mathrm{U}(x) = {3}/{v_A^2 k_z^2} + 1$ at marginality. This form is not unique to the ideal MHD case, though the ideal approximation simplifies the expression considerably. When no-slip radial boundary conditions are applied, the thin-gap MRI system resembles a particle in a box with a radially constant potential well. Thus thin-gap linear MRI modes must be eigenstates of parity. These symmetries are preserved in the nonlinear MRI terms because they are nonlinear combinations of lower-order eigenfunctions. In the wide gap case, the ``potential" $\mathrm{U}(r)$ varies with $r$, so symmetric and antisymmetric modes are no longer required. This lack of symmetry is readily apparent in the eigenfunctions and nonlinear vectors in Figures \ref{fig:linear_eigenfunctions} and \ref{fig:N2_N3}, both of which display enhanced boundary layer activity at the inner boundary as compared to the outer boundary. The inner and outer boundary layers are symmetric in the thin gap case.
+where $\mathrm{U}(x) = {3}/{v_A^2 k_z^2} + 1$ at marginality. This form is not unique to the ideal MHD case, though the ideal approximation simplifies the expression considerably. When no-slip radial boundary conditions are applied, the thin-gap MRI system resembles a particle in a box with a radially constant potential well. Thus thin-gap linear MRI modes must be eigenstates of parity. These symmetries are preserved in the nonlinear MRI vectors because they are nonlinear combinations of lower-order eigenfunctions. In the wide gap case, the ``potential" $\mathrm{U}(r)$ varies with $r$, so symmetric and antisymmetric modes are no longer required. This lack of symmetry is readily apparent in the eigenfunctions and nonlinear vectors in Figures \ref{fig:linear_eigenfunctions} and \ref{fig:N2_N3}, both of which display enhanced boundary layer activity at the inner boundary as compared to the outer boundary. The inner and outer boundary layers are symmetric in the thin gap case (see Figure \ref{fig:thin_wide_comparison}).
 
-The form of the nonlinear terms, detailed in Appendix \ref{app:nonlinear_terms}, represent a departure from the thin-gap theory. The narrow gap nonlinear terms at both second and third orders are linear combinations of Jacobians. The nonlinear terms in the wide-gap case differ from their thin-gap analogues with the addition of vertical advective terms. These terms derive from the advective derivatives in the momentum and induction equations, but are filtered out in the thin-gap approximation. The nonlinear terms ultimately determine the dependence of the saturation amplitude on $\Pm$, as described below. %These advective terms allow the nonlinear contributions at both second and third order (i.e. N$_2$ and N$_3$) not to individually satisfy the boundary conditions on $\Psi$ and $u$. %(I'm just guessing but this may lead to higher torque on inner cylinder -- should calculate) 
+The form of the nonlinear terms, detailed in Appendix \ref{app:nonlinear_terms}, represent a departure from the thin-gap theory. The narrow gap nonlinear terms at both second and third orders are linear combinations of Jacobians. The nonlinear terms in the wide-gap case differ from their thin-gap analogues with the addition of vertical advective terms. These terms derive from the advective derivatives in the momentum and induction equations, but are filtered out in the thin-gap approximation. The nonlinear terms ultimately determine the saturation amplitude of the system, as described below. %These advective terms allow the nonlinear contributions at both second and third order (i.e. N$_2$ and N$_3$) not to individually satisfy the boundary conditions on $\Psi$ and $u$. %(I'm just guessing but this may lead to higher torque on inner cylinder -- should calculate) 
 
-We examine the behavior of the wide gap MRI system as a function of $\Pm$. Figure \ref{fig:coefficients} shows the critical parameters $k_c$ and $\reym$ as a function of $\Pm$, as well as the GLE linear coefficient $b$ and the diffusion coefficient $d$. The GLE coefficients are remarkably insensitive to $\Pm$. From Equation \ref{eq:gle} it is readily apparent that the asymptotic saturation amplitude is $\alpha_{s} = \pm \sqrt{b/c}$, so we conclude that the saturation amplitude of the MRI is only very weakly dependent on $\Pm$. Note that because $\reym$ is essentially constant as a function of $\Pm$, the saturation amplitude is equivalently insensitive to $\reye^{-1}$. This is in stark contrast to the narrow gap behavior of the system. For these same boundary conditions, \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}) find that the narrow gap saturation amplitude scales as $\Pm^{2/3}$. They find that this amplitude dependence is driven by the $\Pm^{1/3}$ dependence of the linear boundary layer. Boundary layer analysis similarly reveals a $\nu^{1/3}$ dependence for the radial extent of the boundary layer in TC flow (\citei{Goodman:2002ix}). %Why does the $\Pm$ scaling of the boundary layer width not translate to a stronger $\Pm$ scaling for the saturation amplitude in the wide gap case? The boundary layer in the wide gap case is strongly localized at the walls, i.e. $r_1$ and $r_2$. 
-Figure \ref{fig:wide_narrow_N31B} shows the structure of the third-order nonlinear term $N_{31}^{(A)}$ as a function of $\Pm$ for both the narrow and wide gap standard MRI. $N_{31}$ is the vector that determines the GLE coefficient $c$, and thus the scaling of the saturation amplitude because of the insensitivity of $b$ to $\Pm$ (see Appendix \ref{app:basic_equations} for the wide gap case, and \citei{Umurhan:2007hs}, \citei{Clark:2016} for the narrow gap equations). Clearly, the width of the boundary layers scales with $\Pm$ in both the wide and narrow gap MRI. This translates to a steeper saturation amplitude $\Pm$ dependence in the wide gap case.%However, in the narrow gap case this scaling extends prominently into the center of the channel, whereas for the wide gap case the bulk of the flow is relatively unaffected by the boundary layer scaling. 
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{../figures/hmri_velocity_Bfield_streamfuncs.png}
+\caption{As in Figure \ref{fig:smri_streamfuncs} but for the fiducial helical MRI case, including first and second order perturbations.}
+\end{figure*}
+
+We examine the behavior of the wide gap MRI system as a function of $\Pm$ in the regime $\Pm \ll 1$. Figure \ref{fig:coefficients} shows the critical parameters $k_c$ and $\reym$ as a function of $\Pm$, as well as the GLE linear coefficient $b$ and the diffusion coefficient $d$. From Equation \ref{eq:gle} it is readily apparent that the asymptotic saturation amplitude is $\alpha_{s} = \pm \sqrt{b/c}$, and we plot the dependence of $\alpha_{s}$ on $\Pm$ in the bottom panel of \ref{fig:coefficients}. %The GLE $b$ and $d$ coefficients are insensitive to $\Pm$, so the $\alpha_{s}$ scaling is driven by the dependence of the nonlinear coefficient $c$ on $\Pm$. 
+Note that because $\reym$ is essentially constant as a function of $\Pm$, the saturation amplitude is equivalently sensitive to $\reye^{-1}$. We find by fitting the data that the saturation amplitude scales as $\alpha_{s} \sim \Pm^{0.777}$. For these same boundary conditions, \citeauthor{Umurhan:2007hs} (\citeyear{Umurhan:2007hs}) find that the narrow gap saturation amplitude scales as $\Pm^{2/3}$. They find that this amplitude dependence is driven by the $\Pm^{1/3}$ dependence of the linear boundary layer. Boundary layer analysis similarly reveals a $\nu^{1/3}$ dependence for the radial extent of the boundary layer in TC flow (\citei{Goodman:2002ix}). %Why does the $\Pm$ scaling of the boundary layer width not translate to a stronger $\Pm$ scaling for the saturation amplitude in the wide gap case? The boundary layer in the wide gap case is strongly localized at the walls, i.e. $r_1$ and $r_2$. 
+Figure \ref{fig:thin_wide_comparison} shows the structure of the third-order nonlinear term $N_{31}^{(A)}$ as a function of $\Pm$ for both the narrow and wide gap standard MRI. $N_{31}$ is the vector that determines the GLE coefficient $c$, and thus the scaling of the saturation amplitude because of the insensitivity of $b$ to $\Pm$ (see Appendix \ref{app:basic_equations} for the wide gap case, and \citei{Umurhan:2007hs}, \citei{Clark:2016} for the narrow gap equations). Clearly, the width of the boundary layers scales with $\Pm$ in both the wide and narrow gap MRI. This translates to a steeper saturation amplitude $\Pm$ dependence in the wide gap case.%However, in the narrow gap case this scaling extends prominently into the center of the channel, whereas for the wide gap case the bulk of the flow is relatively unaffected by the boundary layer scaling. 
+
+Because it is governed by a real GLE, the saturated standard MRI state may be unstable to the Eckhaus instability, in which the wavelength of the large-scale pattern is adjusted \citep[e.g.][]{Hoyle:2006}. Preliminary investigation of the GLE behavior for the standard MRI coefficients derived here indicates that when the simulated vertical domain is large (i.e. spans multiple critical wavelengths), the amplitude function is modulated in $Z$, but always be bounded by $\alpha_{s} = \pm \sqrt{b/c}$, as must be the case for the one-dimensional real GLE. In Figure \ref{fig:smri_streamfuncs} we plot the saturated state perturbation structure of the fiducial standard MRI, up to and including second order disturbances. We use a constant saturation amplitude, but note that a nonconstant $\alpha_{s}$ would introduce more vertical structure. We similarly plot the total stress, i.e. the sum of the Reynolds and Maxwell stresses in our domain (Figure \ref{fig:total_stress}). We find that the saturation mechanism for weakly nonlinear TC flow is a reduction in the background shear profile. Thus the bounded cylindrical geometry considered here saturates via the same mechanism as in the narrow gap limit (\citei{Umurhan:2007hs}). 
 
 %\section{Channel Modes}
 %Channel modes are radially independent linear MRI modes which are, under certain conditions, exact nonlinear solutions to the MRI equations. 
 
 \subsection{Helical MRI}
 
-\begin{figure*}
-\centering
-\includegraphics[width=\textwidth]{../figures/hmri_velocity_Bfield_streamfuncs.png}
-\caption{sdfsdfs }
-\end{figure*}
-
-When $\xi$ in Equation \ref{eq:unperturbed_matrix_eqns} is not equal to zero, the helical MRI arises. We examine a single fiducial helical MRI case, for the parameters used by \citei{Hollerbach:2005tr}, listed in Table \ref{table:parameters}. The helical MRI is an overstability, so the ansatz linear eigenvector we consider (Equation \ref{eq:ansatz}) is characterized by a complex temporal eigenvalue $\sigma$. For our fiducial parameters, the marginal mode has a frequency $\omega = 0.153$. This means that the helical MRI modes are traveling waves, moving in the $z$ direction with a phase velocity $\omega/k_c$.
+When $\xi$ in Equation \ref{eq:unperturbed_matrix_eqns} is nonzero, the helical MRI arises. We examine a single fiducial helical MRI case, for the parameters used by \citei{Hollerbach:2005tr}, listed in Table \ref{table:parameters}. The helical MRI is an overstability, so the ansatz linear eigenvector we consider (Equation \ref{eq:ansatz}) is characterized by a complex temporal eigenvalue $\sigma$. For our fiducial parameters, the marginal mode has a frequency $\omega = 0.153$. This means that the helical MRI modes are traveling waves, moving in the $z$ direction with a phase velocity $\omega/k_c$.
 
 At the conclusion of the weakly nonlinear analysis, we find that the coefficients of Equation \ref{eq:gle} are complex. The marginal helical MRI is thus described by a complex GLE. This difference in character between the amplitude equations that modulate the weakly nonlinear standard and helical MRI is a consequence of the same property that makes the helical MRI an overstability. With the introduction of an azimuthal component, the background magnetic field acquires a handedness that is not present in a purely axial field. The helical MRI eigenvectors are therefore free to be out of phase with one another. In our perturbation series, the helical MRI modes interact within and between orders with modes which carry different phases, leading to complex GLE coefficients.
 
-The phase dynamics of the complex GLE are well-studied in a variety of systems, and depend on the values of the GLE coefficients. The complex GLE may be unstable to traveling wave instabilities such as the Benjamin-Feir instability, a generalization of the Ekhaus instability which acts on stationary waves, and to which the standard MRI system may be unstable. The complex GLE can also admit spatiotemporal chaos, and various classes of coherent structures (\citei{Aranson:2002}).
+The phase dynamics of the complex GLE are well-studied in a variety of systems, and depend on the values of the GLE coefficients. The complex GLE may be unstable to traveling wave instabilities such as the Benjamin-Feir instability, a generalization of the Ekhaus instability. The complex GLE can also admit spatiotemporal chaos, and various classes of coherent structures (\citei{Aranson:2002}).
 %Because the saturation amplitude of the weakly nonlinear helical MRI is governed by a complex GLE, the saturated state of the helical MRI may be unstable to 
 Although a detailed description of the phase dynamics in the helical MRI is beyond the scope of this work, we note that such long-wavelength, long-timescale behavior may be observed in liquid metal helical MRI experiments. 
 
@@ -393,8 +400,6 @@ Our work should be placed in the broader context of emergent pattern formation i
 At the onset of convection the system undergoes a symmetry breaking, forming rolls, or convection cells, which break the horizontal translational invariance. Analogously, the standard MRI system considered here is initially vertically translationally symmetric, because we idealize the TC device as an infinitely long cylinder. The MRI breaks this symmetry, forming cells along the vertical length of the domain. Just as Rayleigh-B\'enard cells transport heat vertically, the MRI cells transport angular momentum horizontally. The symmetry breaking of each of these systems is described near onset by the real GLE. 
 
 A real GLE has also been found to describe the formation of zonal flows out of magnetized turbulence in a model system (\citei{Parker:2013hy}). Zonal flows are axisymmetric structures, large-scale and long-lived, which form spontaneously out of turbulence. They have recently been observed in some numerical studies of the MRI, and have generated considerable interest for their possible role in planet formation in protoplanetary disks (\citei{Johansen:2009uj}, \citei{Kunz:2013}). The present work is of course an idealized geometry, and we make no attempt to model a realistic protoplanetary disk environment. However, it is worth noting that the GLE we derive implies that axisymmetric, large-scale, long-lived structures are a generic feature of the MRI in the weakly nonlinear regime. This work provides a mathematical description of the MRI as a pattern-forming process, but much remains to be understood, particularly involving the application of this model system to realistic astrophysical disks. Our model is most directly relevant to TC flows, and we emphasize that laboratory MRI experiments stand poised to observe the MRI-driven pattern formation predicted here. 
-
-This is the first weakly nonlinear analysis of the MRI in a cylindrical geometry, and is thus the global analogue of similar analyses in local approximations \citep{Umurhan:2007hs,Vasil:2015}. We find that the saturation amplitude of the standard MRI scales somewhat more steeply with $\Pm$ than does this same system system in the narrow gap approximation.
 
 We detail several avenues for future work, which highlight the application of this theory to both laboratory experiments and astrophysical disks.
 
@@ -408,10 +413,16 @@ We detail several avenues for future work, which highlight the application of th
 \item This theory may be compared to simulations in both the weakly and strongly nonlinear regimes. 
 \end{itemize}
 
+This is the first weakly nonlinear analysis of the MRI in a cylindrical geometry, and is thus the global analogue of similar analyses in local approximations \citep{Umurhan:2007hs,Vasil:2015}. Understanding the connection between local and global MRI modes is crucial for interpreting simulation results across domain geometries. (The relationship between local and global \textit{linear} MRI modes is investigated in \citet{Latter:2015}.) Phenomena such as saturation and the development of turbulence depend critically on the nature of the underlying MRI modes. The formalism presented here describes analytically the weakly nonlinear behavior of global MRI modes. This treatment should be expanded to encompass more astrophysically relevant conditions, so that our understanding of complicated MRI phenomena may continue to make contact with analytical theory. 
 
+%As this formalism is extended to more astrophysically relevant conditions  
+%The application and extension of the formalism presented here to more astrophysically representative conditions will allow an analytical understanding of weakly nonlinear MRI behavior.
+
+
+%We find that the saturation amplitude of the standard MRI scales somewhat more steeply with $\Pm$ than does this same system system in the narrow gap approximation.
 
 \section{Acknowledgments}
-S.E.C. was supported by a National Science Foundation Graduate Research Fellowship under grant No. DGE-11-44155. J.S.O. acknowledges support from NASA grant 15-LWS15\_2-0063. The authors thank Mordecai Mac Low, Jeremy Goodman, John Krommes, Geoff Vasil, Ellen Zweibel, etc for useful discussion.
+S.E.C. was supported by a National Science Foundation Graduate Research Fellowship under grant No. DGE-11-44155. J.S.O. acknowledges support from NASA grant 15-LWS15\_2-0063. The authors thank Mordecai Mac Low, Jeremy Goodman, John Krommes, Geoff Vasil, and Ellen Zweibel for useful discussion.
 
 
 %************* APPENDICES ************************%
@@ -700,6 +711,9 @@ Bai, X. 2011, ApJ 739, 50
 \bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
 Balbus, S A and Hawley, J F, 1991, The Astrophysical Journal, 376, 214
 
+\bibitem[{Blaes(2014)}]{Blaes:2014}
+Blaes, O., 2014, SSRv 183, 21
+
 \bibitem[{Chandrasekhar(1960)}]{Chandrasekhar:1960wh}
 Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the United States of America, 46, 253
 
@@ -736,6 +750,10 @@ Hollerbach, R, Proc. R. Soc. A, 2009, 465, 2107
 \bibitem[{Hollerbach \& R\"udiger(2005)}]{Hollerbach:2005tr}
 Hollerbach, R. \& R\"udiger, G., 2005, Phys. Rev. Lett. 95, 124501
 
+\bibitem[{Hoyle(2006)}]{Hoyle:2006}
+R. Hoyle, Pattern Formation, 2006, Cambridge U. Press, Cambridge,
+U. K.
+
 \bibitem[{Ji et al.(2001)}]{Ji:2001kd}
 Ji, H, Goodman, J, Kageyama, A, Mon. Not. R. Astron. Soc., 2001, 325, 1
 
@@ -760,8 +778,11 @@ Lesur, G., Ferreira, J., \& Ogilvie, G. I. 2013, A\&A 550, A61
 \bibitem[{Liu et al.(2006)}]{Liu:2006}
 Liu, W, Goodman, J, Herron, I, and Ji, H, 2006, Phys. Rev. E 74, 056302
 
-\bibitem[Lopez \& Marques(2005)]{Lopez:2005} 
+\bibitem[{Lopez \& Marques(2005)}]{Lopez:2005} 
 Lopez, J.~M., \& Marques, F.\ 2005, Physica D, 211, 168
+
+\bibitem[{Murphy \& Pessah(2015)}]{Murphy:2015tn}
+Murphy, G.C. \& Pessah, M.E., 2015, ApJ 802, 139
 
 \bibitem[{Newell \& Whitehead(1969)}]{Newell:1969wr}
 Newell, A.C. \& Whitehead, J.A., 1969, JFM 38, 279
@@ -807,6 +828,9 @@ Umurhan, O.M., Regev, O., Menou, K., 2007, Phys. Rev. E, 76, 036310
 
 \bibitem[{Vasil(2015)}]{Vasil:2015}
 Vasil, G. M. 2015, RSPSA 471, 20140699
+
+\bibitem[Vishniac(2009)]{Vishniac:2009il}
+Vishniac, E., 2009, ApJ 696, 1021
 
 \bibitem[{Willis \& Barenghi(2002)}]{Willis:2002bh}
 Willis, A.P. \& Barenghi, C.F. 2002, JFM 463, 361
