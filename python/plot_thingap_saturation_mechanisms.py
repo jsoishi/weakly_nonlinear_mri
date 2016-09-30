@@ -95,3 +95,25 @@ ax2.plot(xgrid, dzBphi_zavg, label=r"$-\frac{2}{\beta} B_0 \partial_z B$")
 plt.legend()
 
 
+# New figure
+JAPsi_dx_zavg = obj["JAPsi_dx_zavg"].value
+nablasqAterm_dx_zavg = obj["nablasqAterm_dx_zavg"].value
+Aterm1_dx_zavg = obj["Aterm1_dx_zavg"].value
+
+fig = plt.figure(figsize=(8, 8), facecolor="white")
+ax1 = fig.add_subplot(211)
+ax2 = fig.add_subplot(212)
+
+ax1.plot(xgrid, Bzinitial_zavg, color="gray", label=r"$B_z^{0}$", lw=lw)
+ax1.plot(xgrid, Bzfinal_zavg, color="black", label=r"$B_z^{sat}$", lw=lw)
+ax1.set_yticks([np.min(Bzfinal_zavg), 1, np.max(Bzfinal_zavg)])
+ax1.set_yticklabels([r"$0.9985$", r"$1$", r"$1.0025$"])
+ax1.set_title(r"$B_z^{saturated}$")
+ax1.text(-0.95, 1.0002, r"$B_z^{0}$", color="darkgray")
+
+ax2.plot(xgrid, JAPsi_dx_zavg, label=r"$\partial_x (J(A, \Psi))$")
+ax2.plot(xgrid, nablasqAterm_dx_zavg, label=r"$\partial_x (\nabla^2 A)$")
+ax2.plot(xgrid, Aterm1_dx_zavg, label=r"$-\partial_x (B_0 \partial_z \Psi) $")
+plt.legend()
+
+

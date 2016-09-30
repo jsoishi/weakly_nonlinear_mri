@@ -83,62 +83,57 @@ V1_A = eps*satamp*obj['A11'].value*eiqz + eps*satamp.conj()*obj['A11_star'].valu
 V2_A = eps**2*satamp**2*obj['psi22'].value*ei2qz + eps**2*satamp.conj()**2*psi22_star*ei2qzstar + np.abs(satamp)**2*(obj['psi20'].value*ei0qz + obj['psi20_star'].value*ei0qzstar)
 Vboth_A = V1_A + V2_A
 
-#Vboth_u = Vboth_u + norm_base_flow
+# first order perturbations
 V1_ur1 = eps*satamp*obj['psi11'].value*eiqz_z + eps*satamp.conj()*obj['psi11_star'].value*eiqzstar_z
 V1_uz1 = -eps*satamp*obj['psi11_x'].value*eiqz - eps*satamp.conj()*obj['psi11_star_x'].value*eiqzstar
-
 V1_Br1 = eps*satamp*obj['A11'].value*eiqz_z + eps*satamp.conj()*obj['A11_star'].value*eiqzstar_z
 V1_Bz1 = -eps*satamp*obj['A11_x'].value*eiqz - eps*satamp.conj()*obj['A11_star_x'].value*eiqzstar
 
+# second order perturbations
 V2_ur1 = eps**2*satamp**2*obj['psi22'].value*ei2qz_z + eps**2*satamp.conj()**2*psi22_star*ei2qzstar_z
 V2_uz1 = -eps**2*satamp**2*obj['psi22_x'].value*ei2qz + -eps**2*satamp.conj()**2*psi22_star_x*ei2qzstar - np.abs(satamp)**2*(obj['psi20_x'].value*ei0qz + obj['psi20_star_x'].value*ei0qzstar)
-
-Vboth_ur1 = V1_ur1 + V2_ur1
-Vboth_uz1 = V1_uz1 + V2_uz1
-
 V2_Br1 = eps**2*satamp**2*obj['A22'].value*ei2qz_z + eps**2*satamp.conj()**2*A22_star*ei2qzstar_z
 V2_Bz1 = -eps**2*satamp**2*(obj['A22_x'].value*ei2qz + A22_star_x*ei2qzstar) - np.abs(satamp)**2*(obj['A20_x'].value*ei0qz + obj['A20_star_x'].value*ei0qzstar)
 
+# Combined perturbations
+Vboth_ur1 = V1_ur1 + V2_ur1
+Vboth_uz1 = V1_uz1 + V2_uz1
 Vboth_Br1 = V1_Br1 + V2_Br1
 Vboth_Bz1 = V1_Bz1 + V2_Bz1
 
 Bzinitial_z0 = np.zeros(obj.attrs['gridnum']) + 1.0 # B0 = 1
-Bzfinal_z0 = Bzinitial_z0 + Vboth_Bz1[0, :]
-
 Bzinitial_2D = Bzinitial_z0*ei0qz
-
-uphifinal_z0 = base_flow + Vboth_u[0, :]
 
 # Define 2D fields
 d2D = de.Domain([de.Fourier('z',nz,interval=[0,Lz]),de.Chebyshev('x',obj.attrs['gridnum'],interval=[-1,1])],grid_dtype='complex128')
 
+# saturated uphi and Bz include background fields
 sat_uphi_field = d2D.new_field()
 sat_uphi_field['g'] = base_flow_2d + Vboth_u
-
-Vboth_ur_field = d2D.new_field()
-Vboth_ur_field['g'] = Vboth_ur1
-
-Vboth_uz_field = d2D.new_field()
-Vboth_uz_field['g'] = Vboth_uz1
-
-Re = obj.attrs['Rm']/obj.attrs['Pm']
-diff_tens_u = ((1.0/Re)*(Vboth_ur_field.differentiate(0).differentiate(0) + sat_uphi_field.differentiate(0).differentiate(0) + Vboth_uz_field.differentiate(0).differentiate(0)
-            + Vboth_ur_field.differentiate(1).differentiate(1) + sat_uphi_field.differentiate(1).differentiate(1) + Vboth_uz_field.differentiate(1).differentiate(1))).evaluate()
-
-Vboth_Bphi_field = d2D.new_field()
-Vboth_Bphi_field['g'] = Vboth_B
-
-Vboth_Br_field = d2D.new_field()
-Vboth_Br_field['g'] = Vboth_Br1
-
 sat_Bz_field = d2D.new_field()
 sat_Bz_field['g'] = Bzinitial_2D + Vboth_Bz1
 
-diff_tens_B = ((1.0/obj.attrs['Rm'])*(Vboth_Br_field.differentiate(0).differentiate(0) + Vboth_Bphi_field.differentiate(0).differentiate(0) + sat_Bz_field.differentiate(0).differentiate(0)
-            + Vboth_Br_field.differentiate(1).differentiate(1) + Vboth_Bphi_field.differentiate(1).differentiate(1) + sat_Bz_field.differentiate(1).differentiate(1))).evaluate()
+# total perturbation-only 
+Vboth_ur_field = d2D.new_field()
+Vboth_ur_field['g'] = Vboth_ur1
+Vboth_uz_field = d2D.new_field()
+Vboth_uz_field['g'] = Vboth_uz1
+Vboth_Bphi_field = d2D.new_field()
+Vboth_Bphi_field['g'] = Vboth_B
+Vboth_Br_field = d2D.new_field()
+Vboth_Br_field['g'] = Vboth_Br1
+Vboth_uphi_field = d2D.new_field()
+Vboth_uphi_field['g'] = Vboth_u
+Vboth_Bz_field = d2D.new_field()
+Vboth_Bz_field['g'] = Vboth_Bz1
 
-nabla_u_z0 = diff_tens_u['g'][0, :]
-nabla_B_z0 = diff_tens_B['g'][0, :]
+Re = obj.attrs['Rm']/obj.attrs['Pm']
+diff_tens_u = ((1.0/Re)*(Vboth_ur_field.differentiate('x').differentiate('x') + sat_uphi_field.differentiate('x').differentiate('x') + Vboth_uz_field.differentiate('x').differentiate('x')
+            + Vboth_ur_field.differentiate('z').differentiate('z') + sat_uphi_field.differentiate('z').differentiate('z') + Vboth_uz_field.differentiate('z').differentiate('z'))).evaluate()
+
+diff_tens_B = ((1.0/obj.attrs['Rm'])*(Vboth_Br_field.differentiate('x').differentiate('x') + Vboth_Bphi_field.differentiate('x').differentiate('x') + sat_Bz_field.differentiate('x').differentiate('x')
+            + Vboth_Br_field.differentiate('z').differentiate('z') + Vboth_Bphi_field.differentiate('z').differentiate('z') + sat_Bz_field.differentiate('z').differentiate('z'))).evaluate()
+
 
 # vertical averages
 base_flow_zavg = np.mean(base_flow_2d, axis=0)
@@ -150,32 +145,19 @@ nabla_B_zavg = np.mean(diff_tens_B['g'], axis=0)
     
 #J\left(\Psi, u_{y}\right) + (2 - q) \Omega_0 \partial_z \Psi \ - \frac{2}{\beta}B_0\partial_z B_{y} \, - \, \frac{2}{\beta} J\left(A, B_{y}\right) \, - \, \frac{1}{\reye} \nabla^2 u_{y} = 0
 
-#sat_psi = 
-#sat_uphi = base_flow_2d + Vboth_u
-#sat_
-
-Vboth_uphi_field = d2D.new_field()
-Vboth_uphi_field['g'] = Vboth_u
-
-Vboth_Bz_field = d2D.new_field()
-Vboth_Bz_field['g'] = Vboth_Bz1
-
+# Steady state u terms 
 # J (Psi, u)
-JPsiu = (Vboth_ur_field*Vboth_uphi_field.differentiate(0) + Vboth_uz_field*Vboth_uphi_field.differentiate(1)).evaluate()
+JPsiu = (Vboth_ur_field*Vboth_uphi_field.differentiate('x') + Vboth_uz_field*Vboth_uphi_field.differentiate('z')).evaluate()
 
 # J (A, B)
-JAB = (-(2/beta)*(Vboth_Br_field*Vboth_Bphi_field.differentiate(0) + Vboth_Bz_field*Vboth_Bphi_field.differentiate(1))).evaluate()
+JAB = (-(2/beta)*(Vboth_Br_field*Vboth_Bphi_field.differentiate('x') + Vboth_Bz_field*Vboth_Bphi_field.differentiate('z'))).evaluate()
 
-nablasqu = (-(1/Re)*(Vboth_uphi_field.differentiate(0).differentiate(0) + Vboth_uphi_field.differentiate(1).differentiate(1))).evaluate()
+nablasqu = (-(1/Re)*(Vboth_uphi_field.differentiate('x').differentiate('x') + Vboth_uphi_field.differentiate('z').differentiate('z'))).evaluate()
 
 shearu = ((2 - q)*Vboth_ur_field).evaluate()
 
-dzBphi = (-(2/beta)*Vboth_Bphi_field.differentiate(1)).evaluate()
+dzBphi = (-(2/beta)*Vboth_Bphi_field.differentiate('z')).evaluate()
 
-# steady state balance, u 
-#u_steady_state = (JPsiu + (2 - q)*Vboth_ur_field - (2/beta)*Vboth_Bphi_field.differentiate(1) - (2/beta)*JAB - (1/Re)*nablasqu).evaluate()
-    
-#u_steady_state_zavg = np.mean(u_steady_state['g'], axis=0)
 
 JPsiu_zavg = np.mean(JPsiu['g'], axis=0)
 JAB_zavg = np.mean(JAB['g'], axis=0)
@@ -183,27 +165,35 @@ nablasqu_zavg = np.mean(nablasqu['g'], axis=0)
 shearu_zavg = np.mean(shearu['g'], axis=0)
 dzBphi_zavg = np.mean(dzBphi['g'], axis=0)
 
+# to test if they sum to zero....
 all2D = JPsiu['g'] + JAB['g'] + nablasqu['g'] + shearu['g'] + dzBphi['g']
 
 # J (A, Psi)
 JAPsi = (-(-Vboth_Br_field*Vboth_uz_field + Vboth_Bz_field*Vboth_ur_field)).evaluate()
 
-nablasqB = (Vboth_Bphi_field.differentiate(0).differentiate(0) + Vboth_Bphi_field.differentiate(1).differentiate(1)).evaluate()
+nablasqB = (Vboth_Bphi_field.differentiate('x').differentiate('x') + Vboth_Bphi_field.differentiate('z').differentiate('z')).evaluate()
 
-nablasqA = (Vboth_Br_field.differentiate(1) - Vboth_Bz_field.differentiate(0)).evaluate()
+nablasqA = (Vboth_Br_field.differentiate('z') - Vboth_Bz_field.differentiate('x')).evaluate()
 
 nablasqAterm = (-(1/obj.attrs['Rm'])*nablasqA).evaluate()
 
 Aterm1 = (-Vboth_ur_field).evaluate()
 
-# steady state balance, A...
-#A_steady_state = (-Vboth_ur_field - JAPsi - (1/obj.attrs['Rm'])*nablasqA).evaluate()
-#A_steady_state_zavg = np.mean(A_steady_state['g'], axis=0)
-
 JAPsi_zavg = np.mean(JAPsi['g'], axis=0)
 nablasqAterm_zavg = np.mean(nablasqAterm['g'], axis=0)
 Aterm1_zavg = np.mean(Aterm1['g'], axis=0)
 
+# partial_x of terms in the steady state A equation to get steady state of B_z
+JAPsi_dx = JAPsi.differentiate('x')
+nablasqAterm_dx = nablasqAterm.differentiate('x')
+Aterm1_dx = Aterm1.differentiate('x')
+
+# to test if they sum to zero....
+all2DBx = (JAPsi_dx + nablasqAterm_dx + Aterm1_dx).evaluate()
+
+JAPsi_dx_zavg = np.mean(JAPsi_dx['g'], axis=0)
+nablasqAterm_dx_zavg = np.mean(nablasqAterm_dx['g'], axis=0)
+Aterm1_dx_zavg = np.mean(Aterm1_dx['g'], axis=0)
     
 fn_root = "../data/"
 out_fn = fn_root + "zavg_quantities_" + fn + ".h5"
@@ -225,6 +215,10 @@ with h5py.File(out_fn,'w') as f:
     dJAPsi_zavg = f.create_dataset("JAPsi_zavg", data=JAPsi_zavg)
     dnablasqAterm_zavg = f.create_dataset("nablasqAterm_zavg", data=nablasqAterm_zavg)
     dAterm1_zavg = f.create_dataset("Aterm1_zavg", data=Aterm1_zavg)
+    
+    dJAPsi_dx_zavg = f.create_dataset("JAPsi_dx_zavg", data=JAPsi_dx_zavg)
+    dnablasqAterm_dx_zavg = f.create_dataset("nablasqAterm_dx_zavg", data=nablasqAterm_dx_zavg)
+    dAterm1_dx_zavg = f.create_dataset("Aterm1_dx_zavg", data=Aterm1_dx_zavg)
     
     
     
