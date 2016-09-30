@@ -63,7 +63,7 @@ This work examines Taylor Couette flow in the thin-gap regime, an idealization i
 We note several other important analytical studies of MRI saturation. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They find that this saturation proceeds via modification of the background shear. \citeauthor{Knobloch:2005ba} consider a thin-gap regime as well, and so their theory may be considered the strongly nonlinear analogue to the one developed here. \citei{Vasil:2015} examines the weakly nonlinear MRI in a thin-gap regime from a heuristic perspective, finding deep mathematical similarities between the MRI system and an elastodynamic instability. Several authors have investigated the behavior of the MRI when the boundary conditions are shear periodic, and so the MRI has no mechanism by which to modify the background shear flow profile. In this approximation linear MRI growth is dominated by channel modes, a type of MRI mode that, for periodic boundary conditions, are exact solutions of both the linear and nonlinear MRI equations (\citei{Goodman:1994ul}). In this regime the MRI saturates via parasitic instabilities, which feed off and destroy the primary MRI modes. Analytical investigation of this case reveals that MRI saturation can be caused by parasitic Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime (\citei{Pessah:2010ic}). The theory of MRI channel mode parasites is robust (see also \citei{Pessah:2009gm}, \citei{Latter:2010iz}, \citei{Rembiasz:2016}), but their importance may be overestimated by the local approximation \citei{Latter:2015}, and not germane to global analyses like the one presented here. \citei{Latter:2015} gives a  detailed analysis of the relation between local and global MRI modes.
 
 
-\section{Equations}
+\section{Equations}\label{sec:equations}
 
 \begin{figure}[h!]
 \centering
@@ -198,7 +198,7 @@ And our perturbed system is then expressed order by order as
 \mathcal{O}(\epsilon^3)&: \mathcal{L} \mathbf{V_3} + \mathcal{D}\partial_T \mathbf{V_1}  + \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} + \widetilde{\mathcal{G}}\mathbf{V_1} = \mathbf{N_3} \, \\ \label{eq:ordere3}
 \end{align}
 
-The partial differential equations that comprise Equations \ref{eq:ordere} to \ref{eq:ordere3} are solved in succession. The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even small-scale structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus (Burns et al., in prep). We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). The nonuniform spacing of the Chebyshev grid allows us to resolve the boundary layers well on a 128-point grid.
+The partial differential equations that comprise Equations \ref{eq:ordere} to \ref{eq:ordere3} are solved in succession. The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even small-scale structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus. We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). The nonuniform spacing of the Chebyshev grid allows us to resolve the boundary layers well on a 128-point grid.
 
 
 \begin{figure*}[h!]
@@ -224,6 +224,221 @@ In the high $\reye$ and  $\reym$  limit, \citet{Vasil:2015} derives an amplitude
 
 \section{Acknowledgements}
 JSO acknowledges support from NASA grant 15-LWS15\_2-0063. NSF. The authors thank Mordecai Mac Low, Jeremy Goodman, John Krommes, Geoff Vasil, etc for useful discussion.
+
+%************* APPENDICES ************************%
+
+\clearpage
+\appendix
+
+\section{A. Detailed Equations}\label{app:matrices}
+
+Here we detail the perturbation analysis described in Section \ref{sec:equations}. The linear system is described by Equation \ref{eq:unperturbed_matrix_eqns}, where 
+
+\beq
+\mathcal{L} = \mathcal{L}_0 + \mathcal{L}_1 \partial_z + \mathcal{L}_2 \partial_z^2 + \mathcal{L}_3 \partial_z^3 + \mathcal{L}_4 \partial_z^4,
+\eeq
+
+\beq
+\widetilde{\mathcal{G}} = - \mathcal{G} \partial_z - \mathcal{L}_3 \partial_z^3,
+\eeq
+
+and the constituent matrices are defined as 
+
+\beq
+\mathcal{D} = \left[\begin{matrix}
+\nabla^2 & 0 & 0 & 0 \\
+0 & 1& 0 & 0 \\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1 \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_0 = \left[\begin{matrix}
+-\frac{1}{\reye}\partial_x^4 & 0 & 0 & 0 \\
+0 & -\frac{1}{\reye}\partial_x^2 & 0 &0 \\
+0 & 0 & -\frac{1}{\reym}\partial_x^2 & 0 \\
+0 & 0 & 0 & -\frac{1}{\reym}\partial_x^2 \\ \end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_1 = \left[\begin{matrix}
+0 & -2 & -\frac{2}{\beta}\partial_x^2 & 0 \\
+(2-q)\Omega_0 & 0 & 0 & -\frac{2}{\beta} \\
+-1 & 0 & 0 & 0 \\
+0 & -1 & q\Omega_0 & 0 \\ \end{matrix}\right] 
+\eeq
+
+\beq
+\mathcal{L}_2 = \left[\begin{matrix}
+-2\frac{1}{\reye} \partial_x^2 & 0 & 0 & 0 \\
+0 & -\frac{1}{\reye} & 0 & 0 \\
+0 & 0 & -\frac{1}{\reym} & 0 \\
+0 & 0 & 0 & -\frac{1}{\reym} \\ \end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_3 = \left[\begin{matrix}
+0 & 0 & -\frac{2}{\beta} & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\ \end{matrix} \right]
+\eeq
+
+\beq
+\mathcal{L}_4 = \left[\begin{matrix}
+-\frac{1}{\reye} & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\ \end{matrix}\right] 
+\eeq
+
+\beq
+\mathcal{G} = \left[\begin{matrix}
+0 & 0 & -\frac{2}{\beta}\partial_x^2 & 0 \\
+0 & 0 & 0 & -\frac{2}{\beta} \\
+-1 & 0 & 0 & 0 \\
+0 & -1 & 0 & 0 \\ \end{matrix} \right]
+\eeq
+
+\section{B. Expansion of Nonlinear Terms}\label{app:nonlinear_terms}
+\beq
+\mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4)
+\eeq
+
+where
+
+\beq
+N_2^{(\Psi)} = J(\Psi_1, \nabla^2 \Psi_1) \,-\, \frac{2}{\beta}J(A_1, \nabla^2 A_1) 
+\eeq
+
+\beq
+N_2^{(u)} = J(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_1) 
+\eeq
+
+\beq
+N_2^{(A)} = - J(A_1, \Psi_1) 
+\eeq
+
+\beq
+N_2^{(B)} =  J(\Psi_1, B_1) \, - \, J(A_1, u_1)
+\eeq
+
+and
+
+\beq
+\begin{split}
+N_3^{(\Psi)} & = J(\Psi_1, \nabla^2\Psi_2) \, - \, \frac{2}{\beta}J(A_1, \nabla^2 A_2) \,+\, J(\Psi_2, \nabla^2\Psi_1) - \, \frac{2}{\beta}J(A_2, \nabla^2 A_1) \,+\, 2 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, \\
+& - \, 2 \frac{2}{\beta}J(A_1, \partial_z\partial_Z A_1) \,+\, \widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \,  \frac{2}{\beta}\widetilde{J}(A_1, \nabla^2 A_1)\\
+\end{split}
+\eeq
+
+\beq
+N_3^{(u)} = J(\Psi_1, u_2) \, + \, J(\Psi_2, u_1) \, + \, \widetilde{J}(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_2) \, - \, \frac{2}{\beta} J(A_2, B_1) \, - \, \frac{2}{\beta} \widetilde{J}(A_1, B_1)
+\eeq
+
+\beq
+N_3^{(A)} = - J(A_1, \Psi_2) \, - \, J(A_2, \Psi_1) \, - \, \widetilde{J}(A_1, \Psi_1)
+\eeq
+
+\beq
+N_3^{(B)} = \, J(\Psi_1, B_2) \, + \, J(\Psi_2, B_1) \, + \, \widetilde{J}(\Psi_1, B_1) \, - \, J(A_1, u_2) \, - \,  J(A_2, u_1) \, - \, \widetilde{J}(A_1, u_1).\\
+\eeq
+
+$\mathbf{N_2}$ and $\mathbf{N_3}$ expand to become
+
+\beq
+\mathbf{N_2} = \alpha^2\mathbb{N}_{22} e^{i2 k_c z} + \left|\alpha\right|^2 \mathbb{N}_{20} + c.c.
+\eeq
+
+and
+
+\beq
+\mathbf{N_3} = \alpha^3 \mathbb{N}_{33} e^{i 3 k_c z} + \alpha\partial_Z\alpha \mathbb{N}_{32} e^{i 2 k_c z} + \alpha\left|\alpha\right|^2 \mathbb{N}_{31} e^{i k_c z} + \alpha \partial_Z  \beta \mathbb{\widetilde{N}}_{31} e^{i k_c z} + \alpha^*\partial_Z \alpha \mathbb{N}_{30} + c.c.
+\eeq
+
+The second order nonlinear terms are \\
+
+\beq
+\begin{split}
+N_{22}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11} - k_c^2 \partial_x \Psi_{11}\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11} - i k_c^3 \Psi_{11}\right) \\
+& + \frac{2}{\beta}\partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11} - i k_c^3 A_{11}\right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11} - k_c^2 \partial_x A_{11}\right)
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{22}^{(u)} = & \, i k_c \Psi_{11} \cdot \partial_x u_{11} - \partial_x \Psi_{11} \cdot i k_c u_{11} - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11} + \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}
+\end{split}
+\eeq
+
+\beq
+N_{22}^{(A)} = - i k_c A_{11} \cdot \partial_x \Psi_{11} + \partial_x A_{11} \cdot i k_c \Psi_{11}
+\eeq
+
+\beq
+N_{22}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11} - \partial_x \Psi_{11} \cdot i k_c B_{11} - i k_c A_{11} \cdot \partial_x u_{11} + \partial_x A_{11} \cdot i k_c u_{11}
+\eeq
+
+\beq
+\begin{split}
+N_{20}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - k_c^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i k_c^3 \Psi_{11}^* - i k_c \partial_x^2 \Psi_{11}^*\right) \\
+& +\frac{2}{\beta} \partial_x A_{11} \cdot \left(i k_c^3 A_{11}^* - i k_c \partial_x^2 A_{11}^* \right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11}^* - k_c^2 \partial_x A_{11}^*\right)
+\end{split}
+\eeq
+
+\beq
+N_{20}^{(u)} = i k_c \Psi_{11} \cdot \partial_x u_{11}^* + \partial_x \Psi_{11} \cdot i k_c u_{11}^* - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11}^* - \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}^*
+\eeq
+
+\beq
+N_{20}^{(A)} = - i k_c A_{11} \cdot \partial_x \Psi_{11}^* - \partial_x A_{11} \cdot i k_c \Psi_{11}^*
+\eeq
+
+\beq
+N_{20}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11}^* + \partial_x \Psi_{11} \cdot i k_c B_{11}^* - i k_c A_{11} \cdot \partial_x u_{11}^* - \partial_x A_{11} \cdot i k_c u_{11}^*
+\eeq \\
+
+and the third order nonlinear terms become \\
+
+\beq
+\begin{split}
+N_{31}^{(\Psi)} = &  \, i k_c \left(\Psi_{11} \cdot \partial_x^3 \Psi_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x^3\Psi_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x^3 \Psi_{22}\right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot \partial_x^2 \Psi_{22}\right) \\
+& + i 8 k_c^3 \left(\partial_x\Psi_{11}^* \cdot \Psi_{22}\right) + i 4 k_c^3 \left(\Psi_{11}^* \cdot \partial_x \Psi_{22}\right) + \frac{2}{\beta}\left[ - i k_c \left(A_{11} \cdot \partial^3 A_{20}\right) - i k_c \left(A_{11} \cdot \partial_x^3 A_{20}^*\right) \right]\\
+& + \frac{2}{\beta}\left[i k_c \left(A_{11}^* \cdot \partial_x^3 A_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot \partial_x^2 A_{22}\right) - i 8 k_c^3 \left(\partial_x A_{11}^* \cdot A_{22}\right) - i 4 k_c^3 \left(A_{11}^* \cdot \partial_x A_{22}\right)\right] \\
+& + i 2 k_c \left(\Psi_{22} \cdot \partial_x^3 \Psi_{11}^*\right) - i 2 k_c^3\left(\Psi_{22} \cdot \partial_x \Psi_{11}^* \right) - i k_c \left(\partial_x \Psi_{20} \cdot \partial_x^2 \Psi_{11}\right) + i k_c \left(\partial_x \Psi_{22} \cdot \partial_x^2 \Psi_{11}^*\right) \\
+& - i k_c \left(\partial_x \Psi_{20}^* \cdot \partial_x^2 \Psi_{11}\right) + i k_c^3 \left(\partial_x \Psi_{20} \cdot \Psi_{11}\right) + i k_c^3 \left(\partial_x \Psi_{20}^* \cdot \Psi_{11}\right) - i k_c^3 \left(\partial_x \Psi_{22} \cdot \Psi_{11}^*\right) \\
+& + \frac{2}{\beta} \left[ - i 2 k_c \left(A_{22} \cdot \partial_x^3 A_{11}^*\right) + i 2 k_c^3 \left(A_{22} \cdot \partial_x A_{11}^*\right) + i k_c \left(\partial_x A_{20} \cdot \partial_x^2 A_{11}\right) - i k_c \left(\partial_x A_{22} \cdot \partial_x^2 A_{11}^*\right) \right] \\
+& + \frac{2}{\beta} \left[ i k_c \left(\partial_x A_{20}^* \cdot \partial_x^2 A_{11}\right) - i k_c^3 \left(\partial_x A_{20} \cdot A_{11}\right) - i k_c^3 \left(\partial_x A_{20}^* \cdot A_{11}\right) + i k_c^3 \left(\partial_x A_{22} \cdot A_{11}^*\right)\right]
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{31}^{(u)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x u_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x u_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x u_{22}\right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot u_{22}\right) \\
+& - i k_c \left(u_{11} \cdot \partial_x \Psi_{20} \right) - i k_c \left(u_{11} \cdot \partial_x \Psi_{20}^*\right) + i k_c \left(u_{11}^* \cdot \partial_x \Psi_{22} \right) + i 2 k_c \left(\partial_x u_{11}^* \cdot \Psi_{22}\right) \\
+& +\frac{2}{\beta}\left[- i k_c \left(A_{11} \cdot \partial_x B_{20}\right) - i k_c \left(A_{11} \cdot \partial_x B_{20}^*\right) + i k_c \left(A_{11}^* \cdot \partial_x B_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot B_{22}\right)\right] \\
+& +\frac{2}{\beta}\left[ i k_c \left(B_{11} \cdot \partial_x A_{20}\right) + i k_c \left(B_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(B_{11}^* \cdot \partial_x A_{20}\right) - i 2 k_c \left(\partial_x B_{11}^* \cdot A_{22}\right)\right]
+\end{split}
+\eeq
+
+%Correct -- checked 11/14/15
+\beq
+\begin{split}
+N_{31}^{(A)} =\, & -i k_c \left(A_{11}\cdot\partial_x \Psi_{20}\right) - i k_c \left(A_{11} \cdot \partial_x \Psi_{20}^*\right)
+ + i k_c \left(A_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot \Psi_{22}\right) \\
+ & + i k_c \left(\Psi_{11} \cdot \partial_x A_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x A_{22} \right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot A_{22}\right)
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{31}^{(B)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x B_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x B_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x B_{22}\right) - i 2 k_c\left(\partial_x \Psi_{11}^* \cdot B_{22}\right) \\
+& - i k_c \left(B_{11} \cdot \partial_x \Psi_{20}\right) - i k_c \left(B_{11} \cdot \partial_x \Psi_{20}^*\right) + i k_c\left(B_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 k_c \left(\partial_x B_{11}^* \cdot \Psi_{22}\right) \\
+& - i k_c \left(A_{11} \cdot \partial_x u_{20}\right) - i k_c \left(A_{11} \cdot \partial_x u_{20}^*\right) + i k_c \left(A_{11}^* \cdot \partial_x u_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot u_{22}\right) \\
+& i k_c \left(u_{11} \cdot \partial_x A_{20} \right) + i k_c \left(u_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(u_{11}^* \cdot \partial_x A_{22}\right) - i 2 k_c \left(\partial_x u_{11}^* \cdot A_{22}\right)
+\end{split}
+\eeq
 
 
 \bibliographystyle{plain}
