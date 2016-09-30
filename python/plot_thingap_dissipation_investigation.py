@@ -9,7 +9,7 @@ from matplotlib import rc
 import dedalus.public as de
 rc('text', usetex=True)
 
-file_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
+file_root = "/home/jsoishi/hg-projects/weakly_nonlinear_MRI/data/"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
 obj = h5py.File(file_root + fn + ".h5", "r")
 
