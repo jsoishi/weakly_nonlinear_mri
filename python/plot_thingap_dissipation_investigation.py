@@ -234,30 +234,54 @@ for ax in [ax1, ax2, ax3, ax4]:
 #sat_uphi = base_flow_2d + Vboth_u
 #sat_
 
+Vboth_uphi_field = d2D.new_field()
+Vboth_uphi_field['g'] = Vboth_u
+
+Vboth_Bz_field = d2D.new_field()
+Vboth_Bz_field['g'] = Vboth_Bz1
+
 # J (Psi, u)
 JPsiu = (Vboth_ur_field*Vboth_uphi_field.differentiate(0) + Vboth_uz_field*Vboth_uphi_field.differentiate(1)).evaluate()
 
 # J (A, B)
-JAB = (Vboth_Br_field*Vboth_Bphi_field.differentiate(0) + Vboth_Bz_field*Vboth_Bphi_field.differentiate(1)).evaluate()
+JAB = (-(2/beta)*(Vboth_Br_field*Vboth_Bphi_field.differentiate(0) + Vboth_Bz_field*Vboth_Bphi_field.differentiate(1))).evaluate()
 
-nablasqu = (Vboth_uphi_field.differentiate(0).differentiate(0) + Vboth_uphi_field.differentiate(1).differentiate(1)).evaluate()
+nablasqu = (-(1/Re)*(Vboth_uphi_field.differentiate(0).differentiate(0) + Vboth_uphi_field.differentiate(1).differentiate(1))).evaluate()
+
+shearu = ((2 - q)*Vboth_ur_field).evaluate()
+
+dzBphi = -(2/beta)*Vboth_Bphi_field.differentiate(1)
 
 # steady state balance, u 
-u_steady_state = (JPsiu + (2 - q)*Vboth_ur_field - (2/beta)*Vboth_Bphi_field.differentiate(1) - (2/beta)*JAB - (1/Re)*nablasqu).evaluate()
+#u_steady_state = (JPsiu + (2 - q)*Vboth_ur_field - (2/beta)*Vboth_Bphi_field.differentiate(1) - (2/beta)*JAB - (1/Re)*nablasqu).evaluate()
     
-u_steady_state_zavg = np.mean(u_steady_state['g'], axis=0)
+#u_steady_state_zavg = np.mean(u_steady_state['g'], axis=0)
+
+JPsiu_zavg = np.mean(JPsiu['g'], axis=0)
+JAB_zavg = np.mean(JAB['g'], axis=0)
+nablasqu_zavg = np.mean(nablasqu['g'], axis=0)
+shearu_zavg = np.mean(shearu['g'], axis=0)
+dzBphi_zavg = np.mean(dzBphi['g'], axis=0)
 
 # J (A, Psi)
-JAPsi = (-Vboth_Br_field*Vboth_uz_field + Vboth_Bz_field*Vboth_ur_field).evaluate()
+JAPsi = (-(-Vboth_Br_field*Vboth_uz_field + Vboth_Bz_field*Vboth_ur_field)).evaluate()
 
 nablasqB = (Vboth_Bphi_field.differentiate(0).differentiate(0) + Vboth_Bphi_field.differentiate(1).differentiate(1)).evaluate()
 
 nablasqA = (Vboth_Br_field.differentiate(1) - Vboth_Bz_field.differentiate(0)).evaluate()
 
-# steady state balance, A...
-A_steady_state = (-Vboth_ur_field - JAPsi - (1/obj.attrs['Rm'])*nablasqA).evaluate()
+nablasqAterm = (-(1/obj.attrs['Rm'])*nablasqA).evaluate()
 
-A_steady_state_zavg = np.mean(A_steady_state['g'], axis=0)
+Aterm1 = (-Vboth_ur_field).evaluate()
+
+# steady state balance, A...
+#A_steady_state = (-Vboth_ur_field - JAPsi - (1/obj.attrs['Rm'])*nablasqA).evaluate()
+#A_steady_state_zavg = np.mean(A_steady_state['g'], axis=0)
+
+JAPsi_zavg = np.mean(JAPsi['g'], axis=0)
+nablasqAterm_zavg = np.mean(nablasqAterm['g'], axis=0)
+Aterm1_zavg = np.mean(Aterm1_zavg['g'], axis=0)
+
     
 fn_root = "../data/"
 out_fn = fn_root + "zavg_quantities_" + fn + ".h5"
@@ -269,6 +293,18 @@ with h5py.File(out_fn,'w') as f:
     dnabla_B_zavg = f.create_dataset("nabla_B_zavg", data=nabla_B_zavg)
     dbase_flow_zavg = f.create_dataset("base_flow_zavg", data=base_flow_zavg)
     dBzinitial_zavg = f.create_dataset("Bzinitial_zavg", data=Bzinitial_zavg)
+    
+    dJPsiu_zavg = f.create_dataset("JPsiu_zavg", data=JPsiu_zavg)
+    dJAB_zavg = f.create_dataset("JAB_zavg", data=JAB_zavg)
+    dnablasqu_zavg = f.create_dataset("nablasqu_zavg", data=nablasqu_zavg)
+    dshearu_zavg = f.create_dataset("shearu_zavg", data=shearu_zavg)
+    ddzBphi_zavg = f.create_dataset("dzBphi_zavg", data=dzBphi_zavg)
+    
+    dJAPsi_zavg = f.create_dataset("JAPsi_zavg", data=JAPsi_zavg)
+    dnablasqAterm_zavg = f.create_dataset("nablasqAterm_zavg", data=nablasqAterm_zavg)
+    dAterm1_zavg = f.create_dataset("Aterm1_zavg", data=Aterm1_zavg)
+    
+    
     
     
    
