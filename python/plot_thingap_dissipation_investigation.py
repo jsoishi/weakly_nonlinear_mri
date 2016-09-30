@@ -112,8 +112,8 @@ uphifinal_z0 = base_flow + Vboth_u[0, :]
 # Define 2D fields
 d2D = de.Domain([de.Fourier('z',nz,interval=[0,Lz]),de.Chebyshev('x',obj.attrs['gridnum'],interval=[-1,1])],grid_dtype='complex128')
 
-Vboth_uphi_field = d2D.new_field()
-Vboth_uphi_field['g'] = base_flow_2d + Vboth_u
+sat_uphi_field = d2D.new_field()
+sat_uphi_field['g'] = base_flow_2d + Vboth_u
 
 Vboth_ur_field = d2D.new_field()
 Vboth_ur_field['g'] = Vboth_ur1
@@ -122,8 +122,8 @@ Vboth_uz_field = d2D.new_field()
 Vboth_uz_field['g'] = Vboth_uz1
 
 Re = obj.attrs['Rm']/obj.attrs['Pm']
-diff_tens_u = ((1.0/Re)*(Vboth_ur_field.differentiate(0).differentiate(0) + Vboth_uphi_field.differentiate(0).differentiate(0) + Vboth_uz_field.differentiate(0).differentiate(0)
-            + Vboth_ur_field.differentiate(1).differentiate(1) + Vboth_uphi_field.differentiate(1).differentiate(1) + Vboth_uz_field.differentiate(1).differentiate(1))).evaluate()
+diff_tens_u = ((1.0/Re)*(Vboth_ur_field.differentiate(0).differentiate(0) + sat_uphi_field.differentiate(0).differentiate(0) + Vboth_uz_field.differentiate(0).differentiate(0)
+            + Vboth_ur_field.differentiate(1).differentiate(1) + sat_uphi_field.differentiate(1).differentiate(1) + Vboth_uz_field.differentiate(1).differentiate(1))).evaluate()
 
 Vboth_Bphi_field = d2D.new_field()
 Vboth_Bphi_field['g'] = Vboth_B
@@ -131,102 +131,22 @@ Vboth_Bphi_field['g'] = Vboth_B
 Vboth_Br_field = d2D.new_field()
 Vboth_Br_field['g'] = Vboth_Br1
 
-Vboth_Bz_field = d2D.new_field()
-Vboth_Bz_field['g'] = Bzinitial_2D + Vboth_Bz1
+sat_Bz_field = d2D.new_field()
+sat_Bz_field['g'] = Bzinitial_2D + Vboth_Bz1
 
-diff_tens_B = ((1.0/obj.attrs['Rm'])*(Vboth_Br_field.differentiate(0).differentiate(0) + Vboth_Bphi_field.differentiate(0).differentiate(0) + Vboth_Bz_field.differentiate(0).differentiate(0)
-            + Vboth_Br_field.differentiate(1).differentiate(1) + Vboth_Bphi_field.differentiate(1).differentiate(1) + Vboth_Bz_field.differentiate(1).differentiate(1))).evaluate()
+diff_tens_B = ((1.0/obj.attrs['Rm'])*(Vboth_Br_field.differentiate(0).differentiate(0) + Vboth_Bphi_field.differentiate(0).differentiate(0) + sat_Bz_field.differentiate(0).differentiate(0)
+            + Vboth_Br_field.differentiate(1).differentiate(1) + Vboth_Bphi_field.differentiate(1).differentiate(1) + sat_Bz_field.differentiate(1).differentiate(1))).evaluate()
 
 nabla_u_z0 = diff_tens_u['g'][0, :]
 nabla_B_z0 = diff_tens_B['g'][0, :]
 
 # vertical averages
 base_flow_zavg = np.mean(base_flow_2d, axis=0)
-uphifinal_zavg = np.mean(base_flow_2d + Vboth_u, axis=0)
+uphifinal_zavg = np.mean(sat_uphi_field['g'], axis=0)
 Bzinitial_zavg = np.mean(Bzinitial_2D, axis=0)
-Bzfinal_zavg = np.mean(Bzinitial_2D + Vboth_Bz1, axis=0)
+Bzfinal_zavg = np.mean(sat_Bz_field['g'], axis=0)
 nabla_u_zavg = np.mean(diff_tens_u['g'], axis=0)
 nabla_B_zavg = np.mean(diff_tens_B['g'], axis=0)
-
-# plotting
-fig = plt.figure(facecolor="white")
-ax1 = fig.add_subplot(311)
-ax2 = fig.add_subplot(312)
-ax3 = fig.add_subplot(313)
-
-ax1.plot(xgrid, base_flow, color="black", label=r"$u_\phi^{0}$")
-ax1.plot(xgrid, uphifinal_z0, color="blue", label=r"$u_\phi^{final}$")
-
-ax2.plot(xgrid, Bzinitial_z0, color="black", label=r"$B_z^{0}$")
-ax2.plot(xgrid, Bzfinal_z0, color="blue", label=r"$B_z^{final}$")
-
-ax3.plot(xgrid, nabla_u_z0, color="orange", label=r"$|\nabla^2 u|$")
-ax3.plot(xgrid, nabla_B_z0, color="green", label=r"$|\nabla^2 B|$")
-
-for ax in [ax1, ax2, ax3]:
-    ax.legend(loc=4)
-    
-fig = plt.figure(facecolor="white")
-ax1 = fig.add_subplot(311)
-ax2 = fig.add_subplot(312)
-ax3 = fig.add_subplot(313)
-
-ax1.plot(xgrid, base_flow - uphifinal_z0, color="black", label=r"$u_\phi^{0} - u_\phi^{final}$")
-ax2.plot(xgrid, nabla_u_z0, color="orange", label=r"$|\nabla^2 u|$")
-ax3.plot(xgrid, nabla_B_z0, color="green", label=r"$|\nabla^2 B|$")
-
-for ax in [ax1, ax2, ax3]:
-    ax.legend(loc=4)
-
-# plotting z-averaged quantities
-fig = plt.figure(facecolor="white")
-ax1 = fig.add_subplot(311)
-ax2 = fig.add_subplot(312)
-ax3 = fig.add_subplot(313)
-
-ax1.plot(xgrid, base_flow_zavg, color="black", label=r"$u_\phi^{0}$")
-ax1.plot(xgrid, uphifinal_zavg, color="blue", label=r"$u_\phi^{final}$")
-
-ax2.plot(xgrid, Bzinitial_zavg, color="black", label=r"$B_z^{0}$")
-ax2.plot(xgrid, Bzfinal_zavg, color="blue", label=r"$B_z^{final}$")
-
-ax3.plot(xgrid, nabla_u_zavg, color="orange", label=r"$\frac{1}{Re}|\nabla^2 u|$")
-ax3.plot(xgrid, nabla_B_zavg, color="green", label=r"$\frac{1}{Rm}|\nabla^2 B|$")
-
-for ax in [ax1, ax2, ax3]:
-    ax.legend(loc=4)
-    
-# final - initial plots
-fig = plt.figure(facecolor="white")
-ax1 = fig.add_subplot(411)
-ax2 = fig.add_subplot(412)
-ax3 = fig.add_subplot(413)
-ax4 = fig.add_subplot(414)
-
-ax1.plot(xgrid, uphifinal_zavg - base_flow_zavg, color="black", label=r"$u_\phi^{final} - u_\phi^{0}$")
-ax2.plot(xgrid, Bzfinal_zavg - Bzinitial_zavg, color="black", label=r"$B_z^{final} - B_z^{0}$")
-ax3.plot(xgrid, nabla_u_zavg, color="orange", label=r"$\frac{1}{Re}|\nabla^2 u|$")
-ax4.plot(xgrid, nabla_B_zavg, color="green", label=r"$\frac{1}{Rm}|\nabla^2 B|$")
-
-for ax in [ax1, ax2, ax3, ax4]:
-    ax.legend(loc=1)
-    #ax.set_xlim(1.5, 2.5)
-    
-# final - initial plots, just center of channel
-fig = plt.figure(facecolor="white")
-ax1 = fig.add_subplot(411)
-ax2 = fig.add_subplot(412)
-ax3 = fig.add_subplot(413)
-ax4 = fig.add_subplot(414)
-
-ax1.plot(xgrid[nz/4.:3*nz/4.], uphifinal_zavg[nz/4.:3*nz/4.]  - base_flow_zavg[nz/4.:3*nz/4.], color="black", label=r"$u_\phi^{final} - u_\phi^{0}$")
-ax2.plot(xgrid[nz/4.:3*nz/4.], Bzfinal_zavg[nz/4.:3*nz/4.] - Bzinitial_zavg[nz/4.:3*nz/4.], color="black", label=r"$B_z^{final} - B_z^{0}$")
-ax3.plot(xgrid[nz/4.:3*nz/4.], nabla_u_zavg[nz/4.:3*nz/4.], color="orange", label=r"$\frac{1}{Re}|\nabla^2 u|$")
-ax4.plot(xgrid[nz/4.:3*nz/4.], nabla_B_zavg[nz/4.:3*nz/4.], color="green", label=r"$\frac{1}{Rm}|\nabla^2 B|$")
-
-for ax in [ax1, ax2, ax3, ax4]:
-    ax.legend(loc=1)
-    #ax.set_xlim(1.5, 2.5)
     
 #J\left(\Psi, u_{y}\right) + (2 - q) \Omega_0 \partial_z \Psi \ - \frac{2}{\beta}B_0\partial_z B_{y} \, - \, \frac{2}{\beta} J\left(A, B_{y}\right) \, - \, \frac{1}{\reye} \nabla^2 u_{y} = 0
 
@@ -250,7 +170,7 @@ nablasqu = (-(1/Re)*(Vboth_uphi_field.differentiate(0).differentiate(0) + Vboth_
 
 shearu = ((2 - q)*Vboth_ur_field).evaluate()
 
-dzBphi = -(2/beta)*Vboth_Bphi_field.differentiate(1)
+dzBphi = (-(2/beta)*Vboth_Bphi_field.differentiate(1)).evaluate()
 
 # steady state balance, u 
 #u_steady_state = (JPsiu + (2 - q)*Vboth_ur_field - (2/beta)*Vboth_Bphi_field.differentiate(1) - (2/beta)*JAB - (1/Re)*nablasqu).evaluate()
@@ -262,6 +182,8 @@ JAB_zavg = np.mean(JAB['g'], axis=0)
 nablasqu_zavg = np.mean(nablasqu['g'], axis=0)
 shearu_zavg = np.mean(shearu['g'], axis=0)
 dzBphi_zavg = np.mean(dzBphi['g'], axis=0)
+
+all2D = JPsiu['g'] + JAB['g'] + nablasqu['g'] + shearu['g'] + dzBphi['g']
 
 # J (A, Psi)
 JAPsi = (-(-Vboth_Br_field*Vboth_uz_field + Vboth_Bz_field*Vboth_ur_field)).evaluate()
@@ -280,7 +202,7 @@ Aterm1 = (-Vboth_ur_field).evaluate()
 
 JAPsi_zavg = np.mean(JAPsi['g'], axis=0)
 nablasqAterm_zavg = np.mean(nablasqAterm['g'], axis=0)
-Aterm1_zavg = np.mean(Aterm1_zavg['g'], axis=0)
+Aterm1_zavg = np.mean(Aterm1['g'], axis=0)
 
     
 fn_root = "../data/"
