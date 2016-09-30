@@ -9,7 +9,8 @@ from matplotlib import rc
 import dedalus.public as de
 rc('text', usetex=True)
 
-file_root = "/home/jsoishi/hg-projects/weakly_nonlinear_MRI/data/"
+#file_root = "/home/jsoishi/hg-projects/weakly_nonlinear_MRI/data/"
+file_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
 obj = h5py.File(file_root + fn + ".h5", "r")
 
@@ -22,6 +23,7 @@ eps = 0.5
 
 # saturation amplitude -- for now just constant, coefficient-determined
 satamp = np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
+beta = obj.attrs['beta']
 
 # create z grid
 nz = obj.attrs['gridnum']
@@ -71,6 +73,15 @@ psi22_star_x = obj['psi22_x'].value.conj()
 
 A22_star = obj['A22'].value.conj()
 A22_star_x = obj['A22_x'].value.conj()
+
+# Vboth Psi, A
+V1_Psi = eps*satamp*obj['psi11'].value*eiqz + eps*satamp.conj()*obj['psi11_star'].value*eiqzstar
+V2_Psi = eps**2*satamp**2*obj['psi22'].value*ei2qz + eps**2*satamp.conj()**2*psi22_star*ei2qzstar + np.abs(satamp)**2*(obj['psi20'].value*ei0qz + obj['psi20_star'].value*ei0qzstar)
+Vboth_Psi = V1_Psi + V2_Psi
+
+V1_A = eps*satamp*obj['A11'].value*eiqz + eps*satamp.conj()*obj['A11_star'].value*eiqzstar
+V2_A = eps**2*satamp**2*obj['psi22'].value*ei2qz + eps**2*satamp.conj()**2*psi22_star*ei2qzstar + np.abs(satamp)**2*(obj['psi20'].value*ei0qz + obj['psi20_star'].value*ei0qzstar)
+Vboth_A = V1_A + V2_A
 
 #Vboth_u = Vboth_u + norm_base_flow
 V1_ur1 = eps*satamp*obj['psi11'].value*eiqz_z + eps*satamp.conj()*obj['psi11_star'].value*eiqzstar_z
@@ -217,16 +228,47 @@ for ax in [ax1, ax2, ax3, ax4]:
     ax.legend(loc=1)
     #ax.set_xlim(1.5, 2.5)
     
+#J\left(\Psi, u_{y}\right) + (2 - q) \Omega_0 \partial_z \Psi \ - \frac{2}{\beta}B_0\partial_z B_{y} \, - \, \frac{2}{\beta} J\left(A, B_{y}\right) \, - \, \frac{1}{\reye} \nabla^2 u_{y} = 0
+
+#sat_psi = 
+#sat_uphi = base_flow_2d + Vboth_u
+#sat_
+
+# J (Psi, u)
+JPsiu = (Vboth_ur_field*Vboth_uphi_field.differentiate(0) + Vboth_uz_field*Vboth_uphi_field.differentiate(1)).evaluate()
+
+# J (A, B)
+JAB = (Vboth_Br_field*Vboth_Bphi_field.differentiate(0) + Vboth_Bz_field*Vboth_Bphi_field.differentiate(1)).evaluate()
+
+nablasqu = (Vboth_uphi_field.differentiate(0).differentiate(0) + Vboth_uphi_field.differentiate(1).differentiate(1)).evaluate()
+
+# steady state balance, u 
+u_steady_state = (JPsiu + (2 - q)*Vboth_ur_field - (2/beta)*Vboth_Bphi_field.differentiate(1) - (2/beta)*JAB - (1/Re)*nablasqu).evaluate()
+    
+u_steady_state_zavg = np.mean(u_steady_state['g'], axis=0)
+
+# J (A, Psi)
+JAPsi = (-Vboth_Br_field*Vboth_uz_field + Vboth_Bz_field*Vboth_ur_field).evaluate()
+
+nablasqB = (Vboth_Bphi_field.differentiate(0).differentiate(0) + Vboth_Bphi_field.differentiate(1).differentiate(1)).evaluate()
+
+nablasqA = (Vboth_Br_field.differentiate(1) - Vboth_Bz_field.differentiate(0)).evaluate()
+
+# steady state balance, A...
+A_steady_state = (-Vboth_ur_field - JAPsi - (1/obj.attrs['Rm'])*nablasqA).evaluate()
+
+A_steady_state_zavg = np.mean(A_steady_state['g'], axis=0)
+    
 fn_root = "../data/"
 out_fn = fn_root + "zavg_quantities_" + fn + ".h5"
 with h5py.File(out_fn,'w') as f:
-    xgrid = f.create_dataset("xgrid", data=xgrid)
-    uphifinal_zavg = f.create_dataset("uphifinal_zavg", data=uphifinal_zavg)
-    Bzfinal_zavg = f.create_dataset("Bzfinal_zavg", data=Bzfinal_zavg)
-    nabla_u_zavg = f.create_dataset("nabla_u_zavg", data=nabla_u_zavg)
-    nabla_B_zavg = f.create_dataset("nabla_B_zavg", data=nabla_B_zavg)
-    base_flow_zavg = f.create_dataset("base_flow_zavg", data=base_flow_zavg)
-    Bzinitial_zavg = f.create_dataset("Bzinitial_zavg", data=Bzinitial_zavg)
+    dxgrid = f.create_dataset("xgrid", data=xgrid)
+    duphifinal_zavg = f.create_dataset("uphifinal_zavg", data=uphifinal_zavg)
+    dBzfinal_zavg = f.create_dataset("Bzfinal_zavg", data=Bzfinal_zavg)
+    dnabla_u_zavg = f.create_dataset("nabla_u_zavg", data=nabla_u_zavg)
+    dnabla_B_zavg = f.create_dataset("nabla_B_zavg", data=nabla_B_zavg)
+    dbase_flow_zavg = f.create_dataset("base_flow_zavg", data=base_flow_zavg)
+    dBzinitial_zavg = f.create_dataset("Bzinitial_zavg", data=Bzinitial_zavg)
     
     
    
