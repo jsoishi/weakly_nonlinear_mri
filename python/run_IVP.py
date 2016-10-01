@@ -16,21 +16,27 @@ class Coefficients():
         self.b = pmcoeffs['b'].value[self.index]
         self.c = pmcoeffs['c'].value[self.index]
         self.h = pmcoeffs['h'].value[self.index]
-
+        
+class ManualCoefficients():
+    def __init__(self, Pm, a, b, c, h):
+        self.Pm = Pm
+        self.a = a
+        self.b = b
+        self.c = c
+        self.h = h
+    
+"""
 # not saved so we'll just take value for Pm=1E-3
 #Q = 0.01269
 #Omega1 = 313.55
 Q = 0.7470
 
 gridnum = 128
-lambda_crit = 2*np.pi/Q
+lambda_crit = 2*np.pi/Q 
 
 pmcoeffs_fn = '/Users/susanclark/weakly_nonlinear_mri/data/pm_sat_coeffs.h5'
 
 # Coefficients object contains coefficients
-#coeff = Coefficients(15, pmcoeffs_fn)
-#coeff = Coefficients(0, pmcoeffs_fn)
-#coeff = Coefficients(19, pmcoeffs_fn)
 coeff = Coefficients(5, pmcoeffs_fn)
 
 print("hack: setting coefficients manually")
@@ -38,6 +44,23 @@ coeff.a = (1.0000000000000002-7.87628310056604e-29j)
 coeff.c = (113.5995286989022+7.437107283970664e-11j)
 coeff.b = (0.1522176116459535-2.756166265459084e-13j) 
 coeff.h = (0.09295902574657969+1.466113201026659e-12j)
+"""
+
+file_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
+fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
+obj = h5py.File(file_root + fn + ".h5", "r")
+
+Q = obj.attrs['Q']
+gridnum = obj.attrs['gridnum']
+a = obj.attrs['a']
+b = obj.attrs['b']
+c = obj.attrs['c']
+h = obj.attrs['h']
+Pm = obj.attrs['Pm']
+
+lambda_crit = 2*np.pi/Q 
+
+coeff = ManualCoefficients(Pm, a, b, c, h)
 
 print("saturation amplitude = {}".format(np.sqrt(coeff.b/coeff.c)))
 
@@ -116,19 +139,22 @@ saturation_amplitude = alpha_array[-1, 0]
 print(saturation_amplitude)
 
 
-f = h5py.File("/Users/susanclark/weakly_nonlinear_mri/data/Pm_"+str(coeff.Pm)+"_thingap_GLE_IVP_gridnum"+str(gridnum)+"_init_"+str(mean_init)+"_noiselvl"+str(noiselvl)+".hdf5", "w")
-alpharr = f.create_dataset("alpha_array", data=alpha_array)
-tarr = f.create_dataset("t_array", data=t_array)
-f.attrs["Q"] = Q
-f.attrs["lambda_crit"] = lambda_crit
-f.attrs["gridnum"] = gridnum
-f.attrs["num_lambda_crit"] = num_critical_wavelengths
-f.attrs["mean_init"] = mean_init
-f.attrs["dt"] = dt
-f.attrs["Pm"] = coeff.Pm
-f.attrs["a"] = coeff.a
-f.attrs["b"] = coeff.b
-f.attrs["c"] = coeff.c
-f.attrs["h"] = coeff.h
-f.close()
+#f = h5py.File("/Users/susanclark/weakly_nonlinear_mri/data/Pm_"+str(coeff.Pm)+"_thingap_GLE_IVP_gridnum"+str(gridnum)+"_init_"+str(mean_init)+"_noiselvl"+str(noiselvl)+".hdf5", "w")
+out_fn = "/Users/susanclark/weakly_nonlinear_mri/data/IVP_"+fn+"_init_"+str(mean_init)+"_noiselvl"+str(noiselvl)+".hdf5"
+with h5py.File(out_fn,'w') as f:
+    alpharr = f.create_dataset("alpha_array", data=alpha_array)
+    tarr = f.create_dataset("t_array", data=t_array)
+    Zarr = f.create_dataset("Z_array", data=Zdomain.grid(0))
+    f.attrs["Q"] = Q
+    f.attrs["lambda_crit"] = lambda_crit
+    f.attrs["gridnum"] = gridnum
+    f.attrs["num_lambda_crit"] = num_critical_wavelengths
+    f.attrs["mean_init"] = mean_init
+    f.attrs["dt"] = dt
+    f.attrs["Pm"] = coeff.Pm
+    f.attrs["a"] = coeff.a
+    f.attrs["b"] = coeff.b
+    f.attrs["c"] = coeff.c
+    f.attrs["h"] = coeff.h
+
 
