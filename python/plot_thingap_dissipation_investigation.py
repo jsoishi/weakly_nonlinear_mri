@@ -136,7 +136,7 @@ diff_tens_B = ((1.0/obj.attrs['Rm'])*(Vboth_Br_field.differentiate('x')**2 + Vbo
 e_stress_production = (Vboth_ur_field['g'] * Vboth_uphi_field['g'] - 2*(Vboth_Br_field['g'] * Vboth_Bphi_field['g'])/beta)
 
 etot = d2D.new_field()
-etot['g'] = 1.5*e_stress_production - diff_tens_u['g'] - 2*diff_tens_B['g']/beta
+etot['g'] = q*e_stress_production - diff_tens_u['g'] - 2*diff_tens_B['g']/beta
 dEdt = etot.integrate('x').integrate('z')['g'][0,0].real
 print("test energy saturation: dE/dt = {:10.5e}".format(dEdt))
 
