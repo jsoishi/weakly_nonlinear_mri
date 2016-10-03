@@ -9,8 +9,8 @@ from matplotlib import rc
 import dedalus.public as de
 rc('text', usetex=True)
 
-#file_root = "/home/jsoishi/hg-projects/weakly_nonlinear_MRI/data/"
-file_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
+file_root = "/home/joishi/hg-projects/weakly_nonlinear_mri/data/"
+#file_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
 obj = h5py.File(file_root + fn + ".h5", "r")
 
@@ -91,9 +91,9 @@ V1_Bz1 = -eps*satamp*obj['A11_x'].value*eiqz - eps*satamp.conj()*obj['A11_star_x
 
 # second order perturbations
 V2_ur1 = eps**2*satamp**2*obj['psi22'].value*ei2qz_z + eps**2*satamp.conj()**2*psi22_star*ei2qzstar_z
-V2_uz1 = -eps**2*satamp**2*obj['psi22_x'].value*ei2qz + -eps**2*satamp.conj()**2*psi22_star_x*ei2qzstar - np.abs(satamp)**2*(obj['psi20_x'].value*ei0qz + obj['psi20_star_x'].value*ei0qzstar)
+V2_uz1 = -eps**2*satamp**2*obj['psi22_x'].value*ei2qz - eps**2*satamp.conj()**2*psi22_star_x*ei2qzstar - eps**2*np.abs(satamp)**2*(obj['psi20_x'].value*ei0qz + obj['psi20_star_x'].value*ei0qzstar)
 V2_Br1 = eps**2*satamp**2*obj['A22'].value*ei2qz_z + eps**2*satamp.conj()**2*A22_star*ei2qzstar_z
-V2_Bz1 = -eps**2*satamp**2*(obj['A22_x'].value*ei2qz + A22_star_x*ei2qzstar) - np.abs(satamp)**2*(obj['A20_x'].value*ei0qz + obj['A20_star_x'].value*ei0qzstar)
+V2_Bz1 = -eps**2*satamp**2*obj['A22_x'].value*ei2qz -eps**2*satamp.conj()**2*A22_star_x*ei2qzstar - eps**2*np.abs(satamp)**2*(obj['A20_x'].value*ei0qz + obj['A20_star_x'].value*ei0qzstar)
 
 # Combined perturbations
 Vboth_ur1 = V1_ur1 + V2_ur1
@@ -128,12 +128,15 @@ Vboth_Bz_field = d2D.new_field()
 Vboth_Bz_field['g'] = Vboth_Bz1
 
 Re = obj.attrs['Rm']/obj.attrs['Pm']
-diff_tens_u = ((1.0/Re)*(Vboth_ur_field.differentiate('x').differentiate('x') + sat_uphi_field.differentiate('x').differentiate('x') + Vboth_uz_field.differentiate('x').differentiate('x')
-            + Vboth_ur_field.differentiate('z').differentiate('z') + sat_uphi_field.differentiate('z').differentiate('z') + Vboth_uz_field.differentiate('z').differentiate('z'))).evaluate()
+diff_tens_u = ((1.0/Re)*(Vboth_ur_field.differentiate('x')**2 + Vboth_uphi_field.differentiate('x')**2 + Vboth_uz_field.differentiate('x')**2 + Vboth_ur_field.differentiate('z')**2 + Vboth_uphi_field.differentiate('z')**2 + Vboth_uz_field.differentiate('z')**2)).evaluate()
 
-diff_tens_B = ((1.0/obj.attrs['Rm'])*(Vboth_Br_field.differentiate('x').differentiate('x') + Vboth_Bphi_field.differentiate('x').differentiate('x') + sat_Bz_field.differentiate('x').differentiate('x')
-            + Vboth_Br_field.differentiate('z').differentiate('z') + Vboth_Bphi_field.differentiate('z').differentiate('z') + sat_Bz_field.differentiate('z').differentiate('z'))).evaluate()
+diff_tens_B = ((1.0/obj.attrs['Rm'])*(Vboth_Br_field.differentiate('x')**2 + Vboth_Bphi_field.differentiate('x')**2 + Vboth_Bz_field.differentiate('x')**2
+                                      + Vboth_Br_field.differentiate('z')**2 + Vboth_Bphi_field.differentiate('z')**2 + Vboth_Bz_field.differentiate('z')**2)).evaluate()
 
+e_stress_production = (Vboth_ur_field['g'] * Vboth_uphi_field['g'] - 2*(Vboth_Br_field['g'] * Vboth_Bphi_field['g'])/beta)
+
+etot = d2D.new_field()
+etot['g'] = e_stress_production - diff_tens_u['g'] - 2*diff_tens_B['g']/beta
 
 # vertical averages
 base_flow_zavg = np.mean(base_flow_2d, axis=0)
@@ -221,6 +224,6 @@ with h5py.File(out_fn,'w') as f:
     dAterm1_dx_zavg = f.create_dataset("Aterm1_dx_zavg", data=Aterm1_dx_zavg)
     
     
-    
+obj.close()    
     
    

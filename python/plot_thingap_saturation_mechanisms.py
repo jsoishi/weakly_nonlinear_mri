@@ -8,8 +8,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
 from matplotlib import rc
 rc('text', usetex=True)
 
-#fn_root = "/home/jsoishi/hg-projects/weakly_nonlinear_MRI/data/"
-fn_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
+fn_root = "/home/joishi/hg-projects/weakly_nonlinear_mri/data/"
+#fn_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
 thingap_fn = fn_root + "zavg_quantities_" + fn 
 obj = h5py.File(thingap_fn + ".h5", "r")
@@ -87,11 +87,11 @@ ax1.plot(xgrid, uphifinal_zavg - base_flow_zavg, color="black", label=r"$u_\phi^
 #ax1.plot(xgrid, uphifinal_zavg, color="black", label=r"$u_\phi^{sat}$", lw=lw)
 ax1.set_title(r"$u_\phi^{final} - u_\phi^{0}$")
 
-ax2.plot(xgrid, JPsiu_zavg, label=r"$J(\Psi, u)$")
-ax2.plot(xgrid, JAB_zavg, label=r"$-\frac{2}{\beta} J(A, B)$")
-ax2.plot(xgrid, nablasqu_zavg, label=r"$-\frac{1}{\mathrm{Re}} \nabla^2 u$")
+#ax2.plot(xgrid, JPsiu_zavg, label=r"$J(\Psi, u)$")
+#ax2.plot(xgrid, JAB_zavg, label=r"$-\frac{2}{\beta} J(A, B)$")
+#ax2.plot(xgrid, nablasqu_zavg, label=r"$-\frac{1}{\mathrm{Re}} \nabla^2 u$")
 ax2.plot(xgrid, shearu_zavg, label=r"$(2-q)\Omega_0 \partial_z \Psi$" )
-ax2.plot(xgrid, dzBphi_zavg, label=r"$-\frac{2}{\beta} B_0 \partial_z B$")
+#ax2.plot(xgrid, dzBphi_zavg, label=r"$-\frac{2}{\beta} B_0 \partial_z B$")
 plt.legend()
 
 
@@ -117,3 +117,4 @@ ax2.plot(xgrid, Aterm1_dx_zavg, label=r"$-\partial_x (B_0 \partial_z \Psi) $")
 plt.legend()
 
 
+obj.close()
