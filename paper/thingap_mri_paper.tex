@@ -206,9 +206,9 @@ The state vector is expanded in a perturbation series in orders of $\epsilon$,
 And our perturbed system is then expressed order by order as
 
 \begin{align}
-\mathcal{O}(\epsilon)&: \mathcal{L}\mathbf{V_1} + \mathcal{D}\partial_t \mathbf{V_1} = 0. \\ \label{eq:ordere}
-\mathcal{O}(\epsilon^2)&: \mathcal{L}\mathbf{V_2} + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1} = \mathbf{N_2}\\
-\mathcal{O}(\epsilon^3)&: \mathcal{L} \mathbf{V_3} + \mathcal{D}\partial_T \mathbf{V_1}  + \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} \, + \, \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} + \widetilde{\mathcal{G}}\mathbf{V_1} = \mathbf{N_3} \, \\ \label{eq:ordere3}
+\mathcal{O}(\epsilon)&: \mathcal{L}\mathbf{V_1} + \mathcal{D}\partial_t \mathbf{V_1} = 0. \label{eq:ordere}\\
+\mathcal{O}(\epsilon^2)&: \mathcal{L}\mathbf{V_2} + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1} = \mathbf{N_2} \label{eq:ordere2}\\
+\mathcal{O}(\epsilon^3)&: \mathcal{L} \mathbf{V_3} + \mathcal{D}\partial_T \mathbf{V_1}  + \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} + \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} + \widetilde{\mathcal{G}}\mathbf{V_1} = \mathbf{N_3} \label{eq:ordere3}
 \end{align}
 
 The partial differential equations that comprise Equations \ref{eq:ordere} to \ref{eq:ordere3} are solved in succession. The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even small-scale structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus. We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains (e.g. \citei{Boyd:2001aa}). The nonuniform spacing of the Chebyshev grid allows us to resolve the boundary layers well on a 128-point grid.
@@ -225,7 +225,7 @@ a real Ginzburg-Landau equation.
 \section{Discussion}
 \label{sec:discussion}
 
-The fact that we find a Ginzburg-Landau equation for the amplitude is unsurprising: such an amplitude equation can be found in any system with Euclidean symmetry and a quadratic maximum in growth rate with respect to $k$ \citep{Hoyle:2006}. In this case, the Euclidean symmetry comes from axisymmetry in the $x$-$z$ plane.  In Paper II, we show that the same symmetry occurs in the axisymmetric global geometry as well. Figure~\ref{fig:u_saturation} shows the saturated mean radial profiles of $u_0 - u_{\phi} = -q \Omega_0 x - u_{\phi}$ and each term in the steady state force balance (i.e. equation~(\ref{eqset2} with $\partial_t u_{1y} = 0$). In the bulk of the fluid away from the boundary layers, the saturated state shows reduced shear, with little diffusive contribution. However, the steep scaling of transport with $\Pm$
+The fact that we find a Ginzburg-Landau equation for the amplitude is unsurprising: such an amplitude equation can be found in any system with Euclidean symmetry and a quadratic (or in our case quartic) maximum in growth rate with respect to $k$ \citep{Hoyle:2006}. In this case, the Euclidean symmetry comes from axisymmetry in the $x$-$z$ plane.  In Paper II, we show that the same symmetry occurs in the axisymmetric global geometry as well. Figure~\ref{fig:u_saturation} shows the saturated mean radial profiles of $u_0 - u_{\phi} = -q \Omega_0 x - u_{\phi}$ and each term in the steady state force balance (i.e. equation~(\ref{eqset2} with $\partial_t u_{1y} = 0$). In the bulk of the fluid away from the boundary layers, the saturated state shows reduced shear, with little diffusive contribution. However, the steep scaling of transport with $\Pm$
 
 Figure~\ref{fig:b_saturation} shows $B_z$ and the terms corresponding to steady state inductive balance (Equation~\ref{eqset2} with $\partial_t B_{y} = 0$). Here, the instability acts to push magnetic field toward the boundaries in both the bulk and the boundary layers. Note also that the total magnetic energy in the $B_z$ component is significantly larger than the initial condition. \citet{Ebrahimi:2009} considered the saturation of a single, strongly super-critical MRI mode allowed to interact non-linearly only with itself and the mean. They considered two important cases, one in which the mean flow was forced to remain at its initial, quasi-Keplerian state for all time, and one in which the background flow was allowed to evolve. This is a crucial difference between the shearing box and our narrow-gap TC flow: perturbations in our simulation can adjust the background flow, whereas in a shearing box, the shear periodicity forbids perturbations from affecting the mean flow. In the case with a freely evolving background flow, \citet{Ebrahimi:2009ey} found a saturated state quite similar to ours: field pushed to the boundaries, and a reduction in shear in the bulk of the flow. Their flows have less pronounced boundary layers, likely because of their much larger $\Pm = 0.1 -1$. 
 
@@ -259,9 +259,24 @@ S.E.C. was supported by a National Science Foundation Graduate Research Fellowsh
 \clearpage
 \appendix
 
-\section{A. Detailed Equations}\label{app:matrices}
+\section{A. Linear dispersion relation}\label{app:dispersion}
 
-Here we detail the perturbation analysis described in Section \ref{sec:equations}. The linear system is described by Equation \ref{eq:unperturbed_matrix_eqns}, where 
+The linear dispersion relation, which determines the variable scalings in the multiple scales analysis. This relation is found by perturbing the linear system (Equation \ref{eq:ordere}) with a small perturbation of the form $e^{\sigma t + i k_x x + i k_z z}$. 
+
+\beq
+\begin{split}
+& \frac{B_{0}^{4} k_{x}^{2} k_{z}^{4}}{16 \pi^{2}} + \frac{B_{0}^{4} k_{z}^{6}}{16 \pi^{2}} - \frac{B_{0}^{2} \Omega_{0} k_{z}^{4} q}{2 \pi} - 2 \Omega_{0} k_{z}^{2} q \sigma^{2} - \frac{4 \sigma}{\reym} \Omega_{0} k_{x}^{2} k_{z}^{2} q - \frac{4 \sigma}{\reym} \Omega_{0} k_{z}^{4} q - \frac{2 \Omega_{0}}{\reym^{2}} k_{x}^{4} k_{z}^{2} q - \frac{4 \Omega_{0}}{\reym^{2}} k_{x}^{2} k_{z}^{4} q - \frac{2 \Omega_{0}}{\reym^{2}} k_{z}^{6} q \\
+& - k_{x}^{2} \sigma^{4} - k_{z}^{2} \sigma^{4} + 4 k_{z}^{2} \sigma^{2} - \frac{2 \sigma^{3}}{\reym} k_{x}^{4} - \frac{4 \sigma^{3}}{\reym} k_{x}^{2} k_{z}^{2} + \frac{8 \sigma}{\reym} k_{x}^{2} k_{z}^{2} - \frac{2 \sigma^{3}}{\reym} k_{z}^{4} + \frac{8 \sigma}{\reym} k_{z}^{4} - \frac{k_{x}^{6} \sigma^{2}}{\reym^{2}} - \frac{3 \sigma^{2}}{\reym^{2}} k_{x}^{4} k_{z}^{2} + \frac{4 k_{x}^{4}}{\reym^{2}} k_{z}^{2} \\
+& - \frac{3 \sigma^{2}}{\reym^{2}} k_{x}^{2} k_{z}^{4} + \frac{8 k_{x}^{2}}{\reym^{2}} k_{z}^{4} - \frac{k_{z}^{6} \sigma^{2}}{\reym^{2}} + \frac{4 k_{z}^{6}}{\reym^{2}} - \frac{2 \sigma^{3}}{\reye} k_{x}^{4} - \frac{4 \sigma^{3}}{\reye} k_{x}^{2} k_{z}^{2} - \frac{2 \sigma^{3}}{\reye} k_{z}^{4} - \frac{4 k_{x}^{6} \sigma^{2}}{\reye \reym} -  \frac{12 k_{x}^{4} k_{z}^{2} \sigma^{2}}{\reye \reym} - \frac{12 k_{x}^{2} k_{z}^{4} \sigma^{2}}{\reye \reym} \\
+& - \frac{4 k_{z}^{6} \sigma^{2}}{\reye \reym} - \frac{2 k_{x}^{8} \sigma}{\reye \reym^{2}} - \frac{8 k_{x}^{6} k_{z}^{2} \sigma}{\reye \reym^{2}} - \frac{12 k_{x}^{4} k_{z}^{4} \sigma}{\reye \reym^{2}} - \frac{8 k_{x}^{2} k_{z}^{6} \sigma}{\reye \reym^{2}} - \frac{2 k_{z}^{8} \sigma}{\reye \reym^{2}} - \frac{k_{x}^{6} \sigma^{2}}{\reye^{2}} - \frac{3 \sigma^{2}}{\reye^{2}} k_{x}^{4} k_{z}^{2} - \frac{3 \sigma^{2}}{\reye^{2}} k_{x}^{2} k_{z}^{4} - \frac{k_{z}^{6} \sigma^{2}}{\reye^{2}} \\
+& - \frac{2 k_{x}^{8} \sigma}{\reye^{2} \reym} - \frac{8 k_{x}^{6} k_{z}^{2} \sigma}{\reye^{2} \reym} - \frac{12 k_{x}^{4} k_{z}^{4} \sigma}{\reye^{2} \reym} - \frac{8 k_{x}^{2} k_{z}^{6} \sigma}{\reye^{2} \reym} - \frac{2 k_{z}^{8} \sigma}{\reye^{2} \reym} - \frac{k_{x}^{10}}{\reye^{2} \reym^{2}} - \frac{5 k_{x}^{8} k_{z}^{2}}{\reye^{2} \reym^{2}} - \frac{10 k_{x}^{6} k_{z}^{4}}{\reye^{2} \reym^{2}} - \frac{10 k_{x}^{4} k_{z}^{6}}{\reye^{2} \reym^{2}} \\
+& - \frac{5 k_{x}^{2} k_{z}^{8}}{\reye^{2} \reym^{2}} - \frac{k_{z}^{10}}{\reye^{2} \reym^{2}} = 0
+\end{split}
+\eeq
+
+\section{B. Detailed Equations}\label{app:matrices}
+
+Here we detail the perturbation analysis described in Section \ref{sec:equations}. The linear system is described by Equation \ref{eq:unperturbed_matrix_equations}, where 
 
 \beq
 \mathcal{L} = \mathcal{L}_0 + \mathcal{L}_1 \partial_z + \mathcal{L}_2 \partial_z^2 + \mathcal{L}_3 \partial_z^3 + \mathcal{L}_4 \partial_z^4,
@@ -330,7 +345,9 @@ and the constituent matrices are defined as
 0 & -1 & 0 & 0 \\ \end{matrix} \right]
 \eeq
 
-\section{B. Expansion of Nonlinear Terms}\label{app:nonlinear_terms}
+
+
+\section{C. Expansion of Nonlinear Terms}\label{app:nonlinear_terms}
 \beq
 \mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4)
 \eeq
