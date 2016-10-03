@@ -68,7 +68,7 @@ print("saturation amplitude = {}".format(np.sqrt(coeff.b/coeff.c)))
 #Absolute = operators.Absolute
 Absolute = de.operators.UnaryGridFunction
                    
-num_critical_wavelengths = 2#20
+num_critical_wavelengths = 10#2#20
 Z_basis = de.Fourier('Z', gridnum, interval=(-(num_critical_wavelengths/2)*lambda_crit, (num_critical_wavelengths/2)*lambda_crit), dealias=3/2)
 Zdomain = de.Domain([Z_basis], grid_dtype=np.complex128)
 problem = de.IVP(Zdomain, variables=['alpha', 'alphaZ'], ncc_cutoff=1e-10)

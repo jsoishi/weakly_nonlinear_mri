@@ -59,42 +59,47 @@ phases = np.arctan2(alpha_array.imag, alpha_array.real)
 
 fig = plt.figure(figsize = (10, 6), facecolor = "white")
 nrows = 4
-ncols = 2
-
-#ax1 = plt.subplot2grid((nrows,ncols), (0,0), colspan=1, rowspan=3)
-#ax2 = plt.subplot2grid((nrows,ncols), (0,1), colspan=1, rowspan=3, sharey = ax1)
-#ax3 = plt.subplot2grid((nrows,ncols), (3,0), colspan=1, rowspan=1, sharex = ax1)
-#ax4 = plt.subplot2grid((nrows,ncols), (3,1), colspan=1, rowspan=1, sharex = ax1)
-
-#gs = gridspec.GridSpec(2, 2,
-#                       width_ratios=[1,1],
-#                       height_ratios=[4,1]
-#                       )
-
-#ax1 = plt.subplot(gs[0])
-#ax2 = plt.subplot(gs[1])
-#ax3 = plt.subplot(gs[2], sharex = ax1)
-#ax4 = plt.subplot(gs[3], sharex = ax2)
-
- 
-ax1 = plt.subplot2grid((40,100), (0, 0), rowspan=30, colspan=46)
-ax2 = plt.subplot2grid((40,100), (0, 50), rowspan=30, colspan=46)
-ax3 = plt.subplot2grid((40,100), (32, 0), rowspan=8, colspan=46)
-ax4 = plt.subplot2grid((40,100), (32, 50), rowspan=8, colspan=46)
-
-cax1 = plt.subplot2grid((40,100), (25, 47), rowspan=5, colspan=2)
-
-
+ncols = 2 
 
 #tstep = 1#00
-cmap = "BrBG"
+cmap = "Spectral_r"#"BrBG"
 
-#im1 = ax1.pcolormesh(Z_array, t_array, AAstar, cmap=cmap) 
+# Colormap
+rgbs = matplotlib.image.imread("/Users/susanclark/Dropbox/GALFA-Planck/colormap2.png")
+circ_cmap = matplotlib.colors.ListedColormap(rgbs[0, :, :])
+circ_cmap=cmap
+ 
+ax1 = plt.subplot2grid((40,110), (0, 0), rowspan=30, colspan=44)
+ax2 = plt.subplot2grid((40,110), (0, 60), rowspan=30, colspan=44)
+ax3 = plt.subplot2grid((40,110), (35, 0), rowspan=5, colspan=44)
+ax4 = plt.subplot2grid((40,110), (35, 60), rowspan=5, colspan=44)
 
+cax1 = plt.subplot2grid((40,110), (23, 45), rowspan=5, colspan=2)
+cax2 = plt.subplot2grid((40,110), (24, 105), rowspan=5, colspan=5, projection="polar")
+
+# Plot the colorbar onto the polar axis
+#display_axes = fig.add_axes([0.1,0.1,0.8,0.8], projection='polar')
+cax2._direction = 2*np.pi 
+norm = matplotlib.colors.Normalize(0.0, 2*np.pi)
+# note - use orientation horizontal so that the gradient goes around
+# the wheel rather than centre out
+quant_steps = 2056
+cb = matplotlib.colorbar.ColorbarBase(cax2, cmap=circ_cmap,
+                                   norm=norm,
+                                   orientation='horizontal')
+# aesthetics - get rid of border and axis labels                                   
+cb.outline.set_visible(False)                                 
+cax2.set_axis_off()
+#cb.set_ticks([0])
+#cb.set_ticklabels([r"$\pi$"])
+cax2.text(-.05, 1.15, r"$\pi$")
+
+cax2.tick_params(axis=u'both', which=u'both',length=0)
+cax2.tick_params(labelsize=16)
+cax2.tick_params(axis='both', which='major', pad=15)
 
 im1 = ax1.imshow(AAstar, cmap = cmap, aspect=192./251)
-
-im2 = ax2.imshow(phases, cmap = cmap, aspect=192./251)
+im2 = ax2.imshow(phases, cmap = circ_cmap, aspect=192./251)
 
 cmap_vals = matplotlib.cm.get_cmap(cmap)
 
@@ -109,26 +114,27 @@ ax4.set_xlim(0, len(alpha_array[0, :]))#/tstep))
 #ax2.set_ylim(0, len(alpha_array[0::tstep, 0]))
 
 ax1.set_title(r"$\alpha \alpha^*$")
-ax2.set_title(r"$\mathrm{arctan} \frac{Im(\alpha)}{Re(\alpha)}$")
+ax2.set_title(r"$\phi = \mathrm{arctan} \frac{Im(\alpha)}{Re(\alpha)}$")
 
-ax1.set_ylabel(r"$T$")
-ax1.set_xlabel(r"$Z$")
+ax1.set_ylabel(r"$T$", rotation=0, labelpad=15)
+ax3.set_xlabel(r"$Z$")
  
-ax2.set_ylabel(r"$T$")
-ax2.set_xlabel(r"$Z$")
+ax2.set_ylabel(r"$T$", rotation=0, labelpad=15)
+ax4.set_xlabel(r"$Z$")
 
-#divider = make_axes_locatable(ax1)
-#cax = divider.append_axes("right", size="5%", pad=0.05)    
-#cbar = plt.colorbar(im1, cax=cax)
-#cbar.outline.set_visible(False)
+ax1.set_yticks([])
+ax2.set_yticks([])
 
-cbar = plt.colorbar(im1, cax=cax1)
-cbar.outline.set_visible(False)
+cbar1 = plt.colorbar(im1, cax=cax1) 
+cbar1.outline.set_visible(False)
 
-#divider = make_axes_locatable(ax2)
-#cax = divider.append_axes("right", size="5%", pad=0.05)    
-#cbar = plt.colorbar(im2, cax=cax)
-#cbar.outline.set_visible(False) 
+cbar1_locs = [np.nanmin(AAstar), np.nanmax(AAstar)]
+cbar1.set_ticks(cbar1_locs)
+
+
+for cax in [cax1, cax2]:
+    cax.tick_params(labelsize=8)
+
 
 # plot saturation amplitude
 ax3.plot(alpha_array[-1, :].real, color = "black", lw=2, label=r"$Re\{\alpha(t = t_{final})\}$")
@@ -136,10 +142,29 @@ ax3.plot(alpha_array[-1, :].imag, color = "gray", lw=2)
 ax3.plot([0, len(alpha_array[-1, :])], [coeff_sat_amp.real, coeff_sat_amp.real], '--', color = "grey", lw=1.5, label=r"$+/-\sqrt{b/c}$") # dummy label plot
 ax3.plot([0, len(alpha_array[-1, :])], [coeff_sat_amp.real, coeff_sat_amp.real], '--', color = cmap_vals(256), lw=1.6, alpha=0.8)
 ax3.plot([0, len(alpha_array[-1, :])], [-coeff_sat_amp.real, -coeff_sat_amp.real], '--', color = cmap_vals(0), lw=1.6, alpha=0.8)
-ax3.legend(loc = "lower center", bbox_to_anchor=(0.5, -0.5), ncol = 2, prop={'size':10})
-ax3.set_xticklabels([])
+#ax3.legend(loc = "lower center", bbox_to_anchor=(0.5, -0.5), ncol = 2, prop={'size':10})
+#ax3.set_xticklabels([])
+ax3.set_title(r"$\alpha(t = t_{final})$")
+ax4.set_title(r"$\phi(t = t_{final})$")
 
-ax4.plot(phases[-1, :], color = "black")
+ax4.plot(phases[-1, :], color = "black", lw=1.6)
+
+ax3.set_yticks([-coeff_sat_amp.real, coeff_sat_amp.real])
+ax3.set_yticklabels([r"$-\sqrt{b/c}$", r"$+\sqrt{b/c}$"], size=10)
+
+ax4.set_yticks([-np.pi, np.pi])
+ax4.set_yticklabels([r"$-\pi$", r"$+\pi$"], size=10)
+
+for spine in ax3.spines.values():
+    spine.set_edgecolor('None')
+    
+for spine in ax4.spines.values():
+    spine.set_edgecolor('None')
+
+for ax in [ax1, ax2, ax3, ax4]:
+    ax.set_xticks([0, len(Z_array)/2., len(Z_array)])
+    ax.set_xticklabels([r"$-5\lambda_{crit}$", r"$0$", r"$5\lambda_{crit}$"])
+    
 
 #fig.subplots_adjust(hspace=0.5)
 
