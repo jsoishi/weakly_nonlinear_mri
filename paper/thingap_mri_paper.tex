@@ -176,7 +176,7 @@ where we leave the definition of the matrices $\mathcal{D}$, $\mathcal{L}$, and 
 \eeq
 
 
-\section{Weakly Nonlinear Analysis}
+\section{Weakly Nonlinear Analysis}\label{sec:wnl}
 
 We conduct a formal multiple scales analysis of this system. Our perturbations are characterized in terms of fast and slow-moving variables, in order to simultaneously track their evolution on two scales. The relative scalings of the fast and slow variables are chosen such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation (Appendix \ref{app:dispersion}). The scalings are
 
@@ -261,10 +261,18 @@ S.E.C. was supported by a National Science Foundation Graduate Research Fellowsh
 
 \section{A. Detailed Equations}\label{app:matrices}
 
-Here we detail the perturbation analysis described in Section \ref{sec:equations}. The linear system is described by Equation \ref{eq:unperturbed_matrix_equations}, where 
+Here we detail the perturbation analysis described in Section \ref{sec:wnl}. The perturbation series is described by Equations \ref{eq:ordere} - \ref{eq:ordere3}, where 
 
 \beq
 \mathcal{L} = \mathcal{L}_0 + \mathcal{L}_1 \partial_z + \mathcal{L}_2 \partial_z^2 + \mathcal{L}_3 \partial_z^3 + \mathcal{L}_4 \partial_z^4,
+\eeq
+
+\beq
+\widetilde{\mathcal{L}}_1 =  \mathcal{L}_1 + 2\mathcal{L}_2\partial_z + 3\mathcal{L}_3\partial_z^2 + 4\mathcal{L}_4\partial_z^3
+\eeq
+
+\beq
+\widetilde{\mathcal{L}}_2 = \mathcal{L}_2 + 3\mathcal{L}_3\partial_z + 6\mathcal{L}_4\partial_z^2
 \eeq
 
 \beq
@@ -330,7 +338,13 @@ and the constituent matrices are defined as
 0 & -1 & 0 & 0 \\ \end{matrix} \right]
 \eeq
 
+Once perturbed, the system is solved for successive orders of $\epsilon$ (Equations \ref{eq:ordere} - \ref{eq:ordere3}). $\mathcal{O}(\epsilon)$ is the linear system. At $\mathcal{O}(\epsilon^2)$, first-order MRI modes nonlinearly interact with themselves and with their complex conjugates, and so the term $\mathbf{N}_2$ in Equation \ref{eq:ordere2} has the form
 
+\beq
+\mathbf{N}_2 = |\alpha|^2 \mathbf{N}_{20} + \alpha^2 \mathbf{N}_{22} e^{2 i k_c z}
+\eeq
+
+(see Appendix \ref{app:nonlinear_terms} for the full form of $\mathbf{N}_{20}$ and $\mathbf{N}_{22}$). 
 
 \section{B. Expansion of Nonlinear Terms}\label{app:nonlinear_terms}
 \beq
