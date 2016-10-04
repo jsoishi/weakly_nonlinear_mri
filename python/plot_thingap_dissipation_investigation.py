@@ -11,7 +11,8 @@ rc('text', usetex=True)
 
 #file_root = "/home/joishi/hg-projects/weakly_nonlinear_mri/data/"
 file_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
-fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
+#fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
+fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_256_Anorm"
 obj = h5py.File(file_root + fn + ".h5", "r")
 
 Q = obj.attrs['Q']
@@ -129,6 +130,8 @@ Vboth_Bz_field['g'] = Vboth_Bz1
 
 Vboth_A_field = d2D.new_field()
 Vboth_A_field['g'] = Vboth_A
+Vboth_Psi_field = d2D.new_field()
+Vboth_Psi_field['g'] = Vboth_Psi
 
 Re = obj.attrs['Rm']/obj.attrs['Pm']
 diff_tens_u = ((1.0/Re)*(Vboth_ur_field.differentiate('x')**2 + Vboth_uphi_field.differentiate('x')**2 + Vboth_uz_field.differentiate('x')**2 + Vboth_ur_field.differentiate('z')**2 + Vboth_uphi_field.differentiate('z')**2 + Vboth_uz_field.differentiate('z')**2)).evaluate()
@@ -185,9 +188,12 @@ nablasqA = (Vboth_Br_field.differentiate('z') - Vboth_Bz_field.differentiate('x'
 nablasqA2 = (Vboth_A_field.differentiate('x').differentiate('x') + Vboth_A_field.differentiate('z').differentiate('z')).evaluate()
 
 nablasqAterm = (-(1.0/obj.attrs['Rm'])*nablasqA).evaluate()
-nablasqAterm2 = (-(1.0/obj.attrs['Rm'])*nablasqA).evaluate()
+nablasqAterm2 = (-(1.0/obj.attrs['Rm'])*nablasqA2).evaluate()
+print("Rm:", obj.attrs['Rm'])
+print("Q:", obj.attrs['Q'])
 
 Aterm1 = (-Vboth_ur_field).evaluate()
+Aterm2 = (-Vboth_Psi_field.differentiate('z')).evaluate()
 
 JAPsi_zavg = np.mean(JAPsi['g'], axis=0)
 nablasqAterm_zavg = np.mean(nablasqAterm['g'], axis=0)

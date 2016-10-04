@@ -15,6 +15,7 @@ import h5py
 #Rm = 4.879
 #Pm = 1E-2#1e-3
 
+"""
 # indx = 0 : Pm = 1E-4
 tgc = h5py.File('../data/pm_sat_coeffs.h5', 'r')
 #for indx in range(len(tgc['Pm'].value)):
@@ -22,7 +23,7 @@ indx=0
 Pm = tgc['Pm'].value[indx].real
 Rm = tgc['Rm_c'].value[indx].real
 Q = tgc['Q_c'].value[indx].real
-
+"""
 # parameters like Umurhan+
 
 #Pm = 1.0E-6
@@ -30,6 +31,9 @@ Q = tgc['Q_c'].value[indx].real
 #Q = 0.74641163216928608
 q = 1.5
 beta = 25.0
+Pm = 1.0E-3
+Rm = 4.87384744169
+Q = 0.746395815905
 
 #Pm = 1e-05
 #Rm=4.87329607521
@@ -50,7 +54,7 @@ beta = 25.0
 #Rm=2.10544049314
 #Q=0.66049326571719358
 
-gridnum = 256
+gridnum = 256 
 x_basis = de.Chebyshev('x',gridnum)
 domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)

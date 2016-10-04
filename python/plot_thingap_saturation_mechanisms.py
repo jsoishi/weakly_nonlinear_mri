@@ -12,6 +12,7 @@ rc('text', usetex=True)
 #fn_root = "/home/joishi/hg-projects/weakly_nonlinear_mri/data/"
 fn_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
+fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_256_Anorm"
 thingap_fn = fn_root + "zavg_quantities_" + fn 
 obj = h5py.File(thingap_fn + ".h5", "r")
 
@@ -96,10 +97,10 @@ ax2.plot(xgrid, shearu_zavg, "_", color="orangered", label=r"$(2-q)\Omega_0 \par
 ax2.set_xlabel(r"$x$", size=15)
 plt.legend(prop={'size':10}, bbox_to_anchor=(0.95, 0.35))
 
-ax2.set_xlim(-0.2, 0.2)
-ax2.set_ylim(-0.00008, 0.00008)
-ax2.set_xticks([-0.2, 0, 0.2])
-ax2.set_yticks([-0.00008, 0, 0.00008])
+#ax2.set_xlim(-0.2, 0.2)
+#ax2.set_ylim(-0.00008, 0.00008)
+#ax2.set_xticks([-0.2, 0, 0.2])
+#ax2.set_yticks([-0.00008, 0, 0.00008])
 transFigure = fig.transFigure.inverted()
 
 ymin1, ymax1 = ax1.get_ylim()
@@ -122,7 +123,7 @@ for spine in ax2.spines.values():
     spine.set_edgecolor("darkgray")
 
 
-"""
+
 # New figure
 JAPsi_dx_zavg = obj["JAPsi_dx_zavg"].value
 nablasqAterm_dx_zavg = obj["nablasqAterm_dx_zavg"].value
@@ -142,7 +143,32 @@ ax1.text(-0.95, 1.0002, r"$B_z^{0}$", color="darkgray")
 ax2.plot(xgrid, JAPsi_dx_zavg, label=r"$\partial_x (J(A, \Psi))$")
 ax2.plot(xgrid, nablasqAterm_dx_zavg, label=r"$\partial_x (\nabla^2 A)$")
 ax2.plot(xgrid, Aterm1_dx_zavg, label=r"$-\partial_x (B_0 \partial_z \Psi) $")
-plt.legend()
-"""
+ax2.set_xlabel(r"$x$", size=15)
+plt.legend(prop={'size':10}, bbox_to_anchor=(0.95, 0.35))
+
+#ax2.set_xlim(-0.2, 0.2)
+#ax2.set_ylim(-0.00008, 0.00008)
+#ax2.set_xticks([-0.2, 0, 0.2])
+#ax2.set_yticks([-0.00008, 0, 0.00008])
+transFigure = fig.transFigure.inverted()
+
+ymin1, ymax1 = ax1.get_ylim()
+ymin2, ymax2 = ax2.get_ylim()
+
+coord1 = transFigure.transform(ax1.transData.transform([-0.2, ymin1]))
+coord2 = transFigure.transform(ax2.transData.transform([-0.2, ymax2]))
+
+line1 = matplotlib.lines.Line2D((coord1[0],coord2[0]),(coord1[1],coord2[1]),
+                               transform=fig.transFigure, color="darkgray", zorder=-99)
+                               
+coord1 = transFigure.transform(ax1.transData.transform([0.2, ymin1]))
+coord2 = transFigure.transform(ax2.transData.transform([0.2, ymax2]))
+line2 = matplotlib.lines.Line2D((coord1[0],coord2[0]),(coord1[1],coord2[1]),
+                               transform=fig.transFigure, color="darkgray", zorder=-99)
+                               
+fig.lines = line1, line2
+
+for spine in ax2.spines.values():
+    spine.set_edgecolor("darkgray")
 
 obj.close()
