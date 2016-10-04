@@ -93,9 +93,9 @@ fig = plt.figure(figsize=(8, 8), facecolor="white")
 ax1 = fig.add_subplot(211)
 ax2 = fig.add_subplot(212)
 
-ax1.plot(xgrid, uphifinal_zavg - base_flow_zavg, color="black", label=r"$u_\phi^{final} - u_\phi^{0}$", lw=lw)
+ax1.plot(xgrid, uphifinal_zavg - base_flow_zavg, color="black", label=r"$u_y^{final} - u_y^{0}$", lw=lw)
 #ax1.plot(xgrid, uphifinal_zavg, color="black", label=r"$u_\phi^{sat}$", lw=lw)
-ax1.set_title(r"$u_\phi^{saturated} - u_\phi^{0}$", size=18)
+ax1.set_title(r"$u_y^{saturated} - u_y^{0}$", size=18)
 
 colors = ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854"]
 lw = 2
