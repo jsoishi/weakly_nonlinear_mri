@@ -355,6 +355,58 @@ Once perturbed, the system is solved for successive orders of $\epsilon$ (Equati
 
 (see Appendix \ref{app:nonlinear_terms} for the full form of $\mathbf{N}_{20}$ and $\mathbf{N}_{22}$). 
 
+Note that, following the notation of \citet{Umurhan:2007hs}, the subscripts refer to $\epsilon$ order, $z$ order, successively, such that $\mathbf{N}_{22}$ is the second-order nonlinear term which corresponds to $e^{2 i k_c z}$ z-dependence.  
+
+Equation \ref{eq:ordere2} is solved as three separate systems of equations, one for each possible $z$ resonance: 
+
+\begin{align}
+\mathcal{L}\mathbf{V}_{20} & = \mathbf{N}_{20}\\
+\mathcal{L}\mathbf{V}_{21} & = - \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_{11} \\
+\mathcal{L}\mathbf{V}_{22} & = \mathbf{N}_{22}
+\end{align}
+
+Finally, at $\mathcal{O}(\epsilon^3)$ we eliminate secular terms to close the system. Secular terms are terms which are resonant with the solution to the homogenous linear equation (Equation \ref{eq:ordere}), and which cause the higher-order solutions to grow without bound. The solvability criterion we enforce to eliminate these terms is the vanishing of the inner product of the solution to the adjoint linear homogenous equation $\mathcal{L}^\dagger \mathbf{V}^\dagger = 0$ with the nonhomogenous terms in Equation \ref{eq:ordere3}, namely
+
+\beq\label{eq:innerprod_gle}
+\langle \mathbb{V}^\dagger | \mathcal{D} \mathbb{V}_{11} \rangle \partial_T \alpha + \langle  \mathbb{V}^\dagger | \widetilde{\mathcal{G}} \mathbb{V}_{11} \rangle \alpha +  \langle \mathbb{V}^\dagger | \widetilde{\mathcal{L}}_1 \mathbb{V}_{21} + \widetilde{\mathcal{L}}_2 \mathbb{V}_{11} \rangle \partial_Z^2 \alpha = \langle \mathbb{V}^\dagger | \mathbf{N}_{31} \rangle \alpha |\alpha|^2.
+\eeq
+
+This solvability criterion derives from a corollary to the Fredholm Alternative \citep[see][for a formal definition]{Clark:2016}. 
+
+Equation \ref{eq:innerprod_gle} can be rewritten as Equation \ref{eq:gle}, the Ginzburg-Landau Equation, where the coefficients are 
+
+\beq
+b = \langle  \mathbb{V}^\dagger | \widetilde{\mathcal{G}} \mathbb{V}_{11} \rangle / \langle \mathbb{V}^\dagger | \mathcal{D} \mathbb{V}_{11} \rangle,
+\eeq
+
+\beq
+h = \langle \mathbb{V}^\dagger | \widetilde{\mathcal{L}}_1 \mathbb{V}_{21} + \widetilde{\mathcal{L}}_2 \mathbb{V}_{11} \rangle / \langle \mathbb{V}^\dagger | \mathcal{D} \mathbb{V}_{11} \rangle,
+\eeq
+
+and
+
+\beq
+c = \langle \mathbb{V}^\dagger | \mathbf{N}_{31} \rangle / \langle \mathbb{V}^\dagger | \mathcal{D} \mathbb{V}_{11} \rangle. 
+\eeq
+
+We define the adjoint operator $\mathcal{L}^\dagger$ and solution $\mathbf{V}^\dagger$ as 
+
+\beq
+\langle \mathbf{V^\dagger} | \mathcal{L} \mathbf{V} \rangle = \langle \mathcal{L}^\dagger \mathbf{V}^\dagger | \mathbf{V} \rangle,
+\eeq
+
+where the inner product is defined as 
+
+\beq\label{eq:inner_product_def}
+\langle \mathbf{V^\dagger} | \mathcal{L} \mathbf{V} \rangle = \frac{k_c}{2\pi} \int_{-\pi/k_c}^{\pi/k_c} \int_{x_1}^{x_2} \mathbf{V}^{\dagger*} \cdot \mathcal{L} \mathbf{V} \, \mathrm{d} x \mathrm{d} z.
+\eeq
+
+The solution to the adjoint homogenous equation has the form 
+
+\beq
+\mathbf{V^\dagger} = \mathbb{V}^\dagger(x) e^{i k_c z} + c.c.
+\eeq
+
 \section{B. Expansion of Nonlinear Terms}\label{app:nonlinear_terms}
 \beq
 \mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4)
