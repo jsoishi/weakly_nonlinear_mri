@@ -80,7 +80,7 @@ V2_Psi = eps**2*satamp**2*obj['psi22'].value*ei2qz + eps**2*satamp.conj()**2*psi
 Vboth_Psi = V1_Psi + V2_Psi
 
 V1_A = eps*satamp*obj['A11'].value*eiqz + eps*satamp.conj()*obj['A11_star'].value*eiqzstar
-V2_A = eps**2*satamp**2*obj['psi22'].value*ei2qz + eps**2*satamp.conj()**2*psi22_star*ei2qzstar + eps**2*np.abs(satamp)**2*(obj['psi20'].value*ei0qz + obj['psi20_star'].value*ei0qzstar)
+V2_A = eps**2*satamp**2*obj['A22'].value*ei2qz + eps**2*satamp.conj()**2*A22_star*ei2qzstar + eps**2*np.abs(satamp)**2*(obj['A20'].value*ei0qz + obj['A20_star'].value*ei0qzstar)
 Vboth_A = V1_A + V2_A
 
 # first order perturbations
@@ -158,13 +158,13 @@ nabla_B_zavg = np.mean(diff_tens_B['g'], axis=0)
 JPsiu = (Vboth_ur_field*Vboth_uphi_field.differentiate('x') + Vboth_uz_field*Vboth_uphi_field.differentiate('z')).evaluate()
 
 # J (A, B)
-JAB = (-(2/beta)*(Vboth_Br_field*Vboth_Bphi_field.differentiate('x') + Vboth_Bz_field*Vboth_Bphi_field.differentiate('z'))).evaluate()
+JAB = (-(2.0/beta)*(Vboth_Br_field*Vboth_Bphi_field.differentiate('x') + Vboth_Bz_field*Vboth_Bphi_field.differentiate('z'))).evaluate()
 
-nablasqu = (-(1/Re)*(Vboth_uphi_field.differentiate('x').differentiate('x') + Vboth_uphi_field.differentiate('z').differentiate('z'))).evaluate()
+nablasqu = (-(1.0/Re)*(Vboth_uphi_field.differentiate('x').differentiate('x') + Vboth_uphi_field.differentiate('z').differentiate('z'))).evaluate()
 
 shearu = ((2 - q)*Vboth_ur_field).evaluate()
 
-dzBphi = (-(2/beta)*Vboth_Bphi_field.differentiate('z')).evaluate()
+dzBphi = (-(2.0/beta)*Vboth_Bphi_field.differentiate('z')).evaluate()
 
 
 JPsiu_zavg = np.mean(JPsiu['g'], axis=0)
@@ -184,8 +184,8 @@ nablasqB = (Vboth_Bphi_field.differentiate('x').differentiate('x') + Vboth_Bphi_
 nablasqA = (Vboth_Br_field.differentiate('z') - Vboth_Bz_field.differentiate('x')).evaluate()
 nablasqA2 = (Vboth_A_field.differentiate('x').differentiate('x') + Vboth_A_field.differentiate('z').differentiate('z')).evaluate()
 
-nablasqAterm = (-(1/obj.attrs['Rm'])*nablasqA).evaluate()
-nablasqAterm2 = (-(1/obj.attrs['Rm'])*nablasqA).evaluate()
+nablasqAterm = (-(1.0/obj.attrs['Rm'])*nablasqA).evaluate()
+nablasqAterm2 = (-(1.0/obj.attrs['Rm'])*nablasqA).evaluate()
 
 Aterm1 = (-Vboth_ur_field).evaluate()
 
@@ -204,7 +204,7 @@ all2DBx = (JAPsi_dx + nablasqAterm_dx + Aterm1_dx).evaluate()
 JAPsi_dx_zavg = np.mean(JAPsi_dx['g'], axis=0)
 nablasqAterm_dx_zavg = np.mean(nablasqAterm_dx['g'], axis=0)
 Aterm1_dx_zavg = np.mean(Aterm1_dx['g'], axis=0)
-    
+     
 fn_root = "../data/"
 out_fn = fn_root + "zavg_quantities_" + fn + ".h5"
 with h5py.File(out_fn,'w') as f:

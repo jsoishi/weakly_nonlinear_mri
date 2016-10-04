@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import h5py 
+import matplotlib
 from matplotlib import pyplot, lines
 from scipy import interpolate, optimize
 import matplotlib.ticker as ticker
@@ -87,15 +88,38 @@ ax1.plot(xgrid, uphifinal_zavg - base_flow_zavg, color="black", label=r"$u_\phi^
 #ax1.plot(xgrid, uphifinal_zavg, color="black", label=r"$u_\phi^{sat}$", lw=lw)
 ax1.set_title(r"$u_\phi^{final} - u_\phi^{0}$")
 
-ax2.plot(xgrid, JPsiu_zavg, label=r"$J(\Psi, u)$")
-ax2.plot(xgrid, JAB_zavg, label=r"$-\frac{2}{\beta} J(A, B)$")
-ax2.plot(xgrid, nablasqu_zavg, label=r"$-\frac{1}{\mathrm{Re}} \nabla^2 u$")
-ax2.plot(xgrid, shearu_zavg, label=r"$(2-q)\Omega_0 \partial_z \Psi$" )
-ax2.plot(xgrid, dzBphi_zavg, label=r"$-\frac{2}{\beta} B_0 \partial_z B$")
-plt.legend(prop={'size':6})
+ax2.plot(xgrid, JPsiu_zavg, "--", color="slateblue", label=r"$J(\Psi, u)$")
+ax2.plot(xgrid, JAB_zavg, ":", color="green", label=r"$-\frac{2}{\beta} J(A, B)$")
+ax2.plot(xgrid, nablasqu_zavg, color="tomato", label=r"$-\frac{1}{\mathrm{Re}} \nabla^2 u$")
+ax2.plot(xgrid, dzBphi_zavg, "-.", color="royalblue", label=r"$-\frac{2}{\beta} B_0 \partial_z B$")
+ax2.plot(xgrid, shearu_zavg, "_", color="orangered", label=r"$(2-q)\Omega_0 \partial_z \Psi$" )
+ax2.set_xlabel(r"$x$", size=15)
+plt.legend(prop={'size':10}, bbox_to_anchor=(0.95, 0.35))
 
 ax2.set_xlim(-0.2, 0.2)
 ax2.set_ylim(-0.00008, 0.00008)
+ax2.set_xticks([-0.2, 0, 0.2])
+ax2.set_yticks([-0.00008, 0, 0.00008])
+transFigure = fig.transFigure.inverted()
+
+ymin1, ymax1 = ax1.get_ylim()
+ymin2, ymax2 = ax2.get_ylim()
+
+coord1 = transFigure.transform(ax1.transData.transform([-0.2, ymin1]))
+coord2 = transFigure.transform(ax2.transData.transform([-0.2, ymax2]))
+
+line1 = matplotlib.lines.Line2D((coord1[0],coord2[0]),(coord1[1],coord2[1]),
+                               transform=fig.transFigure, color="darkgray", zorder=-99)
+                               
+coord1 = transFigure.transform(ax1.transData.transform([0.2, ymin1]))
+coord2 = transFigure.transform(ax2.transData.transform([0.2, ymax2]))
+line2 = matplotlib.lines.Line2D((coord1[0],coord2[0]),(coord1[1],coord2[1]),
+                               transform=fig.transFigure, color="darkgray", zorder=-99)
+                               
+fig.lines = line1, line2
+
+for spine in ax2.spines.values():
+    spine.set_edgecolor("darkgray")
 
 
 """
