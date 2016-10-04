@@ -54,7 +54,7 @@ Q = 0.746395815905
 #Rm=2.10544049314
 #Q=0.66049326571719358
 
-gridnum = 256 
+gridnum = 512 
 x_basis = de.Chebyshev('x',gridnum)
 domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)

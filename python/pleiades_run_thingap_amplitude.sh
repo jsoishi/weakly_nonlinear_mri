@@ -1,9 +1,9 @@
 #PBS -S /bin/bash
-#PBS -N ThingapAmp256
+#PBS -N ThingapAmp512
 #PBS -l select=2:ncpus=10:mpiprocs=10:model=has
-#PBS -l walltime=02:00:00
+#PBS -l walltime=20:00:00
 #PBS -j oe
-#PBS -q devel
+#PBS -q long
 
 dedalus_script=run_amplitude
 
