@@ -113,7 +113,7 @@ else:
     ax2.plot(xgrid, dzBphi_slice, "-.", color=colors[3], lw=lw, label=r"$-\frac{2}{\beta} B_0 \partial_z B$")
     ax2.plot(xgrid, shearu_slice, dashes = [5,2,10,5], color=colors[4], lw=lw, label=r"$(2-q)\Omega_0 \partial_z \Psi$" )
 ax2.set_xlabel(r"$x$", size=15)
-plt.legend(prop={'size':10}, bbox_to_anchor=(0.95, 0.35))
+plt.legend(prop={'size':10}, bbox_to_anchor=(0.9, 0.35))
 
 #ax2.set_xlim(-0.2, 0.2)
 #ax2.set_ylim(-0.00008, 0.00008)
@@ -135,7 +135,7 @@ coord2 = transFigure.transform(ax2.transData.transform([0.2, ymax2]))
 line2 = matplotlib.lines.Line2D((coord1[0],coord2[0]),(coord1[1],coord2[1]),
                                transform=fig.transFigure, color="darkgray", zorder=-99)
                                
-fig.lines = line1, line2
+#fig.lines = line1, line2
 
 for spine in ax2.spines.values():
     spine.set_edgecolor("darkgray")
@@ -169,7 +169,7 @@ else:
     ax2.plot(xgrid, nablasqAterm_dx_slice, ":", color=colors[1], lw=lw, label=r"$\partial_x (\nabla^2 A)$")
     ax2.plot(xgrid, Aterm1_dx_slice, color=colors[2], lw=lw, label=r"$-\partial_x (B_0 \partial_z \Psi) $")
 ax2.set_xlabel(r"$x$", size=15)
-plt.legend(prop={'size':10}, bbox_to_anchor=(0.95, 0.35))
+plt.legend(prop={'size':10}, bbox_to_anchor=(0.95, 0.3))
 
 #ax2.set_xlim(-0.2, 0.2)
 #ax2.set_ylim(-0.00008, 0.00008)
@@ -191,7 +191,7 @@ coord2 = transFigure.transform(ax2.transData.transform([0.2, ymax2]))
 line2 = matplotlib.lines.Line2D((coord1[0],coord2[0]),(coord1[1],coord2[1]),
                                transform=fig.transFigure, color="darkgray", zorder=-99)
                                
-fig.lines = line1, line2
+#fig.lines = line1, line2
 
 for spine in ax2.spines.values():
     spine.set_edgecolor("darkgray")
