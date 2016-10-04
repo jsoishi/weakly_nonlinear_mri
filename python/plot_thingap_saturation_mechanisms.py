@@ -13,6 +13,7 @@ rc('text', usetex=True)
 fn_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
 #fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_256_Anorm"
+#fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
 thingap_fn = fn_root + "zavg_quantities_" + fn 
 obj = h5py.File(thingap_fn + ".h5", "r")
 
@@ -44,7 +45,7 @@ ax2.plot(xgrid, Bzfinal_zavg, color="black", label=r"$B_z^{final} - B_z^{0}$", l
 ax2.set_yticks([np.min(Bzfinal_zavg), 1, np.max(Bzfinal_zavg)])
 ax2.set_yticklabels([r"$0.9985$", r"$1$", r"$1.0025$"])
 ax2.set_title(r"$B_z^{saturated}$")
-ax2.text(-0.95, 1.0002, r"$B_z^{0}$", color="darkgray")
+ax2.text(-0.95, 1.0005, r"$B_z^{0}$", color="darkgray")
 
 ax3.plot(xgrid, nabla_u_zavg, color="black", label=r"$\frac{1}{\mathrm{Re}}|\nabla^2 u|$", lw=lw)
 ax3.set_title(r"$\frac{1}{Re}\nabla^2 u$")
@@ -158,7 +159,7 @@ ax1.plot(xgrid, Bzfinal_zavg, color="black", label=r"$B_z^{sat}$", lw=lw)
 ax1.set_yticks([np.min(Bzfinal_zavg), 1, np.max(Bzfinal_zavg)])
 ax1.set_yticklabels([r"$0.9985$", r"$1$", r"$1.0025$"])
 ax1.set_title(r"$B_z^{saturated}$")
-ax1.text(-0.95, 1.0002, r"$B_z^{0}$", color="darkgray")
+ax1.text(-0.95, 1.00002, r"$B_z^{0}$", color="darkgray")
 
 if zavg is True:
     ax2.plot(xgrid, JAPsi_dx_zavg, label=r"$\partial_x (J(A, \Psi))$")
