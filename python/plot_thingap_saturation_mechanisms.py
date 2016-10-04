@@ -89,13 +89,13 @@ shearu_slice = obj["shearu_slice"].value
 dzBphi_slice = obj["dzBphi_slice"].value
 
 
-fig = plt.figure(figsize=(6, 6), facecolor="white")
+fig = plt.figure(figsize=(8, 8), facecolor="white")
 ax1 = fig.add_subplot(211)
 ax2 = fig.add_subplot(212)
 
 ax1.plot(xgrid, uphifinal_zavg - base_flow_zavg, color="black", label=r"$u_\phi^{final} - u_\phi^{0}$", lw=lw)
 #ax1.plot(xgrid, uphifinal_zavg, color="black", label=r"$u_\phi^{sat}$", lw=lw)
-ax1.set_title(r"$u_\phi^{final} - u_\phi^{0}$")
+ax1.set_title(r"$u_\phi^{saturated} - u_\phi^{0}$", size=18)
 
 colors = ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854"]
 lw = 2
@@ -114,7 +114,7 @@ else:
     ax2.plot(xgrid, dzBphi_slice, "-.", color=colors[3], lw=lw, label=r"$-\frac{2}{\beta} B_0 \partial_z B$")
     ax2.plot(xgrid, shearu_slice, dashes = [5,2,10,5], color=colors[4], lw=lw, label=r"$(2-q)\Omega_0 \partial_z \Psi$" )
 ax2.set_xlabel(r"$x$", size=15)
-plt.legend(prop={'size':10}, bbox_to_anchor=(0.9, 0.35))
+plt.legend(prop={'size':15}, bbox_to_anchor=(0.9, 0.4))
 
 #ax2.set_xlim(-0.2, 0.2)
 #ax2.set_ylim(-0.00008, 0.00008)
@@ -150,7 +150,7 @@ JAPsi_dx_slice = obj["JAPsi_dx_slice"].value
 nablasqAterm_dx_slice = obj["nablasqAterm_dx_slice"].value
 Aterm1_dx_slice = obj["Aterm1_dx_slice"].value
 
-fig = plt.figure(figsize=(6, 6), facecolor="white")
+fig = plt.figure(figsize=(8, 8), facecolor="white")
 ax1 = fig.add_subplot(211)
 ax2 = fig.add_subplot(212)
 
@@ -158,7 +158,7 @@ ax1.plot(xgrid, Bzinitial_zavg, color="gray", label=r"$B_z^{0}$", lw=lw)
 ax1.plot(xgrid, Bzfinal_zavg, color="black", label=r"$B_z^{sat}$", lw=lw)
 ax1.set_yticks([np.min(Bzfinal_zavg), 1, np.max(Bzfinal_zavg)])
 ax1.set_yticklabels([r"$0.9985$", r"$1$", r"$1.0025$"])
-ax1.set_title(r"$B_z^{saturated}$")
+ax1.set_title(r"$B_z^{saturated}$", size=18)
 ax1.text(-0.95, 1.00002, r"$B_z^{0}$", color="darkgray")
 
 if zavg is True:
@@ -170,7 +170,7 @@ else:
     ax2.plot(xgrid, nablasqAterm_dx_slice, ":", color=colors[1], lw=lw, label=r"$\partial_x (\nabla^2 A)$")
     ax2.plot(xgrid, Aterm1_dx_slice, color=colors[2], lw=lw, label=r"$-\partial_x (B_0 \partial_z \Psi) $")
 ax2.set_xlabel(r"$x$", size=15)
-plt.legend(prop={'size':10}, bbox_to_anchor=(0.95, 0.3))
+plt.legend(prop={'size':15}, bbox_to_anchor=(0.95, 0.3))
 
 #ax2.set_xlim(-0.2, 0.2)
 #ax2.set_ylim(-0.00008, 0.00008)
