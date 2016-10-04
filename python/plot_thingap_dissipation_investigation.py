@@ -11,8 +11,8 @@ rc('text', usetex=True)
 
 #file_root = "/home/joishi/hg-projects/weakly_nonlinear_mri/data/"
 file_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
-#fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
-fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_256_Anorm"
+fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
+#fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_256_Anorm"
 obj = h5py.File(file_root + fn + ".h5", "r")
 
 Q = obj.attrs['Q']
@@ -210,6 +210,8 @@ all2DBx = (JAPsi_dx + nablasqAterm_dx + Aterm1_dx).evaluate()
 JAPsi_dx_zavg = np.mean(JAPsi_dx['g'], axis=0)
 nablasqAterm_dx_zavg = np.mean(nablasqAterm_dx['g'], axis=0)
 Aterm1_dx_zavg = np.mean(Aterm1_dx['g'], axis=0)
+
+slicenum=40
      
 fn_root = "../data/"
 out_fn = fn_root + "zavg_quantities_" + fn + ".h5"
@@ -228,6 +230,12 @@ with h5py.File(out_fn,'w') as f:
     dshearu_zavg = f.create_dataset("shearu_zavg", data=shearu_zavg)
     ddzBphi_zavg = f.create_dataset("dzBphi_zavg", data=dzBphi_zavg)
     
+    dJPsiu_slice = f.create_dataset("JPsiu_slice", data=JPsiu['g'][slicenum, :])
+    dJAB_slice = f.create_dataset("JAB_slice", data=JAB['g'][slicenum, :])
+    dnablasqu_slice = f.create_dataset("nablasqu_slice", data=nablasqu['g'][slicenum, :])
+    dshearu_slice = f.create_dataset("shearu_slice", data=shearu['g'][slicenum, :])
+    ddzBphi_slice = f.create_dataset("dzBphi_slice", data=dzBphi['g'][slicenum, :])
+    
     dJAPsi_zavg = f.create_dataset("JAPsi_zavg", data=JAPsi_zavg)
     dnablasqAterm_zavg = f.create_dataset("nablasqAterm_zavg", data=nablasqAterm_zavg)
     dAterm1_zavg = f.create_dataset("Aterm1_zavg", data=Aterm1_zavg)
@@ -235,6 +243,10 @@ with h5py.File(out_fn,'w') as f:
     dJAPsi_dx_zavg = f.create_dataset("JAPsi_dx_zavg", data=JAPsi_dx_zavg)
     dnablasqAterm_dx_zavg = f.create_dataset("nablasqAterm_dx_zavg", data=nablasqAterm_dx_zavg)
     dAterm1_dx_zavg = f.create_dataset("Aterm1_dx_zavg", data=Aterm1_dx_zavg)
+    
+    dJAPsi_dx_slice = f.create_dataset("JAPsi_dx_slice", data=JAPsi_dx['g'][slicenum, :])
+    dnablasqAterm_dx_slice = f.create_dataset("nablasqAterm_dx_slice", data=nablasqAterm_dx['g'][slicenum, :])
+    dAterm1_dx_slice = f.create_dataset("Aterm1_dx_slice", data=Aterm1_dx['g'][slicenum, :])
     
     
 obj.close()    
