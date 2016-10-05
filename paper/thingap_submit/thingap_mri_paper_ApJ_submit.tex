@@ -155,17 +155,17 @@ and $q \equiv - d \ln \Omega/ \ln R = 3/2$ is the dimensionless shear parameter 
 
 %Note that working in terms of the streamfunction raises the order of the first momentum equation.
 
-The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where the most unstable linear MRI mode neither grows nor decays, for a set of dimensionless parameters, and then destabilize the system. 
+The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where the most unstable linear MRI mode neither grows nor decays, for a set of dimensionless parameters, and then destabilize the system. We examine the system for fiducial parameters comparable to URM07, namely $\Pm = 1.0 \times 10^{-3}$, $\beta = 25$, $q = 1.5$. The system is marginal for a critical wavenumber $k_c = 0.75$ and a critical magnetic Reynolds number $\reym_c = 4.9$.
 
 \begin{figure*}
 \centering
-\includegraphics[width=\textwidth]{../figures/thingap_streamfuncs_velocity_Pm_1E-3.png}
+\includegraphics[width=\textwidth]{thingap_streamfuncs_velocity_Pm_1E-3.png}
 \caption{First order (left), second order (center), and total (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. Colorbar represents azimuthal velocity. We use a constant amplitude $\alpha = \alpha_{saturation}$ and a small parameter $\epsilon = 0.5$.}\label{fig:allorders_velocity}
 %\end{figure*}
 \vspace*{\floatsep}
 %\begin{figure*}[h!]
 \centering
-\includegraphics[width=\textwidth]{../figures/thingap_streamfuncs_Bfield_Pm_1E-3.png}
+\includegraphics[width=\textwidth]{thingap_streamfuncs_Bfield_Pm_1E-3.png}
 \caption{As in Figure \ref{fig:allorders_velocity} but for the magnetic field. Streamlines represent magnetic field structure in the vertical-radial plane, where thicker streamlines correspond to higher magnetic field strengths. Colorbar represents azimuthal magnetic field strength.}\label{fig:allorders_Bfield}
 \end{figure*}
 
@@ -236,20 +236,20 @@ To close the perturbation series we enforce a solvability criterion on Equation 
 \partial_T \alpha = b \alpha + h \partial_Z^2 \alpha - c \alpha \left|\alpha^2\right|,
 \eeq
 
-a real Ginzburg-Landau equation. The saturated solution to Equation \ref{eq:gle} is evidently $\alpha_{saturation} = \pm \sqrt{b/c}$. We plot the first order, second order, and total perturbation structure of the fluid variables in Figures \ref{fig:allorders_velocity} and \ref{fig:allorders_Bfield} with a constant $\alpha_{saturation}$. This is the Ginzburg-Landau equation that was previously found by URM07. Those authors investigated the behavior of this MRI system as a function of $\Pm$. By analyzing the system over several orders of magnitude in $\Pm$, we reproduce the URM07 result that the analytic saturation amplitude scales as $\alpha_{saturation}^2 \propto \Pm^{4/3}$ in a thin-gap geometry when $\Pm \ll 1$. We also find, as in URM07, that the neutral mode amplitude $\beta$ is governed by a simple diffusion equation that decouples from the Ginzburg-Landau equation.
+a real Ginzburg-Landau equation. The saturated solution to Equation \ref{eq:gle} is evidently $\alpha_{saturation} = \pm \sqrt{b/c}$. We plot the first order, second order, and total perturbation structure of the fluid variables in Figures \ref{fig:allorders_velocity} and \ref{fig:allorders_Bfield} with a constant $\alpha_{saturation}$. This is the Ginzburg-Landau equation that was previously found by URM07. Those authors investigated the behavior of this MRI system as a function of $\Pm$. By analyzing the system over several orders of magnitude in $\Pm$, we reproduce the URM07 result that the analytic saturation amplitude scales as $\alpha_{saturation}^2 \propto \Pm^{4/3}$ in a thin-gap geometry when $\Pm \ll 1$. We also find, as in URM07, that the neutral mode amplitude $\beta(T, Z)$ is governed by a simple diffusion equation that decouples from the Ginzburg-Landau equation.
 
 \section{Discussion}
 \label{sec:discussion}
 
 \begin{figure}
 \centering
-\includegraphics[width=\columnwidth]{../figures/thingap_saturation_mechanism_plots_velocity_slice60.png}
+\includegraphics[width=\columnwidth]{thingap_saturation_mechanism_plots_velocity_slice60.pdf}
 \caption{Top panel: radial profile for $u_y^{saturated} - u_y^0$, the difference between the saturated azimuthal velocity profile and the initial azimuthal velocity profile (TC flow). Bottom panel: each term in the steady state force balance (Equation \ref{eqset2} with $\partial_t u_{y} = 0$). Saturated quantities are computed with $\alpha_{saturation} = \sqrt{b/c}$ and $\epsilon = 0.5$. The saturated state shows reduced shear in the bulk of the flow, outside of the boundary layers.} \label{fig:sat_comp_vel}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=\columnwidth]{../figures/thingap_saturation_mechanism_plots_Bfield_slice60.png}
+\includegraphics[width=\columnwidth]{thingap_saturation_mechanism_plots_Bfield_slice60.pdf}
 \caption{Top panel: radial profile for $B_z^{saturated}$, the saturated vertical magnetic field (black line). $B_z^0 = 1$ is the constant background magnetic field (gray line). Bottom panel: each term in the steady state inductive balance ($\partial_x$ of Equation \ref{eqset4} with $\partial_t B_y = 0$). Saturated quantities are computed with $\alpha_{saturation} = \sqrt{b/c}$ and $\epsilon = 0.5$. The saturated field is pushed to the radial domain boundaries.}\label{fig:sat_comp_Bfield}
 \end{figure}
 
@@ -259,13 +259,13 @@ Here our focus is on a physical description of the saturation mechanism. Figure~
 
 \begin{figure*}[h!]
 \centering
-\includegraphics[width=\textwidth]{../figures/IVP_plot_thingap_AA_phase_2lambdacrit_2.png}
+\includegraphics[width=\textwidth]{IVP_plot_thingap_AA_phase_2lambdacrit_2.pdf}
 \caption{Evolution of the Ginzburg-Landau amplitude equation (Equation \ref{eq:gle}) on a Fourier $Z$ domain of length $2 \lambda_{crit}$, where $\lambda_{crit} = 2\pi/k_c$ is the critical wavelength of the system. Top left panel shows the evolution of the amplitude observable $\alpha \alpha^*$ on the full $Z$ domain as a function of time $T$. Bottom left panel shows the amplitude $alpha$ at the final timestep shown, where the black line is the real part $\mathrm{Re}\{\alpha(t = t_{final})\}$ and the gray line is the imaginary part $\mathrm{Im}\{\alpha(t = t_{final})\}$. The final amplitude is bounded by the analytic saturation amplitude $\alpha_{saturation} = \pm \sqrt{b/c}$. Top right panel shows the evolution of the phase angle $\phi = \mathrm{arctan} (\mathrm{Im}(\alpha)/\mathrm{Re}(\alpha))$ on the same domain. Bottom panel shows the phase angle as a function of $Z$ for the final timestep. Note that the phase angle is wrapped on a $2\pi$ domain, such that $\pi$ = $-\pi$, as indicated by the circular colorbar.}\label{fig:IVP_2lambdacrit}
 %\end{figure*}
 
 %\begin{figure*}[h!]
 \centering
-\includegraphics[width=\textwidth]{../figures/IVP_plot_thingap_AA_phase_2lambdacrit_10.png}%{allorders_velocity.eps}
+\includegraphics[width=\textwidth]{IVP_plot_thingap_AA_phase_2lambdacrit_10.pdf}%{allorders_velocity.eps}
 \caption{As in Figure \ref{fig:IVP_2lambdacrit} but for a $Z$ domain of length $10 \lambda_{crit}$.}\label{fig:IVP_10lambdacrit}
 \end{figure*}
 

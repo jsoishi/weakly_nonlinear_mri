@@ -14,7 +14,7 @@ import streamplot_uneven as su
 
 file_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128.h5"
-fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_128.h5"
+#fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_128.h5"
 obj = h5py.File(file_root + fn, "r")
 
 Q = obj.attrs['Q']
@@ -25,7 +25,7 @@ eps = 0.5
 
 # saturation amplitude -- for now just constant, coefficient-determined
 satamp = np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
-satamp = 1
+#satamp = 1
 
 # create z grid
 nz = obj.attrs['gridnum']
@@ -82,7 +82,7 @@ def plot_o1(ax, obj, type="Bfield", labels=True, oplot=True, background=False, c
     if type is "velocity":
         cbarmax = np.max(V1_u.real)
         cbarmin = np.min(V1_u.real)
-        info = ax.pcolormesh(plotx, z, V1_u.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax)
+        info = ax.pcolormesh(plotx, z, V1_u.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax,linewidth=0,rasterized=True)
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="5%", pad=0.05)  
         #cax = fig.add_axes([cbarleft, cbarvert, cbarwidth, cbarheight])  
@@ -114,7 +114,7 @@ def plot_o1(ax, obj, type="Bfield", labels=True, oplot=True, background=False, c
 
         cbarmax = np.max(V1_B.real)
         cbarmin = np.min(V1_B.real)
-        info = ax.pcolormesh(plotx, z, V1_B.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax)
+        info = ax.pcolormesh(plotx, z, V1_B.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax,linewidth=0,rasterized=True)
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="5%", pad=0.05)    
         cbar = plt.colorbar(info, cax=cax)
@@ -141,7 +141,7 @@ def plot_o2(ax, obj, type="Bfield", labels=True, oplot=True, background=False, c
     if type is "velocity":
         cbarmax = np.max(V2_u.real)
         cbarmin = np.min(V2_u.real)
-        info = ax.pcolormesh(x, z, V2_u.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax)
+        info = ax.pcolormesh(x, z, V2_u.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax,linewidth=0,rasterized=True)
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="5%", pad=0.05)    
         cbar = plt.colorbar(info, cax=cax)
@@ -168,7 +168,7 @@ def plot_o2(ax, obj, type="Bfield", labels=True, oplot=True, background=False, c
     
         cbarmax = np.max(V2_B.real)
         cbarmin = np.min(V2_B.real)
-        info = ax.pcolormesh(x, z, V2_B.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax)
+        info = ax.pcolormesh(x, z, V2_B.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax,linewidth=0,rasterized=True)
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="5%", pad=0.05)    
         cbar = plt.colorbar(info, cax=cax)
@@ -195,7 +195,7 @@ def plot_both(ax, obj, type="Bfield", labels=True, oplot=True, background=False,
     if type is "velocity":
         cbarmax = np.max(eps*Vboth_u.real)
         cbarmin = np.min(eps*Vboth_u.real)
-        info = ax.pcolormesh(x, z, eps*Vboth_u.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax)
+        info = ax.pcolormesh(x, z, eps*Vboth_u.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax,linewidth=0,rasterized=True)
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="5%", pad=0.05)    
         cbar = plt.colorbar(info, cax=cax)
@@ -219,7 +219,7 @@ def plot_both(ax, obj, type="Bfield", labels=True, oplot=True, background=False,
     
         cbarmax = np.max(Vboth_B.real)
         cbarmin = np.min(Vboth_B.real)
-        info = ax.pcolormesh(x, z, Vboth_B.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax)
+        info = ax.pcolormesh(x, z, Vboth_B.real, cmap=cmap, vmin = cbarmin, vmax = cbarmax,linewidth=0,rasterized=True)
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="5%", pad=0.05)    
         cbar = plt.colorbar(info, cax=cax)
@@ -262,3 +262,4 @@ fig.subplots_adjust(wspace=0.6)
 #plt.savefig("../figures/thingap_streamfuncs_"+type+"_Pm_1E-3.png", dpi=fig.dpi)
 #plt.savefig("../figures/thingap_streamfuncs_"+type+"_Pm_1E-4.png", dpi=fig.dpi)
 
+plt.savefig('../paper/thingap_submit/thingap_streamfuncs_velocity_Pm_1E-3.eps', dpi=100)

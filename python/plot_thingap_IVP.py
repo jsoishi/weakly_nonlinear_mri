@@ -10,6 +10,8 @@ rc('text', usetex=True)
 rc('figure', dpi=120)
 
 
+lambdacrit = 2
+
 root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 #fn = "Pm_0.00152830673266_thingap_GLE_IVP_gridnum128_init_0.hdf5"
 #fn = "Pm_0.00152830673266_thingap_GLE_IVP_gridnum128_init_1E-15.hdf5"
@@ -17,7 +19,10 @@ root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 #fn = "Pm_0.00316227766017_thingap_GLE_IVP_gridnum128_init_0.hdf5"
 #fn = "Pm_0.000248162892284_thingap_GLE_IVP_gridnum128_init_0_nomean.hdf5"
 #fn = "Pm_0.000248162892284_thingap_GLE_IVP_gridnum128_init_0_noiselvl0.001.hdf5"
-fn = "IVP_thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128_init_0_noiselvl0.001.hdf5"
+if lambdacrit == 10:
+    fn = "IVP_thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128_init_0_noiselvl0.001.hdf5"
+elif lambdacrit == 2:
+    fn = "IVP_thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128_init_0_noiselvl0.001_2.hdf5"
 
 
 #fn = "IVP_widegap_amplitude_parameters_Q_2.33_Rm_0.0015_Pm_1.00e-06_Omega1_313.55_Omega2_84.66_beta_0.02_xi_4.00.h5"
