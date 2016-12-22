@@ -3,7 +3,7 @@ Dedalus script for 2D MRI simulations
 
 
 Usage:
-    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz> --nx=<nx> --Lz=<Lz> --stop=<stop> --use-CFL]
+    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz> --nx=<nx> --Lz=<Lz> --stop=<stop> --use-CFL --evalue-IC]
 
 Options:
     --Rm=<Rm>                  magnetic Reynolds number [default: 4.8775]
@@ -19,16 +19,18 @@ Options:
     --nx=<nz>                  horizontal x (Chebyshev) resolution [default: 32]
     --Lz=<Lz>                  vertical length scale in units of 2 pi/Q, Q = critical wavenumber [default: 1]
     --stop=<stop>              stopping time in units of inner cylinder orbits [default: 200]
-    --use-CFL              use CFL condition
+    --use-CFL                  use CFL condition
+    --evalue-IC                use linear eigenvalue as initial condition
 """
 import logging
 import os
+import re
 import sys
 import time 
 
 import numpy as np
 from docopt import docopt
-
+from mpi4py import MPI
 # parameters
 filter_frac=0.5
 
@@ -50,6 +52,7 @@ stop = float(args['--stop'])
 restart = args['--restart']
 linear = args['--linear']
 CFL = args['--use-CFL']
+evalue_IC = args['--evalue-IC']
 
 # save data in directory named after script
 data_dir = "scratch/" + sys.argv[0].split('.py')[0]
@@ -109,30 +112,44 @@ if do_checkpointing:
     checkpoint.set_checkpoint(solver, wall_dt=1800)
 
 if restart is None:
-    # Random perturbations, need to initialize globally
-    gshape = MRI.domain.dist.grid_layout.global_shape(scales=MRI.domain.dealias)
-    slices = MRI.domain.dist.grid_layout.slices(scales=MRI.domain.dealias)
-    rand = np.random.RandomState(seed=42)
-    noise = rand.standard_normal(gshape)[slices]
+    A0 = 1e-3 # initial amplitude
+    if evalue_IC:
+        # solve linear eigenvalue problem for initial conditions
+        from allorders_2 import OrderE
+        x = de.Chebyshev('x', nx, interval=[-1., 1.])
+        lev_domain = de.Domain([x,],comm=MPI.COMM_SELF)
+        lev = OrderE(lev_domain, Q=MRI.Q, Rm=MRI.Rm, Pm=MRI.Pm, q=MRI.q, beta=MRI.beta)
+        slices = MRI.domain.dist.grid_layout.slices(scales=(1,1))
+        attr_list = ["_".join([re.match("([^x]+)(x+$)",v).group(1),re.match("([^x]+)(x+$)",v).group(2)]) if re.match("([^x]+)(x+$)",v) else v for v in lev.lv1.variables]
+        translation_table = dict(zip(MRI.variables,attr_list))
+        for var in solver.state.field_names:
+            lev_field = getattr(lev,translation_table[var])
+            data = A0 * (lev_field['g']*np.exp(1j*Q*MRI.domain.grid(0))).real
+            solver.state[var]['g'] = data[slices]
 
-    A0 = 1e-3
-
-    # ICs
-    psi = solver.state['psi']
-    psi_x = solver.state['psi_x']
-    psi_xx = solver.state['psi_xx']
-    psi_xxx = solver.state['psi_xxx']
-    psi.set_scales(MRI.domain.dealias, keep_data=False)
-    x = MRI.domain.grid(-1,scales=MRI.domain.dealias)
-    psi['g'] = A0 * noise * np.cos(np.pi*x/2.)
-    if filter_frac != 1.: 
-        filter_field(psi,frac=filter_frac)
     else:
-        logger.warn("No filtering applied to ICs! This is probably bad!")
+        # Random perturbations, need to initialize globally
+        gshape = MRI.domain.dist.grid_layout.global_shape(scales=MRI.domain.dealias)
+        slices = MRI.domain.dist.grid_layout.slices(scales=MRI.domain.dealias)
+        rand = np.random.RandomState(seed=42)
+        noise = rand.standard_normal(gshape)[slices]
+        
+        # ICs
+        psi = solver.state['psi']
+        psi_x = solver.state['psi_x']
+        psi_xx = solver.state['psi_xx']
+        psi_xxx = solver.state['psi_xxx']
+        psi.set_scales(MRI.domain.dealias, keep_data=False)
+        x = MRI.domain.grid(-1,scales=MRI.domain.dealias)
+        psi['g'] = A0 * noise * np.cos(np.pi*x/2.)
+        if filter_frac != 1.: 
+            filter_field(psi,frac=filter_frac)
+        else:
+            logger.warn("No filtering applied to ICs! This is probably bad!")
 
-    psi.differentiate('x',out=psi_x)
-    psi_x.differentiate('x',out=psi_xx)
-    psi_xx.differentiate('x',out=psi_xxx)
+        psi.differentiate('x',out=psi_x)
+        psi_x.differentiate('x',out=psi_xx)
+        psi_xx.differentiate('x',out=psi_xxx)
 else:
     logger.info("restarting from {}".format(restart))
     checkpoint.restart(restart, solver)

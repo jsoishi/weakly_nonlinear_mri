@@ -182,6 +182,7 @@ class MRI_equations(Equations):
         self.Omega0 = Omega0
         self.q = qsh
         self.beta = beta
+        self.Q = Q
         self.Lz = Lz * 2.*np.pi/Q 
             
         self._eqn_params = {}
