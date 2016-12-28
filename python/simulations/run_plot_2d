@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+#SBATCH --nodes=4
+
+source $HOME/build/dedalus/bin/activate
+
+date
+srun -n 100 python3 plot_2d_series.py scratch/MRI_run_Rm5.00e+00_eps0.00e+00_Pm1.00e-03_beta2.50e+01_Q7.50e-01_qsh1.50e+00_Omega1.00e+00_nx128_nz128_Lz2_CFL/slices/*h5
+date
