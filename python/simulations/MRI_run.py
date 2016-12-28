@@ -62,6 +62,9 @@ if linear:
     data_dir += "_linear"
 if CFL:
     data_dir += "_CFL"
+if evalue_IC:
+    data_dir += "_evalueIC"
+
 from dedalus.tools.config import config
 
 config['logging']['filename'] = os.path.join(data_dir,'dedalus_log')
@@ -126,7 +129,8 @@ if restart is None:
             lev_field = getattr(lev,translation_table[var])
             data = A0 * (lev_field['g']*np.exp(1j*Q*MRI.domain.grid(0))).real
             solver.state[var]['g'] = data[slices]
-
+        growth_rate = np.max(lev.EP.evalues_good.real)
+        logger.info("Expected growth rate: {0:5.2e}".format(growth_rate))
     else:
         # Random perturbations, need to initialize globally
         gshape = MRI.domain.dist.grid_layout.global_shape(scales=MRI.domain.dealias)
