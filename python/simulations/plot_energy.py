@@ -6,10 +6,21 @@ import h5py
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
+matplotlib.rcParams['lines.linewidth']=2
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 
+
 from parse_params import parse_params
+
+def latex_float(f):
+    # from http://stackoverflow.com/a/13490601
+    float_str = "{0:5.2e}".format(f)
+    if "e" in float_str:
+        base, exponent = float_str.split("e")
+        return r"{0} \times 10^{{{1}}}".format(base, int(exponent))
+    else:
+        return float_str
 
 def compute_growth(f, t, period, start, stop, g_scale=80., verbose=True):
     """compute a growth rate gamma for given timeseries f sampled at
@@ -46,29 +57,33 @@ if __name__ == "__main__":
     params = parse_params(str(base.stem), "MRI_run")
 
     t_orb = 2*np.pi
-    start = 125
-    stop = 190
+    start = 25#125
+    stop = 30 #190
     with h5py.File(str(f),'r') as ts:
         t=  ts['/scales/sim_time'][:]
         u_rms = ts['/tasks/vx_rms'][:,0,0]
         gamma, f0 = compute_growth(u_rms, t, t_orb, start, stop)
         plt.subplot(211)
         TE = ts['/tasks/BE'][:,0,0] + ts['/tasks/KE'][:,0,0]
-        plt.semilogy(t/t_orb,ts['/tasks/KE'][:,0,0],linestyle='-', label='kinetic')
+        plt.semilogy(t/t_orb,TE,linestyle='-', label='total')
+        plt.semilogy(t/t_orb,ts['/tasks/KE'][:,0,0],linestyle='-.', label='kinetic')
         plt.semilogy(t/t_orb,ts['/tasks/BE'][:,0,0],linestyle='--', label='magnetic')
-        plt.semilogy(t/t_orb,TE,linestyle='-.', label='Total')
+        plt.fill_between([start,stop],1e-7,0.1,alpha=0.4)
+        plt.text(stop+0.01,1e-6,r'$\gamma = '+latex_float(gamma)+'$')
         plt.legend(loc='lower right')
         plt.ylabel("Energy")
         #plt.xlabel("time (orbits)")
-        plt.ylim(1e-10,0.1)
-        plt.title("Pm = {:5.2e}".format(float(params["Pm"])))
+        plt.ylim(1e-7,0.1)
+        plt.title(r"$\mathrm{Pm} = "+latex_float(float(params["Pm"]))+"$")
 
         plt.subplot(212)
-        plt.semilogy(t/t_orb,u_rms,linestyle='-')
-        plt.semilogy(t/t_orb,f0*np.exp(gamma*t),linestyle='--',label=r'$\gamma = {:5.3e}$'.format(gamma))
-        plt.legend(loc='upper left')
-        plt.ylabel("r$<v_x>_{rms}$")
+        Jdot = ts['/tasks/BxBy'][:,0,0] + ts['/tasks/uxuy'][:,0,0]
+        plt.semilogy(t/t_orb, Jdot, linestyle='-',label='total')
+        plt.semilogy(t/t_orb, ts['/tasks/uxuy'][:,0,0], linestyle='-.', label=r'Reynolds')
+        plt.semilogy(t/t_orb, ts['/tasks/BxBy'][:,0,0], linestyle='--', label=r'Maxwell')
+        plt.legend(loc='lower right')
+        plt.ylabel(r"$\dot{J}$")
         plt.xlabel("time (orbits)")
 
-    outfile = "../../figs/kinetic_energy_{}.png".format(base.parts[-1])
+    outfile = "../../figs/kinetic_energy_jdot_{}.png".format(base.parts[-1])
     plt.savefig(str(outfile))
