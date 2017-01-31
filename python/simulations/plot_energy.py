@@ -57,8 +57,10 @@ if __name__ == "__main__":
     params = parse_params(str(base.stem), "MRI_run")
 
     t_orb = 2*np.pi
-    start = 25#125
-    stop = 30 #190
+    start = 2.5#125
+    stop = 5#190
+    e_upper = 10
+    e_lower = 1e-6
     with h5py.File(str(f),'r') as ts:
         t=  ts['/scales/sim_time'][:]
         u_rms = ts['/tasks/vx_rms'][:,0,0]
@@ -68,12 +70,12 @@ if __name__ == "__main__":
         plt.semilogy(t/t_orb,TE,linestyle='-', label='total')
         plt.semilogy(t/t_orb,ts['/tasks/KE'][:,0,0],linestyle='-.', label='kinetic')
         plt.semilogy(t/t_orb,ts['/tasks/BE'][:,0,0],linestyle='--', label='magnetic')
-        plt.fill_between([start,stop],1e-7,0.1,alpha=0.4)
+        plt.fill_between([start,stop],e_lower,e_upper,alpha=0.4)
         plt.text(stop+0.01,1e-6,r'$\gamma = '+latex_float(gamma)+'$')
         plt.legend(loc='lower right')
         plt.ylabel("Energy")
         #plt.xlabel("time (orbits)")
-        plt.ylim(1e-7,0.1)
+        plt.ylim(e_lower, e_upper)
         plt.title(r"$\mathrm{Pm} = "+latex_float(float(params["Pm"]))+"$")
 
         plt.subplot(212)
