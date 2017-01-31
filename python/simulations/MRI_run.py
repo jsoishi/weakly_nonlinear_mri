@@ -117,20 +117,28 @@ if do_checkpointing:
 if restart is None:
     A0 = 1e-3 # initial amplitude
     if evalue_IC:
-        # solve linear eigenvalue problem for initial conditions
-        from allorders_2 import OrderE
-        x = de.Chebyshev('x', nx, interval=[-1., 1.])
-        lev_domain = de.Domain([x,],comm=MPI.COMM_SELF)
-        lev = OrderE(lev_domain, Q=MRI.Q, Rm=MRI.Rm, Pm=MRI.Pm, q=MRI.q, beta=MRI.beta)
+        comm = MRI.domain.distributor.comm
+        rank = comm.Get_rank()
         slices = MRI.domain.dist.grid_layout.slices(scales=(1,1))
-        attr_list = ["_".join([re.match("([^x]+)(x+$)",v).group(1),re.match("([^x]+)(x+$)",v).group(2)]) if re.match("([^x]+)(x+$)",v) else v for v in lev.lv1.variables]
-        translation_table = dict(zip(MRI.variables,attr_list))
+        # solve linear eigenvalue problem for initial conditions only on rank 0
+        if rank == 0:
+            from allorders_2 import OrderE
+            x = de.Chebyshev('x', nx, interval=[-1., 1.])
+            lev_domain = de.Domain([x,],comm=MPI.COMM_SELF)
+            lev = OrderE(lev_domain, Q=MRI.Q, Rm=MRI.Rm, Pm=MRI.Pm, q=MRI.q, beta=MRI.beta)
+            attr_list = ["_".join([re.match("([^x]+)(x+$)",v).group(1),re.match("([^x]+)(x+$)",v).group(2)]) if re.match("([^x]+)(x+$)",v) else v for v in lev.lv1.variables]
+            translation_table = dict(zip(MRI.variables,attr_list))
+            growth_rate = np.max(lev.EP.evalues_good.real)
+            logger.info("Expected growth rate: {0:5.2e}".format(growth_rate))
         for var in solver.state.field_names:
-            lev_field = getattr(lev,translation_table[var])
-            data = A0 * (lev_field['g']*np.exp(1j*Q*MRI.domain.grid(0))).real
-            solver.state[var]['g'] = data[slices]
-        growth_rate = np.max(lev.EP.evalues_good.real)
-        logger.info("Expected growth rate: {0:5.2e}".format(growth_rate))
+            if rank == 0:
+                lev_field = getattr(lev,translation_table[var])
+                data = lev_field['g']
+            else:
+                data = np.empty(nx,dtype=np.complex128)
+            comm.Bcast(data,root=0)
+            total_data = A0 * (data*np.exp(1j*Q*MRI.domain.grid(0))).real
+            solver.state[var]['g'] = total_data[slices]
     else:
         # Random perturbations, need to initialize globally
         gshape = MRI.domain.dist.grid_layout.global_shape(scales=MRI.domain.dealias)
