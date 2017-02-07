@@ -43,20 +43,32 @@ class MRI():
         logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; q = {}; beta = {}; norm = {}, Re = {}".format(self.Q, self.Rm, self.Pm, self.q, self.beta, norm, self.R))
         
         
-    def set_boundary_conditions(self, problem):
+    def set_boundary_conditions(self, problem, noslip=True):
         
         """
         Adds MRI problem boundary conditions to a ParsedProblem object.
         """
         
-        problem.add_bc("left(u) = 0")
-        problem.add_bc("right(u) = 0")
-        problem.add_bc("left(psi) = 0")
-        problem.add_bc("right(psi) = 0")
+        if noslip:
+            problem.add_bc("left(u) = 0")
+            problem.add_bc("right(u) = 0")
+            problem.add_bc("left(psi) = 0")
+            problem.add_bc("right(psi) = 0")
+            problem.add_bc("left(psix) = 0")
+            problem.add_bc("right(psix) = 0")
+        
+        # free-slip b.c.'s
+        else:
+            problem.add_bc("left(ux) = 0")
+            problem.add_bc("right(ux) = 0")
+            problem.add_bc("left(psi) = 0")
+            problem.add_bc("right(psi) = 0")
+            problem.add_bc("left(psixx) = 0")
+            problem.add_bc("right(psixx) = 0")
+        
+        # magnetic b.c.'s
         problem.add_bc("left(A) = 0")
         problem.add_bc("right(A) = 0")
-        problem.add_bc("left(psix) = 0")
-        problem.add_bc("right(psix) = 0")
         problem.add_bc("left(Bx) = 0")
         problem.add_bc("right(Bx) = 0")
         
