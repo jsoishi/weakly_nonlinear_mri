@@ -228,7 +228,7 @@ class AdjointHomogenous(MRI):
     Returns V^dagger
     """
 
-    def __init__(self, domain, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
+    def __init__(self, domain, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True, noslip=True):
         
         logger.info("initializing Adjoint Homogenous")
         
@@ -263,7 +263,7 @@ class AdjointHomogenous(MRI):
         lv1.add_equation("dx(B) - Bx = 0")
 
         # Set boundary conditions for MRI problem
-        self.lv1 = self.set_boundary_conditions(lv1)
+        self.lv1 = self.set_boundary_conditions(lv1, noslip=noslip)
         self.EP = Eigenproblem(self.lv1)
 
         if finalize:
@@ -311,7 +311,7 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
+    def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True, noslip=True):
         
         logger.info("initializing Order E")
         
@@ -338,7 +338,7 @@ class OrderE(MRI):
         lv1.add_equation("dx(A) - Ax = 0")
         lv1.add_equation("dx(B) - Bx = 0")
 
-        self.lv1 = self.set_boundary_conditions(lv1)
+        self.lv1 = self.set_boundary_conditions(lv1, noslip=noslip)
         self.EP = Eigenproblem(self.lv1)
         if finalize:
             self.finalize()
