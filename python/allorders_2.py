@@ -43,20 +43,32 @@ class MRI():
         logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; q = {}; beta = {}; norm = {}, Re = {}".format(self.Q, self.Rm, self.Pm, self.q, self.beta, norm, self.R))
         
         
-    def set_boundary_conditions(self, problem):
+    def set_boundary_conditions(self, problem, noslip=True):
         
         """
         Adds MRI problem boundary conditions to a ParsedProblem object.
         """
         
-        problem.add_bc("left(u) = 0")
-        problem.add_bc("right(u) = 0")
-        problem.add_bc("left(psi) = 0")
-        problem.add_bc("right(psi) = 0")
+        if noslip:
+            problem.add_bc("left(u) = 0")
+            problem.add_bc("right(u) = 0")
+            problem.add_bc("left(psi) = 0")
+            problem.add_bc("right(psi) = 0")
+            problem.add_bc("left(psix) = 0")
+            problem.add_bc("right(psix) = 0")
+        
+        # free-slip b.c.'s
+        else:
+            problem.add_bc("left(ux) = 0")
+            problem.add_bc("right(ux) = 0")
+            problem.add_bc("left(psi) = 0")
+            problem.add_bc("right(psi) = 0")
+            problem.add_bc("left(psixx) = 0")
+            problem.add_bc("right(psixx) = 0")
+        
+        # magnetic b.c.'s
         problem.add_bc("left(A) = 0")
         problem.add_bc("right(A) = 0")
-        problem.add_bc("left(psix) = 0")
-        problem.add_bc("right(psix) = 0")
         problem.add_bc("left(Bx) = 0")
         problem.add_bc("right(Bx) = 0")
         
@@ -216,7 +228,7 @@ class AdjointHomogenous(MRI):
     Returns V^dagger
     """
 
-    def __init__(self, domain, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
+    def __init__(self, domain, o1 = None, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True, noslip=True):
         
         logger.info("initializing Adjoint Homogenous")
         
@@ -251,7 +263,7 @@ class AdjointHomogenous(MRI):
         lv1.add_equation("dx(B) - Bx = 0")
 
         # Set boundary conditions for MRI problem
-        self.lv1 = self.set_boundary_conditions(lv1)
+        self.lv1 = self.set_boundary_conditions(lv1, noslip=noslip)
         self.EP = Eigenproblem(self.lv1)
 
         if finalize:
@@ -299,7 +311,7 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True):
+    def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True, noslip=True):
         
         logger.info("initializing Order E")
         
@@ -326,7 +338,7 @@ class OrderE(MRI):
         lv1.add_equation("dx(A) - Ax = 0")
         lv1.add_equation("dx(B) - Bx = 0")
 
-        self.lv1 = self.set_boundary_conditions(lv1)
+        self.lv1 = self.set_boundary_conditions(lv1, noslip=noslip)
         self.EP = Eigenproblem(self.lv1)
         if finalize:
             self.finalize()
