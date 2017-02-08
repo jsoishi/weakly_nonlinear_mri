@@ -3,7 +3,7 @@ Dedalus script for 2D MRI simulations
 
 
 Usage:
-    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz> --nx=<nx> --Lz=<Lz> --stop=<stop> --use-CFL --evalue-IC]
+    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz> --nx=<nx> --Lz=<Lz> --stop=<stop> --use-CFL --evalue-IC --three-mode]
 
 Options:
     --Rm=<Rm>                  magnetic Reynolds number [default: 4.8775]
@@ -21,6 +21,7 @@ Options:
     --stop=<stop>              stopping time in units of inner cylinder orbits [default: 200]
     --use-CFL                  use CFL condition
     --evalue-IC                use linear eigenvalue as initial condition
+    --three-mode               use three z modes as initial conditions
 """
 import logging
 import os
@@ -32,7 +33,7 @@ import numpy as np
 from docopt import docopt
 from mpi4py import MPI
 # parameters
-filter_frac=0.5
+filter_frac=0.25 #0.5
 
 # parse arguments
 args = docopt(__doc__)
@@ -53,6 +54,7 @@ restart = args['--restart']
 linear = args['--linear']
 CFL = args['--use-CFL']
 evalue_IC = args['--evalue-IC']
+three_mode = args['--three-mode']
 
 # save data in directory named after script
 data_dir = "scratch/" + sys.argv[0].split('.py')[0]
@@ -64,6 +66,8 @@ if CFL:
     data_dir += "_CFL"
 if evalue_IC:
     data_dir += "_evalueIC"
+    if three_mode:
+        data_dir += "_threeMode"
 
 from dedalus.tools.config import config
 
@@ -84,7 +88,7 @@ except ImportError:
     do_checkpointing=False
 
 from equations import MRI_equations
-from filter_field import filter_field
+from filter_field import filter_field, smooth_filter_field
 # configure MRI equations
 MRI = MRI_equations(nx=nx, nz=nz, linear=linear)
 MRI.set_parameters(Rm, Pm, eps, Omega0, qsh, beta, Q, Lz)
@@ -127,7 +131,11 @@ if restart is None:
         translation_table = dict(zip(MRI.variables,attr_list))
         for var in solver.state.field_names:
             lev_field = getattr(lev,translation_table[var])
-            data = A0 * (lev_field['g']*np.exp(1j*Q*MRI.domain.grid(0))).real
+            if three_mode:
+                zfunction = np.exp(1j*Q*MRI.domain.grid(0)) + np.exp(1j*Q/2*MRI.domain.grid(0)) + np.exp(1j*3/2*Q*MRI.domain.grid(0))
+            else:
+                zfunction = np.exp(1j*Q*MRI.domain.grid(0))
+            data = A0 * (lev_field['g']*zfunction).real
             solver.state[var]['g'] = data[slices]
         growth_rate = np.max(lev.EP.evalues_good.real)
         logger.info("Expected growth rate: {0:5.2e}".format(growth_rate))
@@ -147,7 +155,8 @@ if restart is None:
         x = MRI.domain.grid(-1,scales=MRI.domain.dealias)
         psi['g'] = A0 * noise * np.cos(np.pi*x/2.)
         if filter_frac != 1.: 
-            filter_field(psi,frac=filter_frac)
+            #filter_field(psi,frac=filter_frac)
+            smooth_filter_field(psi,frac=filter_frac)
         else:
             logger.warn("No filtering applied to ICs! This is probably bad!")
 
