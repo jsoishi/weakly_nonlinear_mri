@@ -16,15 +16,19 @@ import matplotlib.pyplot as plt
 plt.ioff()
 from dedalus.extras import plot_tools
 
+def square(xmesh, ymesh, data):
+    return xmesh, ymesh, np.log10((data*data.conj()).real)
+
+
 def main(filename, start, count, output):
     """Save plot of specified tasks for given range of analysis writes."""
 
     # Plot settings
-    tasks = ['psi', 'A', 'u', 'b']
+    tasks = ['psi_kspace', 'A_kspace', 'u_kspace', 'b_kspace']
     scale = 2.5
     dpi = 100
     title_func = lambda sim_time: 't = {:.3f}'.format(sim_time)
-    savename_func = lambda write: 'write_{:06}.png'.format(write)
+    savename_func = lambda write: 'write_spectra_{:06}.png'.format(write)
     # Layout
     nrows, ncols = 2,2
     image = plot_tools.Box(2, 2)
@@ -41,9 +45,9 @@ def main(filename, start, count, output):
                 # Build subfigure axes
                 i, j = divmod(n, ncols)
                 axes = mfig.add_axes(i, j, [0, 0, 1, 1])
-                # Call 3D plotting helper, slicing in time
+                # Call 3D plotting helper, slicing in timep
                 dset = file['tasks'][task]
-                plot_tools.plot_bot_3d(dset, 0, index, axes=axes, title=task, even_scale=True, transpose=True)
+                plot_tools.plot_bot_3d(dset, 0, index, axes=axes, title=task, even_scale=False, transpose=True,func=square)
             # Add time title
             title = title_func(file['scales/sim_time'][index])
             title_height = 1 - 0.5 * mfig.margin.top / mfig.fig.y
