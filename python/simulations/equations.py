@@ -46,17 +46,28 @@ class Equations():
         self._set_subs()
         self.set_aux()
         
-    def initialize_output(self, solver ,data_dir, **kwargs):
+    def initialize_output(self, solver, data_dir, period, **kwargs):
+        # note: we take sim_dt to be the base period (usually an
+        # orbit) for different analysis tasks
         self.analysis_tasks = []
-        analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), max_writes=200, parallel=False, **kwargs)
+        wall_dt_snapshots = 3540. # 59 minutes
+        snapshots = solver.evaluator.add_file_handler(os.path.join(data_dir,'snapshots'), max_writes=50, wall_dt=wall_dt_snapshots)
+        snapshots.add_system(solver.state)
+        self.analysis_tasks.append(snapshots)
+
+        analysis_slice = solver.evaluator.add_file_handler(os.path.join(data_dir,"slices"), max_writes=200, parallel=False, sim_dt=0.5*period)
         analysis_slice.add_task("psi", name="psi")
         analysis_slice.add_task("A", name="A")
         analysis_slice.add_task("u", name="u")
         analysis_slice.add_task("b", name="b")
-        
+        analysis_slice.add_task("psi", name="psi_kspace", layout="c")
+        analysis_slice.add_task("A", name="A_kspace", layout="c")
+        analysis_slice.add_task("u", name="u_kspace", layout="c")
+        analysis_slice.add_task("b", name="b_kspace", layout="c")
+
         self.analysis_tasks.append(analysis_slice)
         
-        analysis_profile = solver.evaluator.add_file_handler(os.path.join(data_dir,"profiles"), max_writes=200, parallel=False, **kwargs)
+        analysis_profile = solver.evaluator.add_file_handler(os.path.join(data_dir,"profiles"), max_writes=200, parallel=False, sim_dt=0.05*period)
         analysis_profile.add_task("plane_avg(KE)", name="KE")
 
         analysis_profile.add_task("plane_avg(vx_rms)", name="vx_rms")
@@ -65,7 +76,7 @@ class Equations():
         
         self.analysis_tasks.append(analysis_profile)
 
-        analysis_scalar = solver.evaluator.add_file_handler(os.path.join(data_dir,"scalar"), max_writes=np.inf, parallel=False, **kwargs)
+        analysis_scalar = solver.evaluator.add_file_handler(os.path.join(data_dir,"scalar"), max_writes=np.inf, parallel=False, sim_dt=0.05*period)
         analysis_scalar.add_task("vol_avg(KE)", name="KE")
         analysis_scalar.add_task("vol_avg(BE)", name="BE")
         analysis_scalar.add_task("vol_avg(Re_stress)", name="uxuy")
