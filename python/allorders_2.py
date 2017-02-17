@@ -40,6 +40,12 @@ class MRI():
         self.gridnum = self.domain.bases[0].coeff_size
         self.x = self.domain.grid(0)
         
+        if self.domain.bases[0].__class__.__name__ == "Chebyshev":
+            self.setbcs = True
+        else:
+            self.setbcs = False
+            logger.info("Not running with Chebyshev basis; will not set boundary conditions.")
+        
         logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; q = {}; beta = {}; norm = {}, Re = {}".format(self.Q, self.Rm, self.Pm, self.q, self.beta, norm, self.R))
         
         
@@ -56,21 +62,27 @@ class MRI():
             problem.add_bc("right(psi) = 0")
             problem.add_bc("left(psix) = 0")
             problem.add_bc("right(psix) = 0")
+            
+            # magnetic b.c.'s
+            problem.add_bc("left(A) = 0")
+            problem.add_bc("right(A) = 0")
+            problem.add_bc("left(Bx) = 0")
+            problem.add_bc("right(Bx) = 0")
         
         # free-slip b.c.'s
         else:
-            problem.add_bc("left(ux) = 0")
-            problem.add_bc("right(ux) = 0")
+            problem.add_bc("left(u) = 0")
+            problem.add_bc("right(u) = 0")
             problem.add_bc("left(psi) = 0")
             problem.add_bc("right(psi) = 0")
             problem.add_bc("left(psixx) = 0")
             problem.add_bc("right(psixx) = 0")
         
-        # magnetic b.c.'s
-        problem.add_bc("left(A) = 0")
-        problem.add_bc("right(A) = 0")
-        problem.add_bc("left(Bx) = 0")
-        problem.add_bc("right(Bx) = 0")
+            # magnetic b.c.'s
+            problem.add_bc("left(A) = 0")
+            problem.add_bc("right(A) = 0")
+            problem.add_bc("left(B) = 0")
+            problem.add_bc("right(B) = 0")
         
         return problem
 
@@ -261,9 +273,12 @@ class AdjointHomogenous(MRI):
         lv1.add_equation("dx(u) - ux = 0")
         lv1.add_equation("dx(A) - Ax = 0")
         lv1.add_equation("dx(B) - Bx = 0")
+        
+        self.lv1 = lv1
 
         # Set boundary conditions for MRI problem
-        self.lv1 = self.set_boundary_conditions(lv1, noslip=noslip)
+        if self.setbcs:
+            self.lv1 = self.set_boundary_conditions(lv1, noslip=noslip)
         self.EP = Eigenproblem(self.lv1)
 
         if finalize:
@@ -337,8 +352,11 @@ class OrderE(MRI):
         lv1.add_equation("dx(u) - ux = 0")
         lv1.add_equation("dx(A) - Ax = 0")
         lv1.add_equation("dx(B) - Bx = 0")
+        
+        self.lv1 = lv1
 
-        self.lv1 = self.set_boundary_conditions(lv1, noslip=noslip)
+        if self.setbcs:
+            self.lv1 = self.set_boundary_conditions(lv1, noslip=noslip)
         self.EP = Eigenproblem(self.lv1)
         if finalize:
             self.finalize()
@@ -507,10 +525,12 @@ class OrderE2(MRI):
         bv20psi.add_equation("dx(psi20) - psi20x = 0")
         bv20psi.add_equation("dx(psi20x) - psi20xx = 0")
         bv20psi.add_equation("dx(psi20xx) - psi20xxx = 0")
-        bv20psi.add_bc("left(psi20) = 0")
-        bv20psi.add_bc("right(psi20) = 0")
-        bv20psi.add_bc("left(psi20x) = 0")
-        bv20psi.add_bc("right(psi20x) = 0")
+        
+        if self.setbcs:
+            bv20psi.add_bc("left(psi20) = 0")
+            bv20psi.add_bc("right(psi20) = 0")
+            bv20psi.add_bc("left(psi20x) = 0")
+            bv20psi.add_bc("right(psi20x) = 0")
         
         bv20u = de.LBVP(self.domain, ['u20', 'u20x'])
         bv20u.parameters['iR'] = self.iR
@@ -518,8 +538,10 @@ class OrderE2(MRI):
         
         bv20u.add_equation("iR*dx(u20x) = rhs20_u")
         bv20u.add_equation("dx(u20) - u20x = 0")
-        bv20u.add_bc("left(u20) = 0")
-        bv20u.add_bc("right(u20) = 0")
+        
+        if self.setbcs:
+            bv20u.add_bc("left(u20) = 0")
+            bv20u.add_bc("right(u20) = 0")
         
         bv20A = de.LBVP(self.domain, ['A20', 'A20x'])
         bv20A.parameters['iRm'] = self.iRm
@@ -527,8 +549,10 @@ class OrderE2(MRI):
         
         bv20A.add_equation("iRm*dx(A20x) = rhs20_A")
         bv20A.add_equation("dx(A20) - A20x = 0")
-        bv20A.add_bc("left(A20) = 0")
-        bv20A.add_bc("right(A20) = 0")
+        
+        if self.setbcs:
+            bv20A.add_bc("left(A20) = 0")
+            bv20A.add_bc("right(A20) = 0")
         
         bv20B = de.LBVP(self.domain,['B20', 'B20x'])
         bv20B.parameters['iRm'] = self.iRm
@@ -536,8 +560,10 @@ class OrderE2(MRI):
         
         bv20B.add_equation("iRm*dx(B20x) = rhs20_B")
         bv20B.add_equation("dx(B20) - B20x = 0")
-        bv20B.add_bc("left(B20x) = 0")
-        bv20B.add_bc("right(B20x) = 0")
+        
+        if self.setbcs:
+            bv20B.add_bc("left(B20x) = 0")
+            bv20B.add_bc("right(B20x) = 0")
         
         self.BVPpsi = self.solve_BVP(bv20psi)
         self.psi20 = self.BVPpsi.state['psi20']
@@ -616,16 +642,17 @@ class OrderE2(MRI):
         bv21.add_equation("dx(B21) - B21x = 0")
 
         # boundary conditions
-        bv21.add_bc("left(psi21) = 0")
-        bv21.add_bc("right(psi21) = 0")
-        bv21.add_bc("left(u21) = 0")
-        bv21.add_bc("right(u21) = 0")
-        bv21.add_bc("left(A21) = 0")
-        bv21.add_bc("right(A21) = 0")
-        bv21.add_bc("left(psi21x) = 0")
-        bv21.add_bc("right(psi21x) = 0")
-        bv21.add_bc("left(B21x) = 0")
-        bv21.add_bc("right(B21x) = 0")
+        if self.setbcs:
+            bv21.add_bc("left(psi21) = 0")
+            bv21.add_bc("right(psi21) = 0")
+            bv21.add_bc("left(u21) = 0")
+            bv21.add_bc("right(u21) = 0")
+            bv21.add_bc("left(A21) = 0")
+            bv21.add_bc("right(A21) = 0")
+            bv21.add_bc("left(psi21x) = 0")
+            bv21.add_bc("right(psi21x) = 0")
+            bv21.add_bc("left(B21x) = 0")
+            bv21.add_bc("right(B21x) = 0")
 
         self.BVP21 = self.solve_BVP(bv21)
         self.psi21 = self.BVP21.state['psi21']
@@ -672,16 +699,17 @@ class OrderE2(MRI):
         bv22.add_equation("dx(B22) - B22x = 0")
 
         # boundary conditions
-        bv22.add_bc("left(psi22) = 0")
-        bv22.add_bc("right(psi22) = 0")
-        bv22.add_bc("left(u22) = 0")
-        bv22.add_bc("right(u22) = 0")
-        bv22.add_bc("left(A22) = 0")
-        bv22.add_bc("right(A22) = 0")
-        bv22.add_bc("left(psi22x) = 0")
-        bv22.add_bc("right(psi22x) = 0")
-        bv22.add_bc("left(B22x) = 0")
-        bv22.add_bc("right(B22x) = 0")
+        if self.setbcs:
+            bv22.add_bc("left(psi22) = 0")
+            bv22.add_bc("right(psi22) = 0")
+            bv22.add_bc("left(u22) = 0")
+            bv22.add_bc("right(u22) = 0")
+            bv22.add_bc("left(A22) = 0")
+            bv22.add_bc("right(A22) = 0")
+            bv22.add_bc("left(psi22x) = 0")
+            bv22.add_bc("right(psi22x) = 0")
+            bv22.add_bc("left(B22x) = 0")
+            bv22.add_bc("right(B22x) = 0")
         
         self.BVP22 = self.solve_BVP(bv22)
         self.psi22 = self.BVP22.state['psi22']

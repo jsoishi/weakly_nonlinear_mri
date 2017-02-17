@@ -82,6 +82,12 @@ class MRI():
         
         if self.xi != 0:
             logger.info("A nonzero xi means this is the HMRI")
+            
+        if self.domain.bases[0].__class__.__name__ == "Chebyshev":
+            self.setbcs = True
+        else:
+            self.setbcs = False
+            logger.info("Not running with Chebyshev basis; will not set boundary conditions.")
         
     def set_adjoint_boundary_conditions(self, problem, conducting = True):
         
@@ -377,9 +383,12 @@ class AdjointHomogenous(MRI):
         adj.add_equation("dr(u) - ur = 0")
         adj.add_equation("dr(A) - Ar = 0")
         adj.add_equation("dr(B) - Br = 0")
+        
+        self.adj = adj
 
         # Set boundary conditions for MRI problem
-        self.adj = self.set_adjoint_boundary_conditions(adj, conducting = self.conducting)
+        if self.setbcs:
+            self.adj = self.set_adjoint_boundary_conditions(adj, conducting = self.conducting)
         self.EP = Eigenproblem(self.adj)
 
         if finalize:
@@ -481,8 +490,11 @@ class OrderE(MRI):
         lv1.add_equation("dr(u) - ur = 0")
         lv1.add_equation("dr(A) - Ar = 0")
         lv1.add_equation("dr(B) - Br = 0")
+        
+        self.lv1 = lv1
 
-        self.lv1 = self.set_boundary_conditions(lv1, conducting = conducting)
+        if self.setbcs:
+            self.lv1 = self.set_boundary_conditions(lv1, conducting = conducting)
         self.EP = Eigenproblem(self.lv1)
         if finalize:
             self.finalize()
@@ -737,7 +749,8 @@ class OrderE2(MRI):
         bv20.add_equation("dr(A) - Ar = 0")
         bv20.add_equation("dr(B) - Br = 0")
         
-        bv20 = self.set_boundary_conditions(bv20, conducting = self.conducting)
+        if self.setbcs:
+            bv20 = self.set_boundary_conditions(bv20, conducting = self.conducting)
         self.BVP20 = self.solve_BVP(bv20)
         
         self.psi20 = self.BVP20.state['psi']
@@ -858,7 +871,8 @@ class OrderE2(MRI):
         bv21.add_equation("dr(B) - Br = 0")
 
         # boundary conditions
-        bv21 = self.set_boundary_conditions(bv21, conducting = conducting)
+        if self.setbcs:
+            bv21 = self.set_boundary_conditions(bv21, conducting = conducting)
 
         self.BVP21 = self.solve_BVP(bv21)
         self.psi21 = self.BVP21.state['psi']
@@ -910,7 +924,8 @@ class OrderE2(MRI):
         bv21test.add_equation("dr(B) - Br = 0")
 
         # boundary conditions
-        bv21test = self.set_boundary_conditions(bv21test, conducting = conducting)
+        if self.setbcs:
+            bv21test = self.set_boundary_conditions(bv21test, conducting = conducting)
 
         self.BVP21test = self.solve_BVP(bv21test)
         self.psi21test = self.BVP21test.state['psi']
@@ -963,7 +978,8 @@ class OrderE2(MRI):
         bv22.add_equation("dr(B) - Br = 0")
         
         # boundary conditions
-        bv22 = self.set_boundary_conditions(bv22, conducting = conducting)
+        if self.setbcs:
+            bv22 = self.set_boundary_conditions(bv22, conducting = conducting)
         
         self.BVP22 = self.solve_BVP(bv22)
         self.psi22 = self.BVP22.state['psi']
