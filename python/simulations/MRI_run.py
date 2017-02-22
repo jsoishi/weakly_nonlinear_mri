@@ -3,7 +3,7 @@ Dedalus script for 2D MRI simulations
 
 
 Usage:
-    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz> --nx=<nx> --Lz=<Lz> --stop=<stop> --use-CFL --evalue-IC --three-mode]
+    MRI_run.py [--Rm=<Rm> --eps=<eps> --Pm=<Pm> --beta=<beta> --qsh=<qsh> --Omega0=<Omega0> --Q=<Q> --restart=<restart_file> --linear --nz=<nz> --nx=<nx> --Lz=<Lz> --stop=<stop> --stop_iter=<stop_iter> --use-CFL --evalue-IC --three-mode]
 
 Options:
     --Rm=<Rm>                  magnetic Reynolds number [default: 4.8775]
@@ -19,10 +19,12 @@ Options:
     --nx=<nz>                  horizontal x (Chebyshev) resolution [default: 32]
     --Lz=<Lz>                  vertical length scale in units of 2 pi/Q, Q = critical wavenumber [default: 1]
     --stop=<stop>              stopping time in units of inner cylinder orbits [default: 200]
+    --stop_iter=<stop_iter>    stopping iteration [default: inf]
     --use-CFL                  use CFL condition
     --evalue-IC                use linear eigenvalue as initial condition
     --three-mode               use three z modes as initial conditions
 """
+import glob
 import logging
 import os
 import re
@@ -49,6 +51,11 @@ nx = int(args['--nx'])
 nz = int(args['--nz'])
 Lz = int(args['--Lz'])
 stop = float(args['--stop'])
+stop_iter = args['--stop_iter']
+if stop_iter == 'inf':
+    stop_iter = np.inf
+else:
+    stop_iter = int(stop_iter)
 
 restart = args['--restart']
 linear = args['--linear']
@@ -69,6 +76,16 @@ if evalue_IC:
     if three_mode:
         data_dir += "_threeMode"
 
+if restart:
+    restart_dirs = glob.glob(data_dir+"restart*")
+    if restart_dirs:
+        restart_dirs.sort()
+        last = int(re.search("_restart(\d+)", restart_dirs[-1]).group(1))
+        data_dir += "_restart{}".format(last+1)
+    else:
+        if os.path.exists(data_dir):
+            data_dir += "_restart1"
+
 from dedalus.tools.config import config
 
 config['logging']['filename'] = os.path.join(data_dir,'dedalus_log')
@@ -78,14 +95,6 @@ import dedalus.public as de
 from dedalus.extras import flow_tools
 from dedalus.tools  import post
 logger = logging.getLogger(__name__)
-
-# use checkpointing if available
-try:
-    from dedalus.extras.checkpointing import Checkpoint
-    do_checkpointing=True
-except ImportError:
-    logger.warn("No Checkpointing module. Setting checkpointing to false.")
-    do_checkpointing=False
 
 from equations import MRI_equations
 from filter_field import filter_field, smooth_filter_field
@@ -113,10 +122,6 @@ solver= problem.build_solver(ts)
 
 for k,v in problem.parameters.items():
     logger.info("problem parameter {}: {}".format(k,v))
-
-if do_checkpointing:
-    checkpoint = Checkpoint(data_dir)
-    checkpoint.set_checkpoint(solver, wall_dt=1800)
 
 if restart is None:
     A0 = 1e-3 # initial amplitude
@@ -173,16 +178,15 @@ if restart is None:
         psi_xx.differentiate('x',out=psi_xxx)
 else:
     logger.info("restarting from {}".format(restart))
-    checkpoint.restart(restart, solver)
+    solver.load_state(restart,-1)
 
 period = 2*np.pi/Omega0
 
 solver.stop_sim_time = stop*period
 solver.stop_wall_time = np.inf
-solver.stop_iteration = np.inf
+solver.stop_iteration = stop_iter
 
-output_time_cadence = 0.1*period
-analysis_tasks = MRI.initialize_output(solver, data_dir, sim_dt=output_time_cadence)
+analysis_tasks = MRI.initialize_output(solver, data_dir, period)
 
 flow = flow_tools.GlobalFlowProperty(solver, cadence=10)
 flow.add_property("psi_x**2 + (dz(psi))**2 + u**2", name='Ekin')
@@ -216,10 +220,6 @@ logger.info('Iterations: %i' %solver.iteration)
 logger.info('Average timestep: %f' %(solver.sim_time/solver.iteration))
 
 logger.info('beginning join operation')
-if do_checkpointing:
-    logger.info(data_dir+'/checkpoint/')
-    post.merge_analysis(data_dir+'/checkpoint/')
-
 for task in analysis_tasks:
     logger.info(task.base_path)
     post.merge_analysis(task.base_path)

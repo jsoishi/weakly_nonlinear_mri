@@ -5,7 +5,7 @@ Usage:
     plot_2d_series.py <files>... [--output=<dir>]
 
 Options:
-    --output=<dir>  Output directory [default: ./frames]
+    --output=<dir>  Output directory [default: None]
 """
 
 import h5py
@@ -70,7 +70,12 @@ if __name__ == "__main__":
 
     args = docopt(__doc__)
 
-    output_path = pathlib.Path(args['--output']).absolute()
+    if args['--output'] == 'None':
+        root = pathlib.Path(args['<files>'][0])
+        root = root.parent
+        output_path = root.joinpath('frames')
+    else:
+        output_path = pathlib.Path(args['--output']).absolute()
     # Create output directory if needed
     with Sync() as sync:
         if sync.comm.rank == 0:
