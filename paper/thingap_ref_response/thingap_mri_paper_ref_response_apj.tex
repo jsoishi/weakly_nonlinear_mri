@@ -1,0 +1,586 @@
+%%
+%% Beginning of file 'sample61.tex'
+%%
+%% Modified 2016 September
+%%
+%% This is a sample manuscript marked up using the
+%% AASTeX v6.1 LaTeX 2e macros.
+%%
+%% AASTeX is now based on Alexey Vikhlinin's emulateapj.cls 
+%% (Copyright 2000-2015).  See the classfile for details.
+
+%% AASTeX requires revtex4-1.cls (http://publish.aps.org/revtex4/) and
+%% other external packages (latexsym, graphicx, amssymb, longtable, and epsf).
+%% All of these external packages should already be present in the modern TeX 
+%% distributions.  If not they can also be obtained at www.ctan.org.
+
+%% The first piece of markup in an AASTeX v6.x document is the \documentclass
+%% command. LaTeX will ignore any data that comes before this command. The 
+%% documentclass can take an optional argument to modify the output style.
+%% The command below calls the preprint style  which will produce a tightly 
+%% typeset, one-column, single-spaced document.  It is the default and thus
+%% does not need to be explicitly stated.
+%%
+%%
+%% using aastex version 6.1
+\documentclass[twocolumn]{aastex61}
+
+\usepackage{amsmath}
+
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+
+\newcommand\reye{\mathrm{Re}}
+\newcommand\reym{\mathrm{Rm}}
+\newcommand{\Pm}{\mathrm{Pm}}
+
+
+%% The default is a single spaced, 10 point font, single spaced article.
+%% There are 5 other style options available via an optional argument. They
+%% can be envoked like this:
+%%
+%% \documentclass[argument]{aastex61}
+%% 
+%% where the arguement options are:
+%%
+%%  twocolumn   : two text columns, 10 point font, single spaced article.
+%%                This is the most compact and represent the final published
+%%                derived PDF copy of the accepted manuscript from the publisher
+%%  manuscript  : one text column, 12 point font, double spaced article.
+%%  preprint    : one text column, 12 point font, single spaced article.  
+%%  preprint2   : two text columns, 12 point font, single spaced article.
+%%  modern      : a stylish, single text column, 12 point font, article with
+%% 		  wider left and right margins. This uses the Daniel
+%% 		  Foreman-Mackey and David Hogg design.
+%%
+%% Note that you can submit to the AAS Journals in any of these 6 styles.
+%%
+%% There are other optional arguments one can envoke to allow other stylistic
+%% actions. The available options are:
+%%
+%%  astrosymb    : Loads Astrosymb font and define \astrocommands. 
+%%  tighten      : Makes baselineskip slightly smaller, only works with 
+%%                 the twocolumn substyle.
+%%  times        : uses times font instead of the default
+%%  linenumbers  : turn on lineno package.
+%%  trackchanges : required to see the revision mark up and print its output
+%%  longauthor   : Do not use the more compressed footnote style (default) for 
+%%                 the author/collaboration/affiliations. Instead print all
+%%                 affiliation information after each name. Creates a much
+%%                 long author list but may be desirable for short author papers
+%%
+%% these can be used in any combination, e.g.
+%%
+%% \documentclass[twocolumn,linenumbers,trackchanges]{aastex61}
+
+%% AASTeX v6.* now includes \hyperref support. While we have built in specific
+%% defaults into the classfile you can manually override them with the
+%% \hypersetup command. For example,
+%%
+%%\hypersetup{linkcolor=red,citecolor=green,filecolor=cyan,urlcolor=magenta}
+%%
+%% will change the color of the internal links to red, the links to the
+%% bibliography to green, the file links to cyan, and the external links to
+%% magenta. Additional information on \hyperref options can be found here:
+%% https://www.tug.org/applications/hyperref/manual.html#x1-40003
+
+%% If you want to create your own macros, you can do so
+%% using \newcommand. Your macros should appear before
+%% the \begin{document} command.
+%%
+\newcommand{\vdag}{(v)^\dagger}
+\newcommand\aastex{AAS\TeX}
+\newcommand\latex{La\TeX}
+
+%% Reintroduced the \received and \accepted commands from AASTeX v5.2
+%\received{July 1, 2016}
+%\revised{September 27, 2016}
+%\accepted{\today}
+%% Command to document which AAS Journal the manuscript was submitted to.
+%% Adds "Submitted to " the arguement.
+\submitjournal{ApJ}
+
+%% Mark up commands to limit the number of authors on the front page.
+%% Note that in AASTeX v6.1 a \collaboration call (see below) counts as
+%% an author in this case.
+%
+%\AuthorCollaborationLimit=3
+%
+%% Will only show Schwarz, Muench and "the AAS Journals Data Scientist 
+%% collaboration" on the front page of this example manuscript.
+%%
+%% Note that all of the author will be shown in the published article.
+%% This feature is meant to be used prior to acceptance to make the
+%% front end of a long author article more manageable. Please do not use
+%% this functionality for manuscripts with less than 20 authors. Conversely,
+%% please do use this when the number of authors exceeds 40.
+%%
+%% Use \allauthors at the manuscript end to show the full author list.
+%% This command should only be used with \AuthorCollaborationLimit is used.
+
+%% The following command can be used to set the latex table counters.  It
+%% is needed in this document because it uses a mix of latex tabular and
+%% AASTeX deluxetables.  In general it should not be needed.
+%\setcounter{table}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% The following section outlines numerous optional output that
+%% can be displayed in the front matter or as running meta-data.
+%%
+%% If you wish, you may supply running head information, although
+%% this information may be modified by the editorial offices.
+\shorttitle{The weakly nonlinear magnetorotational instability}
+\shortauthors{Clark \& Oishi}
+%%
+%% You can add a light gray and diagonal water-mark to the first page 
+%% with this command:
+% \watermark{text}
+%% where "text", e.g. DRAFT, is the text to appear.  If the text is 
+%% long you can control the water-mark size with:
+%  \setwatermarkfontsize{dimension}
+%% where dimension is any recognized LaTeX dimension, e.g. pt, in, etc.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% This is the end of the preamble.  Indicate the beginning of the
+%% manuscript itself with \begin{document}.
+
+\begin{document}
+
+\title{The Weakly Nonlinear Magnetorotational Instability in a thin-gap Taylor-Couette flow}
+
+%% LaTeX will automatically break titles if they run longer than
+%% one line. However, you may use \\ to force a line break if
+%% you desire. In v6.1 you can include a footnote in the title.
+
+%% A significant change from earlier AASTEX versions is in the structure for 
+%% calling author and affilations. The change was necessary to implement 
+%% autoindexing of affilations which prior was a manual process that could 
+%% easily be tedious in large author manuscripts.
+%%
+%% The \author command is the same as before except it now takes an optional
+%% arguement which is the 16 digit ORCID. The syntax is:
+%% \author[xxxx-xxxx-xxxx-xxxx]{Author Name}
+%%
+%% This will hyperlink the author name to the author's ORCID page. Note that
+%% during compilation, LaTeX will do some limited checking of the format of
+%% the ID to make sure it is valid.
+%%
+%% Use \affiliation for affiliation information. The old \affil is now aliased
+%% to \affiliation. AASTeX v6.1 will automatically index these in the header.
+%% When a duplicate is found its index will be the same as its previous entry.
+%%
+%% Note that \altaffilmark and \altaffiltext have been removed and thus 
+%% can not be used to document secondary affiliations. If they are used latex
+%% will issue a specific error message and quit. Please use multiple 
+%% \affiliation calls for to document more than one affiliation.
+%%
+%% The new \altaffiliation can be used to indicate some secondary information
+%% such as fellowships. This command produces a non-numeric footnote that is
+%% set away from the numeric \affiliation footnotes.  NOTE that if an
+%% \altaffiliation command is used it must come BEFORE the \affiliation call,
+%% right after the \author command, in order to place the footnotes in
+%% the proper location.
+%%
+%% Use \email to set provide email addresses. Each \email will appear on its
+%% own line so you can put multiple email address in one \email call. A new
+%% \correspondingauthor command is available in V6.1 to identify the
+%% corresponding author of the manuscript. It is the author's responsibility
+%% to make sure this name is also in the author list.
+%%
+%% While authors can be grouped inside the same \author and \affiliation
+%% commands it is better to have a single author for each. This allows for
+%% one to exploit all the new benefits and should make book-keeping easier.
+%%
+%% If done correctly the peer review system will be able to
+%% automatically put the author and affiliation information from the manuscript
+%% and save the corresponding author the trouble of entering it by hand.
+
+
+\correspondingauthor{S. E. Clark}
+\email{seclark@astro.columbia.edu}
+
+\author[0000-0002-7633-3376]{S. E. Clark}
+\affil{Department of Astronomy, Columbia University, New York, NY}
+
+\author{Jeffrey S. Oishi}
+\affiliation{Department of Physics and Astronomy, Bates College, Lewiston, ME}
+\affiliation{Department of Astrophysics, American Museum of Natural History, New York, NY}
+\nocollaboration
+
+%% Note that the \and command from previous versions of AASTeX is now
+%% depreciated in this version as it is no longer necessary. AASTeX 
+%% automatically takes care of all commas and "and"s between authors names.
+
+%% AASTeX 6.1 has the new \collaboration and \nocollaboration commands to
+%% provide the collaboration status of a group of authors. These commands 
+%% can be used either before or after the list of corresponding authors. The
+%% argument for \collaboration is the collaboration identifier. Authors are
+%% encouraged to surround collaboration identifiers with ()s. The 
+%% \nocollaboration command takes no argument and exists to indicate that
+%% the nearby authors are not part of surrounding collaborations.
+
+%% Mark off the abstract in the ``abstract'' environment. 
+\begin{abstract}
+
+The magnetorotational instability (MRI) is a fundamental process of accretion disk physics, but its saturation mechanism remains poorly understood despite considerable theoretical and computational effort. We present a multiple scales analysis of the non-ideal MRI in the weakly nonlinear regime -- that is, when the most unstable MRI mode has a growth rate asymptotically approaching zero from above. Here, we develop our theory in a thin-gap, Cartesian channel. Our results confirm the finding by Umurhan et al. (2007) that the perturbation amplitude follows a Ginzburg-Landau equation. We extend these results by performing a detailed force balance for the saturated azimuthal velocity and vertical magnetic field, demonstrating that even when diffusive effects are important, the bulk flow saturates via the combined processes of reducing the background shear and rearranging and strengthening the background vertical magnetic field. We directly simulate the Ginzburg-Landau amplitude evolution for our system and demonstrate the pattern formation our model predicts on long length and time scales. 
+
+\end{abstract}
+
+%% Keywords should appear after the \end{abstract} command. 
+%% See the online documentation for the full list of available subject
+%% keywords and the rules for their use.
+%\keywords{editorials, notices --- miscellaneous --- catalogs --- surveys}
+
+%% From the front matter, we move on to the body of the paper.
+%% Sections are demarcated by \section and \subsection, respectively.
+%% Observe the use of the LaTeX \label
+%% command after the \subsection to give a symbolic KEY to the
+%% subsection for cross-referencing in a \ref command.
+%% You can use LaTeX's \ref and \label commands to keep track of
+%% cross-references to sections, equations, tables, and figures.
+%% That way, if you change the order of any elements, LaTeX will
+%% automatically renumber them.
+
+%% We recommend that authors also use the natbib \citep
+%% and \citet commands to identify citations.  The citations are
+%% tied to the reference list via symbolic KEYs. The KEY corresponds
+%% to the KEY in the \bibitem in the reference list below. 
+
+\section{Introduction} \label{sec:intro}
+For matter to accrete from a disk onto a central object, angular momentum must be transported radially outward in the disk. The transport mechanism is likely turbulent, as molecular viscosity alone cannot account for the needed angular momentum transfer, and likely magnetic, as this turbulence is excited even in hydrodynamically stable disks \citep{Shakura:1973wg}. Discovered by \citet{Chandrasekhar:1960wh} and \citet{Velikhov:1959} in a global geometry, the magnetorotational instability (MRI) was subsequently rediscovered and applied to accretion disks by \citet{Balbus:1991vs}. Since then, the MRI remains the leading explanation for rapid angular momentum transport in astrophysical disks. The instability in its simplest geometry arises when a differentially rotating disk is threaded by a vertical magnetic field. The presence of the magnetic field linearly destabilizes the disk gas, driving turbulence and angular momentum transport \citep[e.g.][]{2011ApJ...738...84H,2014MNRAS.438.2513P,2013MNRAS.435.2281P}. The MRI likely plays a role in a diverse host of astrophysical systems, including protoplanetary disks \citep[e.g.][]{2015ApJ...798...84B} and black hole accretion disks \citep[e.g.][]{2013ApJ...769..156S}, as well as stellar interiors \citep[e.g.][]{2015ApJ...799...85W}. Despite its importance, many aspects of the MRI remain poorly understood. In particular, the nonlinear saturation mechanism for the MRI is an open question, and a formidable challenge. MRI saturation has been tackled almost exclusively with simulation, with a few notable exceptions detailed below. In this work we analytically investigate the weakly nonlinear saturation of the MRI.
+
+Weakly nonlinear analysis is a perturbative method used to examine the asymptotic behavior of a system near threshold -- that is, when the system is just barely unstable to its most unstable mode. The analytical technique follows the multiscale evolution of fluid variables in a perturbation expansion, allowing the controlled interaction of modes between orders in a perturbation series \citep{1978amms.book.....B}. Weakly nonlinear analysis can be a powerful technique for analytically examining systems which in their full generality exhibit such complicated nonlinear behavior that their study is relegated primarily to the simulation domain. The MRI is one such phenomenon: while there is a rich literature analytically examining the linear MRI, analytical treatments of the \textit{nonlinear} system are relatively few. The weakly nonlinear treatment of the MRI was pioneered by \citet{Knobloch:2005ba} and \citet[][hereafter URM07; see also \citeyear{Umurhan:2007dz}]{Umurhan:2007hs}. The latter authors undertook the first weakly nonlinear analysis of the MRI in a thin-gap Taylor-Couette (TC) flow with strong dissipation (as is appropriate to liquid metal experiments), and found that the marginal MRI system approaches saturation in a manner analogous to that of Rayleigh-B\'enard convection. Weakly nonlinear analysis was instrumental in our understanding of Rayleigh-B\'enard convection saturation \citep{Newell:1969}, and the similarities between convection and the thin-gap MRI are the result of important shared symmetries between the systems. The success of URM07 in modeling the MRI system near threshold merits further consideration, but we are unaware of any other attempts to expand upon their theoretical framework. In this work we rederive the theory of URM07, and expand upon their findings. Our focus here is on fully characterizing the thin-gap MRI system, both for independent theoretical interest and to have a robust comparison point for extensions of this theory into more complicated geometries. In a companion paper we derive for the first time the weakly nonlinear theory of the standard and helical MRI in a global, cylindrical TC flow \citep[][hereafter Paper II]{Clark:2016}. The thin- and wide-gap treatments complement one another theoretically, and both are important regimes for comparison with simulation. 
+
+This work examines TC flow in the thin-gap regime, an idealization in which the radial extent of the channel is very small compared to its distance from the center of rotation, i.e. $(r_2 - r_1) \ll \frac{1}{2} (r_1 + r_2)$ where $r_1$ and $r_2$ are the radii of the inner and outer flow boundaries, respectively. The thin-gap approximation eliminates curvature terms, so the domain geometry is Cartesian rather than cylindrical. The excluded curvature terms have an explicit dependence on $r$, so they make the problem more challenging both analytically and numerically. In particular, in the wide-gap geometry (i.e. true Taylor-Couette flow) the base angular velocity is a function of $r$, where in the thin-gap approximation the shear flow reduces to a linear profile.
+
+
+We note several other important analytical studies of MRI saturation. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They consider a thin-gap regime as well, and so their theory may be considered the strongly nonlinear analogue to the one developed here. \citet{Vasil:2015} examines the weakly nonlinear MRI in a thin-gap regime in a minimal model, finding deep mathematical similarities between the MRI system and the elastodynamic instability of a buckling beam. We discuss these results and their relation to ours in section~\ref{sec:discussion}. Several authors have investigated the behavior of the MRI when the boundary conditions are shear periodic, and so the MRI has no mechanism by which to modify the background shear flow profile. In this approximation linear MRI growth is dominated by channel modes, a type of MRI mode that, for periodic boundary conditions, are exact solutions of both the linear and nonlinear MRI equations \citep{Goodman:1994ul}. In this regime the MRI saturates via parasitic instabilities, which feed off and destroy the primary MRI modes. Analytical investigation of this case reveals that MRI saturation can be caused by parasitic Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime \citep{Pessah:2010ic}. The theory of MRI channel mode parasites is robust \citep[see also]{Pessah:2009gm;Latter:2010iz;Rembiasz:2016}, but their importance may be overestimated by the local approximation \citep{Latter:2015}, and not germane to global analyses like the one presented here. \citet{Latter:2015} gives a detailed analysis of the relation between local and global linear MRI modes. 
+
+We begin with an overview of our basic model equations for the thin gap MRI in section~\ref{sec:equations} and then describe our weakly non-linear analysis and give basic results in section~\ref{sec:wnl}. We then place our results in the ocntext of previous results from both analytic and computational studies in section~\ref{sec:discussion} and draw conclusions in section~\ref{sec:conclusion}.
+
+
+\section{Equations}\label{sec:equations}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[trim=5cm 0cm 0cm 0cm, scale=.35]{setup_diagram-eps-converted-to.pdf}
+\caption{Schematic diagram of our set-up, an axisymmetric thin-gap Taylor-Couette flow. We investigate a 2D slice of the X-Z (radial-vertical) plane. Our domain is represented by the bolded black box, of width L. The radial dimension is solved with a basis of Chebyshev polynomials, and the vertical dimension is solved on a Fourier basis. }\label{fig:setup}
+\end{figure}
+
+The evolution of a conducting fluid is governed by the momentum and induction equations,
+
+\begin{eqnarray}\label{eq:momentum}
+\begin{split}
+& \partial_t \mathbf{u} \, + \, \mathbf{u} \cdot \nabla \mathbf{u} \, = \, -\frac{1}{\rho}\nabla P \, - \, \nabla\Phi \, + \, \frac{1}{\rho} \left(\mathbf{J}\times\mathbf{B}\right) \, \\
+& + \, \nu\nabla^2 \mathbf{u} \, - \, 2\mathbf{\Omega} \times \mathbf{u} \, - \, \mathbf{\Omega} \times \left(\mathbf{\Omega} \times \mathbf{r} \right), \\
+\end{split}
+\end{eqnarray}
+
+\beq\label{eq:induction}
+\partial_t \mathbf{B} = \nabla \times \left(\mathbf{u} \times \mathbf{B}\right) + \eta\nabla^2\mathbf{B},
+\eeq
+
+where $P$ is the gas pressure, $\nu$ is the kinematic viscosity, $\eta$ is the microscopic diffusivity, $\nabla\Phi$ is the gravitational force per unit mass, and the current density is $\mathbf{J} = \nabla\times\mathbf{B}$.
+Equations \ref{eq:momentum} and \ref{eq:induction} are subject to the incompressibility and magnetic solenoid constraints,
+
+\beq\label{eq:incompressibility_constraint}
+\nabla \cdot \mathbf{u} = 0
+\eeq
+
+\beq\label{eq:solenoid_constraint}
+\nabla \cdot \mathbf{B} = 0.
+\eeq
+
+
+We axisymmetrically perturb all three vector components of each of the fluid quantities. We nondimensionalize the equations, with lengths nondimensionalized by $L$, time by $\Omega_0$, velocities by $\Omega_0 L$, magnetic fields by $B_0$, and pressure by $\Omega_0^2 L^2 \rho_0$, where $L$ is the channel width, $\Omega_0$ is the rotation rate at the center of the channel, and $\rho_0$ is the constant pressure in the base state (see Figure \ref{fig:setup}). We define the Reynolds number, $\reye \equiv {\Omega_0 L^2}/{\nu}$, magnetic Reynolds number, $\reym \equiv {\Omega_0 L^2}/{\eta}$, and a plasma beta parameter, $\beta \equiv {\Omega_0^2r_0^2}/{v_A^2}$, where the Alfv\'en speed $v_A$ is $v_A^2 = {B_0^2}/{\rho_0}$. The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the nondimensional, perturbed quantities.
+
+We define the streamfunction $\Psi$ and flux function $A$, where $A$ is the familiar two-dimensional vector potential. $\Psi$ and $A$ are scalar fields. The curl of $\Psi$ and the curl of $A$ are defined as the velocity and magnetic field perturbation, respectively, and so $\Psi$ and $A$ automatically satisfy our constraints (Equations \ref{eq:incompressibility_constraint} and \ref{eq:solenoid_constraint}).
+
+$\Psi$ and $A$ are thus related to the velocity and magnetic field perturbations, respectively, as
+
+\beq
+\mathbf{u} \, = \, \left[\begin{matrix}
+\partial_z \Psi \\
+u_{y} \\
+-\partial_x \Psi \\
+\end{matrix}\right],\eeq
+
+\beq
+\mathbf{B} \, = \, \left[\begin{matrix}
+\partial_zA \\
+B_{y} \\
+-\partial_xA \\
+\end{matrix}\right].\eeq
+
+Our final equation set is
+
+%\begin{widetext}
+\onecolumngrid
+\beq
+\label{eqset1}
+\partial_t \nabla^2 \Psi \, - \, 2 \partial_z u_{y} \, - \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, - \, \frac{1}{\reye}\nabla^4 \Psi \, = \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, - \, J\left(\Psi, \nabla^2 \Psi\right) \, 
+\eeq
+%\end{eqnarray}
+%\end{widetext}
+
+\beq
+\label{eqset2}
+\partial_t u_{y} \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, = \, \frac{2}{\beta}B_0\partial_z B_{y} \, + \, \frac{2}{\beta} J\left(A, B_{y}\right) \, - \, J\left(\Psi, u_{y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{y}
+\eeq
+
+\beq
+\label{eqset3}
+\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, \frac{1}{\reym} \nabla^2 A
+\eeq
+
+\beq
+\label{eqset4}
+\partial_t B_{y} \, = \, B_0 \partial_z u_{y} \, + \, J\left(A, u_{y}\right) \, - \, J\left(\Psi, B_{y}\right) \, \\
++ \, \frac{1}{\reym} \nabla^2 B_{y}  \, - \, q \Omega_0 \partial_z A,
+\eeq
+\twocolumngrid
+
+where $J$ is the Jacobian operator, 
+\beq
+J\left(f, g\right) \equiv \partial_z f\partial_x g - \partial_x f \partial_z g,
+\eeq  
+and $q \equiv - d \ln \Omega/ \ln R = 3/2$ is the dimensionless shear parameter defining a rotation profile $\Omega(r) = \Omega_0 (r/r_0)^{-q}$, such that the background velocity profile is $u_0 = -q \Omega_0 x$.
+
+The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where the most unstable linear MRI mode neither grows nor decays, for a set of dimensionless parameters, and then destabilize the system. We examine the system for fiducial parameters comparable to URM07, namely $\Pm = 1.0 \times 10^{-3}$, $\beta = 25$, $q = 1.5$. The system is marginal for a critical wavenumber $k_c = 0.75$ and a critical magnetic Reynolds number $\reym_c = 4.9$.
+
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{thingap_streamfuncs_velocity_Pm_1E-3-eps-converted-to.pdf}
+\caption{First order (left), second order (center), and total (right) velocity perturbations. Streamlines represent velocity in the vertical-radial plane, where thicker streamlines correspond to faster speeds. Colorbar represents azimuthal velocity. We use a constant amplitude $\alpha = \alpha_{saturation}$ and a small parameter $\epsilon = 0.5$.}\label{fig:allorders_velocity}
+\vspace*{\floatsep}
+\centering
+\includegraphics[width=\textwidth]{thingap_streamfuncs_Bfield_Pm_1E-3-eps-converted-to.pdf}
+\caption{As in Figure \ref{fig:allorders_velocity} but for the magnetic field. Streamlines represent magnetic field structure in the vertical-radial plane, where thicker streamlines correspond to higher magnetic field strengths. Colorbar represents azimuthal magnetic field strength.}\label{fig:allorders_Bfield}
+\end{figure*}
+
+Because we nondimensionalize $B$ by the magnitude of the background field strength, $B_0 \equiv 1$ in Equations \ref{eqset1} - \ref{eqset4}. To excite the weakly nonlinear MRI, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting $B = B_0\left(1 - \epsilon^2\right)$. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ weakening of the background magnetic field destabilizes a finite band of wave modes with a width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly.
+
+The destabilizing substitution is made, and Equations \ref{eqset1} - \ref{eqset4} are rewritten such that the fluid variables are contained in a state vector 
+
+\beq
+\mathbf{V} = \left[\Psi, u_y, A, B_y\right]^\mathrm{T}.
+\eeq
+
+This yields the system of equations
+
+\beq
+\label{eq:unperturbed_matrix_equations}
+ \mathcal{D}\partial_t \mathbf{V} +  \mathcal{L} \mathbf{V} + \epsilon^2\widetilde{\mathcal{G}} = \mathbf{N},
+\eeq
+
+where we leave the definition of the matrices $\mathcal{D}$, $\mathcal{L}$, and $\widetilde{\mathcal{G}}$ to Appendix \ref{app:matrices}, and the detailed form of the nonlinear vector $\mathbf{N}$ to Appendix \ref{app:nonlinear_terms}. We solve this system subject to no-slip, perfectly conducting radial boundary conditions, defined as
+
+\beq\label{eq:wallbcs}
+\Psi = \partial_x \Psi = u_y = A = \partial_x B_y = 0.
+\eeq
+
+
+\section{Weakly Nonlinear Analysis}\label{sec:wnl}
+
+We conduct a formal multiple scales analysis of this system. Our perturbations are characterized in terms of fast- and slow-moving variables, that we treat as independent in order to simultaneously track the evolution of the system on two scales. The relative scalings of the fast and slow variables are chosen such that each of the temporal and spatial eigenvalues appear at the same lowest order in the linear dispersion relation (Appendix \ref{app:dispersion}). The scalings are
+
+\beq\label{scalings}
+X \equiv \epsilon x,  \, \, Y \equiv \epsilon y, \, \, Z \equiv \epsilon z, \, \, T \equiv \epsilon^2 t.
+\eeq
+
+Note that these are the same scalings as apply to Rayleigh-B\'enard convection and hydrodynamic TC flow. Our $x$ dimension, the direction of angular momentum transport, is analogous to the direction of temperature transport in the convection problem. In analogy to these problems, we posit slow variation in both $Z$ and $T$. Each operator in Equations \ref{eqset1} - \ref{eqset4} is expanded to reflect these scalings -- for instance, $\partial_z$ becomes $\partial_z + \epsilon\partial_Z$. 
+
+The multiple scale dependencies of our solution are encoded into an ansatz for the linear MRI solution at marginality,
+
+\beq
+\label{V1_ansatz}
+\mathbf{V_1} = \alpha(T, Z) \mathbb{V}_{11}(x) e^{i k_c z} + c.c. + \beta(T, Z)\mathbb{U}_{11}(x)\\
+\eeq
+
+where $\alpha$ is a slowly-varying amplitude equation and $c.c.$ denotes the complex conjugate. The $x$ dependence is contained in $\mathbb{V}_{11} = (\Psi_{11}, u_{11}, A_{11}, B_{11})^\mathbf{T}$, and must be solved subject to the radial boundary conditions. The periodic vertical boundary conditions allow us to posit the $z$ dependence, where $k_c$ is the value of the vertical wavenumber at marginality. As noted by URM07, there exists a spatially constant neutral mode solution to the $B_y$ equation, with $\mathbb{U}_{11} = (0, 0, 0, 1)^\mathbf{T}$. The amplitude $\beta(T, Z)$ encodes the slow evolution of this mode.
+
+The state vector is expanded in a perturbation series in orders of $\epsilon$,
+
+\beq
+\label{eq:pert_exp}
+\mathbf{V} = \epsilon\mathbf{V_1} + \epsilon^2\mathbf{V_2} + \epsilon^3\mathbf{V_3} + h.o.t.
+\eeq
+
+Our perturbed system is then expressed order by order as
+
+\begin{eqnarray}
+\mathcal{O}(\epsilon)&: \mathcal{L}\mathbf{V_1} + \mathcal{D}\partial_t \mathbf{V_1} = 0. \label{eq:ordere}\\
+\mathcal{O}(\epsilon^2)&: \mathcal{L}\mathbf{V_2} + \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V_1} = \mathbf{N_2} \label{eq:ordere2}\\
+\mathcal{O}(\epsilon^3)&: \mathcal{L} \mathbf{V_3} + \mathcal{D}\partial_T \mathbf{V_1}  + \widetilde{\mathcal{L}}_1\partial_Z\mathbf{V_2} + \widetilde{\mathcal{L}}_2\partial_Z^2\mathbf{V_1} + \widetilde{\mathcal{G}}\mathbf{V_1} = \mathbf{N_3} \label{eq:ordere3}
+\end{eqnarray}
+
+The partial differential equations that comprise Equations \ref{eq:ordere} to \ref{eq:ordere3} are solved in succession. The practical advantage of our ansatz construction (Equation \ref{V1_ansatz}) is clear: the separable x-dependence means that the radial boundary conditions are solved in only one dimension. Thus our analytical framework is able to side-step many of the resolution issues faced by multidimensional simulations. We are able to resolve even small-scale structure in the boundary layers of our domain, because we need only resolve it in one dimension. We solve the radial component of each equation using the open source pseudospectral code Dedalus. We compute the radial components on a grid of Chebyshev polynomials, as is appropriate for bounded one-dimensional domains \citep[e.g.]{Boyd:2001aa}. The nonuniform spacing of the Chebyshev grid allows us to resolve the boundary layers well on a 128-point grid.
+
+To close the perturbation series we enforce a solvability criterion on Equation \ref{eq:ordere3} (see Appendix \ref{app:matrices}). This leads to an amplitude equation for $\alpha(T, Z)$ that governs the slow length- and timescale evolution of the system. This amplitude equation is 
+
+\beq
+\label{eq:gle}
+\partial_T \alpha = b \alpha + h \partial_Z^2 \alpha - c \alpha \left|\alpha^2\right|,
+\eeq
+
+a real Ginzburg-Landau equation. The saturated solution to Equation \ref{eq:gle} is evidently $\alpha_{saturation} = \pm \sqrt{b/c}$. We plot the first order, second order, and total perturbation structure of the fluid variables in Figures \ref{fig:allorders_velocity} and \ref{fig:allorders_Bfield} with a constant $\alpha_{saturation}$. This is the Ginzburg-Landau equation that was previously found by URM07. Those authors investigated the behavior of this MRI system as a function of $\Pm$. By analyzing the system over several orders of magnitude in $\Pm$, we reproduce the URM07 result that the analytic saturation amplitude scales as $\alpha_{saturation}^2 \propto \Pm^{4/3}$ in a thin-gap geometry when $\Pm \ll 1$. We also find, as in URM07, that the neutral mode amplitude $\beta(T, Z)$ is governed by a simple diffusion equation that decouples from the Ginzburg-Landau equation.
+
+\subsection{\edit1{Shearing box and ambipolar diffusion}}
+
+Many studies of the MRI consider the instability in a shearing box, i.e. a wall-less local approximation that is meant to represent a small section of a disk. The shearing box obtains when Equations \ref{eqset1} - \ref{eqset4} are subjected to shear periodic radial boundary conditions rather than Equation \ref{eq:wallbcs}. The periodic nature of the shearing box allows us to decompose the fluid perturbations into Fourier modes proportional to $e^{i k_x x + i k_z z}$. This makes the shearing box MRI straightforward to treat analytically. However, as noted above, the fastest-growing linear MRI modes in the shearing box are also exact solutions of the nonlinear MRI equations -- that is, $J(\hat{\psi_0}, \hat{\psi_0}) = J(\hat{\psi_0}, \nabla^2 \hat{\psi_0}) = 0$ for $\hat{\psi_0} \propto e^{i k_x x + i k_z z}$. While this may be an appealing trait for analytic simplicity, it leads to the unphysical conclusion that the fastest growing modes will never nonlinearly interact. This `nonlinear property' will not be satisfied for two MRI modes with nonparallel wavenumbers, but with vertically periodic boundary conditions and a vertical background magnetic field the most unstable mode has a strictly axial vertical wavenumber. Thus a formal weakly nonlinear analysis cannot be conducted, as the most unstable mode will never nonlinearly interact with itself or its complex conjugate. Similarly, we cannot analytically examine interactions between MRI channel modes and damped eigenmodes belonging to other wave families. This is analytically tracked for other plasma instabilities by tracking the amplitudes of growing, marginal, and damped eigenmodes simultaneously (CITE). While the shearing box approximation allows the projection of the perturbed MRI equations into the basis set of linear eigenmodes, nonlinear coupling between modes will remain zero.
+
+The nonlinear property of primary MRI modes in the shearing box motivates the addition of radial boundaries, such that the nonlinear evolution of the weakly nonlinear MRI can be properly considered. It also begs the question of whether some additional nonlinear mechanism can be introduced such that the fastest-growing modes are no longer nonlinear solutions to the shearing box equations. It has already been shown that the Hall effect does not negate the nonlinear property of primary MRI modes \citep{Kunz:2013}. However, it seems to have been overlooked in the literature that these linear modes are \textit{not} solutions of the nonlinear ambipolar diffusion term, which takes the form
+
+\beq
+\nabla \times ((\mathbf{J} \times \mathbf{B}) \times \mathbf{B}). 
+\eeq
+
+Furthermore, the radial wavenumber of the fastest-growing linear MRI mode in a shearing box with ambipolar diffusion is nonzero when a constant azimuthal background field is considered in addition to an axial one \citep{Kunz:2004ib}. This means that, in the presence of ambipolar diffusion, we can derive the weakly nonlinear envelope equation for the MRI in the shearing box. Ambipolar diffusion adds both linear and nonlinear terms to Equations \ref{eq:ordere} to \ref{eq:ordere3}, but does not change their $Z$ or $T$ dependence. Thus, the slow-scale evolution of the MRI in a shearing box with ambipolar diffusion is also governed by a Ginzburg-Landau equation. 
+
+The Ginzburg-Landau form of the amplitude equation can be found in any system with Euclidean symmetry and a quadratic maximum in growth rate with respect to the wavenumber \citep{Hoyle:2006}. In this case, the Euclidean symmetry comes from axisymmetry in the $x$-$z$ plane, and the quadratic maximum is a consequence of the linear dispersion relation given in Appendix~\ref{app:dispersion}. In Paper II, we show that the same symmetry occurs in the axisymmetric global geometry as well.
+The Ginzburg-Landau equation arises due to symmetries in the local MRI equations, irrespective of the boundary conditions to which they are subjected. This means that the local MRI is able to saturate via nonlinear mode interaction so long as the primary MRI modes are not exact solutions of the nonlinear terms. This can be achieved by considering the effects of ambipolar diffusion when the boundary conditions are shear periodic, or by enforcing wall-like radial boundary conditions. Both constructions require the most unstable mode to have nonconstant radial structure. %So long as our system permits the most unstable mode to nonlinearly interact with 
+
+%The fact that we find a Ginzburg-Landau equation for the amplitude is unsurprising: such an amplitude equation can be found in any system with Euclidean symmetry and a quadratic maximum in growth rate with respect to the wavenumber \citep{Hoyle:2006}. In this case, the Euclidean symmetry comes from axisymmetry in the $x$-$z$ plane, and the quadratic maximum is a consequence of the linear dispersion relation given in Appendix~\ref{app:dispersion}. In Paper II, we show that the same symmetry occurs in the axisymmetric global geometry as well. \textbf{How would the theory developed here change with the addition of vertical endcaps, as found in a real experiment?}%\textbf{Many studies of the MRI take place in the local shearing box, in which Equations \ref{eqset1} - \ref{eqset4} are solved subject to shear-periodic boundary conditions. This is meant }
+
+
+
+\section{Discussion}
+\label{sec:discussion}
+
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{thingap_saturation_mechanism_plots_velocity_slice60.pdf}
+\caption{Top panel: radial profile for $u_y^{saturated} - u_y^0$, the difference between the saturated azimuthal velocity profile and the initial azimuthal velocity profile (TC flow). Bottom panel: each term in the steady state force balance (Equation \ref{eqset2} with $\partial_t u_{y} = 0$). Saturated quantities are computed with $\alpha_{saturation} = \sqrt{b/c}$ and $\epsilon = 0.5$. The saturated state shows reduced shear in the bulk of the flow, outside of the boundary layers.} \label{fig:sat_comp_vel}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{thingap_saturation_mechanism_plots_Bfield_slice60.pdf}
+\caption{Top panel: radial profile for $B_z^{saturated}$, the saturated vertical magnetic field (black line). $B_z^0 = 1$ is the constant background magnetic field (gray line). Bottom panel: each term in the steady state inductive balance ($\partial_x$ of Equation \ref{eqset4} with $\partial_t B_y = 0$). Saturated quantities are computed with $\alpha_{saturation} = \sqrt{b/c}$ and $\epsilon = 0.5$. The saturated field is pushed to the radial domain boundaries.}\label{fig:sat_comp_Bfield}
+\end{figure}
+
+%The fact that we find a Ginzburg-Landau equation for the amplitude is unsurprising: such an amplitude equation can be found in any system with Euclidean symmetry and a quadratic maximum in growth rate with respect to the wavenumber \citep{Hoyle:2006}. In this case, the Euclidean symmetry comes from axisymmetry in the $x$-$z$ plane, and the quadratic maximum is a consequence of the linear dispersion relation given in Appendix~\ref{app:dispersion}. In Paper II, we show that the same symmetry occurs in the axisymmetric global geometry as well. \textbf{How would the theory developed here change with the addition of vertical endcaps, as found in a real experiment?}%\textbf{Many studies of the MRI take place in the local shearing box, in which Equations \ref{eqset1} - \ref{eqset4} are solved subject to shear-periodic boundary conditions. This is meant }
+
+Here our focus is on a physical description of the saturation mechanism. Figure~\ref{fig:sat_comp_vel} shows saturated radial profiles of $u_0 - u_{y} = -q \Omega_0 x - u_{y}$ and each term in the steady state force balance (i.e. Equation~\ref{eqset2} with $\partial_t u_{y} = 0$). In the bulk of the fluid away from the boundary layers, the saturated state shows reduced shear, with little diffusive contribution. This demonstrates that even in a case where diffusive effects are important, the bulk of the fluid saturates by balancing shear and magnetic tension. As discussed at length in \citet{Vasil:2015}, when diffusive effects are not important, it is impossible to rearrange momentum without also rearranging the magnetic field. The \citet{Vasil:2015} model demonstrates saturation without diffusive effects; our results show that outside of the boundary layers, a simultaneous rearrangement of momentum and field occurs. In the boundary layers, the non-linear advection balances viscous dissipation. 
+
+\begin{figure*}[h!]
+\centering
+\includegraphics[width=\textwidth]{IVP_plot_thingap_AA_phase_2lambdacrit_2.pdf}
+\caption{Evolution of the Ginzburg-Landau amplitude equation (Equation \ref{eq:gle}) on a Fourier $Z$ domain of length $2 \lambda_{crit}$, where $\lambda_{crit} = 2\pi/k_c$ is the critical wavelength of the system. Top left panel shows the evolution of the amplitude observable $\alpha \alpha^*$ on the full $Z$ domain as a function of time $T$. Bottom left panel shows the amplitude $alpha$ at the final timestep shown, where the black line is the real part $\mathrm{Re}\{\alpha(t = t_{final})\}$ and the gray line is the imaginary part $\mathrm{Im}\{\alpha(t = t_{final})\}$. The final amplitude is bounded by the analytic saturation amplitude $\alpha_{saturation} = \pm \sqrt{b/c}$. Top right panel shows the evolution of the phase angle $\phi = \mathrm{arctan} (\mathrm{Im}(\alpha)/\mathrm{Re}(\alpha))$ on the same domain. Bottom panel shows the phase angle as a function of $Z$ for the final timestep. Note that the phase angle is wrapped on a $2\pi$ domain, such that $\pi$ = $-\pi$, as indicated by the circular colorbar.}\label{fig:IVP_2lambdacrit}
+
+\centering
+\includegraphics[width=\textwidth]{IVP_plot_thingap_AA_phase_2lambdacrit_10.pdf}
+\caption{As in Figure \ref{fig:IVP_2lambdacrit} but for a $Z$ domain of length $10 \lambda_{crit}$.}\label{fig:IVP_10lambdacrit}
+\end{figure*}
+
+Figure~\ref{fig:sat_comp_Bfield} shows $B_z$ and the terms corresponding to steady state inductive balance ($\partial_x$ of Equation~\ref{eqset4} with $\partial_t B_{y} = 0$). Here, the instability acts to push magnetic field toward the boundaries in both the bulk and the boundary layers. Note also that the total magnetic energy in the $B_z$ component is significantly larger than the initial condition. \citet{Ebrahimi:2009ey} considered the saturation of a single, strongly super-critical MRI mode allowed to interact non-linearly only with itself and the mean. They considered two important cases, one in which the mean flow was forced to remain at its initial, quasi-Keplerian state for all time, and one in which the background flow was allowed to evolve. This is a crucial difference between the shearing box and our narrow-gap TC flow: perturbations in our simulation can adjust the background flow, whereas in a shearing box, the shear periodicity forbids perturbations from affecting the mean flow. In the case with a freely evolving background flow, \citet{Ebrahimi:2009ey} found a saturated state quite similar to ours: field pushed to the boundaries, and a reduction in shear in the bulk of the flow. Their flows have less pronounced boundary layers, likely because of their much larger $\Pm = 0.1 -1$. 
+
+In the high $\reye$ and  $\reym$  limit, \citet{Vasil:2015} derives an amplitude equation considerably different than the one found here. By averaging in the $z$ direction, the author computes a mean-field equation with striking similarity to the buckling of an elastic beam under load. The most salient feature of this equation is its \emph{non-local} character. Unlike the present work, which focuses on Keplerian rotation profiles with $q = 3/2$ with a critical background magnetic field strength, \citet{Vasil:2015} focuses on a fixed field strength and a weakly destabilized shear profile. These differences are minor, however: the destabilizing parameter $\epsilon$ enters the analysis in the same quadratic proportion. Whether and how \citet{Vasil:2015}'s amplitude equation is equivalent to our own in the limit of dynamically important resistive and viscous effects is beyond the scope of this work. Nevertheless, the author identifies the non-linear term responsible for saturation as consisting of flux and field transport and notes these are the only mechanisms able to produce saturation. Our results likewise demonstrate a combination of flux and field transport in the comparable region of our domain. This suggests that despite our formulation displaying different saturation dynamics (Ginzburg-Landau in our case; a network of coupled Duffing oscillators in \citeauthor{Vasil:2015} \citeyear{Vasil:2015}), there may indeed be an underlying unification. 
+
+The real Ginzburg-Landau equation describes the amplitude behavior of our system close to threshold. Although the form of the equation is generic to many systems, its coefficients depend on the specific physics of our system and govern its detailed evolution (see Appendix \ref{app:matrices}). We simulate the evolution of the MRI amplitude equation by solving Equation \ref{eq:gle} on a Fourier basis in $Z$ using Dedalus. We initialize uniform random noise of amplitude $-10^{-3}$ to $+10^{-3}$ in $Z$, and timestep the system using a four-stage, fourth-order Runge-Kutta integrator. We evolve the system for $100 \Omega_0^{-1}$ in timesteps of $0.02 \Omega_0^{-1}$. Results are shown in Figures \ref{fig:IVP_2lambdacrit} and \ref{fig:IVP_10lambdacrit}, where the amplitude and phase structure over the vertical domain is plotted for every $20$ timesteps. The system quickly organizes itself into rolls in $Z$ bounded by the analytic saturation amplitude $\alpha_s = \sqrt{b/c}$. The specific geometry depends on the number of critical wavelengths $\lambda_{crit} = 2\pi/k_c$ that are initialized in $Z$. Figure \ref{fig:IVP_2lambdacrit} shows that a system with a height equal to two critical wavelengths will be modulated by simple rolls of sinusoidal amplitude. The saturation amplitude pattern becomes more complicated when more modes are allowed to interact. Figure \ref{fig:IVP_10lambdacrit} shows the evolution of a system of height $10 \lambda_{crit}$. While still bounded by $\alpha_s$, the saturation amplitude exhibits a nonlinear phase geometry due to the nonlinear interaction of modes in $Z$. 
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+In this paper we construct a weakly nonlinear analysis of the MRI using multiple scales analysis, leading to a real Ginzburg-Landau equation for the nonlinear amplitude, confirming the previous results of \citet{Umurhan:2007hs}. We also confirm their results for the scaling of the analytic saturation amplitude with $\Pm$. We extend their results by constructing a detailed force and inductive balance for the saturated $u_y$ and $B_z$ components. In doing so, we find the saturated state is a complex balance in which reduction of shear and amplification and redistribution of $B_z$ combine to saturate the instability. We also perform direct numerical simulations of the amplitude equation. We demonstrate that complex patterns can organize the flow on long length scales $Z$, though the maximum magnitude of the amplitude $\alpha$ is well predicted by the steady state solution. In Paper II, we make use of the techniques developed here to extend the weakly nonlinear analysis of the MRI to a full cylindrical geometry appropriate for a Taylor-Couette experiment. 
+
+\section{Acknowledgments}
+S.E.C. was supported by a National Science Foundation Graduate Research Fellowship under grant No. DGE-16-44869. J.S.O. acknowledges support from NASA grant 15-LWS15\_2-0063. The authors thank Mordecai Mac Low, Jeremy Goodman, John Krommes, Geoff Vasil, and Ellen Zweibel for useful discussion.
+
+\appendix
+\begin{thebibliography}{}
+
+\bibitem[Bai(2015)]{2015ApJ...798...84B} Bai, X.-N.\ 2015, \apj, 798, 84 
+
+\bibitem[{Balbus \& Hawley(1991)}]{Balbus:1991vs}
+Balbus, S A and Hawley, J F, 1991, The Astrophysical Journal, 376, 214
+
+\bibitem[Bender \& Orszag(1978)]{1978amms.book.....B} Bender, C.~M., \& Orszag, S.~A.\ 1978, Advanced Mathematical Methods for Scientists and Engineers, New York: McGraw-Hill, 1978,
+
+\bibitem[{Boyd(2001)}]{Boyd:2001aa}
+Boyd, J P, 2001, Chebyshev and Fourier Spectral Methods, New York, Dover
+
+\bibitem[{Chandrasekhar(1960)}]{Chandrasekhar:1960wh}
+Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the United States of America, 46, 253
+\bibitem[{Clark \& Oishi(2016b)}]{Clark:2016}
+Clark, S.E. and Oishi, J.S., 2016, submitted
+
+\bibitem[{Ebrahimi et al.(2009)}]{Ebrahimi:2009ey}
+Ebrahimi, F., Prager, S.C., Schnack, D.D, 2009, ApJ 698, 233
+
+\bibitem[Goodman \& Xu(1994)]{Goodman:1994ul}
+Goodman, J, Xu, G, 1994, ApJ, 432, 213
+
+\bibitem[Hawley et al.(2011)]{2011ApJ...738...84H} Hawley, J.~F., Guan, X., \& Krolik, J.~H.\ 2011, \apj, 738, 84 
+
+\bibitem[Hoyle(2006)]{Hoyle:2006} Hoyle, R.\ 2006, Pattern
+  Formation, by Rebecca Hoyle, pp.~432.~Cambridge University Press,
+  March 2006.~ISBN-10: 0521817501.~ISBN-13: 9780521817509, 432
+
+\bibitem[{Knobloch \& Julien(2005)}]{Knobloch:2005ba}
+Knobloch, E, Julien K, 2005, Physics of Fluids, 17, 094106
+
+\bibitem[{Kunz \& Balbus(2004)}]{Kunz:2004ib}
+Kunz, M. W. \& Balbus, S. A. 2004, MNRAS 348, 355
+
+\bibitem[{Kunz \& Lesur(2013)}]{Kunz:2013}
+Kunz, M. W. \& Lesur, G. 2013, MNRAS 434, 2295
+
+\bibitem[{Latter et al.(2015)}]{Latter:2015}
+Latter, H.N., Fromang, S., \& Faure, J., 2015, MNRAS 453, 3257
+
+\bibitem[{Latter et al.(2010)}]{Latter:2010iz}
+Latter, H.N., Fromang, S., \& Gressel, O., 2010, MNRAS 406, 848
+
+\bibitem[{Newell \& Whitehead(1969)}]{Newell:1969}
+Newell, A.C. \& Whitehead, J.A. 1969, JFM 38, 279N
+
+\bibitem[Parkin(2014)]{2014MNRAS.438.2513P} Parkin, E.~R.\ 2014, \mnras, 438, 2513 
+
+\bibitem[Parkin \& Bicknell(2013)]{2013MNRAS.435.2281P} Parkin, E.~R., \& Bicknell, G.~V.\ 2013, \mnras, 435, 2281 
+
+\bibitem[{Pessah(2010)}]{Pessah:2010ic}
+Pessah, M. E., 2010, ApJ, 716, 1012
+
+\bibitem[{Pessah \& Goodman(2009)}]{Pessah:2009gm}
+Pessah, M. E., \& Goodman, J., 2009, \apj 698, L72 
+
+\bibitem[{Rembiasz et al.(2016)}]{Rembiasz:2016}
+Rembiasz, T., Obergaulinger, M., Cerd\'a-Dur\'an, P., M\"uller, E., \& Aloy, M.A., 2016, \mnras 456, 3782
+
+\bibitem[Schnittman et al.(2013)]{2013ApJ...769..156S} Schnittman, J.~D., Krolik, J.~H., \& Noble, S.~C.\ 2013, \apj, 769, 156 
+
+\bibitem[{Shakura \& Sunyaev(1973)}]{Shakura:1973wg}
+Shakura, N. I. and Sunyaev, R. A., Astronomy \& Astrophysics, 1973, 24, 337
+
+\bibitem[{Umurhan et al.(2007a)}]{Umurhan:2007dz}
+Umurhan, O. M., Regev, O., Menou, K., 2007, Phys. Rev. Letters, 98, 034501
+
+\bibitem[{Umurhan et al.(2007b)}]{Umurhan:2007hs}
+Umurhan, O. M., Regev, O., Menou, K., 2007, Phys. Rev. E, 76, 036310
+
+\bibitem[{Vasil(2015)}]{Vasil:2015}
+Vasil, G. M. 2015, RSPSA 471, 20140699
+
+\bibitem[{Velikhov(1959)}]{Velikhov:1959}
+Velikhov, E. P., 1959, Sov. Phys. JETP 36, 995.
+
+\bibitem[Wheeler et al.(2015)]{2015ApJ...799...85W} Wheeler, J.~C., Kagan, D., \& Chatzopoulos, E.\ 2015, \apj, 799, 85 
+
+
+\end{thebibliography}
+
+%% This command is needed to show the entire author+affilation list when
+%% the collaboration and author truncation commands are used.  It has to
+%% go at the end of the manuscript.
+%\allauthors
+
+%% Include this line if you are using the \added, \replaced, \deleted
+%% commands to see a summary list of all changes at the end of the article.
+%\listofchanges
+
+\end{document}
+
+% End of file `sample61.tex'.
