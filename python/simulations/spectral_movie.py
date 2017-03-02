@@ -2,6 +2,8 @@ import sys
 
 import glob
 import h5py
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 plt.ioff()
 import numpy as np
@@ -29,9 +31,10 @@ def plot_frame(nt, data, log=True):
         plt.title(title)
         plt.colorbar()
 
-    filename = 'frames/spectrum_{:06d}.png'.format(write_no)
+    filename = 'frames/spectrum_{:06d}'.format(write_no)
     if log:
         filename += '_log'
+    filename +='.png'
     #plt.savefig('frames/spectrum_trunc_{:06d}.png'.format(write_no),dpi=500)
     plt.savefig(filename,dpi=500)
     plt.clf()
@@ -49,8 +52,8 @@ print(slices)
 with h5py.File(slices[0],'r') as data:
     zlim = [data['scales/z/1.0'][0],data['scales/z/1.0'][-1]]
 
-nx = 256#512#256
-nz = 512#1024#4096
+nx = 512#256
+nz = 2048#512#1024#4096
 xb = de.Chebyshev('x', nx)
 zb = de.Fourier('z', nz, interval=zlim)
 domain = de.Domain([zb,xb],grid_dtype='float')
@@ -61,4 +64,4 @@ for sl in slices:
         nwrites = data['scales/sim_time'].shape[0]
 
         for nt in range(nwrites):
-            plot_frame(nt,data,log=False)
+            plot_frame(nt,data,log=True)
