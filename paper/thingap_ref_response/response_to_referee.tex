@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+
+\title{Response to Report on AAS02887 and AAS02889}% - received 11/13/16}
+\author{S.E. Clark \& Jeffrey S. Oishi}
+
+\maketitle
+
+\textbf{We thank the reviewer for these thoughtful and thorough comments. Below please find the reviewer comments in plain text and our responses to these specific points in bold. First, an overarching point: our papers are separated into Paper I and Paper II, where Paper I considers the MRI equations in a local geometry and Paper II considers the global MRI equations. In the submitted version of Paper I, we considered only the local MRI equations with wall-like boundary conditions, the ``thin-gap Taylor Couette" setup considered in URM07. However, the WNL theory developed here applies regardless of the boundary conditions, as long as the most unstable mode meets certain conditions. In particular, the local equations considered here, when subjected to periodic boundary conditions, describe the ``shearing box" that is commonly considered in many simulations and analytic treatments of the MRI. In the resubmitted version of Paper I we identify conditions under which our theory applies to the shearing box: the additional consideration of the effects of ambipolar diffusion and a constant azimuthal component to the background field. We add a section (3.1) that details how these conditions allow the Ginzburg-Landau amplitude equation to obtain for the system with shear-periodic boundary conditions. We feel that this additional insight is a more direct connection between our work and most MRI simulations. We hope the referee will agree with the choice to use Paper I to focus on the local equations, while allowing Paper II to demonstrate for the first time that the weakly nonlinear theory developed for the local case is also applicable to a global, cylindrical geometry (as well as to consider the helical MRI). } \\
+					
+These papers investigate saturation of the magnetorotational (MRI) instability of a viscous, resistive, incompressible fluid in cylindrical geometry with rotation driven at the boundaries and parameters chosen such that the system is almost stable. Although Keplerian shear is imposed, the setup is more directly pertinent to laboratory experiments with liquid metals than to astrophysical accretion disks. Nevertheless, the authors make a good case that the work should be published in The Astrophysical Journal as a contribution to the MRI saturation problem, which is of great astrophysical importance.
+					
+Since these two papers are strongly linked, I am submitting a single, combined report. Although I recommend extensive revisions, I consider this an impressive piece of work by a young researcher who should be encouraged to continue working on this problem.
+					
+The following remarks apply to both papers:
+
+\begin{itemize}				
+\item One of the main ideas behind the “weakly nonlinear” approach is that near marginal stability there is only one or a very small band of unstable modes that self interact. There is a substantial body of work in the fusion plasma community that considers coupling to damped modes as an important ingredient in saturation. The names to look for are Hatch, Makwana, and Terry. I am not suggesting the authors redo their analysis, to include damped modes, but they should comment on this alternative, perhaps in the Introduction.
+
+\item With regard to saturation through modification of the base flow, in the TC problem studied in these papers, the rotation law is enforced through viscous coupling of the interior fluid to the bounding cylinders. This introduces a timescale, the viscous diffusion time, with which the momentum transport driven by perturbations must compete. In an accretion disk the rotation law is enforced at every point directly by gravity. The authors should comment on how important they think this difference is to saturating the mode.
+
+\textbf{In Paper II, the rotation law is enforced through viscous coupling to the boundaries. In Paper I, however, the rotation law is imposed directly at every point by the shear. }
+	 							
+\item The influence of boundary conditions and boundary layers is strong. To call out some examples: In Paper I, the amplitude ? converges to the constant value (b/c)1/2, independent of z. Is this really relevant to a lab experiment with vertical endcaps, or to a stratified disk? Have the authors experimented with a finite cylinder, even a very tall one? Likewise, the radial boundaries seem to play a role that a softer physical boundary might not, for example the boundary layers in Figure 2 of Paper II (in this case it would be useful to show blowups of the solution, as in Figure 4, and present evidence for numerical convergence). I would like to see more discussion of the role of these boundary conditions versus physical boundary conditions. Again, it is OK to model a lab experiment – but the connection to a natural system should be kept in mind.
+\end{itemize}
+					
+4. Both papers are light on physical interpretation. This is especially an issue with Paper I – see below. I would particularly like to see:
+						 							
+A more extended discussion of how angular momentum transport works. After all, this is the primary raison d’etre for most studies of the MRI.
+					 							
+A more extensive discussion of the role of the neutral mode with amplitude ? that both URM and the present paper argue should be kept, but, at least to the order in ? considered, satisfies an amplitude equation that is completely decoupled from the MRI mode, with amplitude ?. See the comment on coupling of damped modes above, which may be related to this issue.
+Neutral mode doesn’t exist in cylindrical geometry, yet we find same GLE -- can we just argue that it’s not important for saturation? 
+The beta mode arises because a constant By solves the equations. However, this cannot non-linearly couple to any other modes, because all NL terms in the problem involve derivatives. Thus, there is no coupling to it, even though we discard couplings between the other damped eigenmode families in the thin-gap MHD system (that is, the non-MRI modes)
+					 							
+The saturated Bz profile shown in Figure 5 of Paper I is intriguing in light of the fact that the authors achieved instability by dialing down Bz from the marginally stable value. Would a radial average of the new Bz, which is stronger at the edges and weaker in the middle, reveal that it is marginally stable? Do the results bear on whether the MRI is a dynamo? There is no counterpart figure in Paper II; the authors should comment on dynamo action here, too.
+No, axisymmetry / Cowling anti-dynamo theorem
+						
+					 					
+5. A small point – the parameter called ? is not the standard definition; why not introduce the Cowling number?
+
+	
+6. Finally, would it be feasible to a compute a nonlinear solution with Dedalus (or some other platform) and see how accurate the perturbation theory really is, for different values of ?? Although the authors compare their results with Ebrahimi 2009, it would be desirable to have their own simulations for comparison.						
+					 					
+Remarks on Paper I:
+					
+This paper follows URM07 very closely – how closely I did not appreciate until I looked at that paper. Unless the authors can substantially enhance their discussion of the physics, bring out details of how their approach differs from URM07 that escaped me, and/or more fully discuss the relationship between their work and other work on saturation such as that of Vasil 2015, Ebrahimi 2009, or the Hatch/Makwana/Terry approach mentioned above, it might be better to write one long paper that outlines the URM07 approach and applies it to the helical MRI. A secondary reason to suggest this is the strong overlap of the Introductions to Papers I and II. 
+				
+
+
+\end{document}
+
