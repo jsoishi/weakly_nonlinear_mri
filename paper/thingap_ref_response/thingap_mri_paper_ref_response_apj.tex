@@ -476,7 +476,9 @@ Here our focus is on a physical description of the saturation mechanism. Figure~
 \caption{As in Figure \ref{fig:IVP_2lambdacrit} but for a $Z$ domain of length $10 \lambda_{crit}$.}\label{fig:IVP_10lambdacrit}
 \end{figure*}
 
-Figure~\ref{fig:sat_comp_Bfield} shows $B_z$ and the terms corresponding to steady state inductive balance ($\partial_x$ of Equation~\ref{eqset4} with $\partial_t B_{y} = 0$). Here, the instability acts to push magnetic field toward the boundaries in both the bulk and the boundary layers. Note also that the total magnetic energy in the $B_z$ component is significantly larger than the initial condition. \citet{Ebrahimi:2009ey} considered the saturation of a single, strongly super-critical MRI mode allowed to interact non-linearly only with itself and the mean. They considered two important cases, one in which the mean flow was forced to remain at its initial, quasi-Keplerian state for all time, and one in which the background flow was allowed to evolve. This is a crucial difference between the shearing box and our narrow-gap TC flow: perturbations in our simulation can adjust the background flow, whereas in a shearing box, the shear periodicity forbids perturbations from affecting the mean flow. In the case with a freely evolving background flow, \citet{Ebrahimi:2009ey} found a saturated state quite similar to ours: field pushed to the boundaries, and a reduction in shear in the bulk of the flow. Their flows have less pronounced boundary layers, likely because of their much larger $\Pm = 0.1 -1$. 
+Figure~\ref{fig:sat_comp_Bfield} shows $B_z$ and the terms corresponding to steady state inductive balance ($\partial_x$ of Equation~\ref{eqset4} with $\partial_t B_{y} = 0$). Here, the instability acts to push magnetic field toward the boundaries in both the bulk and the boundary layers. %Note also that the total magnetic energy in the $B_z$ component is significantly larger than the initial condition.
+\edit1{The radial average of the saturated $B_z$ is $B_0$, i.e. $B_z$ is marginally stable.}
+ \citet{Ebrahimi:2009ey} considered the saturation of a single, strongly super-critical MRI mode allowed to interact non-linearly only with itself and the mean. They considered two important cases, one in which the mean flow was forced to remain at its initial, quasi-Keplerian state for all time, and one in which the background flow was allowed to evolve. This is a crucial difference between the shearing box and our narrow-gap TC flow: perturbations in our simulation can adjust the background flow, whereas in a shearing box, the shear periodicity forbids perturbations from affecting the mean flow. In the case with a freely evolving background flow, \citet{Ebrahimi:2009ey} found a saturated state quite similar to ours: field pushed to the boundaries, and a reduction in shear in the bulk of the flow. Their flows have less pronounced boundary layers, likely because of their much larger $\Pm = 0.1 -1$. 
 
 In the high $\reye$ and  $\reym$  limit, \citet{Vasil:2015} derives an amplitude equation considerably different than the one found here. By averaging in the $z$ direction, the author computes a mean-field equation with striking similarity to the buckling of an elastic beam under load. The most salient feature of this equation is its \emph{non-local} character. Unlike the present work, which focuses on Keplerian rotation profiles with $q = 3/2$ with a critical background magnetic field strength, \citet{Vasil:2015} focuses on a fixed field strength and a weakly destabilized shear profile. These differences are minor, however: the destabilizing parameter $\epsilon$ enters the analysis in the same quadratic proportion. Whether and how \citet{Vasil:2015}'s amplitude equation is equivalent to our own in the limit of dynamically important resistive and viscous effects is beyond the scope of this work. Nevertheless, the author identifies the non-linear term responsible for saturation as consisting of flux and field transport and notes these are the only mechanisms able to produce saturation. Our results likewise demonstrate a combination of flux and field transport in the comparable region of our domain. This suggests that despite our formulation displaying different saturation dynamics (Ginzburg-Landau in our case; a network of coupled Duffing oscillators in \citeauthor{Vasil:2015} \citeyear{Vasil:2015}), there may indeed be an underlying unification. 
 
@@ -489,6 +491,309 @@ In this paper we construct a weakly nonlinear analysis of the MRI using multiple
 
 \section{Acknowledgments}
 S.E.C. was supported by a National Science Foundation Graduate Research Fellowship under grant No. DGE-16-44869. J.S.O. acknowledges support from NASA grant 15-LWS15\_2-0063. The authors thank Mordecai Mac Low, Jeremy Goodman, John Krommes, Geoff Vasil, and Ellen Zweibel for useful discussion.
+
+\clearpage
+\appendix
+
+\section{A. Detailed Equations}\label{app:matrices}
+
+Here we detail the perturbation analysis described in Section \ref{sec:wnl}. The perturbation series is described by Equations \ref{eq:ordere} - \ref{eq:ordere3}, where 
+
+\beq
+\mathcal{L} = \mathcal{L}_0 + \mathcal{L}_1 \partial_z + \mathcal{L}_2 \partial_z^2 + \mathcal{L}_3 \partial_z^3 + \mathcal{L}_4 \partial_z^4,
+\eeq
+
+\beq
+\widetilde{\mathcal{L}}_1 =  \mathcal{L}_1 + 2\mathcal{L}_2\partial_z + 3\mathcal{L}_3\partial_z^2 + 4\mathcal{L}_4\partial_z^3
+\eeq
+
+\beq
+\widetilde{\mathcal{L}}_2 = \mathcal{L}_2 + 3\mathcal{L}_3\partial_z + 6\mathcal{L}_4\partial_z^2
+\eeq
+
+\beq
+\widetilde{\mathcal{G}} = - \mathcal{G} \partial_z - \mathcal{L}_3 \partial_z^3,
+\eeq
+
+and the constituent matrices are defined as 
+
+\beq
+\mathcal{D} = \left[\begin{matrix}
+\nabla^2 & 0 & 0 & 0 \\
+0 & 1& 0 & 0 \\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1 \\
+\end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_0 = \left[\begin{matrix}
+-\frac{1}{\reye}\partial_x^4 & 0 & 0 & 0 \\
+0 & -\frac{1}{\reye}\partial_x^2 & 0 &0 \\
+0 & 0 & -\frac{1}{\reym}\partial_x^2 & 0 \\
+0 & 0 & 0 & -\frac{1}{\reym}\partial_x^2 \\ \end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_1 = \left[\begin{matrix}
+0 & -2 & -\frac{2}{\beta}\partial_x^2 & 0 \\
+(2-q)\Omega_0 & 0 & 0 & -\frac{2}{\beta} \\
+-1 & 0 & 0 & 0 \\
+0 & -1 & q\Omega_0 & 0 \\ \end{matrix}\right] 
+\eeq
+
+\beq
+\mathcal{L}_2 = \left[\begin{matrix}
+-2\frac{1}{\reye} \partial_x^2 & 0 & 0 & 0 \\
+0 & -\frac{1}{\reye} & 0 & 0 \\
+0 & 0 & -\frac{1}{\reym} & 0 \\
+0 & 0 & 0 & -\frac{1}{\reym} \\ \end{matrix}\right]
+\eeq
+
+\beq
+\mathcal{L}_3 = \left[\begin{matrix}
+0 & 0 & -\frac{2}{\beta} & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\ \end{matrix} \right]
+\eeq
+
+\beq
+\mathcal{L}_4 = \left[\begin{matrix}
+-\frac{1}{\reye} & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\ \end{matrix}\right] 
+\eeq
+
+\beq
+\mathcal{G} = \left[\begin{matrix}
+0 & 0 & -\frac{2}{\beta}\partial_x^2 & 0 \\
+0 & 0 & 0 & -\frac{2}{\beta} \\
+-1 & 0 & 0 & 0 \\
+0 & -1 & 0 & 0 \\ \end{matrix} \right]
+\eeq
+
+Once perturbed, the system is solved for successive orders of $\epsilon$ (Equations \ref{eq:ordere} - \ref{eq:ordere3}). $\mathcal{O}(\epsilon)$ is the linear system. At $\mathcal{O}(\epsilon^2)$, first-order MRI modes nonlinearly interact with themselves and with their complex conjugates, and so the term $\mathbf{N}_2$ in Equation \ref{eq:ordere2} has the form
+
+\beq
+\mathbf{N}_2 = |\alpha|^2 \mathbf{N}_{20} + \alpha^2 \mathbf{N}_{22} e^{2 i k_c z}
+\eeq
+
+(see Appendix \ref{app:nonlinear_terms} for the full form of $\mathbf{N}_{20}$ and $\mathbf{N}_{22}$). 
+
+Note that, following the notation of \citet{Umurhan:2007hs}, the subscripts refer to $\epsilon$ order, $z$ order, successively, such that $\mathbf{N}_{22}$ is the second-order nonlinear term which corresponds to $e^{2 i k_c z}$ z-dependence.  
+
+Equation \ref{eq:ordere2} is solved as three separate systems of equations, one for each possible $z$ resonance: 
+
+\begin{align}
+\mathcal{L}\mathbf{V}_{20} & = \mathbf{N}_{20}\\
+\mathcal{L}\mathbf{V}_{21} & = - \widetilde{\mathcal{L}}_1 \partial_Z \mathbf{V}_{11} \\
+\mathcal{L}\mathbf{V}_{22} & = \mathbf{N}_{22}
+\end{align}
+
+Finally, at $\mathcal{O}(\epsilon^3)$ we eliminate secular terms to close the system. Secular terms are terms which are resonant with the solution to the homogenous linear equation (Equation \ref{eq:ordere}), and which cause the higher-order solutions to grow without bound. The solvability criterion we enforce to eliminate these terms is the vanishing of the inner product of the solution to the adjoint linear homogenous equation $\mathcal{L}^\dagger \mathbf{V}^\dagger = 0$ with the nonhomogenous terms in Equation \ref{eq:ordere3}, namely
+
+\beq\label{eq:innerprod_gle}
+\langle \mathbb{V}^\dagger | \mathcal{D} \mathbb{V}_{11} \rangle \partial_T \alpha + \langle  \mathbb{V}^\dagger | \widetilde{\mathcal{G}} \mathbb{V}_{11} \rangle \alpha +  \langle \mathbb{V}^\dagger | \widetilde{\mathcal{L}}_1 \mathbb{V}_{21} + \widetilde{\mathcal{L}}_2 \mathbb{V}_{11} \rangle \partial_Z^2 \alpha = \langle \mathbb{V}^\dagger | \mathbf{N}_{31} \rangle \alpha |\alpha|^2.
+\eeq
+
+This solvability criterion derives from a corollary to the Fredholm Alternative (see Paper II for a formal definition). 
+
+Equation \ref{eq:innerprod_gle} can be rewritten as Equation \ref{eq:gle}, the Ginzburg-Landau equation, where the coefficients are 
+
+\beq
+b = \langle  \mathbb{V}^\dagger | \widetilde{\mathcal{G}} \mathbb{V}_{11} \rangle / \langle \mathbb{V}^\dagger | \mathcal{D} \mathbb{V}_{11} \rangle,
+\eeq
+
+\beq
+h = \langle \mathbb{V}^\dagger | \widetilde{\mathcal{L}}_1 \mathbb{V}_{21} + \widetilde{\mathcal{L}}_2 \mathbb{V}_{11} \rangle / \langle \mathbb{V}^\dagger | \mathcal{D} \mathbb{V}_{11} \rangle,
+\eeq
+
+and
+
+\beq
+c = \langle \mathbb{V}^\dagger | \mathbf{N}_{31} \rangle / \langle \mathbb{V}^\dagger | \mathcal{D} \mathbb{V}_{11} \rangle. 
+\eeq
+
+We define the adjoint operator $\mathcal{L}^\dagger$ and solution $\mathbf{V}^\dagger$ as 
+
+\beq
+\langle \mathbf{V^\dagger} | \mathcal{L} \mathbf{V} \rangle = \langle \mathcal{L}^\dagger \mathbf{V}^\dagger | \mathbf{V} \rangle,
+\eeq
+
+where the inner product is defined as 
+
+\beq\label{eq:inner_product_def}
+\langle \mathbf{V^\dagger} | \mathcal{L} \mathbf{V} \rangle = \frac{k_c}{2\pi} \int_{-\pi/k_c}^{\pi/k_c} \int_{x_1}^{x_2} \mathbf{V}^{\dagger*} \cdot \mathcal{L} \mathbf{V} \, \mathrm{d} x \mathrm{d} z.
+\eeq
+
+The solution to the adjoint homogenous equation has the form 
+
+\beq
+\mathbf{V^\dagger} = \mathbb{V}^\dagger(x) e^{i k_c z} + c.c.
+\eeq
+
+As noted by URM07, a second amplitude equation for a spatially constant azimuthal magnetic field mode arises from the terms in the $\mathcal{O}(\epsilon^3)$ equation which contain no $z$ dependence. This is a diffusion equation, so the neutral mode simply decays away.
+
+\section{B. Expansion of Nonlinear Terms}\label{app:nonlinear_terms}
+
+At each order in our perturbation series, lower-order MRI modes nonlinearly interact. Thus there is a nonlinear term contribution at $\mathcal{O}(\epsilon^2)$ and $\mathcal{O}(\epsilon^3)$. Here we detail the form of these nonlinear terms. 
+
+The overall nonlinear contribution to our system, written as a vector $\mathbf{N}$ in Equation \ref{eq:unperturbed_matrix_equations}, is
+
+\beq
+\mathbf{N} = \epsilon^2\mathbf{N_2} \, + \, \epsilon^3\mathbf{N_3} \, + \, \mathcal{O}(\epsilon^4)
+\eeq
+
+where
+
+\beq
+N_2^{(\Psi)} = J(\Psi_1, \nabla^2 \Psi_1) \,-\, \frac{2}{\beta}J(A_1, \nabla^2 A_1) 
+\eeq
+
+\beq
+N_2^{(u)} = J(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_1) 
+\eeq
+
+\beq
+N_2^{(A)} = - J(A_1, \Psi_1) 
+\eeq
+
+\beq
+N_2^{(B)} =  J(\Psi_1, B_1) \, - \, J(A_1, u_1)
+\eeq
+
+and
+
+\beq
+\begin{split}
+N_3^{(\Psi)} & = J(\Psi_1, \nabla^2\Psi_2) \, - \, \frac{2}{\beta}J(A_1, \nabla^2 A_2) \,+\, J(\Psi_2, \nabla^2\Psi_1) - \, \frac{2}{\beta}J(A_2, \nabla^2 A_1) \,+\, 2 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, \\
+& - \, 2 \frac{2}{\beta}J(A_1, \partial_z\partial_Z A_1) \,+\, \widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \,  \frac{2}{\beta}\widetilde{J}(A_1, \nabla^2 A_1)\\
+\end{split}
+\eeq
+
+\beq
+N_3^{(u)} = J(\Psi_1, u_2) \, + \, J(\Psi_2, u_1) \, + \, \widetilde{J}(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_2) \, - \, \frac{2}{\beta} J(A_2, B_1) \, - \, \frac{2}{\beta} \widetilde{J}(A_1, B_1)
+\eeq
+
+\beq
+N_3^{(A)} = - J(A_1, \Psi_2) \, - \, J(A_2, \Psi_1) \, - \, \widetilde{J}(A_1, \Psi_1)
+\eeq
+
+\beq
+N_3^{(B)} = \, J(\Psi_1, B_2) \, + \, J(\Psi_2, B_1) \, + \, \widetilde{J}(\Psi_1, B_1) \, - \, J(A_1, u_2) \, - \,  J(A_2, u_1) \, - \, \widetilde{J}(A_1, u_1).\\
+\eeq
+
+$\mathbf{N_2}$ and $\mathbf{N_3}$ expand to become
+
+\beq
+\mathbf{N_2} = \alpha^2\mathbb{N}_{22} e^{i2 k_c z} + \left|\alpha\right|^2 \mathbb{N}_{20} + c.c.
+\eeq
+
+and
+
+\beq
+\mathbf{N_3} = \alpha^3 \mathbb{N}_{33} e^{i 3 k_c z} + \alpha\partial_Z\alpha \mathbb{N}_{32} e^{i 2 k_c z} + \alpha\left|\alpha\right|^2 \mathbb{N}_{31} e^{i k_c z} + \alpha \partial_Z  \beta \mathbb{\widetilde{N}}_{31} e^{i k_c z} + \alpha^*\partial_Z \alpha \mathbb{N}_{30} + c.c.
+\eeq
+
+The second order nonlinear terms are \\
+
+\beq
+\begin{split}
+N_{22}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11} - k_c^2 \partial_x \Psi_{11}\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11} - i k_c^3 \Psi_{11}\right) \\
+& + \frac{2}{\beta}\partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11} - i k_c^3 A_{11}\right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11} - k_c^2 \partial_x A_{11}\right)
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{22}^{(u)} = & \, i k_c \Psi_{11} \cdot \partial_x u_{11} - \partial_x \Psi_{11} \cdot i k_c u_{11} - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11} + \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}
+\end{split}
+\eeq
+
+\beq
+N_{22}^{(A)} = - i k_c A_{11} \cdot \partial_x \Psi_{11} + \partial_x A_{11} \cdot i k_c \Psi_{11}
+\eeq
+
+\beq
+N_{22}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11} - \partial_x \Psi_{11} \cdot i k_c B_{11} - i k_c A_{11} \cdot \partial_x u_{11} + \partial_x A_{11} \cdot i k_c u_{11}
+\eeq
+
+\beq
+\begin{split}
+N_{20}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - k_c^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i k_c^3 \Psi_{11}^* - i k_c \partial_x^2 \Psi_{11}^*\right) \\
+& +\frac{2}{\beta} \partial_x A_{11} \cdot \left(i k_c^3 A_{11}^* - i k_c \partial_x^2 A_{11}^* \right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11}^* - k_c^2 \partial_x A_{11}^*\right)
+\end{split}
+\eeq
+
+\beq
+N_{20}^{(u)} = i k_c \Psi_{11} \cdot \partial_x u_{11}^* + \partial_x \Psi_{11} \cdot i k_c u_{11}^* - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11}^* - \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}^*
+\eeq
+
+\beq
+N_{20}^{(A)} = - i k_c A_{11} \cdot \partial_x \Psi_{11}^* - \partial_x A_{11} \cdot i k_c \Psi_{11}^*
+\eeq
+
+\beq
+N_{20}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11}^* + \partial_x \Psi_{11} \cdot i k_c B_{11}^* - i k_c A_{11} \cdot \partial_x u_{11}^* - \partial_x A_{11} \cdot i k_c u_{11}^*
+\eeq \\
+
+and the third order nonlinear terms become \\
+
+\beq
+\begin{split}
+N_{31}^{(\Psi)} = &  \, i k_c \left(\Psi_{11} \cdot \partial_x^3 \Psi_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x^3\Psi_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x^3 \Psi_{22}\right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot \partial_x^2 \Psi_{22}\right) \\
+& + i 8 k_c^3 \left(\partial_x\Psi_{11}^* \cdot \Psi_{22}\right) + i 4 k_c^3 \left(\Psi_{11}^* \cdot \partial_x \Psi_{22}\right) + \frac{2}{\beta}\left[ - i k_c \left(A_{11} \cdot \partial^3 A_{20}\right) - i k_c \left(A_{11} \cdot \partial_x^3 A_{20}^*\right) \right]\\
+& + \frac{2}{\beta}\left[i k_c \left(A_{11}^* \cdot \partial_x^3 A_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot \partial_x^2 A_{22}\right) - i 8 k_c^3 \left(\partial_x A_{11}^* \cdot A_{22}\right) - i 4 k_c^3 \left(A_{11}^* \cdot \partial_x A_{22}\right)\right] \\
+& + i 2 k_c \left(\Psi_{22} \cdot \partial_x^3 \Psi_{11}^*\right) - i 2 k_c^3\left(\Psi_{22} \cdot \partial_x \Psi_{11}^* \right) - i k_c \left(\partial_x \Psi_{20} \cdot \partial_x^2 \Psi_{11}\right) + i k_c \left(\partial_x \Psi_{22} \cdot \partial_x^2 \Psi_{11}^*\right) \\
+& - i k_c \left(\partial_x \Psi_{20}^* \cdot \partial_x^2 \Psi_{11}\right) + i k_c^3 \left(\partial_x \Psi_{20} \cdot \Psi_{11}\right) + i k_c^3 \left(\partial_x \Psi_{20}^* \cdot \Psi_{11}\right) - i k_c^3 \left(\partial_x \Psi_{22} \cdot \Psi_{11}^*\right) \\
+& + \frac{2}{\beta} \left[ - i 2 k_c \left(A_{22} \cdot \partial_x^3 A_{11}^*\right) + i 2 k_c^3 \left(A_{22} \cdot \partial_x A_{11}^*\right) + i k_c \left(\partial_x A_{20} \cdot \partial_x^2 A_{11}\right) - i k_c \left(\partial_x A_{22} \cdot \partial_x^2 A_{11}^*\right) \right] \\
+& + \frac{2}{\beta} \left[ i k_c \left(\partial_x A_{20}^* \cdot \partial_x^2 A_{11}\right) - i k_c^3 \left(\partial_x A_{20} \cdot A_{11}\right) - i k_c^3 \left(\partial_x A_{20}^* \cdot A_{11}\right) + i k_c^3 \left(\partial_x A_{22} \cdot A_{11}^*\right)\right]
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{31}^{(u)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x u_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x u_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x u_{22}\right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot u_{22}\right) \\
+& - i k_c \left(u_{11} \cdot \partial_x \Psi_{20} \right) - i k_c \left(u_{11} \cdot \partial_x \Psi_{20}^*\right) + i k_c \left(u_{11}^* \cdot \partial_x \Psi_{22} \right) + i 2 k_c \left(\partial_x u_{11}^* \cdot \Psi_{22}\right) \\
+& +\frac{2}{\beta}\left[- i k_c \left(A_{11} \cdot \partial_x B_{20}\right) - i k_c \left(A_{11} \cdot \partial_x B_{20}^*\right) + i k_c \left(A_{11}^* \cdot \partial_x B_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot B_{22}\right)\right] \\
+& +\frac{2}{\beta}\left[ i k_c \left(B_{11} \cdot \partial_x A_{20}\right) + i k_c \left(B_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(B_{11}^* \cdot \partial_x A_{20}\right) - i 2 k_c \left(\partial_x B_{11}^* \cdot A_{22}\right)\right]
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{31}^{(A)} =\, & -i k_c \left(A_{11}\cdot\partial_x \Psi_{20}\right) - i k_c \left(A_{11} \cdot \partial_x \Psi_{20}^*\right)
+ + i k_c \left(A_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot \Psi_{22}\right) \\
+ & + i k_c \left(\Psi_{11} \cdot \partial_x A_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x A_{22} \right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot A_{22}\right)
+\end{split}
+\eeq
+
+\beq
+\begin{split}
+N_{31}^{(B)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x B_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x B_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x B_{22}\right) - i 2 k_c\left(\partial_x \Psi_{11}^* \cdot B_{22}\right) \\
+& - i k_c \left(B_{11} \cdot \partial_x \Psi_{20}\right) - i k_c \left(B_{11} \cdot \partial_x \Psi_{20}^*\right) + i k_c\left(B_{11}^* \cdot \partial_x \Psi_{22}\right) + i 2 k_c \left(\partial_x B_{11}^* \cdot \Psi_{22}\right) \\
+& - i k_c \left(A_{11} \cdot \partial_x u_{20}\right) - i k_c \left(A_{11} \cdot \partial_x u_{20}^*\right) + i k_c \left(A_{11}^* \cdot \partial_x u_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot u_{22}\right) \\
+& i k_c \left(u_{11} \cdot \partial_x A_{20} \right) + i k_c \left(u_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(u_{11}^* \cdot \partial_x A_{22}\right) - i 2 k_c \left(\partial_x u_{11}^* \cdot A_{22}\right)
+\end{split}
+\eeq
+
+\section{C. Linear dispersion relation}\label{app:dispersion}
+
+The linear dispersion relation, which determines the variable scalings in the multiple scales analysis. This relation is found by perturbing the linear system (Equation \ref{eq:ordere}) with a small perturbation of the form $e^{\sigma t + i k_x x + i k_z z}$. Note that the spatial eigenvalues appear as $k_z^2$ and $k_x^2$ at lowest order.
+
+\beq
+\begin{split}
+& \frac{B_{0}^{4} k_{x}^{2} k_{z}^{4}}{16 \pi^{2}} + \frac{B_{0}^{4} k_{z}^{6}}{16 \pi^{2}} - \frac{B_{0}^{2} \Omega_{0} k_{z}^{4} q}{2 \pi} - 2 \Omega_{0} k_{z}^{2} q \sigma^{2} - \frac{4 \sigma}{\reym} \Omega_{0} k_{x}^{2} k_{z}^{2} q - \frac{4 \sigma}{\reym} \Omega_{0} k_{z}^{4} q - \frac{2 \Omega_{0}}{\reym^{2}} k_{x}^{4} k_{z}^{2} q - \frac{4 \Omega_{0}}{\reym^{2}} k_{x}^{2} k_{z}^{4} q - \frac{2 \Omega_{0}}{\reym^{2}} k_{z}^{6} q \\
+& - k_{x}^{2} \sigma^{4} - k_{z}^{2} \sigma^{4} + 4 k_{z}^{2} \sigma^{2} - \frac{2 \sigma^{3}}{\reym} k_{x}^{4} - \frac{4 \sigma^{3}}{\reym} k_{x}^{2} k_{z}^{2} + \frac{8 \sigma}{\reym} k_{x}^{2} k_{z}^{2} - \frac{2 \sigma^{3}}{\reym} k_{z}^{4} + \frac{8 \sigma}{\reym} k_{z}^{4} - \frac{k_{x}^{6} \sigma^{2}}{\reym^{2}} - \frac{3 \sigma^{2}}{\reym^{2}} k_{x}^{4} k_{z}^{2} + \frac{4 k_{x}^{4}}{\reym^{2}} k_{z}^{2} \\
+& - \frac{3 \sigma^{2}}{\reym^{2}} k_{x}^{2} k_{z}^{4} + \frac{8 k_{x}^{2}}{\reym^{2}} k_{z}^{4} - \frac{k_{z}^{6} \sigma^{2}}{\reym^{2}} + \frac{4 k_{z}^{6}}{\reym^{2}} - \frac{2 \sigma^{3}}{\reye} k_{x}^{4} - \frac{4 \sigma^{3}}{\reye} k_{x}^{2} k_{z}^{2} - \frac{2 \sigma^{3}}{\reye} k_{z}^{4} - \frac{4 k_{x}^{6} \sigma^{2}}{\reye \reym} -  \frac{12 k_{x}^{4} k_{z}^{2} \sigma^{2}}{\reye \reym} - \frac{12 k_{x}^{2} k_{z}^{4} \sigma^{2}}{\reye \reym} \\
+& - \frac{4 k_{z}^{6} \sigma^{2}}{\reye \reym} - \frac{2 k_{x}^{8} \sigma}{\reye \reym^{2}} - \frac{8 k_{x}^{6} k_{z}^{2} \sigma}{\reye \reym^{2}} - \frac{12 k_{x}^{4} k_{z}^{4} \sigma}{\reye \reym^{2}} - \frac{8 k_{x}^{2} k_{z}^{6} \sigma}{\reye \reym^{2}} - \frac{2 k_{z}^{8} \sigma}{\reye \reym^{2}} - \frac{k_{x}^{6} \sigma^{2}}{\reye^{2}} - \frac{3 \sigma^{2}}{\reye^{2}} k_{x}^{4} k_{z}^{2} - \frac{3 \sigma^{2}}{\reye^{2}} k_{x}^{2} k_{z}^{4} - \frac{k_{z}^{6} \sigma^{2}}{\reye^{2}} \\
+& - \frac{2 k_{x}^{8} \sigma}{\reye^{2} \reym} - \frac{8 k_{x}^{6} k_{z}^{2} \sigma}{\reye^{2} \reym} - \frac{12 k_{x}^{4} k_{z}^{4} \sigma}{\reye^{2} \reym} - \frac{8 k_{x}^{2} k_{z}^{6} \sigma}{\reye^{2} \reym} - \frac{2 k_{z}^{8} \sigma}{\reye^{2} \reym} - \frac{k_{x}^{10}}{\reye^{2} \reym^{2}} - \frac{5 k_{x}^{8} k_{z}^{2}}{\reye^{2} \reym^{2}} - \frac{10 k_{x}^{6} k_{z}^{4}}{\reye^{2} \reym^{2}} - \frac{10 k_{x}^{4} k_{z}^{6}}{\reye^{2} \reym^{2}} \\
+& - \frac{5 k_{x}^{2} k_{z}^{8}}{\reye^{2} \reym^{2}} - \frac{k_{z}^{10}}{\reye^{2} \reym^{2}} = 0
+\end{split}
+\eeq
+
 
 \appendix
 \begin{thebibliography}{}
@@ -524,19 +829,19 @@ Goodman, J, Xu, G, 1994, ApJ, 432, 213
 Knobloch, E, Julien K, 2005, Physics of Fluids, 17, 094106
 
 \bibitem[{Kunz \& Balbus(2004)}]{Kunz:2004ib}
-Kunz, M. W. \& Balbus, S. A. 2004, MNRAS 348, 355
+Kunz, M. W. \& Balbus, S. A. 2004, \mnras 348, 355
 
 \bibitem[{Kunz \& Lesur(2013)}]{Kunz:2013}
-Kunz, M. W. \& Lesur, G. 2013, MNRAS 434, 2295
+Kunz, M. W. \& Lesur, G. 2013, \mnras 434, 2295
 
 \bibitem[{Latter et al.(2015)}]{Latter:2015}
-Latter, H.N., Fromang, S., \& Faure, J., 2015, MNRAS 453, 3257
+Latter, H.N., Fromang, S., \& Faure, J., 2015, \mnras 453, 3257
 
 \bibitem[{Latter et al.(2010)}]{Latter:2010iz}
-Latter, H.N., Fromang, S., \& Gressel, O., 2010, MNRAS 406, 848
+Latter, H.N., Fromang, S., \& Gressel, O., 2010, \mnras 406, 848
 
 \bibitem[{Makwana et al.(2011)}]{Makwana:2011}
-Makwana, K.D., Terry, P.W., Kim, J.H., \& Hatch, D.R. 2011, \pop, 18, 1
+Makwana, K.D., Terry, P.W., Kim, J.H., \& Hatch, D.R. 2011, Phys. of Plasmas, 18, 1
 
 \bibitem[{Newell \& Whitehead(1969)}]{Newell:1969}
 Newell, A.C. \& Whitehead, J.A. 1969, JFM 38, 279N
