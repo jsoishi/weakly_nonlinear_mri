@@ -64,14 +64,20 @@ if __name__ == "__main__":
     with h5py.File(str(f),'r') as ts:
         t=  ts['/scales/sim_time'][:]
         u_rms = ts['/tasks/vx_rms'][:,0,0]
-        gamma, f0 = compute_growth(u_rms, t, t_orb, start, stop)
+        try:
+            gamma, f0 = compute_growth(u_rms, t, t_orb, start, stop)
+            growth= True
+        except TypeError:
+            print("Can't compute growth rate.")
+            growth= False
         plt.subplot(211)
         TE = ts['/tasks/BE'][:,0,0] + ts['/tasks/KE'][:,0,0]
         plt.semilogy(t/t_orb,TE,linestyle='-', label='total')
         plt.semilogy(t/t_orb,ts['/tasks/KE'][:,0,0],linestyle='-.', label='kinetic')
         plt.semilogy(t/t_orb,ts['/tasks/BE'][:,0,0],linestyle='--', label='magnetic')
-        plt.fill_between([start,stop],e_lower,e_upper,alpha=0.4)
-        plt.text(stop+0.01,1e-6,r'$\gamma = '+latex_float(gamma)+'$')
+        if growth:
+            plt.fill_between([start,stop],e_lower,e_upper,alpha=0.4)
+            plt.text(stop+0.01,1e-6,r'$\gamma = '+latex_float(gamma)+'$')
         plt.legend(loc='lower right')
         plt.ylabel("Energy")
         #plt.xlabel("time (orbits)")
