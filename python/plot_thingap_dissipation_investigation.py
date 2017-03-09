@@ -205,51 +205,72 @@ JAPsi_dx = JAPsi.differentiate('x')
 nablasqAterm_dx = nablasqAterm.differentiate('x')
 Aterm1_dx = Aterm1.differentiate('x')
 
+Aterm2_dx = Aterm2.differentiate('x')
+
 # to test if they sum to zero....
 all2DBx = (JAPsi_dx + nablasqAterm_dx + Aterm1_dx).evaluate()
+
+#isn't the above the wrong A term?
+all2DBxnew = (JAPsi_dx + nablasqAterm_dx + Aterm2_dx).evaluate()
 
 JAPsi_dx_zavg = np.mean(JAPsi_dx['g'], axis=0)
 nablasqAterm_dx_zavg = np.mean(nablasqAterm_dx['g'], axis=0)
 Aterm1_dx_zavg = np.mean(Aterm1_dx['g'], axis=0)
 
 slicenum=40
+
+
+Bzfinalsq = d2D.new_field()
+Bzfinalsq['g'] = sat_Bz_field['g']**2
+Bzfinalsq_int = Bzfinalsq.integrate('x').integrate('z')
+Bzfinalsq_int['g'][0][0]/(Lz*2)
+print('Bz final sq = {}'.format(Bzfinalsq_int['g'][0][0]/(Lz*2)))
+
+Bzinitsq = d2D.new_field()
+Bzinitsq['g'] = Bzinitial_2D**2
+Bzinitsq_int = Bzinitsq.integrate('x').integrate('z')
+Bzinitsq_int['g'][0][0]/(Lz*2)
+print('Bz init sq = {}'.format(Bzinitsq_int['g'][0][0]/(Lz*2)))
      
-fn_root = "../data/"
-out_fn = fn_root + "zavg_quantities_" + fn + ".h5"
-with h5py.File(out_fn,'w') as f:
-    dxgrid = f.create_dataset("xgrid", data=xgrid)
-    duphifinal_zavg = f.create_dataset("uphifinal_zavg", data=uphifinal_zavg)
-    dBzfinal_zavg = f.create_dataset("Bzfinal_zavg", data=Bzfinal_zavg)
-    dnabla_u_zavg = f.create_dataset("nabla_u_zavg", data=nabla_u_zavg)
-    dnabla_B_zavg = f.create_dataset("nabla_B_zavg", data=nabla_B_zavg)
-    dbase_flow_zavg = f.create_dataset("base_flow_zavg", data=base_flow_zavg)
-    dBzinitial_zavg = f.create_dataset("Bzinitial_zavg", data=Bzinitial_zavg)
+save = False
+if save is True:
+
+    fn_root = "../data/"
+    out_fn = fn_root + "zavg_quantities_" + fn + ".h5"
+    with h5py.File(out_fn,'w') as f:
+        dxgrid = f.create_dataset("xgrid", data=xgrid)
+        duphifinal_zavg = f.create_dataset("uphifinal_zavg", data=uphifinal_zavg)
+        dBzfinal_zavg = f.create_dataset("Bzfinal_zavg", data=Bzfinal_zavg)
+        dnabla_u_zavg = f.create_dataset("nabla_u_zavg", data=nabla_u_zavg)
+        dnabla_B_zavg = f.create_dataset("nabla_B_zavg", data=nabla_B_zavg)
+        dbase_flow_zavg = f.create_dataset("base_flow_zavg", data=base_flow_zavg)
+        dBzinitial_zavg = f.create_dataset("Bzinitial_zavg", data=Bzinitial_zavg)
     
-    dJPsiu_zavg = f.create_dataset("JPsiu_zavg", data=JPsiu_zavg)
-    dJAB_zavg = f.create_dataset("JAB_zavg", data=JAB_zavg)
-    dnablasqu_zavg = f.create_dataset("nablasqu_zavg", data=nablasqu_zavg)
-    dshearu_zavg = f.create_dataset("shearu_zavg", data=shearu_zavg)
-    ddzBphi_zavg = f.create_dataset("dzBphi_zavg", data=dzBphi_zavg)
+        dJPsiu_zavg = f.create_dataset("JPsiu_zavg", data=JPsiu_zavg)
+        dJAB_zavg = f.create_dataset("JAB_zavg", data=JAB_zavg)
+        dnablasqu_zavg = f.create_dataset("nablasqu_zavg", data=nablasqu_zavg)
+        dshearu_zavg = f.create_dataset("shearu_zavg", data=shearu_zavg)
+        ddzBphi_zavg = f.create_dataset("dzBphi_zavg", data=dzBphi_zavg)
     
-    dJPsiu_slice = f.create_dataset("JPsiu_slice", data=JPsiu['g'][slicenum, :])
-    dJAB_slice = f.create_dataset("JAB_slice", data=JAB['g'][slicenum, :])
-    dnablasqu_slice = f.create_dataset("nablasqu_slice", data=nablasqu['g'][slicenum, :])
-    dshearu_slice = f.create_dataset("shearu_slice", data=shearu['g'][slicenum, :])
-    ddzBphi_slice = f.create_dataset("dzBphi_slice", data=dzBphi['g'][slicenum, :])
+        dJPsiu_slice = f.create_dataset("JPsiu_slice", data=JPsiu['g'][slicenum, :])
+        dJAB_slice = f.create_dataset("JAB_slice", data=JAB['g'][slicenum, :])
+        dnablasqu_slice = f.create_dataset("nablasqu_slice", data=nablasqu['g'][slicenum, :])
+        dshearu_slice = f.create_dataset("shearu_slice", data=shearu['g'][slicenum, :])
+        ddzBphi_slice = f.create_dataset("dzBphi_slice", data=dzBphi['g'][slicenum, :])
     
-    dJAPsi_zavg = f.create_dataset("JAPsi_zavg", data=JAPsi_zavg)
-    dnablasqAterm_zavg = f.create_dataset("nablasqAterm_zavg", data=nablasqAterm_zavg)
-    dAterm1_zavg = f.create_dataset("Aterm1_zavg", data=Aterm1_zavg)
+        dJAPsi_zavg = f.create_dataset("JAPsi_zavg", data=JAPsi_zavg)
+        dnablasqAterm_zavg = f.create_dataset("nablasqAterm_zavg", data=nablasqAterm_zavg)
+        dAterm1_zavg = f.create_dataset("Aterm1_zavg", data=Aterm1_zavg)
     
-    dJAPsi_dx_zavg = f.create_dataset("JAPsi_dx_zavg", data=JAPsi_dx_zavg)
-    dnablasqAterm_dx_zavg = f.create_dataset("nablasqAterm_dx_zavg", data=nablasqAterm_dx_zavg)
-    dAterm1_dx_zavg = f.create_dataset("Aterm1_dx_zavg", data=Aterm1_dx_zavg)
+        dJAPsi_dx_zavg = f.create_dataset("JAPsi_dx_zavg", data=JAPsi_dx_zavg)
+        dnablasqAterm_dx_zavg = f.create_dataset("nablasqAterm_dx_zavg", data=nablasqAterm_dx_zavg)
+        dAterm1_dx_zavg = f.create_dataset("Aterm1_dx_zavg", data=Aterm1_dx_zavg)
     
-    dJAPsi_dx_slice = f.create_dataset("JAPsi_dx_slice", data=JAPsi_dx['g'][slicenum, :])
-    dnablasqAterm_dx_slice = f.create_dataset("nablasqAterm_dx_slice", data=nablasqAterm_dx['g'][slicenum, :])
-    dAterm1_dx_slice = f.create_dataset("Aterm1_dx_slice", data=Aterm1_dx['g'][slicenum, :])
+        dJAPsi_dx_slice = f.create_dataset("JAPsi_dx_slice", data=JAPsi_dx['g'][slicenum, :])
+        dnablasqAterm_dx_slice = f.create_dataset("nablasqAterm_dx_slice", data=nablasqAterm_dx['g'][slicenum, :])
+        dAterm1_dx_slice = f.create_dataset("Aterm1_dx_slice", data=Aterm1_dx['g'][slicenum, :])
     
     
-obj.close()    
+    obj.close()    
     
    
