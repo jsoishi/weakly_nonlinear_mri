@@ -238,7 +238,7 @@ def plot_both(ax, obj, type="Bfield", labels=True, oplot=True, background=False,
             Bbothmag = np.sqrt(np.abs(Vboth_Br1**2) + np.abs(Vboth_Bz1**2))
             su.streamplot(ax, x, z, Vboth_Br1.real, Vboth_Bz1.real, linewidth = 2*Bbothmag/Bbothmag.max(), color = "black")
 
-type = "velocity"
+type = "Bfield"
 labels = True
 oplot = True
 background = False
@@ -262,4 +262,4 @@ fig.subplots_adjust(wspace=0.6)
 #plt.savefig("../figures/thingap_streamfuncs_"+type+"_Pm_1E-3.png", dpi=fig.dpi)
 #plt.savefig("../figures/thingap_streamfuncs_"+type+"_Pm_1E-4.png", dpi=fig.dpi)
 
-plt.savefig('../paper/thingap_submit/thingap_streamfuncs_velocity_Pm_1E-3.eps', dpi=100)
+#plt.savefig('../paper/thingap_submit/thingap_streamfuncs_velocity_Pm_1E-3.eps', dpi=100)
