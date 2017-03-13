@@ -33,6 +33,7 @@
 \newcommand\reye{\mathrm{Re}}
 \newcommand\reym{\mathrm{Rm}}
 \newcommand{\Pm}{\mathrm{Pm}}
+\newcommand{\Co}{\mathrm{Co}}
 
 \newcommand{\uphi}{\ensuremath{u_\phi}}
 \newcommand{\rhat}{\ensuremath{\mathbf{\hat{r}}}}
@@ -262,10 +263,11 @@ The magnetorotational instability (MRI) is believed to drive angular momentum tr
 \centering
 \begin{tabular}{rlrrrrrrr}
   \hline
- & $\xi$ & $\Pm$ & $\beta$ & $\Omega_2/\Omega_1$ & $R_1/R_2$ & radial magnetic b.c. \\ 
+ & $\xi$ & $\Pm$ & $\Co$ & $\Omega_2/\Omega_1$ & $R_1/R_2$ & radial magnetic b.c. \\ 
   \hline\hline
-Standard MRI & 0 & 1.6E-6 & 41.2 & 0.121 & 0.33 & conducting \\ 
-Helical MRI & 4 & 1E-6 & 1.7E-2 & 0.27 & 0.5 & insulating\\ 
+%Standard MRI & 0 & 1.6E-6 & 41.2 & 0.121 & 0.33 & conducting \\ 
+Standard MRI & 0 & 1.6E-6 & 4.85E-2 & 0.121 & 0.33 & conducting \\ 
+Helical MRI & 4 & 1E-6 & 118 & 0.27 & 0.5 & insulating\\ 
    \hline
 \end{tabular}
 \end{table*} 
@@ -390,11 +392,11 @@ In this work we will focus our findings on two fiducial parameter sets, one for 
 Our perturbed system is 
 \onecolumngrid
 \beq\label{eq:Psi_perturbed}
-\frac{1}{r}\partial_t (\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi) - \frac{2}{\beta} \frac{1}{r}B_0 \partial_z (\nabla^2 A - \frac{2}{r} \partial_r A) - \frac{2}{r}u_0 \partial_z u_\phi + \frac{2}{\beta} \frac{2}{r^2}B_0 \xi \partial_z B_\phi - \frac{1}{\reye} \left[ \nabla^2 (\frac{1}{r} \nabla^2 \Psi - \frac{2}{r^2}\partial_r\Psi) - \frac{1}{r^3} \nabla^2 \Psi + \frac{2}{r^4}\partial_r\Psi\right] = N^{(\Psi)}
+\frac{1}{r}\partial_t (\nabla^2 \Psi - \frac{2}{r} \partial_r \Psi) - \Co \frac{1}{r}B_0 \partial_z (\nabla^2 A - \frac{2}{r} \partial_r A) - \frac{2}{r}u_0 \partial_z u_\phi + \Co \frac{2}{r^2}B_0 \xi \partial_z B_\phi - \frac{1}{\reye} \left[ \nabla^2 (\frac{1}{r} \nabla^2 \Psi - \frac{2}{r^2}\partial_r\Psi) - \frac{1}{r^3} \nabla^2 \Psi + \frac{2}{r^4}\partial_r\Psi\right] = N^{(\Psi)}
 \eeq
 
 \beq \label{eq:uphi_perturbed}
-\partial_t \uphi + \frac{1}{r^2} u_0 \partial_z \Psi + \frac{1}{r} \partial_r u_0 \partial_z \Psi - \frac{2}{\beta} B_0 \partial_z B_\phi - \frac{1}{\reye} ( \nabla^2 \uphi - \frac{1}{r^2} \uphi ) = N^{(u)}
+\partial_t \uphi + \frac{1}{r^2} u_0 \partial_z \Psi + \frac{1}{r} \partial_r u_0 \partial_z \Psi - \Co B_0 \partial_z B_\phi - \frac{1}{\reye} ( \nabla^2 \uphi - \frac{1}{r^2} \uphi ) = N^{(u)}
 \eeq
 
 \beq
@@ -409,10 +411,10 @@ Our perturbed system is
 The righthand side of the equations contain the nonlinear terms
 
 \beq
-N^{(\Psi)} = - J(\Psi, \frac{1}{r^2} ( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi) ) + \frac{2}{\beta} J(A, \frac{1}{r^2} ( \nabla^2 A - \frac{2}{r} \partial_rA) ) - \frac{2}{\beta} \frac{2}{r}B_\phi \partial_z B_\phi  + \frac{2}{r} u_\phi \partial_z u_\phi 
+N^{(\Psi)} = - J(\Psi, \frac{1}{r^2} ( \nabla^2 \Psi - \frac{2}{r} \partial_r\Psi) ) + \Co J(A, \frac{1}{r^2} ( \nabla^2 A - \frac{2}{r} \partial_rA) ) - \Co \frac{2}{r}B_\phi \partial_z B_\phi  + \frac{2}{r} u_\phi \partial_z u_\phi 
 \eeq
 \beq
-N^{(u)} = \frac{2}{\beta} \frac{1}{r} J(A, B_\phi) - \frac{1}{r} J(\Psi, \uphi) + \frac{2}{\beta}\frac{1}{r^2} B_\phi \partial_z A - \frac{1}{r^2} \uphi \partial_z \Psi 
+N^{(u)} = \Co \frac{1}{r} J(A, B_\phi) - \frac{1}{r} J(\Psi, \uphi) + \Co \frac{1}{r^2} B_\phi \partial_z A - \frac{1}{r^2} \uphi \partial_z \Psi 
 \eeq
 \beq
 N^{(A)} = \frac{1}{r} J(A, \psi)
@@ -423,7 +425,8 @@ N^{(B)} = \frac{1}{r} J(A, \uphi) + \frac{1}{r} J(B_\phi, \psi) + \frac{1}{r^2} 
 \eeq
 \twocolumngrid
 
-where J is the Jacobian $J(f, g) \equiv \partial_z f \partial_r g - \partial_r f \partial_z g$. Note that in the above, $\nabla^2 f \equiv \partial_r^2 f + \partial_z^2 f + \frac{1}{r} \partial_r f$. Equations \ref{eq:Psi_perturbed} - \ref{eq:nonlinear_B} are nondimensionalized by inner cylinder quantities: lengths have been scaled by $r_1$, velocities by $r_1 \Omega_1$, and densities by $\rho_0$, where $\rho_0$ is the constant density. Magnetic fields are scaled by $B_0$, the constant strength of the initial background field; where $B_0$ appears in the above it is formally unity. $\Omega_1 = \Omega(r_1)$ is the rotation rate of the inner cylinder. We introduce the Reynolds number $\reye = \Omega_1 r_1^2/\nu$, the magnetic Reynolds number $\reym = \Omega_1 r_1^2 / \eta$, and a plasma beta parameter $\beta = \Omega_1^2 r_1^2 \rho_0/B_0^2$. Note that if we define the dimensional cylindrical coordinate $r = r_1(1 + \delta x)$, we recover the narrow gap approximation of the system in the limit $\delta \rightarrow 0$.
+where J is the Jacobian $J(f, g) \equiv \partial_z f \partial_r g - \partial_r f \partial_z g$. Note that in the above, $\nabla^2 f \equiv \partial_r^2 f + \partial_z^2 f + \frac{1}{r} \partial_r f$. Equations \ref{eq:Psi_perturbed} - \ref{eq:nonlinear_B} are nondimensionalized by inner cylinder quantities: lengths have been scaled by $r_1$, velocities by $r_1 \Omega_1$, and densities by $\rho_0$, where $\rho_0$ is the constant density. Magnetic fields are scaled by $B_0$, the constant strength of the initial background field; where $B_0$ appears in the above it is formally unity. $\Omega_1 = \Omega(r_1)$ is the rotation rate of the inner cylinder. We introduce the Reynolds number $\reye = \Omega_1 r_1^2/\nu$, the magnetic Reynolds number $\reym = \Omega_1 r_1^2 / \eta$, and a plasma beta parameter $\Co = 2 B_0^2 / \Omega_1^2 r_1^2 \rho_0$. %$\beta = \Omega_1^2 r_1^2 \rho_0/B_0^2$. 
+Note that if we define the dimensional cylindrical coordinate $r = r_1(1 + \delta x)$, we recover the narrow gap approximation of the system in the limit $\delta \rightarrow 0$.
 
 We solve the standard MRI system subject to the same boundary conditions used in \citet{Goodman:2002ix}. These are periodic vertical boundary conditions and no-slip, perfectly conducting radial boundary conditions, namely
 
@@ -461,7 +464,7 @@ We note that Equations \ref{eq:Psi_perturbed} - \ref{eq:Bphi_perturbed} are writ
 \caption{Critical parameters $\reym_c$ and $k_c$, and coefficients of the Ginzburg-Landau equation (Equation \ref{eq:gle}) as a function of $\Pm$. Note the very weak dependence of the linear ($b$) and diffusive ($h$) coefficients on $\Pm$. The saturation amplitude $\alpha_{sat} = \sqrt{b/c}$ of the standard MRI system has a power law dependence on $\Pm$ which we measure to be $\alpha_{sat} \sim \Pm^{0.777}$. This scaling is driven by the $\Pm$ dependence of the nonlinear coefficient $c$.}\label{fig:coefficients}
 \end{figure}
 
-We find the marginal system as a function of the dimensionless parameters. The marginal stability curve for our standard MRI system is a hyperplane in $(\reym, \Pm, \beta, \Omega_2/\Omega_1, \mathrm{R}_1/\mathrm{R}_2$), but we hold all of these constant except for $\reym$. To analyze the MRI system at marginality, we fix the parameters listed in Table \ref{table:parameters} and determine the critical $\reym$ and vertical wavenumber $k_z$ by repeatedly solving the linear MRI system to determine the smallest parameter values for which the fastest growing mode has zero growth rate. That is, we solve the linear eigenvalue problem for eigenvalues $\sigma = \gamma + i \omega$ and determine the parameters which yield $\gamma = 0$. Figure \ref{fig:growth_rates} shows linear MRI growth rates $\gamma$ in the $(\reym, k_z)$ plane. For the fiducial standard MRI parameters in Table \ref{table:parameters} we find critical parameters $\reym_c = 3.30$ and $k_c = 0.901$.
+We find the marginal system as a function of the dimensionless parameters. The marginal stability curve for our standard MRI system is a hyperplane in $(\reym, \Pm, \Co, \Omega_2/\Omega_1, \mathrm{R}_1/\mathrm{R}_2$), but we hold all of these constant except for $\reym$. To analyze the MRI system at marginality, we fix the parameters listed in Table \ref{table:parameters} and determine the critical $\reym$ and vertical wavenumber $k_z$ by repeatedly solving the linear MRI system to determine the smallest parameter values for which the fastest growing mode has zero growth rate. That is, we solve the linear eigenvalue problem for eigenvalues $\sigma = \gamma + i \omega$ and determine the parameters which yield $\gamma = 0$. Figure \ref{fig:growth_rates} shows linear MRI growth rates $\gamma$ in the $(\reym, k_z)$ plane. For the fiducial standard MRI parameters in Table \ref{table:parameters} we find critical parameters $\reym_c = 3.30$ and $k_c = 0.901$.
 
 \begin{figure*}
 \centering
@@ -518,7 +521,7 @@ a Ginzburg-Landau equation (GLE). The GLE governs the weakly nonlinear amplitude
 \begin{figure}
 \centering
 \includegraphics[width=\columnwidth]{widegap_totalstress_intstress-eps-converted-to.pdf}
-\caption{Total stress $\mathrm{T}(r, z) = u_r u_\phi - \frac{2}{\beta} B_r B_\phi$, i.e. the sum of the Reynolds and Maxwell stresses for the fiducial standard MRI parameters (top panel). Bottom panel shows the vertically integrated stress $\int \mathrm{T}(r, z) \, dz$.}\label{fig:total_stress}
+\caption{Total stress $\mathrm{T}(r, z) = u_r u_\phi - \Co B_r B_\phi$, i.e. the sum of the Reynolds and Maxwell stresses for the fiducial standard MRI parameters (top panel). Bottom panel shows the vertically integrated stress $\int \mathrm{T}(r, z) \, dz$.}\label{fig:total_stress}
 \end{figure}
 
 \subsection{Standard MRI}
@@ -624,8 +627,8 @@ and the constituent matrices are defined as
 
 \beq
 \mathcal{L}_1 = \left[\begin{matrix}
-0 & -\frac{2}{r} u_0 & \frac{2}{\beta} (\frac{1}{r^2} \partial_r - \frac{1}{r}\partial_r^2) & 0 \\
-\frac{1}{r^2} u_0 + \frac{1}{r}\partial_r u_0 & 0 & 0 & -\frac{2}{\beta} \\
+0 & -\frac{2}{r} u_0 & \Co (\frac{1}{r^2} \partial_r - \frac{1}{r}\partial_r^2) & 0 \\
+\frac{1}{r^2} u_0 + \frac{1}{r}\partial_r u_0 & 0 & 0 & -\Co \\
 -1 & 0 & 0 & 0 \\
 0 & -1 & \frac{1}{r^2} u_0 - \frac{1}{r} \partial_r u_0 & 0 \\
 \end{matrix}\right]
@@ -643,7 +646,7 @@ and the constituent matrices are defined as
 
 \beq
 \mathcal{L}_3 = \left[\begin{matrix}
-0 & 0 & -\frac{2}{\beta}\frac{1}{r} & 0 \\
+0 & 0 & -\Co \frac{1}{r} & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
@@ -661,8 +664,8 @@ and the constituent matrices are defined as
 
 \beq
 \mathcal{G} = \left[\begin{matrix}
-0 & 0 & \frac{2}{\beta}(\frac{1}{r^2}\partial_r - \frac{1}{r}\partial_r^2) & 0 \\
-0 & 0 & 0 & -\frac{2}{\beta} \\
+0 & 0 & \Co (\frac{1}{r^2}\partial_r - \frac{1}{r}\partial_r^2) & 0 \\
+0 & 0 & 0 & -\Co \\
 -1 & 0 & 0 & 0 \\
 0 & -1 & 0 & 0 \\
 \end{matrix}\right]
@@ -670,7 +673,7 @@ and the constituent matrices are defined as
 
 \beq
 \mathcal{H} = \left[\begin{matrix}
-0 & 0 & 0 & \frac{2}{\beta} \frac{2}{r^2} \\
+0 & 0 & 0 & \Co \frac{2}{r^2} \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 -\frac{2}{r^3} & 0 & 0 & 0 \\
@@ -743,8 +746,8 @@ where
 \mathcal{L}_1^\dagger = \left[\begin{matrix}
 0 & \frac{1}{r^2} u_0 + \frac{1}{r}\partial_r u_0 & -1 & 0 \\
 -\frac{2}{r}u_0 & 0 & 0 & -1 \\
-\frac{2}{\beta}(\frac{1}{r^3} - \frac{1}{r^2}\partial_r - \frac{1}{r}\partial_r^2) & 0 & 0 & \frac{1}{r^2}u_0 - \frac{1}{r}\partial_r u_0 \\
-0 & -\frac{2}{\beta} & 0 & 0 \\
+\Co (\frac{1}{r^3} - \frac{1}{r^2}\partial_r - \frac{1}{r}\partial_r^2) & 0 & 0 & \frac{1}{r^2}u_0 - \frac{1}{r}\partial_r u_0 \\
+0 & -\Co & 0 & 0 \\
 \end{matrix}\right],
 \eeq
 
@@ -812,12 +815,12 @@ Here we detail the perturbative expansion of the nonlinear vector $\mathbf{N}$ i
 
 \beq
 N_2^{\Psi}  = -J(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1) - J(\Psi_1, -\frac{2}{r^3}\partial_r\Psi_1)
-+ \frac{2}{\beta} J (A_1, \frac{1}{r^2} \nabla^2 A_1) + \frac{2}{\beta} J(A_1, -\frac{2}{r^3} \partial_r A_1) + \frac{2}{r} u_1 \partial_z u_1 - \frac{2}{\beta} \frac{2}{r} B_1 \partial_z B_1
++ \Co J (A_1, \frac{1}{r^2} \nabla^2 A_1) + \Co J(A_1, -\frac{2}{r^3} \partial_r A_1) + \frac{2}{r} u_1 \partial_z u_1 - \Co \frac{2}{r} B_1 \partial_z B_1
 \eeq
 
 \beq
 \begin{split}
-N_2^{u} = -\frac{1}{r} J\left(\Psi_1, u_1\right) + \frac{1}{r} \frac{2}{\beta} J\left(A_1, B_1\right) - \frac{1}{r^2} u_1 \partial_z \Psi_1 + \frac{2}{\beta}\frac{1}{r^2} B_1 \partial_z A_1
+N_2^{u} = -\frac{1}{r} J\left(\Psi_1, u_1\right) + \frac{1}{r} \Co J\left(A_1, B_1\right) - \frac{1}{r^2} u_1 \partial_z \Psi_1 + \Co \frac{1}{r^2} B_1 \partial_z A_1
 \end{split}
 \eeq
 
@@ -832,16 +835,16 @@ N_2^B = \frac{1}{r} J\left(A_1, u_1\right) - \frac{1}{r} J\left(\Psi_1, B_1\righ
 \beq
 \begin{split}
 N_3^{\Psi} & = -J(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_2) - J(\Psi_2, \frac{1}{r^2} \nabla^2\Psi_1) - 2 J (\Psi_1, \frac{1}{r^2}\partial_Z\partial_z \Psi_1) - J(\Psi_1, -\frac{2}{r^3}\partial_r \Psi_2) - J(\Psi_2, -\frac{2}{r^3}\partial_r \Psi_1) \\
-& - \widetilde{J}(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1) - \widetilde{J} (\Psi_1, -\frac{2}{r^3}\partial_r \Psi_1) + \frac{2}{\beta} J(A_1, \frac{1}{r^2}\nabla^2 A_2) + \frac{2}{\beta} J(A_2, \frac{1}{r^2}\nabla^2 A_1) + \frac{4}{\beta} J(A_1, \frac{1}{r^2}\partial_Z\partial_z A_1) \\ 
-& + \frac{2}{\beta} J(A_1, -\frac{2}{r^3} \partial_r A_2 ) + \frac{2}{\beta} J(A_2, -\frac{2}{r^3} \partial_r A_1) + \frac{2}{\beta} \widetilde{J} (A_1, \frac{1}{r^2} \nabla^2 A_1) + \frac{2}{\beta} \widetilde{J} (A_1, -\frac{2}{r^3} \partial_r A_1) \\
-& + \frac{2}{r} u_1 \partial_z u_2 + \frac{2}{r} u_2 \partial_z u_1 + \frac{2}{r} u_1 \partial_Z u_1 - \frac{2}{\beta}\frac{2}{r} B_1\partial_z B_2 - \frac{2}{\beta}\frac{2}{r} B_2 \partial_z B_1 - \frac{2}{\beta} \frac{2}{r} B_1 \partial_Z B_1
+& - \widetilde{J}(\Psi_1, \frac{1}{r^2} \nabla^2 \Psi_1) - \widetilde{J} (\Psi_1, -\frac{2}{r^3}\partial_r \Psi_1) + \Co J(A_1, \frac{1}{r^2}\nabla^2 A_2) + \Co J(A_2, \frac{1}{r^2}\nabla^2 A_1) + 2\Co J(A_1, \frac{1}{r^2}\partial_Z\partial_z A_1) \\ 
+& + \Co J(A_1, -\frac{2}{r^3} \partial_r A_2 ) + \Co J(A_2, -\frac{2}{r^3} \partial_r A_1) + \Co \widetilde{J} (A_1, \frac{1}{r^2} \nabla^2 A_1) + \Co \widetilde{J} (A_1, -\frac{2}{r^3} \partial_r A_1) \\
+& + \frac{2}{r} u_1 \partial_z u_2 + \frac{2}{r} u_2 \partial_z u_1 + \frac{2}{r} u_1 \partial_Z u_1 - \Co \frac{2}{r} B_1\partial_z B_2 - \Co \frac{2}{r} B_2 \partial_z B_1 - \Co \frac{2}{r} B_1 \partial_Z B_1
 \end{split}
 \eeq
 
 \beq
 \begin{split}
-N_3^u & = -\frac{1}{r}J\left(\Psi_1, u_2\right) - \frac{1}{r}J\left(\Psi_2, u_1\right) - \frac{1}{r}\widetilde{J} \left(\Psi_1, u_1\right) + \frac{1}{r}\frac{2}{\beta} J\left(A_1, B_2\right) + \frac{1}{r} \frac{2}{\beta} J\left(A_2, B_1\right) + \frac{1}{r}\frac{2}{\beta}\widetilde{J}\left(A_1, B_1\right) \\
-& - \frac{1}{r^2} u_1\partial_z \Psi_2 - \frac{1}{r^2} u_2 \partial_z \Psi_1 - \frac{1}{r^2} u_1 \partial_Z \Psi_1 + \frac{2}{\beta} \frac{1}{r^2} B_1 \partial_z A_2 + \frac{2}{\beta} \frac{1}{r^2} B_2 \partial_z A_1 + \frac{2}{\beta} \frac{1}{r^2} B_1 \partial_Z A_1
+N_3^u & = -\frac{1}{r}J\left(\Psi_1, u_2\right) - \frac{1}{r}J\left(\Psi_2, u_1\right) - \frac{1}{r}\widetilde{J} \left(\Psi_1, u_1\right) + \frac{1}{r}\Co J\left(A_1, B_2\right) + \frac{1}{r} \Co J\left(A_2, B_1\right) + \frac{1}{r}\Co \widetilde{J}\left(A_1, B_1\right) \\
+& - \frac{1}{r^2} u_1\partial_z \Psi_2 - \frac{1}{r^2} u_2 \partial_z \Psi_1 - \frac{1}{r^2} u_1 \partial_Z \Psi_1 + \Co \frac{1}{r^2} B_1 \partial_z A_2 + \Co \frac{1}{r^2} B_2 \partial_z A_1 + \Co \frac{1}{r^2} B_1 \partial_Z A_1
 \end{split}
 \eeq
 
