@@ -1416,7 +1416,7 @@ class AmplitudeAlpha(MRI):
         a_psi_rhs = invr*o1.psi_rr + invr*(1j*self.Q)**2*o1.psi - invr**2*o1.psi_r 
         a_psi_rhs = a_psi_rhs.evaluate()
         
-        # Gtwiddle V11
+        # Gtwiddle V11 + xi*Htwiddle V11
         b_psi_rhs = -(2/self.beta)*invr*1j*self.Q**3*o1.A + (2/self.beta)*invr*1j*self.Q*o1.A_rr - (2/self.beta)*invr**2*1j*self.Q*o1.A_r - (2/self.beta)*invr**2*2*1j*self.Q*self.xi*o1.B
         b_u_rhs = (2/self.beta)*1j*self.Q*o1.B
         b_A_rhs = 1j*self.Q*o1.psi
