@@ -33,7 +33,7 @@
 \newcommand\reye{\mathrm{Re}}
 \newcommand\reym{\mathrm{Rm}}
 \newcommand{\Pm}{\mathrm{Pm}}
-
+\newcommand{\Co}{\mathrm{Co}}
 
 %% The default is a single spaced, 10 point font, single spaced article.
 %% There are 5 other style options available via an optional argument. They
@@ -257,18 +257,17 @@ Weakly nonlinear analysis is a perturbative method used to examine the asymptoti
 This work examines TC flow in the thin-gap regime, an idealization in which the radial extent of the channel is very small compared to its distance from the center of rotation, i.e. $(r_2 - r_1) \ll \frac{1}{2} (r_1 + r_2)$ where $r_1$ and $r_2$ are the radii of the inner and outer flow boundaries, respectively. The thin-gap approximation eliminates curvature terms, so the domain geometry is Cartesian rather than cylindrical. The excluded curvature terms have an explicit dependence on $r$, so they make the problem more challenging both analytically and numerically. In particular, in the wide-gap geometry (i.e. true Taylor-Couette flow) the base angular velocity is a function of $r$, where in the thin-gap approximation the shear flow reduces to a linear profile.
 
 
-We note several other important analytical studies of MRI saturation. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They consider a thin-gap regime as well, and so their theory may be considered the strongly nonlinear analogue to the one developed here. \citet{Vasil:2015} examines the weakly nonlinear MRI in a thin-gap regime in a minimal model, finding deep mathematical similarities between the MRI system and the elastodynamic instability of a buckling beam. We discuss these results and their relation to ours in section~\ref{sec:discussion}. Several authors have investigated the behavior of the MRI when the boundary conditions are shear periodic, and so the MRI has no mechanism by which to modify the background shear flow profile. In this approximation linear MRI growth is dominated by channel modes, a type of MRI mode that, for periodic boundary conditions, are exact solutions of both the linear and nonlinear MRI equations \citep{Goodman:1994ul}. In this regime the MRI saturates via parasitic instabilities, which feed off and destroy the primary MRI modes. Analytical investigation of this case reveals that MRI saturation can be caused by parasitic Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime \citep{Pessah:2010ic}. The theory of MRI channel mode parasites is robust \citep[see also]{Pessah:2009gm;Latter:2010iz;Rembiasz:2016}, but their importance may be overestimated by the local approximation \citep{Latter:2015}, and not germane to global analyses like the one presented here. \citet{Latter:2015} gives a detailed analysis of the relation between local and global linear MRI modes. 
+We note several other important analytical studies of MRI saturation. \citeauthor{Knobloch:2005ba} (\citeyear{Knobloch:2005ba}) analyze the MRI in the strongly nonlinear regime, by following the already-developed MRI modes into asymptotic saturation. They consider a thin-gap regime as well, and so their theory may be considered the strongly nonlinear analogue to the one developed here. \citet{Vasil:2015} examines the weakly nonlinear MRI in a thin-gap regime in a minimal model, finding deep mathematical similarities between the MRI system and the elastodynamic instability of a buckling beam. We discuss these results and their relation to ours in section~\ref{sec:discussion}. Several authors have investigated the behavior of the MRI when the boundary conditions are shear periodic, and so the MRI has no mechanism by which to modify the background shear flow profile. In this approximation linear MRI growth is dominated by channel modes, a type of MRI mode that, for periodic boundary conditions, are exact solutions of both the linear and nonlinear MRI equations \citep{Goodman:1994ul}. In this regime the MRI saturates via parasitic instabilities, which feed off and destroy the primary MRI modes. Analytical investigation of this case reveals that MRI saturation can be caused by parasitic Kelvin-Helmholtz and tearing mode instabilities, depending on parameter regime \citep{Pessah:2010ic}. The theory of MRI channel mode parasites is robust \citep[see also][]{Pessah:2009gm,Latter:2010iz,Rembiasz:2016}, but their importance may be overestimated by the local approximation \citep{Latter:2015}, and not germane to global analyses like the one presented here. \citet{Latter:2015} gives a detailed analysis of the relation between local and global linear MRI modes. 
 
 We begin with an overview of our basic model equations for the thin gap MRI in section~\ref{sec:equations} and then describe our weakly non-linear analysis and give basic results in section~\ref{sec:wnl}. We then place our results in the ocntext of previous results from both analytic and computational studies in section~\ref{sec:discussion} and draw conclusions in section~\ref{sec:conclusion}.
-
-
-\section{Equations}\label{sec:equations}
 
 \begin{figure}[h!]
 \centering
 \includegraphics[trim=5cm 0cm 0cm 0cm, scale=.35]{setup_diagram-eps-converted-to.pdf}
 \caption{Schematic diagram of our set-up, an axisymmetric thin-gap Taylor-Couette flow. We investigate a 2D slice of the X-Z (radial-vertical) plane. Our domain is represented by the bolded black box, of width L. The radial dimension is solved with a basis of Chebyshev polynomials, and the vertical dimension is solved on a Fourier basis. }\label{fig:setup}
 \end{figure}
+
+\section{Equations}\label{sec:equations}
 
 The evolution of a conducting fluid is governed by the momentum and induction equations,
 
@@ -295,7 +294,8 @@ Equations \ref{eq:momentum} and \ref{eq:induction} are subject to the incompress
 \eeq
 
 
-We axisymmetrically perturb all three vector components of each of the fluid quantities. We nondimensionalize the equations, with lengths nondimensionalized by $L$, time by $\Omega_0$, velocities by $\Omega_0 L$, magnetic fields by $B_0$, and pressure by $\Omega_0^2 L^2 \rho_0$, where $L$ is the channel width, $\Omega_0$ is the rotation rate at the center of the channel, and $\rho_0$ is the constant pressure in the base state (see Figure \ref{fig:setup}). We define the Reynolds number, $\reye \equiv {\Omega_0 L^2}/{\nu}$, magnetic Reynolds number, $\reym \equiv {\Omega_0 L^2}/{\eta}$, and a plasma beta parameter, $\beta \equiv {\Omega_0^2r_0^2}/{v_A^2}$, where the Alfv\'en speed $v_A$ is $v_A^2 = {B_0^2}/{\rho_0}$. The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the nondimensional, perturbed quantities.
+We axisymmetrically perturb all three vector components of each of the fluid quantities. We nondimensionalize the equations, with lengths nondimensionalized by $L$, time by $\Omega_0$, velocities by $\Omega_0 L$, magnetic fields by $B_0$, and pressure by $\Omega_0^2 L^2 \rho_0$, where $L$ is the channel width, $\Omega_0$ is the rotation rate at the center of the channel, and $\rho_0$ is the constant pressure in the base state (see Figure \ref{fig:setup}). We define the Reynolds number, $\reye \equiv {\Omega_0 L^2}/{\nu}$, magnetic Reynolds number, $\reym \equiv {\Omega_0 L^2}/{\eta}$, and Cowling number, $\Co \equiv {2 v_A^2}/{\Omega_0^2r_0^2}$, where the Alfv\'en speed $v_A$ is $v_A^2 = {B_0^2}/{\rho_0}$. The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the nondimensional, perturbed quantities.
+  %a plasma beta parameter, $\beta \equiv {\Omega_0^2r_0^2}/{v_A^2}$, where the Alfv\'en speed $v_A$ is $v_A^2 = {B_0^2}/{\rho_0}$. The fluid symbols $\mathbf{u}$, $\mathbf{B}$, etc. will henceforth be used to refer to the nondimensional, perturbed quantities.
 
 We define the streamfunction $\Psi$ and flux function $A$, where $A$ is the familiar two-dimensional vector potential. $\Psi$ and $A$ are scalar fields. The curl of $\Psi$ and the curl of $A$ are defined as the velocity and magnetic field perturbation, respectively, and so $\Psi$ and $A$ automatically satisfy our constraints (Equations \ref{eq:incompressibility_constraint} and \ref{eq:solenoid_constraint}).
 
@@ -321,14 +321,14 @@ Our final equation set is
 \onecolumngrid
 \beq
 \label{eqset1}
-\partial_t \nabla^2 \Psi \, - \, 2 \partial_z u_{y} \, - \, \frac{2}{\beta} B_0 \partial_z \nabla^2 A \, - \, \frac{1}{\reye}\nabla^4 \Psi \, = \, \frac{2}{\beta}J\left(A, \nabla^2 A \right) \, - \, J\left(\Psi, \nabla^2 \Psi\right) \, 
+\partial_t \nabla^2 \Psi \, - \, 2 \partial_z u_{y} \, - \, \Co B_0 \partial_z \nabla^2 A \, - \, \frac{1}{\reye}\nabla^4 \Psi \, = \, \Co J\left(A, \nabla^2 A \right) \, - \, J\left(\Psi, \nabla^2 \Psi\right) \, 
 \eeq
 %\end{eqnarray}
 %\end{widetext}
 
 \beq
 \label{eqset2}
-\partial_t u_{y} \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, = \, \frac{2}{\beta}B_0\partial_z B_{y} \, + \, \frac{2}{\beta} J\left(A, B_{y}\right) \, - \, J\left(\Psi, u_{y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{y}
+\partial_t u_{y} \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, = \, \Co B_0\partial_z B_{y} \, + \, \Co J\left(A, B_{y}\right) \, - \, J\left(\Psi, u_{y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{y}
 \eeq
 
 \beq
@@ -349,7 +349,7 @@ J\left(f, g\right) \equiv \partial_z f\partial_x g - \partial_x f \partial_z g,
 \eeq  
 and $q \equiv - d \ln \Omega/ \ln R = 3/2$ is the dimensionless shear parameter defining a rotation profile $\Omega(r) = \Omega_0 (r/r_0)^{-q}$, such that the background velocity profile is $u_0 = -q \Omega_0 x$.
 
-The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where the most unstable linear MRI mode neither grows nor decays, for a set of dimensionless parameters, and then destabilize the system. We examine the system for fiducial parameters comparable to URM07, namely $\Pm = 1.0 \times 10^{-3}$, $\beta = 25$, $q = 1.5$. The system is marginal for a critical wavenumber $k_c = 0.75$ and a critical magnetic Reynolds number $\reym_c = 4.9$.
+The weakly nonlinear regime is where the MRI system is nonlinearly unstable to only the most unstable mode of the linear solution. We find the marginal state, where the most unstable linear MRI mode neither grows nor decays, for a set of dimensionless parameters, and then destabilize the system. We examine the system for fiducial parameters comparable to URM07, namely $\Pm = 1.0 \times 10^{-3}$, $\Co = 0.08$, $q = 1.5$. The system is marginal for a critical wavenumber $k_c = 0.75$ and a critical magnetic Reynolds number $\reym_c = 4.9$.
 
 \begin{figure*}
 \centering
@@ -538,8 +538,8 @@ and the constituent matrices are defined as
 
 \beq
 \mathcal{L}_1 = \left[\begin{matrix}
-0 & -2 & -\frac{2}{\beta}\partial_x^2 & 0 \\
-(2-q)\Omega_0 & 0 & 0 & -\frac{2}{\beta} \\
+0 & -2 & -\Co\partial_x^2 & 0 \\
+(2-q)\Omega_0 & 0 & 0 & -\Co \\
 -1 & 0 & 0 & 0 \\
 0 & -1 & q\Omega_0 & 0 \\ \end{matrix}\right] 
 \eeq
@@ -554,7 +554,7 @@ and the constituent matrices are defined as
 
 \beq
 \mathcal{L}_3 = \left[\begin{matrix}
-0 & 0 & -\frac{2}{\beta} & 0 \\
+0 & 0 & -\Co & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\ \end{matrix} \right]
@@ -570,8 +570,8 @@ and the constituent matrices are defined as
 
 \beq
 \mathcal{G} = \left[\begin{matrix}
-0 & 0 & -\frac{2}{\beta}\partial_x^2 & 0 \\
-0 & 0 & 0 & -\frac{2}{\beta} \\
+0 & 0 & -\Co\partial_x^2 & 0 \\
+0 & 0 & 0 & -\Co \\
 -1 & 0 & 0 & 0 \\
 0 & -1 & 0 & 0 \\ \end{matrix} \right]
 \eeq
@@ -651,11 +651,11 @@ The overall nonlinear contribution to our system, written as a vector $\mathbf{N
 where
 
 \beq
-N_2^{(\Psi)} = J(\Psi_1, \nabla^2 \Psi_1) \,-\, \frac{2}{\beta}J(A_1, \nabla^2 A_1) 
+N_2^{(\Psi)} = J(\Psi_1, \nabla^2 \Psi_1) \,-\, \Co J(A_1, \nabla^2 A_1) 
 \eeq
 
 \beq
-N_2^{(u)} = J(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_1) 
+N_2^{(u)} = J(\Psi_1, u_1) \, - \, \Co J(A_1, B_1) 
 \eeq
 
 \beq
@@ -670,13 +670,13 @@ and
 
 \beq
 \begin{split}
-N_3^{(\Psi)} & = J(\Psi_1, \nabla^2\Psi_2) \, - \, \frac{2}{\beta}J(A_1, \nabla^2 A_2) \,+\, J(\Psi_2, \nabla^2\Psi_1) - \, \frac{2}{\beta}J(A_2, \nabla^2 A_1) \,+\, 2 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, \\
-& - \, 2 \frac{2}{\beta}J(A_1, \partial_z\partial_Z A_1) \,+\, \widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \,  \frac{2}{\beta}\widetilde{J}(A_1, \nabla^2 A_1)\\
+N_3^{(\Psi)} & = J(\Psi_1, \nabla^2\Psi_2) \, - \, \Co J(A_1, \nabla^2 A_2) \,+\, J(\Psi_2, \nabla^2\Psi_1) - \, \Co J(A_2, \nabla^2 A_1) \,+\, 2 J(\Psi_1, \partial_z\partial_Z \Psi_1) \, \\
+& - \, 2 \Co J(A_1, \partial_z\partial_Z A_1) \,+\, \widetilde{J}(\Psi_1, \nabla^2 \Psi_1) \, - \,  \Co \widetilde{J}(A_1, \nabla^2 A_1)\\
 \end{split}
 \eeq
 
 \beq
-N_3^{(u)} = J(\Psi_1, u_2) \, + \, J(\Psi_2, u_1) \, + \, \widetilde{J}(\Psi_1, u_1) \, - \, \frac{2}{\beta} J(A_1, B_2) \, - \, \frac{2}{\beta} J(A_2, B_1) \, - \, \frac{2}{\beta} \widetilde{J}(A_1, B_1)
+N_3^{(u)} = J(\Psi_1, u_2) \, + \, J(\Psi_2, u_1) \, + \, \widetilde{J}(\Psi_1, u_1) \, - \, \Co J(A_1, B_2) \, - \, \Co J(A_2, B_1) \, - \, \Co \widetilde{J}(A_1, B_1)
 \eeq
 
 \beq
@@ -704,13 +704,13 @@ The second order nonlinear terms are \\
 \beq
 \begin{split}
 N_{22}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11} - k_c^2 \partial_x \Psi_{11}\right) - \partial_x \Psi_{11} \cdot \left(i k_c \partial_x^2 \Psi_{11} - i k_c^3 \Psi_{11}\right) \\
-& + \frac{2}{\beta}\partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11} - i k_c^3 A_{11}\right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11} - k_c^2 \partial_x A_{11}\right)
+& + \Co \partial_x A_{11} \cdot \left(i k_c \partial_x^2 A_{11} - i k_c^3 A_{11}\right) - \Co i k_c A_{11} \cdot \left(\partial_x^3 A_{11} - k_c^2 \partial_x A_{11}\right)
 \end{split}
 \eeq
 
 \beq
 \begin{split}
-N_{22}^{(u)} = & \, i k_c \Psi_{11} \cdot \partial_x u_{11} - \partial_x \Psi_{11} \cdot i k_c u_{11} - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11} + \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}
+N_{22}^{(u)} = & \, i k_c \Psi_{11} \cdot \partial_x u_{11} - \partial_x \Psi_{11} \cdot i k_c u_{11} - \Co i k_c A_{11} \cdot \partial_x B_{11} + \Co \partial_x A_{11} \cdot i k_c B_{11}
 \end{split}
 \eeq
 
@@ -725,12 +725,12 @@ N_{22}^{(B)} = i k_c \Psi_{11} \cdot \partial_x B_{11} - \partial_x \Psi_{11} \c
 \beq
 \begin{split}
 N_{20}^{(\Psi)} = & \, i k_c \Psi_{11} \cdot \left(\partial_x^3 \Psi_{11}^* - k_c^2 \partial_x \Psi_{11}^*\right) - \partial_x \Psi_{11} \cdot \left(i k_c^3 \Psi_{11}^* - i k_c \partial_x^2 \Psi_{11}^*\right) \\
-& +\frac{2}{\beta} \partial_x A_{11} \cdot \left(i k_c^3 A_{11}^* - i k_c \partial_x^2 A_{11}^* \right) - \frac{2}{\beta} i k_c A_{11} \cdot \left(\partial_x^3 A_{11}^* - k_c^2 \partial_x A_{11}^*\right)
+& + \Co \partial_x A_{11} \cdot \left(i k_c^3 A_{11}^* - i k_c \partial_x^2 A_{11}^* \right) - \Co i k_c A_{11} \cdot \left(\partial_x^3 A_{11}^* - k_c^2 \partial_x A_{11}^*\right)
 \end{split}
 \eeq
 
 \beq
-N_{20}^{(u)} = i k_c \Psi_{11} \cdot \partial_x u_{11}^* + \partial_x \Psi_{11} \cdot i k_c u_{11}^* - \frac{2}{\beta} i k_c A_{11} \cdot \partial_x B_{11}^* - \frac{2}{\beta} \partial_x A_{11} \cdot i k_c B_{11}^*
+N_{20}^{(u)} = i k_c \Psi_{11} \cdot \partial_x u_{11}^* + \partial_x \Psi_{11} \cdot i k_c u_{11}^* - \Co i k_c A_{11} \cdot \partial_x B_{11}^* - \Co \partial_x A_{11} \cdot i k_c B_{11}^*
 \eeq
 
 \beq
@@ -746,12 +746,12 @@ and the third order nonlinear terms become \\
 \beq
 \begin{split}
 N_{31}^{(\Psi)} = &  \, i k_c \left(\Psi_{11} \cdot \partial_x^3 \Psi_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x^3\Psi_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x^3 \Psi_{22}\right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot \partial_x^2 \Psi_{22}\right) \\
-& + i 8 k_c^3 \left(\partial_x\Psi_{11}^* \cdot \Psi_{22}\right) + i 4 k_c^3 \left(\Psi_{11}^* \cdot \partial_x \Psi_{22}\right) + \frac{2}{\beta}\left[ - i k_c \left(A_{11} \cdot \partial^3 A_{20}\right) - i k_c \left(A_{11} \cdot \partial_x^3 A_{20}^*\right) \right]\\
-& + \frac{2}{\beta}\left[i k_c \left(A_{11}^* \cdot \partial_x^3 A_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot \partial_x^2 A_{22}\right) - i 8 k_c^3 \left(\partial_x A_{11}^* \cdot A_{22}\right) - i 4 k_c^3 \left(A_{11}^* \cdot \partial_x A_{22}\right)\right] \\
+& + i 8 k_c^3 \left(\partial_x\Psi_{11}^* \cdot \Psi_{22}\right) + i 4 k_c^3 \left(\Psi_{11}^* \cdot \partial_x \Psi_{22}\right) + \Co \left[ - i k_c \left(A_{11} \cdot \partial^3 A_{20}\right) - i k_c \left(A_{11} \cdot \partial_x^3 A_{20}^*\right) \right]\\
+& + \Co \left[i k_c \left(A_{11}^* \cdot \partial_x^3 A_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot \partial_x^2 A_{22}\right) - i 8 k_c^3 \left(\partial_x A_{11}^* \cdot A_{22}\right) - i 4 k_c^3 \left(A_{11}^* \cdot \partial_x A_{22}\right)\right] \\
 & + i 2 k_c \left(\Psi_{22} \cdot \partial_x^3 \Psi_{11}^*\right) - i 2 k_c^3\left(\Psi_{22} \cdot \partial_x \Psi_{11}^* \right) - i k_c \left(\partial_x \Psi_{20} \cdot \partial_x^2 \Psi_{11}\right) + i k_c \left(\partial_x \Psi_{22} \cdot \partial_x^2 \Psi_{11}^*\right) \\
 & - i k_c \left(\partial_x \Psi_{20}^* \cdot \partial_x^2 \Psi_{11}\right) + i k_c^3 \left(\partial_x \Psi_{20} \cdot \Psi_{11}\right) + i k_c^3 \left(\partial_x \Psi_{20}^* \cdot \Psi_{11}\right) - i k_c^3 \left(\partial_x \Psi_{22} \cdot \Psi_{11}^*\right) \\
-& + \frac{2}{\beta} \left[ - i 2 k_c \left(A_{22} \cdot \partial_x^3 A_{11}^*\right) + i 2 k_c^3 \left(A_{22} \cdot \partial_x A_{11}^*\right) + i k_c \left(\partial_x A_{20} \cdot \partial_x^2 A_{11}\right) - i k_c \left(\partial_x A_{22} \cdot \partial_x^2 A_{11}^*\right) \right] \\
-& + \frac{2}{\beta} \left[ i k_c \left(\partial_x A_{20}^* \cdot \partial_x^2 A_{11}\right) - i k_c^3 \left(\partial_x A_{20} \cdot A_{11}\right) - i k_c^3 \left(\partial_x A_{20}^* \cdot A_{11}\right) + i k_c^3 \left(\partial_x A_{22} \cdot A_{11}^*\right)\right]
+& + \Co \left[ - i 2 k_c \left(A_{22} \cdot \partial_x^3 A_{11}^*\right) + i 2 k_c^3 \left(A_{22} \cdot \partial_x A_{11}^*\right) + i k_c \left(\partial_x A_{20} \cdot \partial_x^2 A_{11}\right) - i k_c \left(\partial_x A_{22} \cdot \partial_x^2 A_{11}^*\right) \right] \\
+& + \Co \left[ i k_c \left(\partial_x A_{20}^* \cdot \partial_x^2 A_{11}\right) - i k_c^3 \left(\partial_x A_{20} \cdot A_{11}\right) - i k_c^3 \left(\partial_x A_{20}^* \cdot A_{11}\right) + i k_c^3 \left(\partial_x A_{22} \cdot A_{11}^*\right)\right]
 \end{split}
 \eeq
 
@@ -759,8 +759,8 @@ N_{31}^{(\Psi)} = &  \, i k_c \left(\Psi_{11} \cdot \partial_x^3 \Psi_{20}\right
 \begin{split}
 N_{31}^{(u)} = \, & i k_c \left(\Psi_{11} \cdot \partial_x u_{20}\right) + i k_c \left(\Psi_{11} \cdot \partial_x u_{20}^*\right) - i k_c \left(\Psi_{11}^* \cdot \partial_x u_{22}\right) - i 2 k_c \left(\partial_x \Psi_{11}^* \cdot u_{22}\right) \\
 & - i k_c \left(u_{11} \cdot \partial_x \Psi_{20} \right) - i k_c \left(u_{11} \cdot \partial_x \Psi_{20}^*\right) + i k_c \left(u_{11}^* \cdot \partial_x \Psi_{22} \right) + i 2 k_c \left(\partial_x u_{11}^* \cdot \Psi_{22}\right) \\
-& +\frac{2}{\beta}\left[- i k_c \left(A_{11} \cdot \partial_x B_{20}\right) - i k_c \left(A_{11} \cdot \partial_x B_{20}^*\right) + i k_c \left(A_{11}^* \cdot \partial_x B_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot B_{22}\right)\right] \\
-& +\frac{2}{\beta}\left[ i k_c \left(B_{11} \cdot \partial_x A_{20}\right) + i k_c \left(B_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(B_{11}^* \cdot \partial_x A_{20}\right) - i 2 k_c \left(\partial_x B_{11}^* \cdot A_{22}\right)\right]
+& +\Co \left[- i k_c \left(A_{11} \cdot \partial_x B_{20}\right) - i k_c \left(A_{11} \cdot \partial_x B_{20}^*\right) + i k_c \left(A_{11}^* \cdot \partial_x B_{22}\right) + i 2 k_c \left(\partial_x A_{11}^* \cdot B_{22}\right)\right] \\
+& + \Co \left[ i k_c \left(B_{11} \cdot \partial_x A_{20}\right) + i k_c \left(B_{11} \cdot \partial_x A_{20}^*\right) - i k_c \left(B_{11}^* \cdot \partial_x A_{20}\right) - i 2 k_c \left(\partial_x B_{11}^* \cdot A_{22}\right)\right]
 \end{split}
 \eeq
 
@@ -796,8 +796,7 @@ The linear dispersion relation, which determines the variable scalings in the mu
 \end{split}
 \eeq
 
-
-\appendix
+%\appendix
 \begin{thebibliography}{}
 
 \bibitem[Bai(2015)]{2015ApJ...798...84B} Bai, X.-N.\ 2015, \apj, 798, 84 
