@@ -28,9 +28,11 @@ satamp = np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
 beta = obj.attrs['beta']
 
 # create z grid
-nz = obj.attrs['gridnum']
+#nz = obj.attrs['gridnum']
+nz = 2048
+nLz = 2 # number of critical wavelengths
 Lz = 2*np.pi/Q
-z = np.linspace(0, Lz, nz, endpoint=False)
+z = np.linspace(0, nLz*Lz, nz, endpoint=False)
 zz = z.reshape(nz, 1)
 
 dz = z[1] - z[0]
@@ -147,6 +149,22 @@ etot['g'] = q*e_stress_production - diff_tens_u['g'] - 2*diff_tens_B['g']/beta
 dEdt = etot.integrate('x').integrate('z')['g'][0,0].real
 print("test energy saturation: dE/dt = {:10.5e}".format(dEdt))
 
+# compute total energy
+KE = 0.5*(Vboth_ur_field['g']**2 + Vboth_uphi_field['g']**2 + Vboth_uz_field['g']**2)
+KEfield = d2D.new_field()
+KEfield['g'] = KE
+KE_int = KEfield.integrate('x').integrate('z')
+print('integrated kinetic energy: {}'.format(KE_int['g'][0][0]))  
+
+BE = 0.5*(2/beta)*(Vboth_Br_field['g']**2 + Vboth_Bphi_field['g']**2 + Vboth_Bz_field['g']**2)
+BEfield = d2D.new_field()
+BEfield['g'] = BE
+BE_int = BEfield.integrate('x').integrate('z')
+print('integrated magnetic energy: {}'.format(BE_int['g'][0][0])) 
+
+TE_int = KE_int['g'][0][0] + BE_int['g'][0][0]
+print('integrated total energy: {}'.format(TE_int)) 
+
 # vertical averages
 base_flow_zavg = np.mean(base_flow_2d, axis=0)
 uphifinal_zavg = np.mean(sat_uphi_field['g'], axis=0)
@@ -219,7 +237,6 @@ Aterm1_dx_zavg = np.mean(Aterm1_dx['g'], axis=0)
 
 slicenum=40
 
-
 Bzfinalsq = d2D.new_field()
 Bzfinalsq['g'] = sat_Bz_field['g']**2
 Bzfinalsq_int = Bzfinalsq.integrate('x').integrate('z')
@@ -232,11 +249,12 @@ Bzinitsq_int = Bzinitsq.integrate('x').integrate('z')
 Bzinitsq_int['g'][0][0]/(Lz*2)
 print('Bz init sq = {}'.format(Bzinitsq_int['g'][0][0]/(Lz*2)))
      
-save = False
+print("nLz is ", nLz)
+save = True
 if save is True:
 
     fn_root = "../data/"
-    out_fn = fn_root + "zavg_quantities_" + fn + ".h5"
+    out_fn = fn_root + "zavg_quantities_"+str(int(nLz))+"Lz" + fn + ".h5"
     with h5py.File(out_fn,'w') as f:
         dxgrid = f.create_dataset("xgrid", data=xgrid)
         duphifinal_zavg = f.create_dataset("uphifinal_zavg", data=uphifinal_zavg)
@@ -270,6 +288,9 @@ if save is True:
         dnablasqAterm_dx_slice = f.create_dataset("nablasqAterm_dx_slice", data=nablasqAterm_dx['g'][slicenum, :])
         dAterm1_dx_slice = f.create_dataset("Aterm1_dx_slice", data=Aterm1_dx['g'][slicenum, :])
     
+        BEout = f.create_dataset("BEint", data=BE_int['g'][0][0])
+        KEout = f.create_dataset("KEint", data=KE_int['g'][0][0])
+        TEout = f.create_dataset("TEint", data=TE_int)
     
     obj.close()    
     
