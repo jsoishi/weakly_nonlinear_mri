@@ -20,7 +20,7 @@ class MRI():
     critical Re =    4.87903
     """
 
-    def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True):
+    def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, B0 = 1.0, norm = True):
 
         self.domain = domain
         self.Q = Q
@@ -29,6 +29,7 @@ class MRI():
         self.q = q
         self.beta = beta
         self.norm = norm
+        self.B0 = B0
         
         # Inverse magnetic reynolds number
         self.iRm = 1.0/self.Rm
@@ -326,11 +327,11 @@ class OrderE(MRI):
     Returns V_1
     """
 
-    def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, norm = True, finalize=True, noslip=True):
+    def __init__(self, domain, Q = 0.748, Rm = 4.879, Pm = 0.001, q = 1.5, beta = 25.0, B0 = 1.0, norm = True, finalize=True, noslip=True):
         
         logger.info("initializing Order E")
         
-        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm)
+        MRI.__init__(self, domain, Q = Q, Rm = Rm, Pm = Pm, q = q, beta = beta, norm = norm, B0 = B0)
         
         lv1 = de.EVP(self.domain,
                      ['psi','u', 'A', 'B', 'psix', 'psixx', 'psixxx', 'ux', 'Ax', 'Bx'],'sigma')
@@ -340,11 +341,12 @@ class OrderE(MRI):
         lv1.parameters['iRm'] = self.iRm
         lv1.parameters['q'] = self.q
         lv1.parameters['beta'] = self.beta
+        lv1.parameters['B0'] = self.B0
         
-        lv1.add_equation("sigma*psixx - sigma*Q**2*psi - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - (2/beta)*1j*Q*dx(Ax) + (2/beta)*Q**3*1j*A = 0")
-        lv1.add_equation("sigma*u - iR*dx(ux) + iR*Q**2*u - (q - 2)*1j*Q*psi - (2/beta)*1j*Q*B = 0") 
-        lv1.add_equation("sigma*A - iRm*dx(Ax) + iRm*Q**2*A - 1j*Q*psi = 0") 
-        lv1.add_equation("sigma*B - iRm*dx(Bx) + iRm*Q**2*B - 1j*Q*u + q*1j*Q*A = 0")
+        lv1.add_equation("sigma*psixx - sigma*Q**2*psi - iR*dx(psixxx) + 2*iR*Q**2*psixx - iR*Q**4*psi - 2*1j*Q*u - B0*(2/beta)*1j*Q*dx(Ax) + B0*(2/beta)*Q**3*1j*A = 0")
+        lv1.add_equation("sigma*u - iR*dx(ux) + iR*Q**2*u - (q - 2)*1j*Q*psi - B0*(2/beta)*1j*Q*B = 0") 
+        lv1.add_equation("sigma*A - iRm*dx(Ax) + iRm*Q**2*A - B0*1j*Q*psi = 0") 
+        lv1.add_equation("sigma*B - iRm*dx(Bx) + iRm*Q**2*B - B0*1j*Q*u + q*1j*Q*A = 0")
         
         lv1.add_equation("dx(psi) - psix = 0")
         lv1.add_equation("dx(psix) - psixx = 0")
