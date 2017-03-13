@@ -47,7 +47,7 @@ class MRI():
             self.setbcs = False
             logger.info("Not running with Chebyshev basis; will not set boundary conditions.")
         
-        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; q = {}; beta = {}; norm = {}, Re = {}".format(self.Q, self.Rm, self.Pm, self.q, self.beta, norm, self.R))
+        logger.info("MRI parameters: Q = {}; Rm = {}; Pm = {}; q = {}; beta = {}; norm = {}, Re = {}, B0 = {}".format(self.Q, self.Rm, self.Pm, self.q, self.beta, norm, self.R, self.B0))
         
         
     def set_boundary_conditions(self, problem, noslip=True):
@@ -89,6 +89,7 @@ class MRI():
 
     def fastest_growing(self):
         gr, largest_eval_indx,freq  = self.EP.growth_rate({})
+        self.growth_rate = gr
         self.largest_eval_indx = largest_eval_indx
         self.EP.solver.set_state(largest_eval_indx)
     
