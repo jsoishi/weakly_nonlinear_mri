@@ -78,5 +78,6 @@ if __name__ == "__main__":
     ax.axhline(0,alpha=0.5,color='k')
     ax.set_xlabel(r"$B_0$",size=15)
     ax.set_ylabel(r"$\gamma$",size=15)
-    fig.savefig("../figs/growth_vs_B0.png",dpi=300)
+    for ext in ['png','pdf']:
+        fig.savefig("../figures/growth_vs_B0.{}".format(ext),dpi=300)
     data.close()
