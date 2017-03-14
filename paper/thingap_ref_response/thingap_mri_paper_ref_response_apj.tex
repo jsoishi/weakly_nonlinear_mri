@@ -129,7 +129,7 @@
 %%
 %% If you wish, you may supply running head information, although
 %% this information may be modified by the editorial offices.
-\shorttitle{The weakly nonlinear magnetorotational instability}
+\shorttitle{The weakly nonlinear magnetorotational instability in a local geometry}
 \shortauthors{Clark \& Oishi}
 %%
 %% You can add a light gray and diagonal water-mark to the first page 
@@ -326,18 +326,17 @@ Our final equation set is
 
 \beq
 \label{eqset2}
-\partial_t u_{y} \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, = \, \Co B_0\partial_z B_{y} \, + \, \Co J\left(A, B_{y}\right) \, - \, J\left(\Psi, u_{y}\right) \, + \, \frac{1}{\reye} \nabla^2 u_{y}
+\partial_t u_{y} \, + \, \left(2 - q\right) \Omega_0 \partial_z \Psi \, - \, \Co B_0\partial_z B_{y} \, - \, \frac{1}{\reye} \nabla^2 u_{y} \, = \, \Co J\left(A, B_{y}\right) \, - \, J\left(\Psi, u_{y}\right) 
 \eeq
 
 \beq
 \label{eqset3}
-\partial_t A \, = \, B_0 \partial_z \Psi \, + \, J\left(A, \Psi\right) \, + \, \frac{1}{\reym} \nabla^2 A
+\partial_t A \, - \, B_0 \partial_z \Psi \, - \, \frac{1}{\reym} \nabla^2 A \, = \, J\left(A, \Psi\right) 
 \eeq
 
 \beq
 \label{eqset4}
-\partial_t B_{y} \, = \, B_0 \partial_z u_{y} \, + \, J\left(A, u_{y}\right) \, - \, J\left(\Psi, B_{y}\right) \, \\
-+ \, \frac{1}{\reym} \nabla^2 B_{y}  \, - \, q \Omega_0 \partial_z A,
+\partial_t B_{y} \, + \, q \Omega_0 \partial_z A \, - \, B_0 \partial_z u_{y} \, - \, \frac{1}{\reym} \nabla^2 B_{y} \, = \, J\left(A, u_{y}\right) \, - \, J\left(\Psi, B_{y}\right)  ,
 \eeq
 \twocolumngrid
 
@@ -359,12 +358,13 @@ The weakly nonlinear regime is where the MRI system is nonlinearly unstable to o
 \caption{As in Figure \ref{fig:allorders_velocity} but for the magnetic field. Streamlines represent magnetic field structure in the vertical-radial plane, where thicker streamlines correspond to higher magnetic field strengths. Colorbar represents azimuthal magnetic field strength.}\label{fig:allorders_Bfield}
 \end{figure*}
 
-Because we nondimensionalize $B$ by the magnitude of the background field strength, $B_0 \equiv 1$ in Equations \ref{eqset1} - \ref{eqset4}. To excite the weakly nonlinear MRI, we tune the background magnetic field down away from stability (recall that stronger vertical fields stabilize the MRI). We do so by substituting \edit1{$B = B_0\left(1 + \epsilon^2\right)$}. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ \edit1{strengthening} of the background magnetic field destabilizes a finite band of wave modes with a width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly. \edit1{We note that this definition of $\epsilon$ is opposite in sign to nearly all previous works \citep[e.g.][]{Umurhan:2007dz,Umurhan:2007hs}. Because in the ideal limit, the MRI can be tuned into instability by setting $B_0$ to its critical value and then \emph{decreasing} its value, it is natural to consider $\epsilon^2$ as a weakening of the background field. However, as we show in figure~\ref{fig:growth_rate_vs_B0}, for the dissipative case with $\eta, \nu \ne 0$, when all other parameters are critical, decreasing $B_0$ leads to stability, while increasing it pushes the system into instability. Figure~\ref{fig:growth_rate_vs_B0} is symmetric about $B_0 = 0$, as it must be, since the MRI is insensitive to the sign of the background field. There are several places at which the derivative of $\gamma$ appears discontinuous; this is not physical but rather reflects the fact that we define $\gamma$ as the growth rate of the most unstable mode. That is, it is the maximum real part of the eigenvalues of the linearized system (e.g. equation~\ref{eq:unperturbed_matrix_equations} with $\mathbf{N} = 0$). Because there are four wave families in rotating incompressible MHD, each modified differently by changing $B_0$, when the growth rates of the individual modes cross, there appear piecewise continuous solutions. We highlight one such point in the inset in figure~\ref{fig:growth_rate_vs_B0}, where the MRI mode becomes more stable than another mode which is always stable. Since all of these piecewise discontinuities are below $\gamma=0$, they do not affect the analysis here.}
+Because we nondimensionalize $B$ by the magnitude of the background field strength, $B_0 \equiv 1$ in Equations \ref{eqset1} - \ref{eqset4}. To excite the weakly nonlinear MRI, we tune the background magnetic field away from stability. %(recall that stronger vertical fields stabilize the MRI). 
+We do so by substituting \edit1{$B = B_0\left(1 + \epsilon^2\right)$}. The degree of departure from the marginal state is measured by the small parameter $\epsilon$. An $\mathcal{O}\left(\epsilon^2\right)$ \edit1{strengthening} of the background magnetic field destabilizes a finite band of wave modes with a width of $\mathcal{O}\left(\epsilon\right)$, which interact nonlinearly. \edit1{We note that this definition of $\epsilon$ is opposite in sign to nearly all previous works \citep[e.g.][]{Umurhan:2007dz,Umurhan:2007hs}. Because in the ideal limit, the MRI can be tuned into instability by setting $B_0$ to its critical value and then \emph{decreasing} its value, it is natural to consider $\epsilon^2$ as a weakening of the background field. However, as we show in figure~\ref{fig:growth_rate_vs_B0}, for the dissipative case with $\eta, \nu \ne 0$, when all other parameters are critical, decreasing $B_0$ leads to stability, while increasing it pushes the system into instability. Figure~\ref{fig:growth_rate_vs_B0} is symmetric about $B_0 = 0$, as it must be, since the MRI is insensitive to the sign of the background field. There are several places at which the derivative of $\gamma$ appears discontinuous; this is not physical but rather reflects the fact that we define $\gamma$ as the growth rate of the most unstable mode. That is, it is the maximum real part of the eigenvalues of the linearized system (e.g. equation~\ref{eq:unperturbed_matrix_equations} with $\mathbf{N} = 0$). Because there are four wave families in rotating incompressible MHD, each modified differently by changing $B_0$, when the growth rates of the individual modes cross, there appear piecewise continuous solutions. We highlight one such point in the inset in figure~\ref{fig:growth_rate_vs_B0}, where the MRI mode becomes more stable than another mode which is always stable. Since all of these piecewise discontinuities are below $\gamma=0$, they do not affect the analysis here.}
 
 \begin{figure}[[h!]]
   \centering
   \includegraphics[width=\columnwidth]{growth_vs_B0.pdf}
-  \caption{Growth rate $\gamma$ as a function of background magnetic field strength $B_0$ at $\reym = \reym_c$, $k_z = k_c$, $\Pm = 10^{-3}$. Around the critical value $B_0 = 1.$, \emph{strengthening} $B_0$ tunes the system into instability, while \emph{decreasing} it leads to stability. The inset highlights the fact that $\gamma$ is determined by the maximum real eigenvalue of the system, which switches from one mode family to another as discussed in the text.}
+  \caption{\edit1{Growth rate $\gamma$ as a function of background magnetic field strength $B_0$ at $\reym = \reym_c$, $k_z = k_c$, $\Pm = 10^{-3}$. Around the critical value $B_0 = 1.$, \emph{strengthening} $B_0$ tunes the system into instability, while \emph{decreasing} it leads to stability. The inset highlights the fact that $\gamma$ is determined by the maximum real eigenvalue of the system, which switches from one mode family to another as discussed in the text.}}
   \label{fig:growth_rate_vs_B0}
 \end{figure}
 

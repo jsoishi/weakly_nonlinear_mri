@@ -21,7 +21,7 @@ x = obj['x'].value
 xgrid = x
 
 # epsilon (small parameter)
-eps = 0.5
+eps = 0.1
 
 # saturation amplitude -- for now just constant, coefficient-determined
 satamp = np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
@@ -30,7 +30,7 @@ beta = obj.attrs['beta']
 # create z grid
 #nz = obj.attrs['gridnum']
 nz = 2048
-nLz = 2 # number of critical wavelengths
+nLz = 1 # number of critical wavelengths
 Lz = 2*np.pi/Q
 z = np.linspace(0, nLz*Lz, nz, endpoint=False)
 zz = z.reshape(nz, 1)
@@ -148,6 +148,29 @@ etot = d2D.new_field()
 etot['g'] = q*e_stress_production - diff_tens_u['g'] - 2*diff_tens_B['g']/beta
 dEdt = etot.integrate('x').integrate('z')['g'][0,0].real
 print("test energy saturation: dE/dt = {:10.5e}".format(dEdt))
+
+# compute reynolds stress
+Reynolds_stress = Vboth_ur_field['g'] * Vboth_uphi_field['g']
+TR = d2D.new_field()
+TR['g'] = Reynolds_stress
+
+# compute maxwell stress
+Maxwell_stress = -(2/obj.attrs['beta'])*Vboth_Br_field['g']*Vboth_Bphi_field['g']
+TM = d2D.new_field()
+TM['g'] = Maxwell_stress
+
+Ttot = d2D.new_field()
+Ttot['g'] = Reynolds_stress + Maxwell_stress
+
+# J dot is avg stress over domain
+Jdot_R = TR.integrate('x').integrate('z')/(nLz*Lz*2)
+Jdot_R = Jdot_R.evaluate()['g'][0][0]
+Jdot_M = TM.integrate('x').integrate('z')/(nLz*Lz*2)
+Jdot_M = Jdot_M.evaluate()['g'][0][0]
+Jdot_tot = Ttot.integrate('x').integrate('z')/(nLz*Lz*2)
+Jdot_tot = Jdot_tot.evaluate()['g'][0][0]
+
+print('checking that {} is equal to {}'.format(Jdot_tot, Jdot_M + Jdot_R))
 
 # compute total energy
 KE = 0.5*(Vboth_ur_field['g']**2 + Vboth_uphi_field['g']**2 + Vboth_uz_field['g']**2)
@@ -291,6 +314,13 @@ if save is True:
         BEout = f.create_dataset("BEint", data=BE_int['g'][0][0])
         KEout = f.create_dataset("KEint", data=KE_int['g'][0][0])
         TEout = f.create_dataset("TEint", data=TE_int)
+        
+        Jdot_Rout = f.create_dataset("Jdot_R", data=Jdot_R)
+        Jdot_Mout = f.create_dataset("Jdot_M", data=Jdot_M)
+        Jdot_totout = f.create_dataset("Jdot_tot", data=Jdot_tot)
+        
+        Reynolds_stress_out = f.create_dataset("Reynolds_stress", data=Reynolds_stress)
+        Maxwell_stress_out = f.create_dataset("Maxwell_stress", data=Maxwell_stress)
         
         f.attrs["eps"] = eps
     
