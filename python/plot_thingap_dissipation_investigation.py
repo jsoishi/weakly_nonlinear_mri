@@ -254,7 +254,7 @@ save = True
 if save is True:
 
     fn_root = "../data/"
-    out_fn = fn_root + "zavg_quantities_"+str(int(nLz))+"Lz" + fn + ".h5"
+    out_fn = fn_root + "zavg_quantities_"+str(int(nLz))+"Lz_eps"+ str(eps) + fn + ".h5"
     with h5py.File(out_fn,'w') as f:
         dxgrid = f.create_dataset("xgrid", data=xgrid)
         duphifinal_zavg = f.create_dataset("uphifinal_zavg", data=uphifinal_zavg)
@@ -291,6 +291,8 @@ if save is True:
         BEout = f.create_dataset("BEint", data=BE_int['g'][0][0])
         KEout = f.create_dataset("KEint", data=KE_int['g'][0][0])
         TEout = f.create_dataset("TEint", data=TE_int)
+        
+        f.attrs["eps"] = eps
     
     obj.close()    
     
