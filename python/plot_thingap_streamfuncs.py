@@ -15,6 +15,7 @@ import streamplot_uneven as su
 file_root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128.h5"
 #fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_128.h5"
+#fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm.h5
 obj = h5py.File(file_root + fn, "r")
 
 Q = obj.attrs['Q']

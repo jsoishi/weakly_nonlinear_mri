@@ -14,6 +14,7 @@ file_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
 #fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_256_Anorm"
 #fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
+fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
 obj = h5py.File(file_root + fn + ".h5", "r")
 
 Q = obj.attrs['Q']
@@ -27,9 +28,11 @@ eps = 0.5
 satamp = np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
 beta = obj.attrs['beta']
 
+print('saturation amplitude = {}'.format(satamp))
+
 # create z grid
-nz = obj.attrs['gridnum']
-#nz = 2048
+#nz = obj.attrs['gridnum']
+nz = 2048
 nLz = 2 # number of critical wavelengths
 Lz = 2*np.pi/Q
 z = np.linspace(0, nLz*Lz, nz, endpoint=False)
@@ -174,7 +177,7 @@ print('Jdot reynolds: {}, magnetic: {}, total: {}'.format(Jdot_R, Jdot_M, Jdot_t
 
 print('checking that {} is equal to {}'.format(Jdot_tot, Jdot_M + Jdot_R))
 
-# compute total energy
+# compute total energy (volume averaged)
 KE = 0.5*(Vboth_ur_field['g']**2 + Vboth_uphi_field['g']**2 + Vboth_uz_field['g']**2)
 KEfield = d2D.new_field()
 KEfield['g'] = KE
@@ -268,13 +271,13 @@ Bzfinalsq = d2D.new_field()
 Bzfinalsq['g'] = sat_Bz_field['g']**2
 Bzfinalsq_int = Bzfinalsq.integrate('x').integrate('z')
 Bzfinalsq_int['g'][0][0]/(Lz*2)
-print('Bz final sq = {}'.format(Bzfinalsq_int['g'][0][0]/(Lz*2)))
+print('Bz final sq = {}'.format(Bzfinalsq_int['g'][0][0]/(nLz*Lz*2)))
 
 Bzinitsq = d2D.new_field()
 Bzinitsq['g'] = Bzinitial_2D**2
 Bzinitsq_int = Bzinitsq.integrate('x').integrate('z')
 Bzinitsq_int['g'][0][0]/(Lz*2)
-print('Bz init sq = {}'.format(Bzinitsq_int['g'][0][0]/(Lz*2)))
+print('Bz init sq = {}'.format(Bzinitsq_int['g'][0][0]/(nLz*Lz*2)))
      
 print("nLz is ", nLz)
 save = True

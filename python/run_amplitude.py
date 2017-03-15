@@ -29,11 +29,20 @@ Q = tgc['Q_c'].value[indx].real
 #Pm = 1.0E-6
 #Rm = 4.87322391646 
 #Q = 0.74641163216928608
+# THE REAL FIDUCIAL PARAMETERS
 q = 1.5
 beta = 25.0
 Pm = 1.0E-3
 Rm=4.879
 Q=0.747
+
+# The rounded fiducial parameters used in the sims
+q = 1.5
+beta = 25.0
+Pm = 1.0E-3
+Rm=4.9
+Q=0.75
+
 #Rm = 4.87384744169
 #Q = 0.746395815905
 

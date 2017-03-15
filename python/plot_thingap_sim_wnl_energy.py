@@ -69,10 +69,18 @@ t = np.append(data0['/scales/sim_time'][:], data['/scales/sim_time'][:])
 u_rms = np.append(data0['/tasks/vx_rms'][:,0,0], data['/tasks/vx_rms'][:,0,0])
 KE = np.append(data0['/tasks/KE'][:,0,0], data['/tasks/KE'][:,0,0])
 BE = np.append(data0['/tasks/BE'][:,0,0], data['/tasks/BE'][:,0,0])
-TE = KE + BE
+
 BxBy = np.append(data0['/tasks/BxBy'][:,0,0], data['/tasks/BxBy'][:,0,0])
 uxuy = np.append(data0['/tasks/uxuy'][:,0,0], data['/tasks/uxuy'][:,0,0])
+
+# simulation code volume averages to get energies and Jdots, but doesn't divide by length of x dim. Correct by dividing by 2
+KE = KE/2.0
+BE = BE/2.0
+BxBy = BxBy/2.0
+uxuy = uxuy/2.0
+
 tot_stress = uxuy + BxBy
+TE = KE + BE
 
 fig = plt.figure(facecolor="white")
 ax1 = fig.add_subplot(221)
@@ -152,6 +160,9 @@ ax3.legend(loc=4, frameon=False)
 ax3.plot(t/t_orb, [wnl_Jdot_R[fiducialepsindx]]*ntsteps, linestyle='-', color=graycolors[0], alpha=0.9, zorder=0, lw=1)
 ax3.plot(t/t_orb, [wnl_Jdot_M[fiducialepsindx]]*ntsteps, linestyle='-', color=graycolors[1], alpha=0.9, zorder=0, lw=1)
 ax3.plot(t/t_orb, [wnl_Jdot_tot[fiducialepsindx]]*ntsteps, linestyle='-', color=graycolors[2], alpha=0.9, zorder=0, lw=1)
+
+print('WNL theory: KE = {}, BE = {}, total E = {}'.format(wnl_KE[fiducialepsindx], wnl_BE[fiducialepsindx], wnl_TE[fiducialepsindx]))
+print('WNL theory: Jdot_rey = {}, Jdot_max = {}, Jdot_tot = {}'.format(wnl_Jdot_R[fiducialepsindx], wnl_Jdot_M[fiducialepsindx], wnl_Jdot_tot[fiducialepsindx]))
 
 ax3.set_xlabel(r'$\mathrm{Time}$ $\mathrm{(orbits)}$')
 ax3.set_ylabel(r'$\mathrm{\dot{J}}$')
