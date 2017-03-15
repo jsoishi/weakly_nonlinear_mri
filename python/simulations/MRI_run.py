@@ -71,6 +71,9 @@ if linear:
     data_dir += "_linear"
 if CFL:
     data_dir += "_CFL"
+else:
+    dt = 1e-4
+    data_dir += "_dt{:5.02e}".format(dt)
 if evalue_IC:
     data_dir += "_evalueIC"
     if three_mode:
@@ -197,8 +200,6 @@ if CFL:
     CFL.add_velocities(('dz(psi)', '-psi_x'))
     CFL.add_velocities(('dz(A)', '-A_x'))
     dt = CFL.compute_dt()
-else:
-    dt = 1e-1
 
 # Main loop
 start_time = time.time()
