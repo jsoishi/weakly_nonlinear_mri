@@ -21,16 +21,16 @@ x = obj['x'].value
 xgrid = x
 
 # epsilon (small parameter)
-eps = 0.1
+eps = 0.5
 
 # saturation amplitude -- for now just constant, coefficient-determined
 satamp = np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
 beta = obj.attrs['beta']
 
 # create z grid
-#nz = obj.attrs['gridnum']
-nz = 2048
-nLz = 1 # number of critical wavelengths
+nz = obj.attrs['gridnum']
+#nz = 2048
+nLz = 2 # number of critical wavelengths
 Lz = 2*np.pi/Q
 z = np.linspace(0, nLz*Lz, nz, endpoint=False)
 zz = z.reshape(nz, 1)
@@ -109,7 +109,7 @@ Bzinitial_z0 = np.zeros(obj.attrs['gridnum']) + 1.0 # B0 = 1
 Bzinitial_2D = Bzinitial_z0*ei0qz
 
 # Define 2D fields
-d2D = de.Domain([de.Fourier('z',nz,interval=[0,Lz]),de.Chebyshev('x',obj.attrs['gridnum'],interval=[-1,1])],grid_dtype='complex128')
+d2D = de.Domain([de.Fourier('z',nz,interval=[0,nLz*Lz]),de.Chebyshev('x',obj.attrs['gridnum'],interval=[-1,1])],grid_dtype='complex128')
 
 # saturated uphi and Bz include background fields
 sat_uphi_field = d2D.new_field()
@@ -170,23 +170,27 @@ Jdot_M = Jdot_M.evaluate()['g'][0][0]
 Jdot_tot = Ttot.integrate('x').integrate('z')/(nLz*Lz*2)
 Jdot_tot = Jdot_tot.evaluate()['g'][0][0]
 
+print('Jdot reynolds: {}, magnetic: {}, total: {}'.format(Jdot_R, Jdot_M, Jdot_tot))
+
 print('checking that {} is equal to {}'.format(Jdot_tot, Jdot_M + Jdot_R))
 
 # compute total energy
 KE = 0.5*(Vboth_ur_field['g']**2 + Vboth_uphi_field['g']**2 + Vboth_uz_field['g']**2)
 KEfield = d2D.new_field()
 KEfield['g'] = KE
-KE_int = KEfield.integrate('x').integrate('z')
-print('integrated kinetic energy: {}'.format(KE_int['g'][0][0]))  
+KE_int = KEfield.integrate('x').integrate('z')/(nLz*Lz*2)
+KE_int = KE_int.evaluate()
+print('avg integrated kinetic energy: {}'.format(KE_int['g'][0][0]))  
 
 BE = 0.5*(2/beta)*(Vboth_Br_field['g']**2 + Vboth_Bphi_field['g']**2 + Vboth_Bz_field['g']**2)
 BEfield = d2D.new_field()
 BEfield['g'] = BE
-BE_int = BEfield.integrate('x').integrate('z')
-print('integrated magnetic energy: {}'.format(BE_int['g'][0][0])) 
+BE_int = BEfield.integrate('x').integrate('z')/(nLz*Lz*2)
+BE_int = BE_int.evaluate()
+print('avg integrated magnetic energy: {}'.format(BE_int['g'][0][0])) 
 
 TE_int = KE_int['g'][0][0] + BE_int['g'][0][0]
-print('integrated total energy: {}'.format(TE_int)) 
+print('avg integrated total energy: {}'.format(TE_int)) 
 
 # vertical averages
 base_flow_zavg = np.mean(base_flow_2d, axis=0)

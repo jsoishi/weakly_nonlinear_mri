@@ -34,6 +34,12 @@ wnl_fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_2
 wnl_fn_root = "../data/"
 nLz = 1
 
+newfn =root+"MRI_run_Rm4.90e+00_eps5.00e-01_Pm1.00e-03_beta2.50e+01_Q7.50e-01_qsh1.50e+00_Omega1.00e+00_nx128_nz1024_Lz2_CFL_evalueIC/scalar_s1_p0.h5"
+newdata = h5py.File(newfn, "r")
+
+newfn2 = root+"MRI_run_Rm4.90e+00_eps1.00e-01_Pm1.00e-03_beta2.50e+01_Q7.50e-01_qsh1.50e+00_Omega1.00e+00_nx128_nz1024_Lz2_CFL/scalar_s1.h5"
+newdata2 = h5py.File(newfn2, "r")
+
 wnl_TE = np.zeros(len(epss))
 wnl_BE = np.zeros(len(epss))
 wnl_KE = np.zeros(len(epss))
