@@ -1,6 +1,6 @@
 #PBS -S /bin/bash
-#PBS -N WidegapFinalLongLongBroEle41010
-#PBS -l select=4:ncpus=10:mpiprocs=10:model=bro_ele
+#PBS -N WidegapFinalLongLongBroEle455
+#PBS -l select=4:ncpus=5:mpiprocs=5:model=bro_ele
 #PBS -l walltime=120:00:00
 #PBS -j oe
 #PBS -q long
