@@ -189,7 +189,7 @@ class MRI_equations(Equations):
         """
         self.Rm = Rm
         self.Pm = Pm
-        self.B0 = 1. - eps**2
+        self.B0 = 1. + eps**2
         self.Omega0 = Omega0
         self.q = qsh
         self.beta = beta
