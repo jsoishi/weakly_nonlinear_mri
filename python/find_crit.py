@@ -69,10 +69,16 @@ def find_crit(domain, Pm, q, beta):
     return q_c, Rm_c
 
 if __name__ == "__main__":
-    Pm = 1e-6
+    #Pm = 1e-6
+    Pm=1.0E-1
     q = 1.5
     beta = 25.0
+    
+    gridnum = 64 
+    x_basis = de.Chebyshev('x',gridnum)
+    domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
+    print("running at gridnum", gridnum)
 
-    q_c, Rm_c = find_crit(Pm, q, beta)
+    q_c, Rm_c = find_crit(domain, Pm, q, beta)
     print("Re_c = {:10.5e}".format(Rm_c))
     print("q_c = {:10.5e}".format(q_c))

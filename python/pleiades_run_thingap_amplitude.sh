@@ -1,7 +1,7 @@
 #PBS -S /bin/bash
 #PBS -N ThingapAmp256
 #PBS -l select=2:ncpus=10:mpiprocs=10:model=bro_ele
-#PBS -l walltime=02:00:00
+#PBS -l walltime=01:00:00
 #PBS -j oe
 #PBS -q devel
 

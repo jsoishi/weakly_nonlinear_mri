@@ -18,7 +18,7 @@ import h5py
 """
 # indx = 0 : Pm = 1E-4
 tgc = h5py.File('../data/pm_sat_coeffs.h5', 'r')
-#for indx in range(len(tgc['Pm'].value)):
+for indx in range(len(tgc['Pm'].value)):
 indx=0
 Pm = tgc['Pm'].value[indx].real
 Rm = tgc['Rm_c'].value[indx].real
@@ -65,7 +65,7 @@ Q=0.75
 #Rm=2.10544049314
 #Q=0.66049326571719358
 
-gridnum = 256 
+gridnum = 128 
 x_basis = de.Chebyshev('x',gridnum)
 domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)

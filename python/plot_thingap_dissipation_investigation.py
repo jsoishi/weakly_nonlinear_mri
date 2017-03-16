@@ -15,6 +15,9 @@ fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00
 #fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_256_Anorm"
 #fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
+
+fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.9000_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
+
 obj = h5py.File(file_root + fn + ".h5", "r")
 
 Q = obj.attrs['Q']
@@ -280,13 +283,15 @@ Bzinitsq_int['g'][0][0]/(Lz*2)
 print('Bz init sq = {}'.format(Bzinitsq_int['g'][0][0]/(nLz*Lz*2)))
      
 print("nLz is ", nLz)
-save = True
+save = False
 if save is True:
+    print('saving output...')
 
     fn_root = "../data/"
     out_fn = fn_root + "zavg_quantities_"+str(int(nLz))+"Lz_eps"+ str(eps) + fn + ".h5"
     with h5py.File(out_fn,'w') as f:
         dxgrid = f.create_dataset("xgrid", data=xgrid)
+        dzgrid = f.create_dataset("zgrid", data=z)
         duphifinal_zavg = f.create_dataset("uphifinal_zavg", data=uphifinal_zavg)
         dBzfinal_zavg = f.create_dataset("Bzfinal_zavg", data=Bzfinal_zavg)
         dnabla_u_zavg = f.create_dataset("nabla_u_zavg", data=nabla_u_zavg)
@@ -325,6 +330,11 @@ if save is True:
         Jdot_Rout = f.create_dataset("Jdot_R", data=Jdot_R)
         Jdot_Mout = f.create_dataset("Jdot_M", data=Jdot_M)
         Jdot_totout = f.create_dataset("Jdot_tot", data=Jdot_tot)
+        
+        psiout = f.create_dataset("psi_sat", data=Vboth_Psi)
+        uout = f.create_dataset("u_sat", data=Vboth_u)
+        Aout = f.create_dataset("A_sat", data=Vboth_A)
+        Bout = f.create_dataset("B_sat", data=Vboth_B)
         
         Reynolds_stress_out = f.create_dataset("Reynolds_stress", data=Reynolds_stress)
         Maxwell_stress_out = f.create_dataset("Maxwell_stress", data=Maxwell_stress)
