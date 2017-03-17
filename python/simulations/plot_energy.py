@@ -94,4 +94,4 @@ if __name__ == "__main__":
         plt.xlabel("time (orbits)")
 
     outfile = "../../figs/kinetic_energy_jdot_{}.png".format(base.parts[-1])
-    plt.savefig(str(outfile))
+    plt.savefig(str(outfile),dpi=300)
