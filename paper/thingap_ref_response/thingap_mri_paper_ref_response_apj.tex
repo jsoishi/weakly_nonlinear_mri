@@ -454,7 +454,11 @@ The Ginzburg-Landau equation arises due to symmetries in the local MRI equations
 
 \section{Simulations}\label{sec:simulations}
 
-\edit1{We perform two-dimensional, axisymmetric direct numerical simulations of our fiducial setup using Dedalus. We solve the nonlinear Equations \ref{eqset1} - \ref{eqset4} with the background magnetic field set to $B_0 = 1 + \epsilon^2$ so that the system is MRI unstable. We initialize the runs with the linear eigenvalue solutions of the MRI equations multiplied by a small initial amplitude $A_0 = 1\times 10^{-3}$. We initialize the linear eigenvalue form for computational efficiency, as the simulation quickly enters its linear growth phase. We confirm that these simulations behave the same as simulations with noise initial conditions once they enter linear growth. We use a four-stage, third-order Runge-Kutta integration scheme to timestep the system until saturation.}
+\edit1{Here, we make a preliminary test of our weakly nonlinear theory by comparing it to direct numerical simulation. Using Dedalus, we  solved the full, nonlinear equations \ref{eqset1} - \ref{eqset4} with all parameters ($\reym$, $Q$) equal to their critical values except the background magnetic field, which we set to $B_0 = 1 + \epsilon^2$. We thus drive the system MRI unstable in the same way as in our theory. The computational requirements of low $\Pm$ simulations are quite intense in both time and space. Despite being virtually smooth, the solutions require a resolution of $192 \times 1536$ grid points at $\Pm = 10^{-2}$. Because the system has such a small growth rate, it takes hundreds of orbits for the system to reach saturation, as compared to the few orbits typical of high $\reym$ simulations \citep[e.g.][]{2007MNRAS.378.1471L}. As a result, we make our comparison at $\Pm = 10^{-2}$, which provides a good tradeoff between probing relatively low $\Pm$ while keeping the computational time for these exploratry simulations modest. }
+
+\edit1{We initialize the runs with the linear eigenvectors of the MRI unstable mode (also computed by Dedalus; see section~\ref{sec:wnl}) multiplied by an initial amplitude $A_0 = 10^{-3}$. Doing so requires considerably less run time, as the MRI unstable mode starts growing immediately from $A_0$. By contrast, initializing random noise in $\psi$ with amplitude $A_0$ would give the unstable mode a much smaller amplitude. Nevertheless, we have confirmed that simulations with eigenvector initial conditions have similar evolutions to those with noise initial conditions once each enter linear growth. }
+
+\textbf{SUSAN: SIMULATION RESULTS GO HERE}
 
 \section{Discussion}
 \label{sec:discussion}
@@ -498,7 +502,7 @@ The real Ginzburg-Landau equation describes the amplitude behavior of our system
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this paper we construct a weakly nonlinear analysis of the MRI using multiple scales analysis, leading to a real Ginzburg-Landau equation for the nonlinear amplitude, confirming the previous results of \citet{Umurhan:2007hs}. We also confirm their results for the scaling of the analytic saturation amplitude with $\Pm$. We extend their results by constructing a detailed force and inductive balance for the saturated $u_y$ and $B_z$ components. In doing so, we find the saturated state is a complex balance in which reduction of shear and amplification and redistribution of $B_z$ combine to saturate the instability. We also perform direct numerical simulations of the amplitude equation. We demonstrate that complex patterns can organize the flow on long length scales $Z$, though the maximum magnitude of the amplitude $\alpha$ is well predicted by the steady state solution. In Paper II, we make use of the techniques developed here to extend the weakly nonlinear analysis of the MRI to a full cylindrical geometry appropriate for a Taylor-Couette experiment. 
+In this paper we construct a weakly nonlinear analysis of the MRI using multiple scales analysis, leading to a real Ginzburg-Landau equation for the nonlinear amplitude, confirming the previous results of \citet{Umurhan:2007hs}. We also confirm their results for the scaling of the analytic saturation amplitude with $\Pm$. We extend their results by constructing a detailed force and inductive balance for the saturated $u_y$ and $B_z$ components. In doing so, we find the saturated state is a complex balance in which reduction of shear and amplification and redistribution of $B_z$ combine to saturate the instability. \edit1{We also perform numerical simulations of the amplitude equation and a direct numerical simulation of the MRI system.} \edit1{Using the former, we demonstrate that complex patterns can organize the flow on long length scales $Z$, though the maximum magnitude of the amplitude $\alpha$ is well predicted by the steady state solution. The latter show that there is rough agreement for both total energy and average angular momentum transport between the weakly nonlinear theory and simulation for a representative case at $\Pm = 10^{-2}$. We defer a full comparison between theory and simulation to later work.} In Paper II, we make use of the techniques developed here to extend the weakly nonlinear analysis of the MRI to a full cylindrical geometry appropriate for a Taylor-Couette experiment. 
 
 \section{Acknowledgments}
 S.E.C. was supported by a National Science Foundation Graduate Research Fellowship under grant No. DGE-16-44869. J.S.O. acknowledges support from NASA grant \edit1{NNX16AC92G}. \edit1{We thank the anonymous referee for thoughtful comments that greatly improved the manuscript.} The authors thank Mordecai Mac Low, Jeremy Goodman, John Krommes, Geoff Vasil, and Ellen Zweibel for useful discussion. \software{Dedalus: http://dedalus-project.org/}
@@ -848,7 +852,10 @@ Kunz, M. W. \& Lesur, G. 2013, \mnras 434, 2295
 Latter, H.N., Fromang, S., \& Faure, J., 2015, \mnras 453, 3257
 
 \bibitem[{Latter et al.(2010)}]{Latter:2010iz}
-Latter, H.N., Fromang, S., \& Gressel, O., 2010, \mnras 406, 848
+  Latter, H.N., Fromang, S., \& Gressel, O., 2010, \mnras 406, 848
+
+\bibitem[Lesur \& Longaretti(2007)]{2007MNRAS.378.1471L} Lesur, G., \&
+  Longaretti, P.-Y.\ 2007, \mnras, 378, 1471
 
 \bibitem[{Makwana et al.(2011)}]{Makwana:2011}
 Makwana, K.D., Terry, P.W., Kim, J.H., \& Hatch, D.R. 2011, Phys. of Plasmas, 18, 1
