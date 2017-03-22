@@ -24,6 +24,7 @@ fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00
 #fn = "thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_Anorm"
 fn = "thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_Anorm"
 
+fn = "thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_norm_False" # non normalized
 
 
 obj = h5py.File(file_root + fn + ".h5", "r")

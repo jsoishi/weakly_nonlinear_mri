@@ -458,7 +458,16 @@ The Ginzburg-Landau equation arises due to symmetries in the local MRI equations
 
 \edit1{We initialize the runs with the linear eigenvectors of the MRI unstable mode (also computed by Dedalus; see section~\ref{sec:wnl}) multiplied by an initial amplitude $A_0 = 10^{-3}$. Doing so requires considerably less run time, as the MRI unstable mode starts growing immediately from $A_0$. By contrast, initializing random noise in $\psi$ with amplitude $A_0$ would give the unstable mode a much smaller amplitude. Nevertheless, we have confirmed that simulations with eigenvector initial conditions have similar evolutions to those with noise initial conditions once each enter linear growth. }
 
-\textbf{SUSAN: SIMULATION RESULTS GO HERE}
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{sim_theory_energy_jdot_Pm_1E-2_nonorm}
+\caption{\edit1{Average energy (left) and angular momentum transport (right) in the total, kinetic, and magnetic components of simulation data as a function of time. Gray lines show the weakly nonlinear theory values for each quantity. }} \label{fig:sim_theory_energy_jdot}
+\end{figure*}
+
+\edit1{We analyze the average energy and angular momentum transport in the simulation domain (Figure \ref{fig:sim_theory_energy_jdot}).  }
+
+
+%\textbf{SUSAN: SIMULATION RESULTS GO HERE}
 
 \section{Discussion}
 \label{sec:discussion}
