@@ -895,6 +895,8 @@ class AmplitudeAlpha(MRI):
         n3 = N3(domain, o1 = o1, o2 = o2, ah=ah, Q = self.Q, Rm = self.Rm, Pm = self.Pm, q = self.q, beta = self.beta, norm = self.norm)
 
         
+        self.normconst = o1.normconst
+        
         magicnumberhack = False
         logger.info("magicnumberhack is {}".format(magicnumberhack))
         if magicnumberhack == True:

@@ -225,3 +225,5 @@ with h5py.File(fn,'w') as f:
     f.attrs["b"] = aa.b
     f.attrs["c"] = aa.c
     f.attrs["h"] = aa.h
+    
+    f.close()
