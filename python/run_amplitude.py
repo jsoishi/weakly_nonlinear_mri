@@ -55,7 +55,7 @@ beta = 25.0
 Rm = 4.92129e+00
 Q = 7.55027e-01
 Pm=1.0E-2
-norm=False
+norm=True
 
 #Rm = 4.87384744169
 #Q = 0.746395815905
@@ -219,6 +219,7 @@ with h5py.File(fn,'w') as f:
     f.attrs["gridnum"] = aa.gridnum
     f.attrs["q"] = aa.q
     f.attrs["norm"] = aa.norm
+    f.attrs["normconst"] = aa.normconst
     
     f.attrs["a"] = aa.a
     f.attrs["b"] = aa.b

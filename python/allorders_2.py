@@ -180,6 +180,8 @@ class MRI():
         A['g'] = A['g']/norm
         B['g'] = B['g']/norm
         
+        self.normconst = norm
+        
         return psi, u, A, B
 
     def get_derivative(self, field):
@@ -386,6 +388,8 @@ class OrderE(MRI):
             self.psi, self.u, self.A, self.B = self.normalize_state_vector(self.psi, self.u, self.A, self.B)
         
             self.normpsi = self.psi
+        else:
+            self.normconst = None
             
         self.psi.name = "psi"
         self.u.name = "u"
