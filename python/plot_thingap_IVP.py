@@ -168,8 +168,11 @@ for spine in ax4.spines.values():
 
 for ax in [ax1, ax2, ax3, ax4]:
     ax.set_xticks([0, len(Z_array)/2., len(Z_array)])
-    ax.set_xticklabels([r"$-5\lambda_{crit}$", r"$0$", r"$5\lambda_{crit}$"])
     
+    if lambdacrit == 10:
+        ax.set_xticklabels([r"$-5\lambda_{crit}$", r"$0$", r"$5\lambda_{crit}$"])
+    elif lambdacrit == 2:
+        ax.set_xticklabels([r"$-\lambda_{crit}$", r"$0$", r"$\lambda_{crit}$"])
 
 #fig.subplots_adjust(hspace=0.5)
 
