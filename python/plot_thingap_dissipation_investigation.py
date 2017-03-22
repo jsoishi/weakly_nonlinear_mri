@@ -7,6 +7,7 @@ import matplotlib.ticker as ticker
 from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
 from matplotlib import rc
 import dedalus.public as de
+import copy
 rc('text', usetex=True)
 
 #file_root = "/home/joishi/hg-projects/weakly_nonlinear_mri/data/"
@@ -69,14 +70,23 @@ else:
     satamp_Z = final_alphaZ.reshape(ivpdata.attrs['gridnum'], 1)
     ivporconst = "IVP"
  
+ 
+# to avoid all ambiguity in z, take it from the sims.
+sim_fn_root = "../data/simulations/"
+simname = "MRI_run_Rm4.92e+00_eps5.00e-01_Pm1.00e-02_beta2.50e+01_Q7.60e-01_qsh1.50e+00_Omega1.00e+00_nx128_nz1024_Lz2_CFL_evalueIC"
+simfn = sim_fn_root + simname + "_plotfields.h5"
+simdata = h5py.File(simfn, "r")
+simz = simdata['z'].value
+ 
 beta = obj.attrs['beta']
 
 # create z grid
 #nz = obj.attrs['gridnum']
 nz = 1024#2048
-nLz = 2#2 # number of critical wavelengths
+nLz = 1#2 # number of critical wavelengths
 Lz = 2*np.pi/Q
-z = np.linspace(0, nLz*Lz, nz, endpoint=False)
+#z = np.linspace(0, nLz*Lz, nz, endpoint=False)
+z = copy.copy(simz)
 zz = z.reshape(nz, 1)
 
 dz = z[1] - z[0]
@@ -387,7 +397,7 @@ if save is True:
     print('saving output...')
 
     fn_root = "../data/"
-    out_fn = fn_root + "zavg_quantities_"+str(int(nLz))+"Lz_eps"+ str(eps) + fn + "_satamp_"+ivporconst+".h5"
+    out_fn = fn_root + "zavg_quantities_"+str(int(nLz))+"Lz_eps"+ str(eps) + fn + "_satamp_"+ivporconst+"_samez.h5"
     
     print(out_fn)
     

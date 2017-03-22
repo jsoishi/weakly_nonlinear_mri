@@ -437,7 +437,19 @@ a real Ginzburg-Landau equation. The saturated solution to Equation \ref{eq:gle}
 
 \section{Shearing box and ambipolar diffusion}\label{sec:SBAD}
 
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{thingap_stressfig_Pm_1E-2}
+\caption{\edit1{Total (Reynolds + Maxwell) stress in the domain as predicted from the weakly nonlinear theory.}} \label{fig:wnl_stress}
+\end{figure}
+
 \edit1{Many studies of the MRI consider the instability in a shearing box, i.e. a wall-less local approximation that is meant to represent a small section of a disk. The shearing box obtains when Equations \ref{eqset1} - \ref{eqset4} are subjected to shear periodic radial boundary conditions rather than Equation \ref{eq:wallbcs}. The periodic nature of the shearing box allows us to decompose the fluid perturbations into Fourier modes proportional to $e^{i k_x x + i k_z z}$. This makes the shearing box MRI straightforward to treat analytically. However, as noted above, the fastest-growing linear MRI modes in the shearing box are also exact solutions of the nonlinear MRI equations -- that is, $J(\hat{\psi_0}, \hat{\psi_0}) = J(\hat{\psi_0}, \nabla^2 \hat{\psi_0}) = 0$ for $\hat{\psi_0} \propto e^{i k_x x + i k_z z}$. While this may be an appealing trait for analytic simplicity, it leads to the unphysical conclusion that the fastest growing modes will never nonlinearly interact \citep{Goodman:1994ul}. This `nonlinear property' will not be satisfied for two MRI modes with nonparallel wavenumbers, but with vertically periodic boundary conditions and a vertical background magnetic field the most unstable mode has a strictly axial vertical wavenumber. Thus a formal weakly nonlinear analysis cannot be conducted, as the most unstable mode will never nonlinearly interact with itself or its complex conjugate. Similarly, we cannot analytically examine interactions between MRI channel modes and damped eigenmodes belonging to other wave families. This is analytically tracked for other plasma instabilities by tracking the amplitudes of growing, marginal, and damped eigenmodes simultaneously \citep[e.g.][]{Makwana:2011}. While the shearing box approximation allows the projection of the perturbed MRI equations into the basis set of linear eigenmodes, nonlinear coupling between modes will remain zero.}
+
+\begin{figure*}
+\centering
+\includegraphics[width=\textwidth]{sim_theory_energy_jdot_Pm_1E-2_nonorm}
+\caption{\edit1{Average energy (left) and angular momentum transport (right) in the total, kinetic, and magnetic components of simulation data as a function of time. Gray lines show the weakly nonlinear theory values for each quantity. }} \label{fig:sim_theory_energy_jdot}
+\end{figure*}
 
 \edit1{The nonlinear property of primary MRI modes in the shearing box motivates the addition of radial boundaries, such that the nonlinear evolution of the weakly nonlinear MRI can be properly considered. It also raises the question of whether some additional nonlinear mechanism can be introduced such that the fastest-growing modes are no longer nonlinear solutions to the shearing box equations. It has already been shown that the Hall effect does not negate the nonlinear property of primary MRI modes \citep{Kunz:2013}. However, it seems to have been overlooked in the literature that these linear modes are \textit{not} solutions of the nonlinear ambipolar diffusion term, which is proportional to}
 
@@ -458,13 +470,7 @@ The Ginzburg-Landau equation arises due to symmetries in the local MRI equations
 
 \edit1{We initialize the runs with the linear eigenvectors of the MRI unstable mode (also computed by Dedalus; see section~\ref{sec:wnl}) multiplied by an initial amplitude $A_0 = 10^{-3}$. Doing so requires considerably less run time, as the MRI unstable mode starts growing immediately from $A_0$. By contrast, initializing random noise in $\psi$ with amplitude $A_0$ would give the unstable mode a much smaller amplitude. Nevertheless, we have confirmed that simulations with eigenvector initial conditions have similar evolutions to those with noise initial conditions once each enter linear growth. }
 
-\begin{figure*}
-\centering
-\includegraphics[width=\textwidth]{sim_theory_energy_jdot_Pm_1E-2_nonorm}
-\caption{\edit1{Average energy (left) and angular momentum transport (right) in the total, kinetic, and magnetic components of simulation data as a function of time. Gray lines show the weakly nonlinear theory values for each quantity. }} \label{fig:sim_theory_energy_jdot}
-\end{figure*}
-
-\edit1{We analyze the average energy and angular momentum transport in the simulation domain (Figure \ref{fig:sim_theory_energy_jdot}).  }
+\edit1{We analyze the average energy and angular momentum transport in the simulation domain (Figure \ref{fig:sim_theory_energy_jdot}). We find good agreement between the theory and simulation values, especially considering that the weakly nonlinear theory applies rigorously to a channel of infinite height, while the simulation was carried out in a box with a vertical extent of only two critical wavelengths. Further comparisons between simulation and theory, including an analysis of the effect of the box height on the simulated flow, is deferred to future work. }
 
 
 %\textbf{SUSAN: SIMULATION RESULTS GO HERE}
