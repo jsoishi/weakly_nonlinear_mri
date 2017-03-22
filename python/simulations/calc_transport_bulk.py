@@ -46,8 +46,8 @@ def calc_ang_mom_bulk(nt, data, fields, frac = None):
     bulk_right_edge = 0.5
     Lx_bulk = bulk_right_edge - bulk_left_edge
 
-    avg_Ma_stress_bulk = (Ma_stress_anti_zint.interpolate(x=bulk_right_edge) - Ma_stress_anti_zint.interpolate(x=bulk_right_edge)).evaluate()
-    avg_Re_stress_bulk = (Re_stress_anti_zint.interpolate(x=bulk_right_edge) - Re_stress_anti_zint.interpolate(x=bulk_right_edge)).evaluate()
+    avg_Ma_stress_bulk = (Ma_stress_anti_zint.interpolate(x=bulk_right_edge) - Ma_stress_anti_zint.interpolate(x=bulk_left_edge)).evaluate()
+    avg_Re_stress_bulk = (Re_stress_anti_zint.interpolate(x=bulk_right_edge) - Re_stress_anti_zint.interpolate(x=bulk_left_edge)).evaluate()
     avg_Ma_stress = avg_Ma_stress_bulk['g'][0,0]/(Lx_bulk*Lz)
     avg_Re_stress = avg_Re_stress_bulk['g'][0,0]/(Lx_bulk*Lz)
     

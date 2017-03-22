@@ -12,6 +12,7 @@ rc('text', usetex=True)
 file_root = "/home/jsoishi/hg-projects/weakly_nonlinear_MRI/data/"
 #fn = "widegap_amplitude_parameters_Q_0.01_Rm_0.8403_Pm_1.00e-03_Omega1_313.55_Omega2_56.43_beta_25.00_xi_0.00_gridnum_128_Anorm.h5"
 fn = "widegap_amplitude_parameters_Q_0.90_Rm_3.3088_Pm_1.60e-06_Omega1_01.00_Omega2_00.12_beta_41.20_xi_0.00_gridnum_512_norm_True_Amidnorm_final"
+
 obj = h5py.File(file_root + fn + ".h5", "r")
 
 Q = obj.attrs['Q']

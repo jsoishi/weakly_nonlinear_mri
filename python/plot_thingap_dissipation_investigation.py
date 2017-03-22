@@ -14,29 +14,66 @@ file_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
 fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
 #fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8738_Pm_1.00e-04_q_1.5_beta_25.00_gridnum_256_Anorm"
 #fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
-fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
+#fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
 
-fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.9000_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
+#fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.9000_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_256_Anorm"
+#fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.9000_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128_Anorm"
+
+#fn = "thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_Anorm"
+#fn = "thingap_amplitude_parameters_Q_0.84_Rm_5.3502_Pm_1.00e-01_q_1.5_beta_25.00_gridnum_128_Anorm"
+#fn = "thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_Anorm"
+fn = "thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_Anorm"
+
+
 
 obj = h5py.File(file_root + fn + ".h5", "r")
 
 Q = obj.attrs['Q']
+b = obj.attrs['b']
+c = obj.attrs['c']
+#c = 113.75214354998781
 x = obj['x'].value
 xgrid = x
 
 # epsilon (small parameter)
 eps = 0.5
 
-# saturation amplitude -- for now just constant, coefficient-determined
-satamp = np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
+constant_alpha = True 
+if constant_alpha:
+    # saturation amplitude -- for now just constant, coefficient-determined
+    satamp = np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
+    print('satamp is sqrt {}/{} = {}'.format(b, c, satamp))
+    #satamp = satamp - satamp + 0.07 #test
+    satamp_Z = 0.0 + 0j
+    print('saturation amplitude = {}'.format(satamp))
+    ivporconst = "const"
+else:
+    print('saturation amplitude = {} but using IVP data'.format(np.sqrt(obj.attrs['b']/obj.attrs['c'])))
+    #fn = "IVP_thingap_amplitude_parameters_Q_0.75_Rm_4.9000_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128_Anorm_init_0_noiselvl0.001_eps_0.5_gridnum_1024.hdf5"
+    fn = "IVP_thingap_amplitude_parameters_Q_0.75_Rm_4.9000_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128_Anorm_init_0_noiselvl0.001_eps_0.5_gridnum_1024_nodealias.hdf5"
+    fn = "IVP_thingap_amplitude_parameters_Q_0.75_Rm_4.9000_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128_Anorm_init_0_noiselvl0.001_dt_0.2_nlambdacrit_2_eps_0.5_gridnum_1024_nodealias.hdf5"
+    fn = "IVP_thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_Anorm_init_0_noiselvl0.001_dt_0.2_nlambdacrit_2_eps_0.5_gridnum_1024_nodealias.hdf5"
+    fn = "IVP_thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_Anorm_init_0_noiselvl0.001_dt_0.002_nlambdacrit_2_eps_0.5_gridnum_1024_nodealias2.hdf5"
+    fn = "IVP_thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_Anorm_init_0_noiselvl0.01_dt_0.002_nlambdacrit_20_eps_0.5_gridnum_1024_nodealias.hdf5"
+    ivpdata = h5py.File(file_root + fn, "r")
+    alpha_array = ivpdata["alpha_array"].value
+    alphaZ_array = ivpdata["alphaZ_array"].value
+    final_alpha = alpha_array[-1, :]
+    final_alphaZ = alphaZ_array[-1, :]
+    ivp_lambda_crit = ivpdata.attrs['lambda_crit']
+    ivp_gridnum = ivpdata.attrs['gridnum']
+    ivp_num_lambda_crit = ivpdata.attrs['num_lambda_crit']
+    #Z_array = np.linspace(-ivp_num_lambda_crit*ivp_lambda_crit, ivp_num_lambda_crit*ivp_lambda_crit, alpha_array.shape[1])
+    satamp = final_alpha.reshape(ivpdata.attrs['gridnum'], 1)
+    satamp_Z = final_alphaZ.reshape(ivpdata.attrs['gridnum'], 1)
+    ivporconst = "IVP"
+ 
 beta = obj.attrs['beta']
-
-print('saturation amplitude = {}'.format(satamp))
 
 # create z grid
 #nz = obj.attrs['gridnum']
-nz = 2048
-nLz = 2 # number of critical wavelengths
+nz = 1024#2048
+nLz = 2#2 # number of critical wavelengths
 Lz = 2*np.pi/Q
 z = np.linspace(0, nLz*Lz, nz, endpoint=False)
 zz = z.reshape(nz, 1)
@@ -55,12 +92,24 @@ ei2qzstar = np.exp(-2*1j*Q*zz)
 ei2qzstar_z = -2*1j*Q*np.exp(-2*1j*Q*zz)
 ei0qzstar = np.exp(-0*1j*Q*zz)
 
+# u21 star
+psi21_star = obj['psi21'].value.conj()
+u21_star = obj['u21'].value.conj()
+A21_star = obj['A21'].value.conj()
+B21_star = obj['B21'].value.conj() 
+
+#print('x gridnum is {}'.format(gridnum))
+#x_basis = de.Chebyshev('x',gridnum)
+#d1d = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
+
+#u21_star_x = obj['u21_x'].value.conj()
+
 # two-dimensional u and Bstructure
 V1_u = eps*satamp*obj['u11'].value*eiqz + eps*satamp.conj()*obj['u11_star'].value*eiqzstar
 V1_B = eps*satamp*obj['B11'].value*eiqz + eps*satamp.conj()*obj['B11_star'].value*eiqzstar
 
-V2_u = eps**2*satamp**2*obj['u22'].value*ei2qz + eps**2*satamp.conj()**2*obj['u22_star'].value*ei2qzstar + eps**2*(np.abs(satamp))**2*obj['u20'].value*ei0qz + eps**2*(np.abs(satamp.conj()))**2*obj['u20_star'].value*ei0qzstar
-V2_B = eps**2*satamp**2*obj['B22'].value*ei2qz + eps**2*satamp.conj()**2*obj['B22_star'].value*ei2qzstar + eps**2*(np.abs(satamp))**2*obj['B20'].value*ei0qz + eps**2*(np.abs(satamp.conj()))**2*obj['B20_star'].value*ei0qzstar
+V2_u = eps**2*satamp**2*obj['u22'].value*ei2qz + eps**2*satamp.conj()**2*obj['u22_star'].value*ei2qzstar + eps**2*(np.abs(satamp))**2*obj['u20'].value*ei0qz + eps**2*(np.abs(satamp.conj()))**2*obj['u20_star'].value*ei0qzstar #+ eps**2*(satamp_Z*obj['u21'].value*eiqz + satamp_Z.conj()*u21_star*eiqzstar)
+V2_B = eps**2*satamp**2*obj['B22'].value*ei2qz + eps**2*satamp.conj()**2*obj['B22_star'].value*ei2qzstar + eps**2*(np.abs(satamp))**2*obj['B20'].value*ei0qz + eps**2*(np.abs(satamp.conj()))**2*obj['B20_star'].value*ei0qzstar #+ eps**2*(satamp_Z*obj['B21'].value*eiqz + satamp_Z.conj()*B21_star*eiqzstar)
 
 #V2_B = eps**2*satamp**2*obj['B22'].value*ei2qz + eps**2*(np.abs(satamp))**2*obj['B20'].value*ei0qz
 
@@ -84,13 +133,21 @@ psi22_star_x = obj['psi22_x'].value.conj()
 A22_star = obj['A22'].value.conj()
 A22_star_x = obj['A22_x'].value.conj()
 
+psi21_star_x = obj['psi21_x'].value.conj()
+A21_star = obj['A21'].value.conj()
+A21_star_x = obj['A21_x'].value.conj()
+
 # Vboth Psi, A
 V1_Psi = eps*satamp*obj['psi11'].value*eiqz + eps*satamp.conj()*obj['psi11_star'].value*eiqzstar
-V2_Psi = eps**2*satamp**2*obj['psi22'].value*ei2qz + eps**2*satamp.conj()**2*psi22_star*ei2qzstar + eps**2*np.abs(satamp)**2*(obj['psi20'].value*ei0qz + obj['psi20_star'].value*ei0qzstar)
+V2_Psi = eps**2*satamp**2*obj['psi22'].value*ei2qz + eps**2*satamp.conj()**2*psi22_star*ei2qzstar + eps**2*np.abs(satamp)**2*(obj['psi20'].value*ei0qz + obj['psi20_star'].value*ei0qzstar) 
+if constant_alpha is False:
+    V2_Psi += eps**2*(satamp_Z*obj['psi21'].value*eiqz + satamp_Z.conj()*psi21_star*eiqzstar)
 Vboth_Psi = V1_Psi + V2_Psi
 
 V1_A = eps*satamp*obj['A11'].value*eiqz + eps*satamp.conj()*obj['A11_star'].value*eiqzstar
-V2_A = eps**2*satamp**2*obj['A22'].value*ei2qz + eps**2*satamp.conj()**2*A22_star*ei2qzstar + eps**2*np.abs(satamp)**2*(obj['A20'].value*ei0qz + obj['A20_star'].value*ei0qzstar)
+V2_A = eps**2*satamp**2*obj['A22'].value*ei2qz + eps**2*satamp.conj()**2*A22_star*ei2qzstar + eps**2*np.abs(satamp)**2*(obj['A20'].value*ei0qz + obj['A20_star'].value*ei0qzstar) 
+if constant_alpha is False:
+    V2_A += eps**2*(satamp_Z*obj['A21'].value*eiqz + satamp_Z.conj()*A21_star*eiqzstar)
 Vboth_A = V1_A + V2_A
 
 # first order perturbations
@@ -100,10 +157,18 @@ V1_Br1 = eps*satamp*obj['A11'].value*eiqz_z + eps*satamp.conj()*obj['A11_star'].
 V1_Bz1 = -eps*satamp*obj['A11_x'].value*eiqz - eps*satamp.conj()*obj['A11_star_x'].value*eiqzstar
 
 # second order perturbations
-V2_ur1 = eps**2*satamp**2*obj['psi22'].value*ei2qz_z + eps**2*satamp.conj()**2*psi22_star*ei2qzstar_z
-V2_uz1 = -eps**2*satamp**2*obj['psi22_x'].value*ei2qz - eps**2*satamp.conj()**2*psi22_star_x*ei2qzstar - eps**2*np.abs(satamp)**2*(obj['psi20_x'].value*ei0qz + obj['psi20_star_x'].value*ei0qzstar)
-V2_Br1 = eps**2*satamp**2*obj['A22'].value*ei2qz_z + eps**2*satamp.conj()**2*A22_star*ei2qzstar_z
-V2_Bz1 = -eps**2*satamp**2*obj['A22_x'].value*ei2qz -eps**2*satamp.conj()**2*A22_star_x*ei2qzstar - eps**2*np.abs(satamp)**2*(obj['A20_x'].value*ei0qz + obj['A20_star_x'].value*ei0qzstar)
+V2_ur1 = eps**2*satamp**2*obj['psi22'].value*ei2qz_z + eps**2*satamp.conj()**2*psi22_star*ei2qzstar_z 
+if constant_alpha is False:
+    V2_ur1 += eps**2*(satamp_Z*obj['psi21'].value*eiqz_z + satamp_Z.conj()*psi21_star*eiqzstar_z)
+V2_uz1 = -eps**2*satamp**2*obj['psi22_x'].value*ei2qz - eps**2*satamp.conj()**2*psi22_star_x*ei2qzstar - eps**2*np.abs(satamp)**2*(obj['psi20_x'].value*ei0qz + obj['psi20_star_x'].value*ei0qzstar) 
+if constant_alpha is False:
+    V2_uz1 -= eps**2*(satamp_Z*obj['psi21_x'].value*eiqz + satamp_Z.conj()*psi21_star_x*eiqzstar)
+V2_Br1 = eps**2*satamp**2*obj['A22'].value*ei2qz_z + eps**2*satamp.conj()**2*A22_star*ei2qzstar_z 
+if constant_alpha is False:
+    V2_Br1 += eps**2*(satamp_Z*obj['A21'].value*eiqz_z + satamp_Z.conj()*A21_star*eiqzstar_z)
+V2_Bz1 = -eps**2*satamp**2*obj['A22_x'].value*ei2qz -eps**2*satamp.conj()**2*A22_star_x*ei2qzstar - eps**2*np.abs(satamp)**2*(obj['A20_x'].value*ei0qz + obj['A20_star_x'].value*ei0qzstar) 
+if constant_alpha is False:
+    V2_Bz1 -= eps**2*(satamp_Z*obj['A21_x'].value*eiqz + satamp_Z.conj()*A21_star_x*eiqzstar)
 
 # Combined perturbations
 Vboth_ur1 = V1_ur1 + V2_ur1
@@ -198,6 +263,39 @@ print('avg integrated magnetic energy: {}'.format(BE_int['g'][0][0]))
 TE_int = KE_int['g'][0][0] + BE_int['g'][0][0]
 print('avg integrated total energy: {}'.format(TE_int)) 
 
+
+# only in the bulk
+# define bulk as -0.5 <= x <= 0.5
+bulk_left_edge  = -0.5
+bulk_right_edge = 0.5
+Lx_bulk = bulk_right_edge - bulk_left_edge
+
+KE_anti = KEfield.antidifferentiate(d2D.bases[-1],("left", 0))
+KE_anti_zint = KE_anti.integrate('z')
+avg_KE_bulk = (KE_anti_zint.interpolate(x=bulk_right_edge) - KE_anti_zint.interpolate(x=bulk_left_edge)).evaluate()
+avg_KE_bulk = avg_KE_bulk['g'][0,0]/(Lx_bulk*nLz*Lz)
+
+BE_anti = BEfield.antidifferentiate(d2D.bases[-1],("left", 0))
+BE_anti_zint = BE_anti.integrate('z')
+avg_BE_bulk = (BE_anti_zint.interpolate(x=bulk_right_edge) - BE_anti_zint.interpolate(x=bulk_left_edge)).evaluate()
+avg_BE_bulk = avg_BE_bulk['g'][0,0]/(Lx_bulk*nLz*Lz)
+
+TR_anti = TR.antidifferentiate(d2D.bases[-1],("left", 0))
+TR_anti_zint = TR_anti.integrate('z')
+avg_TR_bulk = (TR_anti_zint.interpolate(x=bulk_right_edge) - TR_anti_zint.interpolate(x=bulk_left_edge)).evaluate()
+avg_TR_bulk = avg_TR_bulk['g'][0,0]/(Lx_bulk*nLz*Lz)
+
+TM_anti = TM.antidifferentiate(d2D.bases[-1],("left", 0))
+TM_anti_zint = TM_anti.integrate('z')
+avg_TM_bulk = (TM_anti_zint.interpolate(x=bulk_right_edge) - TM_anti_zint.interpolate(x=bulk_left_edge)).evaluate()
+avg_TM_bulk = avg_TM_bulk['g'][0,0]/(Lx_bulk*nLz*Lz)
+
+print('avg_KE_bulk = {}'.format(avg_KE_bulk))
+print('avg_BE_bulk = {}'.format(avg_BE_bulk))
+print('avg_TR_bulk = {}'.format(avg_TR_bulk))
+print('avg_TM_bulk = {}'.format(avg_TM_bulk))
+
+
 # vertical averages
 base_flow_zavg = np.mean(base_flow_2d, axis=0)
 uphifinal_zavg = np.mean(sat_uphi_field['g'], axis=0)
@@ -283,12 +381,15 @@ Bzinitsq_int['g'][0][0]/(Lz*2)
 print('Bz init sq = {}'.format(Bzinitsq_int['g'][0][0]/(nLz*Lz*2)))
      
 print("nLz is ", nLz)
-save = False
+save = True
 if save is True:
     print('saving output...')
 
     fn_root = "../data/"
-    out_fn = fn_root + "zavg_quantities_"+str(int(nLz))+"Lz_eps"+ str(eps) + fn + ".h5"
+    out_fn = fn_root + "zavg_quantities_"+str(int(nLz))+"Lz_eps"+ str(eps) + fn + "_satamp_"+ivporconst+".h5"
+    
+    print(out_fn)
+    
     with h5py.File(out_fn,'w') as f:
         dxgrid = f.create_dataset("xgrid", data=xgrid)
         dzgrid = f.create_dataset("zgrid", data=z)
@@ -330,6 +431,14 @@ if save is True:
         Jdot_Rout = f.create_dataset("Jdot_R", data=Jdot_R)
         Jdot_Mout = f.create_dataset("Jdot_M", data=Jdot_M)
         Jdot_totout = f.create_dataset("Jdot_tot", data=Jdot_tot)
+        
+        BEbulkout = f.create_dataset("BE_bulk_int", data=avg_KE_bulk)
+        KEbulkout = f.create_dataset("KE_bulk_int", data=avg_BE_bulk)
+        TEbulkout = f.create_dataset("TE_bulk_int", data=avg_KE_bulk + avg_BE_bulk)
+        
+        JdotRbulkout = f.create_dataset("Jdot_R_bulk_int", data=avg_TR_bulk)
+        JdotMbulkout = f.create_dataset("Jdot_M_bulk_int", data=avg_TM_bulk)
+        Jdottotbulkout = f.create_dataset("Jdot_tot_bulk_int", data=avg_TR_bulk + avg_TM_bulk)
         
         psiout = f.create_dataset("psi_sat", data=Vboth_Psi)
         uout = f.create_dataset("u_sat", data=Vboth_u)

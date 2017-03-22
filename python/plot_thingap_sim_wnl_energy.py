@@ -17,6 +17,7 @@ Rms = [5.7, 5.3, 5.1]
 simrootfns = [simroot1, simroot2, simroot3]
 
 simroot = simroot3
+restart = False
 
 # data after restart
 root = "/Users/susanclark/weakly_nonlinear_mri/data/simulations/"
@@ -30,7 +31,8 @@ data0 = h5py.File(root+simname0+"_scalar_s1.h5", "r")
 
 # data from WNL theory
 wnl_file_root = "/Users/susanclark/weakly_nonlinear_MRI/data/"
-wnl_fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
+#wnl_fn = "thingap_amplitude_parameters_Q_0.75_Rm_4.8790_Pm_1.00e-03_q_1.5_beta_25.00_gridnum_128"
+wnl_fn = "thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_Anorm"
 wnl_fn_root = "../data/"
 nLz = 1
 

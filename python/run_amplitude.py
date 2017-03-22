@@ -55,6 +55,7 @@ beta = 25.0
 Rm = 4.92129e+00
 Q = 7.55027e-01
 Pm=1.0E-2
+norm=False
 
 #Rm = 4.87384744169
 #Q = 0.746395815905
@@ -84,11 +85,12 @@ domain = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 print("running at gridnum", gridnum)
 
 fn_root = "../data/"
-fn = fn_root + "thingap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_q_{:02.1f}_beta_{:.2f}_gridnum_{}_Anorm.h5".format(Q, Rm, Pm, q, beta, gridnum)
+#fn = fn_root + "thingap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_q_{:02.1f}_beta_{:.2f}_gridnum_{}_Anorm.h5".format(Q, Rm, Pm, q, beta, gridnum)
+fn = fn_root + "thingap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_q_{:02.1f}_beta_{:.2f}_gridnum_{}_norm_{}.h5".format(Q, Rm, Pm, q, beta, gridnum, norm)
 
 print(fn)
 
-aa = AmplitudeAlpha(domain,Q = Q,Rm = Rm, Pm = Pm, q=q, beta=beta)
+aa = AmplitudeAlpha(domain,Q = Q,Rm = Rm, Pm = Pm, q=q, beta=beta, norm=norm)
 aa.print_coeffs()
 
 with h5py.File(fn,'w') as f:
@@ -216,6 +218,7 @@ with h5py.File(fn,'w') as f:
     f.attrs["beta"] = aa.beta
     f.attrs["gridnum"] = aa.gridnum
     f.attrs["q"] = aa.q
+    f.attrs["norm"] = aa.norm
     
     f.attrs["a"] = aa.a
     f.attrs["b"] = aa.b
