@@ -86,7 +86,7 @@ print("running at gridnum", gridnum)
 
 fn_root = "../data/"
 #fn = fn_root + "thingap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_q_{:02.1f}_beta_{:.2f}_gridnum_{}_Anorm.h5".format(Q, Rm, Pm, q, beta, gridnum)
-fn = fn_root + "thingap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_q_{:02.1f}_beta_{:.2f}_gridnum_{}_norm_{}_normconst2.h5".format(Q, Rm, Pm, q, beta, gridnum, norm)
+fn = fn_root + "thingap_amplitude_parameters_Q_{:03.2f}_Rm_{:04.4f}_Pm_{:.2e}_q_{:02.1f}_beta_{:.2f}_gridnum_{}_norm_{}.h5".format(Q, Rm, Pm, q, beta, gridnum, norm)
 
 print(fn)
 
