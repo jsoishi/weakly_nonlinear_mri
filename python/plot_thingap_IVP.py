@@ -10,7 +10,7 @@ rc('text', usetex=True)
 rc('figure', dpi=120)
 
 
-lambdacrit = 2
+lambdacrit = 10
 
 root = "/Users/susanclark/weakly_nonlinear_mri/data/"
 #fn = "Pm_0.00152830673266_thingap_GLE_IVP_gridnum128_init_0.hdf5"

@@ -440,14 +440,14 @@ a real Ginzburg-Landau equation. The saturated solution to Equation \ref{eq:gle}
 \begin{figure}
 \centering
 \includegraphics[width=\columnwidth]{thingap_stressfig_Pm_1E-2}
-\caption{\edit1{Total (Reynolds + Maxwell) stress in the domain as predicted from the weakly nonlinear theory for \Pm=1E-2.}} \label{fig:wnl_stress}
+\caption{\edit1{Total (Reynolds + Maxwell) stress in the domain as predicted from the weakly nonlinear theory for $\Pm=1E-2$.}} \label{fig:wnl_stress}
 \end{figure}
 
 \edit1{Many studies of the MRI consider the instability in a shearing box, i.e. a wall-less local approximation that is meant to represent a small section of a disk. The shearing box is the limit in which Equations \ref{eqset1} - \ref{eqset4} are subjected to shear periodic radial boundary conditions rather than Equation \ref{eq:wallbcs} \citep[e.g.][]{2008A&A...481...21R}. The periodic nature of the shearing box allows us to decompose the fluid perturbations into Fourier modes proportional to $e^{i k_x x + i k_z z}$. This makes the shearing box MRI straightforward to treat analytically. However, as noted above, the fastest-growing linear MRI modes in the shearing box are also exact solutions of the nonlinear MRI equations -- that is, $J(\hat{\psi_0}, \hat{\psi_0}) = J(\hat{\psi_0}, \nabla^2 \hat{\psi_0}) = 0$ for $\hat{\psi_0} \propto e^{i k_x x + i k_z z}$. While this may be an appealing trait for analytic simplicity, it leads to the unphysical conclusion that the fastest growing modes will never nonlinearly interact \citep{Goodman:1994ul}. This `nonlinear property' will not be satisfied for two MRI modes with nonparallel wavenumbers, but with vertically periodic boundary conditions and a vertical background magnetic field the most unstable mode has a strictly axial vertical wavenumber. Thus a formal weakly nonlinear analysis cannot be conducted, as the most unstable mode will never nonlinearly interact with itself or its complex conjugate. Similarly, we cannot analytically examine interactions between MRI channel modes and damped eigenmodes belonging to other wave families. This is analytically tracked for other plasma instabilities by tracking the amplitudes of growing, marginal, and damped eigenmodes simultaneously \citep[e.g.][]{Makwana:2011}. While the shearing box approximation allows the projection of the perturbed MRI equations into the basis set of linear eigenmodes, nonlinear coupling between modes will remain zero.}
 
 \begin{figure*}
 \centering
-\includegraphics[width=\textwidth]{sim_theory_energy_jdot_Pm_1E-2_nonorm}
+\includegraphics[width=\textwidth]{sim_theory_energy_jdot_Pm_1E-2_Bmaxnorm}
 \caption{\edit1{Average energy (left) and angular momentum transport (right) in the total, kinetic, and magnetic components of simulation data as a function of time. Gray lines show the weakly nonlinear theory values for each quantity. }} \label{fig:sim_theory_energy_jdot}
 \end{figure*}
 
@@ -470,10 +470,8 @@ The Ginzburg-Landau equation arises due to symmetries in the local MRI equations
 
 \edit1{We initialize the runs with the linear eigenvectors of the MRI unstable mode (also computed by Dedalus; see section~\ref{sec:wnl}) multiplied by an initial amplitude $A_0 = 10^{-3}$. Doing so requires considerably less run time, as the MRI unstable mode starts growing immediately from $A_0$. By contrast, initializing random noise in $\psi$ with amplitude $A_0$ would give the unstable mode a much smaller amplitude. Nevertheless, we have confirmed that simulations with eigenvector initial conditions have similar evolutions to those with noise initial conditions once each enter linear growth. }
 
-\edit1{We analyze the average energy and angular momentum transport in the simulation domain (Figure \ref{fig:sim_theory_energy_jdot}). The theory slightly overpredicts both quantities, though with a reasonably good agreement considering that the weakly nonlinear theory applies rigorously to a channel of infinite height, while the simulation was carried out in a box with a vertical extent of only two critical wavelengths. We defer further comparisons between simulation and theory, including an analysis of the effect of the box height on the simulated flow, to future work. }
+\edit1{We analyze the average energy and angular momentum transport in the simulation domain (Figure \ref{fig:sim_theory_energy_jdot}). The saturation amplitude predicted by the weakly nonlinear theory depends on the choice of normalization of the linear eigenvectors. The eigenvectors of the linear problem are only determined up to an arbitrary normalization, and the nonlinear coefficient of the Ginzburg-Landau equation is sensitive to this normalization. The undetermined factor is typically assigned by comparison with direct numerical simulation or laboratory experiment \citep[e.g.][]{Deyirmenjian:1997,Recktenwald:1993}. Here we determine the constant by requiring that the maximum amplitude of $B_y$ be equal in both theory and simulation. With this normalization choice all plotted quantities agree to within $\sim 25\%$. The theory and simulation are thus in reasonably good agreement considering that the weakly nonlinear theory applies rigorously to a channel of infinite height, while the simulation was carried out in a box with a vertical extent of only two critical wavelengths. We defer further comparisons between simulation and theory, including an analysis of the effect of the box height on the simulated flow, to future work.  } 
 
-
-%\textbf{SUSAN: SIMULATION RESULTS GO HERE}
 
 \section{Discussion}
 \label{sec:discussion}
@@ -842,6 +840,9 @@ Chandrasekhar, S. 1960, Proceedings of the National Academy of Sciences of the U
 \bibitem[{Clark \& Oishi(2016b)}]{Clark:2016}
 Clark, S.E. and Oishi, J.S., 2016, submitted
 
+\bibitem[{Deyirmenjian(1997)}]{Deyirmenjian:1997}
+Deyirmenjian, Z., Daya, A., \& Morris, S.W., 1997, Phys. Rev. E 56, 1706
+
 \bibitem[{Ebrahimi et al.(2009)}]{Ebrahimi:2009ey}
 Ebrahimi, F., Prager, S.C., Schnack, D.D, 2009, ApJ 698, 233
 
@@ -887,6 +888,9 @@ Pessah, M. E., 2010, ApJ, 716, 1012
 
 \bibitem[{Pessah \& Goodman(2009)}]{Pessah:2009gm}
 Pessah, M. E., \& Goodman, J., 2009, \apj 698, L72 
+
+\bibitem[{Recktenwald et al.(1993)}]{Recktenwald:1993}
+Recktenwald, A., L\"ucke, M., M\"uller, H.W., 1993, PhRvE 48, 4444
 
 \bibitem[Regev \& Umurhan(2008)]{2008A&A...481...21R} Regev, O., \& Umurhan, O.~M.\ 2008, \aap, 481, 21 
 

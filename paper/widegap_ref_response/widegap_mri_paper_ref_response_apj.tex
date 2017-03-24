@@ -504,7 +504,7 @@ The nonlinear terms $\mathbf{N}_2$ and $\mathbf{N}_3$ which appear at $\mathcal{
 
 where the radial variation is contained in $\mathbb{V}_{11}$, and $\sigma = \gamma + i\omega$. 
 
-We solve the equations at each order using Dedalus, an open source pseudospectral code. We solve the radial portion of the eigenvectors on a basis of Chebyshev polynomials subject to our radial boundary conditions. \edit1{We use a 512-component Chebyshev grid, and confirm numerical convergence at $1.5\times$ the resolution. Because }
+We solve the equations at each order using Dedalus, an open source pseudospectral code. We solve the radial portion of the eigenvectors on a basis of Chebyshev polynomials subject to our radial boundary conditions. \edit1{We use a 512-component Chebyshev grid, and confirm numerical convergence at $1.5\times$ the resolution. This is sufficient to determine convergence because of the faster-than-exponential convergence of spectral methods. }
 We solve Equation \ref{eq:ordere} as a linear eigenvalue problem, and Equation \ref{eq:ordere2} as a linear boundary value problem. 
 The result of the weakly nonlinear analysis is a single amplitude equation for $\alpha$. This amplitude equation is found by enforcing a solvability condition on Equation \ref{eq:ordere3}. We find
 

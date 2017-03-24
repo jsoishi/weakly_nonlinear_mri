@@ -27,6 +27,7 @@ fn = "thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00
 
 fn = "thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_norm_False" # non normalized
 
+fn = "thingap_amplitude_parameters_Q_0.76_Rm_4.9213_Pm_1.00e-02_q_1.5_beta_25.00_gridnum_128_norm_True_normconst2"
 
 obj = h5py.File(file_root + fn + ".h5", "r")
 
@@ -45,7 +46,9 @@ if constant_alpha:
     # saturation amplitude -- for now just constant, coefficient-determined
     satamp = np.sqrt(obj.attrs['b']/obj.attrs['c']) #1
     print('satamp is sqrt {}/{} = {}'.format(b, c, satamp))
-    #satamp = satamp - satamp + 0.07 #test
+    # satamp = np.sqrt(obj.attrs['b']/(obj.attrs['c']/obj.attrs['normconst']**2)) #test
+    # satamp = satamp*0 + (0.27929596842805482-4.6781424718396889e-14j)
+    satamp = satamp*0 +  0.23643163#0.23645746
     satamp_Z = 0.0 + 0j
     print('saturation amplitude = {}'.format(satamp))
     ivporconst = "const"
@@ -91,6 +94,19 @@ zz = z.reshape(nz, 1)
 
 dz = z[1] - z[0]
 
+# fit center of channel u
+#In [197]: np.where(simB == np.nanmax(simB))
+#Out[197]: (array([128, 640]), array([64, 64]))
+simB = simdata['B'].value
+#zcenterindx = np.int(nz/8.)
+#xcenterindx = np.int(len(x)/2.)
+zcenterindx = 640
+xcenterindx = 64
+zcenter = z[zcenterindx]
+xcenter = x[xcenterindx]
+simBcenter = simB[zcenterindx, xcenterindx]
+print('found simBcenter = {} at {}, {}'.format(simBcenter, zcenterindx, xcenterindx))
+
 eiqz = np.exp(1j*Q*zz)
 ei2qz = np.exp(2*1j*Q*zz)
 ei0qz = np.exp(0*1j*Q*zz)
@@ -113,7 +129,35 @@ B21_star = obj['B21'].value.conj()
 #x_basis = de.Chebyshev('x',gridnum)
 #d1d = de.Domain([x_basis], np.complex128, comm=MPI.COMM_SELF)
 
-#u21_star_x = obj['u21_x'].value.conj()
+# test all z height
+simsat_root1_all = np.zeros(nz, np.complex128)
+simsat_root2_all = np.zeros(nz, np.complex128)
+for i, _zindx in enumerate(range(nz)):
+    B1_center = eps*obj['B11'].value[xcenterindx]*eiqz[_zindx] + eps*obj['B11_star'].value[xcenterindx]*eiqzstar[_zindx]
+    B2_center = eps**2*obj['B22'].value[xcenterindx]*ei2qz[_zindx] + eps**2*obj['B22_star'].value[xcenterindx]*ei2qzstar[_zindx] + eps**2*obj['B20'].value[xcenterindx]*ei0qz[_zindx] + eps**2*obj['B20_star'].value[xcenterindx]*ei0qzstar[_zindx]
+
+    simroot1 = (-B1_center + np.sqrt(B1_center**2 + 4*B2_center*simBcenter))/(2.0*B2_center)
+    simroot2 = (-B1_center - np.sqrt(B1_center**2 + 4*B2_center*simBcenter))/(2.0*B2_center)
+    simsat_root1_all[i] = simroot1[0]
+    simsat_root2_all[i] = simroot2[0]
+
+print('avg roots over all z: {} and {}'.format(np.nanmean(simsat_root1_all), np.nanmean(simsat_root1_all)))
+
+#In [198]: np.where(Vboth_B == np.nanmax(Vboth_B))
+#Out[198]: (array([644]), array([63]))
+xcenterindx_wnl = 63
+zcenterindx_wnl = 644
+
+B1_center = eps*obj['B11'].value[xcenterindx_wnl]*eiqz[zcenterindx_wnl] + eps*obj['B11_star'].value[xcenterindx_wnl]*eiqzstar[zcenterindx_wnl]
+B2_center = eps**2*obj['B22'].value[xcenterindx_wnl]*ei2qz[zcenterindx_wnl] + eps**2*obj['B22_star'].value[xcenterindx_wnl]*ei2qzstar[zcenterindx_wnl] + eps**2*obj['B20'].value[xcenterindx_wnl]*ei0qz[zcenterindx_wnl] + eps**2*obj['B20_star'].value[xcenterindx_wnl]*ei0qzstar[zcenterindx_wnl]
+
+print('satamp*u1center + satamp**2*u2_center should = simucenter.')
+simsat_root1 = (-B1_center + np.sqrt(B1_center**2 + 4*B2_center*simBcenter))/(2.0*B2_center)
+simsat_root2 = (-B1_center - np.sqrt(B1_center**2 + 4*B2_center*simBcenter))/(2.0*B2_center)
+print('satamp = {} or {}'.format(simsat_root1, simsat_root2))
+
+print('test: {} = {}'.format(simsat_root1*B1_center + simsat_root1**2*B2_center, simBcenter))
+
 
 # two-dimensional u and Bstructure
 V1_u = eps*satamp*obj['u11'].value*eiqz + eps*satamp.conj()*obj['u11_star'].value*eiqzstar
@@ -166,6 +210,8 @@ V1_ur1 = eps*satamp*obj['psi11'].value*eiqz_z + eps*satamp.conj()*obj['psi11_sta
 V1_uz1 = -eps*satamp*obj['psi11_x'].value*eiqz - eps*satamp.conj()*obj['psi11_star_x'].value*eiqzstar
 V1_Br1 = eps*satamp*obj['A11'].value*eiqz_z + eps*satamp.conj()*obj['A11_star'].value*eiqzstar_z
 V1_Bz1 = -eps*satamp*obj['A11_x'].value*eiqz - eps*satamp.conj()*obj['A11_star_x'].value*eiqzstar
+
+print('CHECK: using satamp {}'.format(satamp))
 
 # second order perturbations
 V2_ur1 = eps**2*satamp**2*obj['psi22'].value*ei2qz_z + eps**2*satamp.conj()**2*psi22_star*ei2qzstar_z 
@@ -276,6 +322,7 @@ print('avg integrated total energy: {}'.format(TE_int))
 
 
 # only in the bulk
+"""
 # define bulk as -0.5 <= x <= 0.5
 bulk_left_edge  = -0.5
 bulk_right_edge = 0.5
@@ -305,7 +352,7 @@ print('avg_KE_bulk = {}'.format(avg_KE_bulk))
 print('avg_BE_bulk = {}'.format(avg_BE_bulk))
 print('avg_TR_bulk = {}'.format(avg_TR_bulk))
 print('avg_TM_bulk = {}'.format(avg_TM_bulk))
-
+"""
 
 # vertical averages
 base_flow_zavg = np.mean(base_flow_2d, axis=0)
@@ -397,7 +444,7 @@ if save is True:
     print('saving output...')
 
     fn_root = "../data/"
-    out_fn = fn_root + "zavg_quantities_"+str(int(nLz))+"Lz_eps"+ str(eps) + fn + "_satamp_"+ivporconst+"_samez.h5"
+    out_fn = fn_root + "zavg_quantities_"+str(int(nLz))+"Lz_eps"+ str(eps) + fn + "_satamp_"+ivporconst+"_simnorm2.h5"
     
     print(out_fn)
     
@@ -443,6 +490,7 @@ if save is True:
         Jdot_Mout = f.create_dataset("Jdot_M", data=Jdot_M)
         Jdot_totout = f.create_dataset("Jdot_tot", data=Jdot_tot)
         
+        """
         BEbulkout = f.create_dataset("BE_bulk_int", data=avg_KE_bulk)
         KEbulkout = f.create_dataset("KE_bulk_int", data=avg_BE_bulk)
         TEbulkout = f.create_dataset("TE_bulk_int", data=avg_KE_bulk + avg_BE_bulk)
@@ -450,6 +498,7 @@ if save is True:
         JdotRbulkout = f.create_dataset("Jdot_R_bulk_int", data=avg_TR_bulk)
         JdotMbulkout = f.create_dataset("Jdot_M_bulk_int", data=avg_TM_bulk)
         Jdottotbulkout = f.create_dataset("Jdot_tot_bulk_int", data=avg_TR_bulk + avg_TM_bulk)
+        """
         
         psiout = f.create_dataset("psi_sat", data=Vboth_Psi)
         uout = f.create_dataset("u_sat", data=Vboth_u)
