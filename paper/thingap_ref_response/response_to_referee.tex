@@ -20,7 +20,7 @@ The following remarks apply to both papers:
 \begin{enumerate}				
 \item One of the main ideas behind the “weakly nonlinear” approach is that near marginal stability there is only one or a very small band of unstable modes that self interact. There is a substantial body of work in the fusion plasma community that considers coupling to damped modes as an important ingredient in saturation. The names to look for are Hatch, Makwana, and Terry. I am not suggesting the authors redo their analysis, to include damped modes, but they should comment on this alternative, perhaps in the Introduction.
 
-\textbf{Coupling to damped modes as explored in the plasma literature is not analytically possible in the walled TC flow, but can be analyzed in the shearing box when ambipolar diffusion is considered, as described in the new section of the text.}
+\textbf{Coupling to damped modes as explored in the plasma literature is not analytically possible in the walled TC flow, because the boundaries require numerical computation of the eigenvectors, precluding the simple identification of modes with branches of an algebraic dispersion relation. Such a program is beyond the scope of this work, though it is a very interesting possibility we had not previously considered. However, such inter-mode coupling \emph{can} be analyzed in the shearing box when ambipolar diffusion is considered, as described in the new section of the text.}
 
 \item With regard to saturation through modification of the base flow, in the TC problem studied in these papers, the rotation law is enforced through viscous coupling of the interior fluid to the bounding cylinders. This introduces a timescale, the viscous diffusion time, with which the momentum transport driven by perturbations must compete. In an accretion disk the rotation law is enforced at every point directly by gravity. The authors should comment on how important they think this difference is to saturating the mode.
 
@@ -34,6 +34,8 @@ The following remarks apply to both papers:
 
 \begin{itemize}						 							
 \item A more extended discussion of how angular momentum transport works. After all, this is the primary raison d’etre for most studies of the MRI.
+
+\textbf{We have added a figure to the thin-gap paper showing the morphology of the average angular momentum transport $\dot{J}$. }
 					 							
 \item A more extensive discussion of the role of the neutral mode with amplitude $\beta$ that both URM and the present paper argue should be kept, but, at least to the order in $\epsilon$ considered, satisfies an amplitude equation that is completely decoupled from the MRI mode, with amplitude $\alpha$. See the comment on coupling of damped modes above, which may be related to this issue.
 
@@ -52,7 +54,11 @@ The following remarks apply to both papers:
 
 \textbf{We have made this change.}
 	
-\item Finally, would it be feasible to a compute a nonlinear solution with Dedalus (or some other platform) and see how accurate the perturbation theory really is, for different values of $\epsilon$? Although the authors compare their results with Ebrahimi 2009, it would be desirable to have their own simulations for comparison.					\end{enumerate}	
+\item Finally, would it be feasible to a compute a nonlinear solution with Dedalus (or some other platform) and see how accurate the perturbation theory really is, for different values of $\epsilon$? Although the authors compare their results with Ebrahimi 2009, it would be desirable to have their own simulations for comparison.
+
+  \textbf{We have added a new section including a direct numerical simulation run with Dedalus, and made a preliminary comparison at modest Pm. }
+
+\end{enumerate}	
 					 					
 Remarks on Paper I:
 					
