@@ -294,7 +294,7 @@ Our investigation is astrophysically motivated, but we also intend our theory to
 \caption{Eigenfunctions of the first order equations, first order adjoint homogenous equations, and second order equations. We use our fiducial parameters for the standard MRI ($\xi = 0$). Eigenfunctions are solved on a 512-element grid of Chebyshev polynomials. First-order eigenfunctions are normalized such that $A_{11}(r_0) = 1$. Adjoint homogenous eigenfunctions are normalized such that $\langle V_{11}^\dagger \cdot \mathcal{D} V_{11} \rangle = 1$.}\label{fig:linear_eigenfunctions}
 \end{figure*}
 
-Our radial treatment includes the curvature of the flow in a cylindrical apparatus. Many investigations of the MRI use the ``narrow gap'' approximation (the shearing box is a narrow gap without boundary walls), in which the radial extent of the fluid channel is taken to be much smaller than the radius of curvature. That is, for a center channel radius $r_0$ bounded by inner and outer radii $r_1$ and $r_2$, respectively, the narrow gap approximation applies when $r_0 \gg (r_2 - r_1)$. The narrow gap approximation simplifies the MRI equations by excluding curvature terms, because the flow through a narrow gap can be taken to be approximately linear in $\phi$, i.e. Cartesian. Previous investigations into the weakly nonlinear behavior of the MRI have used this narrow gap approximation \citep{Umurhan:2007dz,Umurhan:2007hs,Clark:2016}. Building on our work in \edit1{Paper 1}, here we undertake the first (to our knowledge) weakly nonlinear analysis of the MRI in the wide gap regime, where the channel width may be comparable to or larger than its distance from the center of rotation.
+Our radial treatment includes the curvature of the flow in a cylindrical apparatus. Many investigations of the MRI use the ``narrow gap'' approximation (the shearing box is a narrow gap without boundary walls), in which the radial extent of the fluid channel is taken to be much smaller than the radius of curvature. That is, for a center channel radius $r_0$ bounded by inner and outer radii $r_1$ and $r_2$, respectively, the narrow gap approximation applies when $r_0 \gg (r_2 - r_1)$. The narrow gap approximation simplifies the MRI equations by excluding curvature terms, because the flow through a narrow gap can be taken to be approximately linear in $\phi$, i.e. Cartesian. Previous investigations into the weakly nonlinear behavior of the MRI have used this narrow gap approximation \citep{Umurhan:2007dz,Umurhan:2007hs,Clark:2016}. Building on our work in \edit1{Paper I}, here we undertake the first (to our knowledge) weakly nonlinear analysis of the MRI in the wide gap regime, where the channel width may be comparable to or larger than its distance from the center of rotation.
 
 Because we include curvature terms, our treatment also allows us to study the helical magnetorotational instability. The helical MRI is an overstability in which the background magnetic field is helical, $\mathbf{B} = B_0 (\xi r/r_0 \mathbf{\hat{\phi}} + \mathbf{\hat{z}})$ \citet{Hollerbach:2005tr}. The helical MRI currently occupies a special place in the MRI puzzle. The helical MRI has been proposed as a method of awakening angular momentum transport in the ``dead zones" of protoplanetary disks where the $\reym$ becomes very small. However the rotation profiles needed to excite helical MRI may be steeper than Keplerian, depending on the boundary conditions, and so its role in astrophysical disks is currently a matter of debate \citep{Liu:2006,Rudiger:2007,Kirillov:2013}. Regardless of its astrophysical role, the helical MRI is significantly easier to excite in a laboratory setting than the standard MRI, and has already been detected by the Potsdam Rossendorf Magnetic Instability Experiment \citep[PROMISE;][]{Stefani:2006iv,Stefani:2009hp}.
 
@@ -504,7 +504,7 @@ The nonlinear terms $\mathbf{N}_2$ and $\mathbf{N}_3$ which appear at $\mathcal{
 
 where the radial variation is contained in $\mathbb{V}_{11}$, and $\sigma = \gamma + i\omega$. 
 
-We solve the equations at each order using Dedalus, an open source pseudospectral code. We solve the radial portion of the eigenvectors on a basis of Chebyshev polynomials subject to our radial boundary conditions. \edit1{We use a 512-component Chebyshev grid, and confirm numerical convergence at $1.5\times$ the resolution. This is sufficient to determine convergence because of the faster-than-exponential convergence of spectral methods. }
+We solve the equations at each order using Dedalus, an open source pseudospectral code. We solve the radial portion of the eigenvectors on a basis of Chebyshev polynomials subject to our radial boundary conditions. \edit1{We use a 512-component Chebyshev grid, and confirm numerical convergence at $1.5\times$ the resolution. This is sufficient to determine convergence because of the faster-than-exponential convergence of spectral methods \citep{Boyd:2001aa}.}
 We solve Equation \ref{eq:ordere} as a linear eigenvalue problem, and Equation \ref{eq:ordere2} as a linear boundary value problem. 
 The result of the weakly nonlinear analysis is a single amplitude equation for $\alpha$. This amplitude equation is found by enforcing a solvability condition on Equation \ref{eq:ordere3}. We find
 
@@ -582,7 +582,7 @@ We detail several avenues for future work, which highlight the application of th
 This is the first weakly nonlinear analysis of the MRI in a cylindrical geometry, and is thus the global analogue of similar analyses in local approximations \citep{Umurhan:2007hs,Vasil:2015}. Understanding the connection between local and global MRI modes is crucial for interpreting simulation results across domain geometries. (The relationship between local and global \textit{linear} MRI modes is investigated in \citeauthor{Latter:2015} \citeyear{Latter:2015}.) Phenomena such as saturation and the development of turbulence depend critically on the nature of the underlying MRI modes. The formalism presented here describes analytically the weakly nonlinear behavior of global MRI modes. This treatment should be expanded to encompass more astrophysically relevant conditions, so that our understanding of complicated MRI phenomena may continue to make contact with analytical theory. 
 
 \section{Acknowledgments}
-S.E.C. was supported by a National Science Foundation Graduate Research Fellowship under grant No. DGE-16-44869. J.S.O. acknowledges support from NASA grant \edit1{NNX16AC92G}. \edit1{We thank the anonymous referee for thoughtful comments. We also thank} Mordecai Mac Low, Jeremy Goodman, John Krommes, Geoff Vasil, and Ellen Zweibel for useful discussion.
+S.E.C. was supported by a National Science Foundation Graduate Research Fellowship under grant No. DGE-16-44869. J.S.O. acknowledges support from NASA grant \edit1{NNX16AC92G}. \edit1{We thank the anonymous referee for many thoughtful comments on both this and Paper I. We also thank} Mordecai Mac Low, Jeremy Goodman, John Krommes, Geoff Vasil, and Ellen Zweibel for useful discussion.
 \software{Dedalus: http://dedalus-project.org/}
 
 %************* APPENDICES ************************%
@@ -880,11 +880,14 @@ Balbus, S. A. and Hawley, J. F., 1991, ApJ 376, 214
 \bibitem[{Blaes(2014)}]{Blaes:2014}
 Blaes, O., 2014, SSRv 183, 21
 
+\bibitem[{Boyd(2001)}]{Boyd:2001aa}
+Boyd, J P, 2001, Chebyshev and Fourier Spectral Methods, New York, Dover
+
 \bibitem[{Brandenburg et al.(1995)}]{Brandenburg:1995}
 Brandenburg, A., Norlund, A., Stein, R. F., Torkelsson, U., 1995, ApJ 446, 741 
 
-\bibitem[{Clark \& Oishi(2016a)}]{Clark:2016}
-Clark, S.E. and Oishi, J.S., 2016, in prep
+\bibitem[{Clark \& Oishi(2017a)}]{Clark:2016}
+Clark, S.E. and Oishi, J.S., 2017, submitted
 
 \bibitem[{Cross \& Hohenberg(1993)}]{Cross:1993el}
 Cross, M. C., \& Hohenberg, P. C., 1993, RvMP 65, 851
