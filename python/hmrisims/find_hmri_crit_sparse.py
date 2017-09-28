@@ -13,10 +13,9 @@ from scipy import special
 from mpi4py import MPI
 comm = MPI.COMM_WORLD
 
-
-def find_crit(comm, R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr, insulate):
-    Rm = Rm_min
-    k = k_min
+def hmri_eigenproblem(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm, k, insulate, nr, sparse=True):
+    Rm = Rm
+    k = k
     R = Rm/Pm
     iR = 1.0/R
 
@@ -91,9 +90,12 @@ def find_crit(comm, R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min,
         widegap.add_bc('right(B) = 0')
             
 
-    # create an Eigenproblem object
-    EP = Eigenproblem(widegap, sparse=True)
 
+    return Eigenproblem(widegap, sparse=sparse)
+
+def find_crit(comm, R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, Rm_max, k_min, k_max, n_Rm, n_k, nr, insulate, sparse=True):
+
+    EP = hmri_eigenproblem(R1, R2, Omega1, Omega2, beta, xi, Pm, Rm_min, k_min, insulate, nr, sparse=True)
     # create a shim function to translate (x, y) to the parameters for the eigenvalue problem:
     def shim(x,y):
         gr, indx,freq = EP.growth_rate({"k":x,"Rm":y})
