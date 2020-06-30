@@ -1,0 +1,2 @@
+python/pspace/coeffs_gridnum1024_Pm_1e-06_Q_0.75_Rm_4.88_q_1.5_beta_25.0_norm_True.p filter=lfs -text
+python/pspace/coeffs_gridnum1024_Pm_1e-07_Q_0.745_Rm_4.9_q_1.5_beta_25.0.p filter=lfs -text
